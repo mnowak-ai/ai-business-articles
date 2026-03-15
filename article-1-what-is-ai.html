@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Artificial Intelligence? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7B2FBE;
+    --purple-light: #9B4FDE;
+    --purple-pale: #F3EAFF;
+    --purple-mid: #E8D5FF;
+    --purple-dark: #4A1580;
+    --white: #FFFFFF;
+    --gray-soft: #F8F7FA;
+    --gray-text: #3D3547;
+    --gray-muted: #8B7FA0;
+    --accent: #C084FC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--gray-text);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--white);
+    padding: 80px 40px 0px;
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .lesson-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--purple-pale);
+    color: var(--purple);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    border: 1.5px solid var(--purple-mid);
+  }
+
+  .lesson-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--purple);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--purple-dark);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--purple-dark);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--gray-muted);
+    max-width: 620px;
+    font-weight: 400;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 4px;
+    background: var(--purple);
+    border-radius: 2px;
+    margin: 36px 0;
+  }
+
+
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 32px 0 0;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--purple-dark);
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--gray-text);
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    margin: 20px 0;
+    padding: 32px 40px;
+    background: var(--purple-pale);
+    border-left: 5px solid var(--purple);
+    border-radius: 0 16px 16px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pull-quote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    font-family: 'Fraunces', serif;
+    font-size: 100px;
+    color: var(--purple-mid);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .pull-quote p {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--purple-dark);
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    line-height: 1.55;
+  }
+
+  /* ── INTERACTIVE ANALOGY CARD ── */
+  .analogy-section {
+    margin: 24px 0;
+  }
+
+  .analogy-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .analogy-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--purple-mid);
+  }
+
+  .analogy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .analogy-grid { grid-template-columns: 1fr; }
+  }
+
+  .analogy-card {
+    background: var(--gray-soft);
+    border: 1.5px solid var(--purple-mid);
+    border-radius: 16px;
+    padding: 28px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .analogy-card:hover {
+    border-color: var(--purple);
+    background: var(--purple-pale);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(123,47,190,0.12);
+  }
+
+  .analogy-card .card-emoji {
+    font-size: 36px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .analogy-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--purple-dark);
+    margin-bottom: 8px;
+  }
+
+  .analogy-card p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--gray-text);
+    margin: 0;
+  }
+
+  .analogy-card .reveal {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--purple-mid);
+    font-size: 14px;
+    color: var(--purple);
+    font-weight: 500;
+    display: none;
+  }
+
+  .analogy-card.active .reveal {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .analogy-card .tap-hint {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    font-size: 11px;
+    color: var(--gray-muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── HOW AI LEARNS STEPPER ── */
+  .stepper {
+    margin: 24px 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 8px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 48px;
+    width: 2px;
+    height: calc(100% - 8px);
+    background: var(--purple-mid);
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--purple-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gray-muted);
+    transition: all 0.25s ease;
+    z-index: 1;
+  }
+
+  .step.active .step-num {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 16px rgba(123,47,190,0.3);
+  }
+
+  .step-body {
+    padding: 8px 0 28px;
+    flex: 1;
+  }
+
+  .step-body h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gray-muted);
+    margin-bottom: 0;
+    transition: color 0.25s ease;
+  }
+
+  .step.active .step-body h3 {
+    color: var(--purple-dark);
+  }
+
+  .step-body p {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--gray-text);
+    margin: 10px 0 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .step.active .step-body p {
+    max-height: 200px;
+    opacity: 1;
+  }
+
+  /* ── KEY TERMS BOX ── */
+  .key-terms {
+    background: var(--white);
+    border: 2px solid var(--purple);
+    border-radius: 20px;
+    padding: 36px;
+    margin: 24px 0;
+    position: relative;
+  }
+
+  .key-terms-title {
+    position: absolute;
+    top: -14px;
+    left: 28px;
+    background: var(--white);
+    padding: 0 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--purple);
+  }
+
+  .term-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .term-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--purple-mid);
+  }
+
+  .term-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .term-name {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--purple);
+    padding-top: 2px;
+  }
+
+  .term-def {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--gray-text);
+    margin: 0;
+  }
+
+  /* ── KNOWLEDGE CHECK ── */
+  .quiz {
+    background: var(--purple);
+    border-radius: 24px;
+    padding: 40px;
+    margin: 24px 0;
+    color: white;
+  }
+
+  .quiz-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .quiz h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  .quiz-question {
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .quiz-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 400;
+  }
+
+  .quiz-btn:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.4);
+    transform: translateX(4px);
+  }
+
+  .quiz-btn.correct {
+    background: rgba(74,222,128,0.25);
+    border-color: #4ade80;
+    color: #d1fae5;
+  }
+
+  .quiz-btn.wrong {
+    background: rgba(248,113,113,0.2);
+    border-color: #f87171;
+    color: #fecaca;
+  }
+
+  .quiz-feedback {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .quiz-feedback.show { display: block; }
+
+  /* ── SUMMARY CARD ── */
+  .summary {
+    background: var(--purple-pale);
+    border-radius: 24px;
+    padding: 40px;
+    margin: 24px 0 48px;
+  }
+
+  .summary-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 16px;
+  }
+
+  .summary h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    color: var(--purple-dark);
+    margin-bottom: 20px;
+  }
+
+  .summary-points {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .summary-point {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .point-dot {
+    width: 24px;
+    height: 24px;
+    background: var(--purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .point-dot svg {
+    width: 12px;
+    height: 12px;
+    fill: white;
+  }
+
+  .summary-point p {
+    font-size: 16px;
+    line-height: 1.65;
+    margin: 0;
+    color: var(--gray-text);
+  }
+
+  .next-article {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1.5px solid var(--purple-mid);
+  }
+
+  .next-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-muted);
+    margin-bottom: 4px;
+  }
+
+  .next-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--purple-dark);
+    font-weight: 700;
+  }
+
+  .next-arrow {
+    width: 48px;
+    height: 48px;
+    background: var(--purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .next-arrow:hover { transform: translateX(4px); }
+
+  .next-arrow svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--purple);
+    width: 0%;
+    transition: width 0.1s ease;
+    z-index: 100;
+  }
+
+  /* ── HIGHLIGHT ── */
+  mark {
+    background: var(--purple-mid);
+    color: var(--purple-dark);
+    border-radius: 3px;
+    padding: 1px 4px;
+    font-weight: 500;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    .hero, .content { padding-left: 24px; padding-right: 24px; }
+    .meta-bar { padding-left: 24px; padding-right: 24px; gap: 16px; flex-wrap: wrap; }
+    .term-item { grid-template-columns: 1fr; gap: 4px; }
+    .key-terms { padding: 28px 24px; }
+    .quiz { padding: 28px 24px; }
+    .summary { padding: 28px 24px; }
+    .next-article { flex-direction: column; gap: 20px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="lesson-tag">Lesson 1.1 · Introduction to AI</div>
+  <h1>What Is <em>Artificial</em><br>Intelligence?</h1>
+  <p class="hero-sub">A plain-English guide to understanding the technology that's reshaping how businesses operate — and what it actually means for you.</p>
+  <div class="hero-divider"></div>
+</div>
+
+
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="section fade-in">
+    <p>You've heard the term a thousand times. AI is changing everything. AI is taking over. AI is the future. But what actually <em>is</em> it?</p>
+    <p>Here's the honest answer: Artificial Intelligence is <mark>technology that can recognize patterns, learn from experience, and make decisions</mark> — kind of like a human brain, but in a very limited and specific way.</p>
+    <p>That's it. No science fiction. No magic. No sentient robot uprising. Just software that gets really, really good at spotting patterns in large amounts of data — and using those patterns to do useful things.</p>
+  </div>
+
+  <!-- ANALOGY SECTION -->
+  <div class="section fade-in">
+    <h2>Let's Start With an Analogy</h2>
+    <p>Think about how you learned to recognize a dog. Nobody handed you a rulebook that said "four legs + fur + tail = dog." Instead, you saw hundreds of dogs over your lifetime. Big ones, small ones, fluffy ones, wrinkly ones. Over time, your brain built up a pattern — and now you can look at an animal you've never seen before and instantly know: that's a dog.</p>
+
+    <div class="pull-quote">
+      <p>AI learns the same way — not from experience living in the world, but by being shown millions of examples until it gets really good at recognizing what's what.</p>
+    </div>
+
+    <p>That's the core idea behind AI. Feed it enough examples, and it learns to recognize things, predict things, and make decisions — all on its own, without being given explicit step-by-step instructions.</p>
+  </div>
+
+  <!-- INTERACTIVE ANALOGIES -->
+  <div class="section fade-in">
+    <h2>Real Examples You Already Know</h2>
+    <p>AI isn't just some future technology. You interact with it every single day. Here are four examples — click each one to see how the AI actually works behind the scenes.</p>
+
+    <div class="analogy-section">
+      <div class="analogy-label">Tap to explore</div>
+      <div class="analogy-grid">
+
+        <div class="analogy-card" onclick="toggleCard(this)">
+          <span class="card-emoji">🎵</span>
+          <h3>Spotify's Discover Weekly</h3>
+          <p>Every Monday, Spotify serves up a playlist of songs you've never heard — but somehow love.</p>
+          <div class="reveal">The AI studied millions of listeners. It noticed that people who love the same songs you do also tend to love certain other songs. It matched those patterns to you and made a prediction. That playlist isn't random — it's math.</div>
+          <span class="tap-hint">tap to reveal ↓</span>
+        </div>
+
+        <div class="analogy-card" onclick="toggleCard(this)">
+          <span class="card-emoji">📱</span>
+          <h3>Face ID on Your Phone</h3>
+          <p>Your phone unlocks when it sees your face — even in different lighting, with glasses, or with bed hair.</p>
+          <div class="reveal">The AI was trained on hundreds of images of your face from different angles. It learned the specific patterns of your facial structure — not as a photo, but as a mathematical map of distances and shapes. When you hold your phone up, it compares what it sees to that map.</div>
+          <span class="tap-hint">tap to reveal ↓</span>
+        </div>
+
+        <div class="analogy-card" onclick="toggleCard(this)">
+          <span class="card-emoji">📧</span>
+          <h3>Gmail's Spam Filter</h3>
+          <p>Sketchy emails about winning a lottery or "urgent" bank account problems go straight to spam.</p>
+          <div class="reveal">Gmail's AI was trained on billions of emails that humans labeled as spam or not spam. It learned the patterns — suspicious sender addresses, urgent language, certain phrases, weird formatting. Now it can classify new emails it's never seen before with remarkable accuracy.</div>
+          <span class="tap-hint">tap to reveal ↓</span>
+        </div>
+
+        <div class="analogy-card" onclick="toggleCard(this)">
+          <span class="card-emoji">🗺️</span>
+          <h3>Google Maps Routing</h3>
+          <p>Google Maps doesn't just give you directions — it predicts traffic and reroutes you in real time.</p>
+          <div class="reveal">The AI analyzes real-time location data from millions of phones on the road right now. It has also learned historical traffic patterns: Fridays at 5pm on this highway are always slow. It combines both to predict your fastest route — and updates it as conditions change.</div>
+          <span class="tap-hint">tap to reveal ↓</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- THE THREE INGREDIENTS -->
+  <div class="section fade-in">
+    <h2>The Three Things AI Needs to Work</h2>
+    <p>Every AI system — from the simplest spam filter to the most advanced chatbot — needs three basic ingredients. Click each step to learn more.</p>
+
+    <div class="stepper">
+
+      <div class="step active" onclick="activateStep(this)">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Data — Lots of It</h3>
+          <p>AI learns from examples, and examples are data. To train an AI to recognize cats, you'd show it millions of cat photos. To train an AI to predict sales, you'd feed it years of sales records. The more high-quality data, the better the AI gets. This is why companies obsess over collecting data — it's the raw material AI runs on.</p>
+        </div>
+      </div>
+
+      <div class="step" onclick="activateStep(this)">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>An Algorithm — The Recipe</h3>
+          <p>An algorithm is just a set of mathematical instructions that tells the AI how to look for patterns in the data. Think of it like a recipe: the data is your ingredients, and the algorithm is the method for turning those ingredients into something useful. Different algorithms are better at different tasks — some are great at image recognition, others at understanding text.</p>
+        </div>
+      </div>
+
+      <div class="step" onclick="activateStep(this)">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Compute Power — The Engine</h3>
+          <p>Running through millions of data points and adjusting billions of calculations takes a lot of computing power. This is why AI has exploded in the last decade — computers got dramatically faster and cheaper. What used to take years of processing time can now happen in hours. That speed unlocked everything you see today.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- KEY TERMS -->
+  <div class="section fade-in">
+    <h2>Words Worth Knowing</h2>
+    <p>These terms will come up throughout this certification. Here's what they actually mean — in plain English.</p>
+
+    <div class="key-terms">
+      <div class="key-terms-title">Key Vocabulary</div>
+      <div class="term-list">
+
+        <div class="term-item">
+          <div class="term-name">Artificial Intelligence (AI)</div>
+          <p class="term-def">Technology that can perform tasks that normally require human intelligence — like recognizing images, understanding language, or making predictions — by learning from data.</p>
+        </div>
+
+        <div class="term-item">
+          <div class="term-name">Machine Learning</div>
+          <p class="term-def">A type of AI where the system learns from examples rather than being programmed with specific rules. The more examples it sees, the better it gets. This is the most common approach in AI today.</p>
+        </div>
+
+        <div class="term-item">
+          <div class="term-name">Training Data</div>
+          <p class="term-def">The collection of examples used to teach an AI. Like flashcards for a student — the AI studies the training data until it can recognize patterns and make accurate predictions.</p>
+        </div>
+
+        <div class="term-item">
+          <div class="term-name">Algorithm</div>
+          <p class="term-def">A step-by-step set of mathematical instructions that tells the AI how to process data and find patterns. Every AI tool runs on one (or many) algorithms working together.</p>
+        </div>
+
+        <div class="term-item">
+          <div class="term-name">Model</div>
+          <p class="term-def">The finished "brain" that results after training. When a company says they built an AI model, they mean they trained a system on a large dataset and now it's ready to make predictions or decisions on new information.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT AI IS NOT -->
+  <div class="section fade-in">
+    <h2>One More Thing: What AI Is Not</h2>
+    <p>Before we go further, let's clear something up — because the movies have done a lot of damage here.</p>
+    <p><strong>AI is not conscious.</strong> It doesn't think, feel, want, or understand anything. When ChatGPT writes a poem that sounds emotional, it's not feeling anything. It's producing text that statistically resembles emotional writing, because that's what the pattern of its training data leads to.</p>
+    <p><strong>AI is not infallible.</strong> It makes mistakes — sometimes confidently. It can be wrong, biased, or completely off base. That's why human oversight is so important, especially in business settings where mistakes can have real consequences.</p>
+    <p><strong>AI is not magic.</strong> There's always math behind it. And like any tool, it's only as good as the data it was trained on and the people who designed and deployed it.</p>
+
+    <div class="pull-quote">
+      <p>AI is a remarkably powerful tool. But it is a tool — one that needs skilled humans to guide it, check its work, and make the decisions that actually matter.</p>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A company wants to build an AI that predicts which customers are likely to cancel their subscription. What does this AI need most to get started?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">A very fast computer and the latest AI software</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, true)">Historical data about past customers who cancelled and those who stayed</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">A team of programmers to write rules about who cancels</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">A large marketing budget to test different strategies</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+
+        <div class="summary-point">
+          <div class="point-dot">
+            <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5"/><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <p>AI is technology that recognizes patterns in data and uses those patterns to make decisions — not magic, not consciousness, just very sophisticated math.</p>
+        </div>
+
+        <div class="summary-point">
+          <div class="point-dot">
+            <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <p>You already interact with AI every day through apps like Spotify, Gmail, Google Maps, and your phone's Face ID.</p>
+        </div>
+
+        <div class="summary-point">
+          <div class="point-dot">
+            <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <p>Every AI needs three things to work: high-quality data, an algorithm, and enough computing power to process it all.</p>
+        </div>
+
+        <div class="summary-point">
+          <div class="point-dot">
+            <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <p>AI is not conscious or infallible — it makes mistakes, can be biased, and always requires human oversight to be used responsibly.</p>
+        </div>
+
+        <div class="summary-point">
+          <div class="point-dot">
+            <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <p>Key terms to remember: AI, Machine Learning, Training Data, Algorithm, and Model.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrolled / total * 100) + '%';
+  });
+
+  // Fade in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Toggle analogy cards
+  function toggleCard(card) {
+    card.classList.toggle('active');
+    const hint = card.querySelector('.tap-hint');
+    if (card.classList.contains('active')) {
+      hint.textContent = 'tap to close ↑';
+    } else {
+      hint.textContent = 'tap to reveal ↓';
+    }
+  }
+
+  // Stepper
+  function activateStep(step) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    step.classList.add('active');
+  }
+
+  // Quiz
+  let answered = false;
+  function checkAnswer(btn, correct) {
+    if (answered) return;
+    answered = true;
+    const allBtns = document.querySelectorAll('.quiz-btn');
+    allBtns.forEach(b => b.style.pointerEvents = 'none');
+    const feedback = document.getElementById('quizFeedback');
+
+    if (correct) {
+      btn.classList.add('correct');
+      feedback.innerHTML = '✅ <strong>That\'s right!</strong> AI learns by studying historical examples. Without data showing which past customers cancelled and which stayed, the AI has nothing to learn from. Data is always the starting point.';
+    } else {
+      btn.classList.add('wrong');
+      // highlight correct
+      allBtns[1].classList.add('correct');
+      feedback.innerHTML = '❌ <strong>Not quite.</strong> The most important ingredient is historical data — examples of what happened before. AI learns by studying patterns in past data, so without it, no amount of computing power or programming can help.';
+    }
+    feedback.classList.add('show');
+  }
+</script>
+
+</body>
+</html>
