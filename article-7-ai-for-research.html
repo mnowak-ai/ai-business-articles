@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Research and Data — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-light:#9B4FDE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --green:#276749; --green-pale:#F0FFF4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; transition:width 0.1s ease; z-index:100; }
+  .hero { background:var(--white); padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; font-weight:400; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:var(--purple-dark); margin-bottom:10px; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* HALLUCINATION DEMO */
+  .hallucination-demo { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:36px; margin:24px 0; }
+  .demo-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .demo-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .demo-title { font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .demo-desc { font-size:15px; color:var(--gray-muted); margin-bottom:24px; line-height:1.6; }
+  .chat-window { background:var(--white); border:1.5px solid var(--purple-mid); border-radius:16px; overflow:hidden; margin-bottom:16px; }
+  .chat-header { background:var(--purple); padding:12px 20px; display:flex; align-items:center; gap:10px; }
+  .chat-dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.4); }
+  .chat-title { font-size:13px; font-weight:600; color:white; }
+  .chat-body { padding:20px; display:flex; flex-direction:column; gap:12px; }
+  .chat-msg { max-width:85%; padding:12px 16px; border-radius:14px; font-size:14.5px; line-height:1.6; }
+  .chat-msg.user { background:var(--purple); color:white; align-self:flex-end; border-radius:14px 14px 4px 14px; }
+  .chat-msg.ai { background:var(--gray-soft); color:var(--gray-text); align-self:flex-start; border-radius:14px 14px 14px 4px; border:1px solid var(--purple-mid); }
+  .chat-msg.ai.flagged { background:var(--red-pale); border-color:#FCA5A5; }
+  .flag-items { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+  .flag-item { display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--red); }
+  .reveal-flags-btn { background:var(--purple); color:white; border:none; border-radius:10px; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s ease; margin-top:8px; }
+  .reveal-flags-btn:hover { background:var(--purple-dark); }
+  .flags-panel { display:none; margin-top:14px; background:var(--red-pale); border:1.5px solid #FCA5A5; border-radius:12px; padding:16px 18px; }
+  .flags-panel.show { display:block; animation:fadeIn 0.3s ease; }
+  .flags-panel h4 { font-size:14px; font-weight:700; color:var(--red); margin-bottom:10px; }
+  .flags-panel ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .flags-panel li { font-size:13.5px; line-height:1.55; color:var(--gray-text); display:flex; gap:8px; }
+  .flags-panel li::before { content:'⚠️'; flex-shrink:0; }
+
+  /* VERIFICATION CHECKLIST */
+  .checklist { margin:24px 0; display:flex; flex-direction:column; gap:12px; }
+  .check-item { display:flex; align-items:flex-start; gap:14px; padding:18px 20px; background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:14px; cursor:pointer; transition:all 0.2s ease; }
+  .check-item:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .check-item.checked { border-color:#6EE7B7; background:var(--green-pale); }
+  .check-box { width:24px; height:24px; border-radius:6px; border:2px solid var(--purple-mid); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s ease; margin-top:1px; font-size:13px; }
+  .check-item.checked .check-box { background:#276749; border-color:#276749; color:white; }
+  .check-title { font-weight:600; font-size:15.5px; color:var(--gray-text); margin-bottom:4px; }
+  .check-item.checked .check-title { color:var(--green); }
+  .check-desc { font-size:14px; line-height:1.55; color:var(--gray-muted); }
+
+  /* USE CASES GRID */
+  .use-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .use-grid { grid-template-columns:1fr; } }
+  .use-card { border:1.5px solid var(--purple-mid); border-radius:16px; padding:22px; background:var(--white); transition:all 0.25s ease; }
+  .use-card:hover { border-color:var(--purple); background:var(--purple-pale); transform:translateY(-2px); }
+  .use-card .uc-icon { font-size:32px; margin-bottom:12px; display:block; }
+  .use-card .uc-title { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .use-card .uc-desc { font-size:14px; line-height:1.6; color:var(--gray-text); margin-bottom:10px; }
+  .use-card .uc-prompt { font-size:13px; color:var(--purple); font-weight:500; background:var(--purple-pale); padding:8px 12px; border-radius:8px; font-style:italic; }
+
+  /* WARNING BOX */
+  .warning { background:#FFF7ED; border:1.5px solid #FED7AA; border-radius:20px; padding:28px 32px; margin:24px 0; display:flex; gap:16px; align-items:flex-start; }
+  .warning-icon { font-size:28px; flex-shrink:0; }
+  .warning h3 { font-family:'Fraunces',serif; font-size:18px; font-weight:700; color:#92400E; margin-bottom:8px; }
+  .warning p { font-size:15px; color:#78350F; line-height:1.65; margin:0; }
+
+  /* CALLOUT */
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; margin-top:2px; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+
+  /* QUIZ */
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; font-weight:400; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); border-color:rgba(255,255,255,0.4); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; animation:fadeIn 0.3s ease; }
+  .quiz-feedback.show { display:block; }
+
+  /* SUMMARY */
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } .hallucination-demo { padding:24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="hero">
+  <div class="lesson-tag">Lesson 1.2 · AI in Business Today</div>
+  <h1>AI for Research and Data — Finding Answers Faster</h1>
+  <p class="hero-sub">AI can compress hours of research into minutes. But there's a catch — and knowing how to handle it is one of the most important professional skills you can develop right now.</p>
+  <div class="hero-divider"></div>
+</div>
+
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Research used to be slow. Finding useful information meant hours of searching, reading, skimming, and synthesizing. For businesses trying to understand their market, track competitors, or analyze data, that time added up fast.</p>
+    <p>AI has changed this dramatically. Tools like ChatGPT, Claude, Perplexity, and built-in AI features in platforms like Google and Microsoft can <mark>gather, summarize, and synthesize information in seconds</mark> — work that used to take a whole afternoon.</p>
+    <p>But there's something critical you need to understand about AI research tools before you trust them with anything important. Let's start there.</p>
+  </div>
+
+  <!-- HALLUCINATION SECTION -->
+  <div class="section fade-in">
+    <h2>The Hallucination Problem</h2>
+    <p>Here's the uncomfortable truth about AI research tools: <mark>they can be confidently, completely wrong.</mark> This isn't a bug that will be fixed next month — it's a fundamental characteristic of how large language models work.</p>
+    <p>AI generates responses by predicting what text should come next based on patterns in its training data. It doesn't actually look things up or "know" facts the way you look something up in an encyclopedia. When it doesn't have reliable information, it can fill in the gap with plausible-sounding text that happens to be false. This is called a <strong>hallucination</strong>.</p>
+
+    <div class="pull-quote">
+      <p>An AI hallucination isn't lying — the AI has no intent. It's more like a very confident person who fills in the blanks when they're not sure, rather than admitting they don't know.</p>
+    </div>
+
+    <p>Let's look at a real example. Below is a simulated AI research response. Can you spot the problems? Hit "Reveal Issues" to see what's wrong.</p>
+
+    <div class="hallucination-demo">
+      <div class="demo-label">⚠️ Spot the Hallucinations</div>
+      <div class="demo-title">A Risky Research Response</div>
+      <p class="demo-desc">A student asks an AI tool for research on a company. Read the response carefully — something isn't right.</p>
+
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="chat-dot"></div><div class="chat-dot"></div><div class="chat-dot"></div>
+          <div class="chat-title">AI Research Assistant</div>
+        </div>
+        <div class="chat-body">
+          <div class="chat-msg user">Can you give me some key facts about Tesla's financial performance and recent news for a business report?</div>
+          <div class="chat-msg ai">Sure! Here's a summary of Tesla's recent performance:<br><br>
+            Tesla reported revenue of $97.7 billion in fiscal year 2023, representing a 19% increase year-over-year. Their profit margin improved to 18.2% following cost reductions in their manufacturing process.<br><br>
+            CEO Elon Musk announced in March 2024 that Tesla would be partnering with Samsung to produce next-generation battery cells at a new facility in Austin, Texas. This partnership is expected to reduce battery costs by 40% by 2026.<br><br>
+            Tesla's stock (TSLA) closed at $312.45 on the day of this report, making it the third most valuable automaker globally.
+          </div>
+        </div>
+      </div>
+
+      <button class="reveal-flags-btn" id="flagBtn" onclick="revealFlags()">🔍 Reveal Issues</button>
+
+      <div class="flags-panel" id="flagsPanel">
+        <h4>⚠️ 4 Problems Found in That Response</h4>
+        <ul>
+          <li>The 18.2% profit margin figure appears to be fabricated — Tesla's actual margins in 2023 were significantly lower due to price cuts. Always verify financial figures against official filings.</li>
+          <li>The "Samsung battery partnership" announced in March 2024 cannot be verified — this may be a hallucination. No such announcement exists in Tesla's official communications.</li>
+          <li>The stock price of $312.45 is presented as current but AI has no access to real-time data. This number is essentially made up.</li>
+          <li>"Third most valuable automaker globally" may have been true at some point but market rankings change constantly — this needs verification at time of writing.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO VERIFY -->
+  <div class="section fade-in">
+    <h2>The Verification Checklist</h2>
+    <p>Knowing that AI can hallucinate doesn't mean you shouldn't use it for research — it means you need a habit of verification. Here's a practical checklist to run through whenever you use AI-generated research for anything that matters. Click each item to check it off.</p>
+
+    <div class="checklist" id="checklist">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-title">Check all specific numbers and statistics</div>
+          <div class="check-desc">Revenue figures, percentages, market share, dates — these are where AI hallucinates most often. Verify each one against an official source like a company report, government database, or reputable news outlet.</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-title">Verify any "recent news" or events</div>
+          <div class="check-desc">AI models have a training cutoff — they don't know what happened last week or last month. Any "recent" event mentioned by an AI needs to be confirmed with a current news source.</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-title">Look up any people, products, or partnerships mentioned</div>
+          <div class="check-desc">AI can invent names, products, studies, and business relationships that sound plausible but don't exist. Search for these specifically before including them in any report or presentation.</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-title">Cross-reference with at least one primary source</div>
+          <div class="check-desc">A primary source is the original — the actual company filing, the original research paper, the government website. If AI gives you a summary, find where that information originally came from and check it.</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-title">Ask the AI where it got the information</div>
+          <div class="check-desc">Prompting the AI with "Can you tell me what sources this is based on?" often reveals uncertainty. If it can't point to a specific source, treat the information as unverified until you find one yourself.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT AI IS GOOD AT -->
+  <div class="section fade-in">
+    <h2>What AI Research Actually Does Well</h2>
+    <p>Despite the hallucination risk, AI research tools are genuinely powerful when used correctly. The key is knowing which tasks to trust AI with and which require extra verification.</p>
+
+    <div class="use-grid">
+      <div class="use-card">
+        <span class="uc-icon">📋</span>
+        <div class="uc-title">Summarizing Long Documents</div>
+        <p class="uc-desc">Paste in a long report, article, or contract and ask AI to summarize the key points. This is low-hallucination risk because the AI is working from text you provided.</p>
+        <div class="uc-prompt">"Summarize the key findings of this report in 5 bullet points"</div>
+      </div>
+      <div class="use-card">
+        <span class="uc-icon">🗂️</span>
+        <div class="uc-title">Organizing Information</div>
+        <p class="uc-desc">Give AI a pile of notes or data points and ask it to organize, categorize, or structure them. Great for turning messy research into something usable.</p>
+        <div class="uc-prompt">"Here are my research notes — organize these into themes"</div>
+      </div>
+      <div class="use-card">
+        <span class="uc-icon">❓</span>
+        <div class="uc-title">Generating Research Questions</div>
+        <p class="uc-desc">AI is excellent at helping you figure out what to research. Tell it your topic and ask what questions you should be exploring — then go find the answers yourself.</p>
+        <div class="uc-prompt">"What are the most important questions to research about EV market trends?"</div>
+      </div>
+      <div class="use-card">
+        <span class="uc-icon">📊</span>
+        <div class="uc-title">Interpreting Data You Provide</div>
+        <p class="uc-desc">Paste in a table of numbers or data and ask AI to identify patterns, outliers, or trends. The AI works from your data, so hallucination risk is much lower.</p>
+        <div class="uc-prompt">"Here is our monthly sales data — what trends do you notice?"</div>
+      </div>
+      <div class="use-card">
+        <span class="uc-icon">🔍</span>
+        <div class="uc-title">Competitive Research Starter</div>
+        <p class="uc-desc">Use AI to get a general overview of an industry or competitor landscape — then verify every specific claim before using it in a business decision.</p>
+        <div class="uc-prompt">"Give me an overview of the main players in the cloud storage market"</div>
+      </div>
+      <div class="use-card">
+        <span class="uc-icon">🌍</span>
+        <div class="uc-title">Explaining Complex Topics</div>
+        <p class="uc-desc">AI is great at explaining concepts in plain English — regulations, financial terms, technical jargon. Great for building understanding before you do deeper research.</p>
+        <div class="uc-prompt">"Explain what EBITDA means and why businesses use it"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="warning">
+      <div class="warning-icon">⚠️</div>
+      <div>
+        <h3>The Professional Stakes Are Real</h3>
+        <p>In a business setting, presenting AI-hallucinated research as fact can damage your credibility, mislead decision-makers, or cause costly mistakes. One wrong statistic in a financial presentation or strategy document can undermine an entire argument — or worse, lead to a bad business decision. Verification isn't optional. It's the job.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h3>The Right Mental Model</h3>
+        <p>Think of AI as a very fast research assistant who is brilliant at organizing and synthesizing information — but who sometimes makes things up when they're not sure. Your job is to be the editor: use their speed, check their work. That combination of AI speed and human verification is more powerful than either one alone.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You ask an AI tool to research a competitor's recent product launches for a presentation to your manager. The AI gives you a detailed, confident-sounding response with specific product names and launch dates. What should you do next?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">A. Use the information directly — the AI sounded very confident and specific</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">B. Add a disclaimer saying "AI-generated" and present it as-is</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, true)">C. Verify each specific product, date, and claim against the competitor's actual website or news coverage before presenting</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">D. Avoid using AI for research entirely since it can hallucinate</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>AI can compress hours of research into minutes by gathering, summarizing, and synthesizing information quickly.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>AI hallucinations are when AI generates confident-sounding but false information — including fake statistics, events, and partnerships that don't exist.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Always verify: specific numbers, recent events, named people or products, and any claim that will be used in a business decision or presented to others.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>AI research is most reliable when working from text you provide (summarizing, organizing, analyzing) rather than generating facts from its training data.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>The professional standard: use AI for speed, then verify with primary sources before presenting or acting on anything important.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  window.addEventListener('scroll', () => { const s=window.scrollY; const t=document.documentElement.scrollHeight-window.innerHeight; document.getElementById('progressBar').style.width=(s/t*100)+'%'; });
+  const observer = new IntersectionObserver(e => { e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }); },{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  function revealFlags() {
+    document.getElementById('flagsPanel').classList.add('show');
+    document.getElementById('flagBtn').style.display = 'none';
+  }
+
+  function toggleCheck(item) { item.classList.toggle('checked'); }
+
+  let answered = false;
+  function checkAnswer(btn, correct) {
+    if (answered) return; answered = true;
+    document.querySelectorAll('.quiz-btn').forEach(b => b.style.pointerEvents = 'none');
+    const feedback = document.getElementById('quizFeedback');
+    if (correct) { btn.classList.add('correct'); feedback.innerHTML = '✅ <strong>Exactly right.</strong> Confidence in an AI response is not the same as accuracy. The more specific and detailed an AI response sounds, the more important it is to verify — specific-sounding details are exactly where hallucinations hide. The competitor\'s own website, press releases, and news coverage are your primary sources here.'; }
+    else { btn.classList.add('wrong'); document.querySelectorAll('.quiz-btn')[2].classList.add('correct'); feedback.innerHTML = '❌ <strong>Not quite.</strong> Confidence level is not a reliable indicator of AI accuracy. Hallucinations often sound the most specific and detailed. An "AI-generated" disclaimer doesn\'t protect you professionally — your manager will hold you responsible for the accuracy of what you present. Always verify before you present.'; }
+    feedback.classList.add('show');
+  }
+</script>
+</body>
+</html>

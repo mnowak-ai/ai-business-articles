@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Salesforce Uses AI — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-light:#9B4FDE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --sf-blue:#00A1E0; --sf-pale:#E8F6FF; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; transition:width 0.1s ease; z-index:100; }
+  .hero { background:var(--white); padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; font-weight:400; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:var(--purple-dark); margin-bottom:10px; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* COMPANY BANNER */
+  .company-banner { background:var(--sf-pale); border:1.5px solid #B3DFF7; border-radius:20px; padding:28px 32px; margin:24px 0; display:flex; align-items:center; gap:20px; }
+  .company-logo { width:56px; height:56px; background:var(--sf-blue); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; }
+  .company-info h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:#003D5B; margin-bottom:4px; }
+  .company-info p { font-size:14px; color:#005A80; line-height:1.5; margin:0; }
+
+  /* CRM EXPLAINER */
+  .crm-explainer { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .exp-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .exp-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .crm-steps { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+  @media(max-width:600px) { .crm-steps { grid-template-columns:1fr; } }
+  .crm-step { background:var(--white); border:1.5px solid var(--purple-mid); border-radius:14px; padding:20px; text-align:center; transition:all 0.2s ease; }
+  .crm-step:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .crm-step-icon { font-size:32px; margin-bottom:10px; display:block; }
+  .crm-step-title { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--purple-dark); margin-bottom:6px; }
+  .crm-step-desc { font-size:13.5px; color:var(--gray-text); line-height:1.55; }
+  .crm-arrow { display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--purple-mid); padding:0 4px; }
+  @media(min-width:601px) { .crm-steps { grid-template-columns: 1fr 24px 1fr 24px 1fr; align-items:center; } }
+
+  /* WITHOUT/WITH AI */
+  .compare-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+  @media(max-width:600px) { .compare-cards { grid-template-columns:1fr; } }
+  .compare-card { border-radius:18px; padding:24px; }
+  .compare-card.without { background:#FFF7F7; border:1.5px solid #FCA5A5; }
+  .compare-card.with { background:#F0FFF4; border:1.5px solid #6EE7B7; }
+  .cc-header { font-family:'Fraunces',serif; font-size:17px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+  .compare-card.without .cc-header { color:#E53E3E; }
+  .compare-card.with .cc-header { color:#276749; }
+  .cc-items { display:flex; flex-direction:column; gap:10px; }
+  .cc-item { font-size:14px; line-height:1.55; color:var(--gray-text); display:flex; gap:8px; align-items:flex-start; }
+
+  /* EINSTEIN FEATURES */
+  .einstein-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .einstein-grid { grid-template-columns:1fr; } }
+  .einstein-card { border:1.5px solid var(--purple-mid); border-radius:18px; padding:22px; background:var(--white); transition:all 0.25s ease; }
+  .einstein-card:hover { border-color:var(--purple); background:var(--purple-pale); transform:translateY(-2px); }
+  .ec-icon { font-size:30px; margin-bottom:12px; display:block; }
+  .ec-name { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .ec-before { font-size:13px; color:#E53E3E; background:#FFF1F1; padding:7px 10px; border-radius:8px; margin-bottom:8px; line-height:1.5; }
+  .ec-after { font-size:13px; color:#276749; background:#F0FFF4; padding:7px 10px; border-radius:8px; line-height:1.5; }
+  .ec-label { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:3px; }
+
+  /* VOCAB BOX */
+  .vocab-box { border:2px solid var(--purple); border-radius:20px; padding:32px; margin:24px 0; position:relative; }
+  .vocab-title { position:absolute; top:-14px; left:24px; background:var(--white); padding:0 12px; font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); }
+  .vocab-list { display:flex; flex-direction:column; gap:16px; }
+  .vocab-item { display:grid; grid-template-columns:160px 1fr; gap:16px; align-items:start; padding-bottom:16px; border-bottom:1px solid var(--purple-mid); }
+  .vocab-item:last-child { border-bottom:none; padding-bottom:0; }
+  .vocab-term { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--purple); }
+  .vocab-def { font-size:15px; line-height:1.6; color:var(--gray-text); margin:0; }
+  @media(max-width:500px) { .vocab-item { grid-template-columns:1fr; gap:4px; } }
+
+  /* METRICS */
+  .metrics { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .metrics { grid-template-columns:1fr 1fr; } }
+  .metric-card { background:var(--purple); border-radius:16px; padding:20px; text-align:center; }
+  .metric-num { font-family:'Fraunces',serif; font-size:32px; font-weight:900; color:white; line-height:1; margin-bottom:6px; }
+  .metric-label { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.4; }
+
+  /* CALLOUT */
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; margin-top:2px; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+
+  /* QUIZ */
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; font-weight:400; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); border-color:rgba(255,255,255,0.4); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; animation:fadeIn 0.3s ease; }
+  .quiz-feedback.show { display:block; }
+
+  /* SUMMARY */
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } .company-banner { flex-direction:column; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="hero">
+  <div class="lesson-tag">Lesson 1.2 · AI in Business Today</div>
+  <h1>Real Company Spotlight: How Salesforce Uses AI for Sales and Marketing</h1>
+  <p class="hero-sub">Before we get to the AI, we need to understand CRM — the business category Salesforce leads. Because once you understand the problem, the AI solution makes complete sense.</p>
+  <div class="hero-divider"></div>
+</div>
+
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Walk into any business that has a sales team and you'll hear the word "CRM" within about five minutes. It's one of the most common terms in the business world — and one of the least explained to people just starting out.</p>
+    <p>This article does two things: it explains what a CRM is and why businesses depend on them, then it shows how Salesforce layered AI on top of their CRM to transform what sales and marketing teams can do. <mark>These are terms and tools you'll encounter in almost every business role.</mark></p>
+  </div>
+
+  <!-- CRM EXPLAINER -->
+  <div class="section fade-in">
+    <h2>First — What Is a CRM?</h2>
+    <p>CRM stands for <strong>Customer Relationship Management</strong>. A CRM is software that helps businesses keep track of every interaction they've ever had with every customer or potential customer — all in one place.</p>
+    <p>Think about what happens when a company has 500 customers and a sales team of 10 people. How do you make sure everyone knows what was promised to which client? How do you know which potential customers are close to buying and which need more attention? How does a new salesperson pick up where the last one left off when a customer calls? Without a system, this becomes chaos.</p>
+
+    <div class="crm-explainer">
+      <div class="exp-label">How a CRM Works</div>
+      <div class="crm-steps">
+        <div class="crm-step">
+          <span class="crm-step-icon">📇</span>
+          <div class="crm-step-title">Track Contacts</div>
+          <div class="crm-step-desc">Every customer, prospect, and company stored with full history — emails, calls, meetings, purchases</div>
+        </div>
+        <div class="crm-arrow">→</div>
+        <div class="crm-step">
+          <span class="crm-step-icon">🔄</span>
+          <div class="crm-step-title">Manage the Pipeline</div>
+          <div class="crm-step-desc">See exactly where every potential deal is in the sales process — who's close to buying, who needs follow-up</div>
+        </div>
+        <div class="crm-arrow">→</div>
+        <div class="crm-step">
+          <span class="crm-step-icon">📊</span>
+          <div class="crm-step-title">Analyze Performance</div>
+          <div class="crm-step-desc">See which sales reps are performing, which campaigns work, and where revenue is coming from</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Salesforce is the world's leading CRM platform — used by over 150,000 companies from startups to Fortune 500s. When a salesperson at a major company logs a call with a client, books a meeting, or closes a deal, they're almost certainly doing it in Salesforce.</p>
+  </div>
+
+  <!-- COMPANY BANNER -->
+  <div class="section fade-in">
+    <div class="company-banner">
+      <div class="company-logo">☁️</div>
+      <div class="company-info">
+        <h3>About Salesforce</h3>
+        <p>Founded in 1999, Salesforce pioneered cloud-based business software and today powers the sales, marketing, and customer service operations of over 150,000 companies worldwide. Their annual revenue exceeds $34 billion, making them one of the largest software companies on earth.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WITHOUT / WITH AI -->
+  <div class="section fade-in">
+    <h2>Sales Before AI vs. Sales With AI</h2>
+    <p>Adding AI to a CRM isn't just a nice extra feature — it fundamentally changes what a sales team is capable of. Here's the concrete difference.</p>
+
+    <div class="compare-cards">
+      <div class="compare-card without">
+        <div class="cc-header">😓 Without AI</div>
+        <div class="cc-items">
+          <div class="cc-item"><span>😩</span><div>Sales reps manually review hundreds of leads trying to figure out which ones to call first</div></div>
+          <div class="cc-item"><span>⏰</span><div>Hours spent writing individual follow-up emails after every call or meeting</div></div>
+          <div class="cc-item"><span>🤷</span><div>Forecasting revenue involves gut feelings and spreadsheets that are always out of date</div></div>
+          <div class="cc-item"><span>🔍</span><div>Customer service reps search through old notes trying to understand a customer's history</div></div>
+          <div class="cc-item"><span>📉</span><div>Deals fall through cracks because follow-up timing was off or the rep forgot</div></div>
+        </div>
+      </div>
+      <div class="compare-card with">
+        <div class="cc-header">✅ With Salesforce AI</div>
+        <div class="cc-items">
+          <div class="cc-item"><span>🎯</span><div>AI scores every lead and tells reps which ones have the highest probability of closing — ranked and ready</div></div>
+          <div class="cc-item"><span>✍️</span><div>AI drafts personalized follow-up emails instantly based on the meeting notes and CRM data</div></div>
+          <div class="cc-item"><span>📊</span><div>AI analyzes pipeline data and generates accurate revenue forecasts with confidence levels</div></div>
+          <div class="cc-item"><span>🤖</span><div>AI surfaces the full customer history and suggests the best response to any service question</div></div>
+          <div class="cc-item"><span>⏰</span><div>AI sends alerts when a deal goes quiet too long and suggests the right next action</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EINSTEIN FEATURES -->
+  <div class="section fade-in">
+    <h2>Meet Einstein — Salesforce's AI Layer</h2>
+    <p>Salesforce calls their AI system <strong>Einstein</strong> (now evolved into Einstein GPT and Agentforce). It's not a separate product — it's AI woven throughout the entire Salesforce platform, working on your real customer data. Here are the key features and what they change.</p>
+
+    <div class="einstein-grid">
+      <div class="einstein-card">
+        <span class="ec-icon">🎯</span>
+        <div class="ec-name">Einstein Lead Scoring</div>
+        <div class="ec-label" style="color:var(--gray-muted);">Before AI</div>
+        <div class="ec-before">Reps spend hours manually evaluating leads, often calling the wrong people first</div>
+        <div class="ec-label" style="color:var(--gray-muted); margin-top:6px;">With Einstein</div>
+        <div class="ec-after">AI analyzes hundreds of data signals to predict which leads are most likely to convert and ranks them automatically</div>
+      </div>
+      <div class="einstein-card">
+        <span class="ec-icon">📧</span>
+        <div class="ec-name">Einstein Email Generation</div>
+        <div class="ec-label" style="color:var(--gray-muted);">Before AI</div>
+        <div class="ec-before">Writing personalized follow-ups takes 15-20 minutes per customer</div>
+        <div class="ec-label" style="color:var(--gray-muted); margin-top:6px;">With Einstein</div>
+        <div class="ec-after">AI drafts a personalized email using CRM context — the rep reviews, tweaks, and sends in under 2 minutes</div>
+      </div>
+      <div class="einstein-card">
+        <span class="ec-icon">🔮</span>
+        <div class="ec-name">Einstein Forecasting</div>
+        <div class="ec-label" style="color:var(--gray-muted);">Before AI</div>
+        <div class="ec-before">Sales forecasts are manual, slow, and often wildly inaccurate — causing poor planning</div>
+        <div class="ec-label" style="color:var(--gray-muted); margin-top:6px;">With Einstein</div>
+        <div class="ec-after">AI analyzes historical patterns and current pipeline to predict quarterly revenue with significantly higher accuracy</div>
+      </div>
+      <div class="einstein-card">
+        <span class="ec-icon">💬</span>
+        <div class="ec-name">Einstein Service Agent</div>
+        <div class="ec-label" style="color:var(--gray-muted);">Before AI</div>
+        <div class="ec-before">Customer service reps dig through notes and emails to understand why a customer is calling</div>
+        <div class="ec-label" style="color:var(--gray-muted); margin-top:6px;">With Einstein</div>
+        <div class="ec-after">AI instantly surfaces the customer's full history, recent issues, and the most likely resolution — before the rep even says hello</div>
+      </div>
+      <div class="einstein-card">
+        <span class="ec-icon">📈</span>
+        <div class="ec-name">Einstein Opportunity Insights</div>
+        <div class="ec-label" style="color:var(--gray-muted);">Before AI</div>
+        <div class="ec-before">Deals go cold and reps don't notice until it's too late to recover them</div>
+        <div class="ec-label" style="color:var(--gray-muted); margin-top:6px;">With Einstein</div>
+        <div class="ec-after">AI monitors every open deal and alerts reps when engagement drops, suggesting specific actions to re-engage</div>
+      </div>
+      <div class="einstein-card">
+        <span class="ec-icon">🎙️</span>
+        <div class="ec-name">Einstein Call Summaries</div>
+        <div class="ec-label" style="color:var(--gray-muted);">Before AI</div>
+        <div class="ec-before">Sales reps spend 20+ minutes after every call manually logging notes into the CRM</div>
+        <div class="ec-label" style="color:var(--gray-muted); margin-top:6px;">With Einstein</div>
+        <div class="ec-after">AI transcribes the call, extracts key commitments and next steps, and logs them automatically — reps review and confirm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY VOCAB -->
+  <div class="section fade-in">
+    <h2>Vocabulary Worth Knowing</h2>
+    <p>These terms come up constantly in sales and marketing conversations. Learn them now and you'll sound like you've been in the industry for years.</p>
+
+    <div class="vocab-box">
+      <div class="vocab-title">Key Business Vocabulary</div>
+      <div class="vocab-list">
+        <div class="vocab-item">
+          <div class="vocab-term">CRM</div>
+          <p class="vocab-def">Customer Relationship Management. Software that tracks every interaction between a business and its customers. Salesforce, HubSpot, and Zoho are the big names.</p>
+        </div>
+        <div class="vocab-item">
+          <div class="vocab-term">Lead</div>
+          <p class="vocab-def">A potential customer who has shown some interest in your product but hasn't bought yet. "Leads" are what sales teams work to convert into paying customers.</p>
+        </div>
+        <div class="vocab-item">
+          <div class="vocab-term">Pipeline</div>
+          <p class="vocab-def">The visual representation of all the deals currently in progress — from first contact to closed sale. "Pipeline value" means how much revenue could come in if all current deals close.</p>
+        </div>
+        <div class="vocab-item">
+          <div class="vocab-term">Lead Scoring</div>
+          <p class="vocab-def">Assigning a numerical score to each potential customer based on how likely they are to buy. Higher score = warmer lead = call them first. AI makes this far more accurate than human guesswork.</p>
+        </div>
+        <div class="vocab-item">
+          <div class="vocab-term">Conversion Rate</div>
+          <p class="vocab-def">The percentage of leads who end up becoming paying customers. If 100 people visit your product page and 3 buy, your conversion rate is 3%. AI helps improve this by targeting the right people with the right message at the right time.</p>
+        </div>
+        <div class="vocab-item">
+          <div class="vocab-term">Forecasting</div>
+          <p class="vocab-def">Predicting how much revenue a sales team will generate in a given period. Accurate forecasting is critical for planning hiring, inventory, and spending. AI makes forecasts significantly more reliable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="section fade-in">
+    <h2>The Business Impact</h2>
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-num">29%</div>
+        <div class="metric-label">average increase in sales revenue reported by Salesforce AI users</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">34%</div>
+        <div class="metric-label">higher customer satisfaction scores with AI-assisted service</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">150k+</div>
+        <div class="metric-label">companies worldwide running on Salesforce</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote">
+      <p>Salesforce didn't build Einstein to replace salespeople — it built it to make every salesperson as effective as their best salesperson. AI levels up the whole team.</p>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💼</div>
+      <div>
+        <h3>Why This Matters for Your Career</h3>
+        <p>Salesforce is the most widely used business software platform in the world. If you work in sales, marketing, customer service, or operations at virtually any mid-size or large company, you'll encounter it. Understanding what CRM means, how Salesforce works, and what Einstein AI does gives you immediate vocabulary and context that most entry-level candidates don't have — and that hiring managers notice.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A sales manager notices that even though their team has 200 leads in the CRM, only 15 of them are likely to buy this quarter. Einstein lead scoring could help most by doing what?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">A. Automatically emailing all 200 leads to warm them up faster</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">B. Deleting the low-quality leads to simplify the CRM</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, true)">C. Ranking all 200 leads by purchase probability so reps focus their time on the 15 most likely to close</button>
+        <button class="quiz-btn" onclick="checkAnswer(this, false)">D. Replacing the sales team with automated AI calls to all leads</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>A CRM (Customer Relationship Management) system tracks every interaction between a business and its customers — contacts, deals, pipeline, and performance.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Salesforce is the world's leading CRM platform, used by 150,000+ companies. Understanding it is foundational vocabulary for any business career.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Einstein (Salesforce's AI) adds capabilities like lead scoring, email generation, revenue forecasting, opportunity alerts, and call summaries — all working on real customer data.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Key vocabulary to know: CRM, lead, pipeline, lead scoring, conversion rate, and forecasting — these appear constantly in business conversations.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Salesforce AI users report 29% higher sales revenue on average — demonstrating that well-implemented CRM + AI is a measurable business advantage.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  window.addEventListener('scroll', () => { const s=window.scrollY; const t=document.documentElement.scrollHeight-window.innerHeight; document.getElementById('progressBar').style.width=(s/t*100)+'%'; });
+  const observer = new IntersectionObserver(e => { e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }); },{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  let answered = false;
+  function checkAnswer(btn, correct) {
+    if (answered) return; answered = true;
+    document.querySelectorAll('.quiz-btn').forEach(b => b.style.pointerEvents = 'none');
+    const feedback = document.getElementById('quizFeedback');
+    if (correct) { btn.classList.add('correct'); feedback.innerHTML = '✅ <strong>Exactly right.</strong> Lead scoring is about prioritization, not elimination or replacement. A sales team\'s most valuable resource is their time. By ranking leads by purchase probability, Einstein ensures reps spend their hours on the opportunities most likely to actually close — instead of spreading effort equally across all 200 leads regardless of quality.'; }
+    else { btn.classList.add('wrong'); document.querySelectorAll('.quiz-btn')[2].classList.add('correct'); feedback.innerHTML = '❌ <strong>Not quite.</strong> Lead scoring is about intelligent prioritization. The goal isn\'t to delete leads, spam everyone, or replace salespeople — it\'s to ensure the humans on the team focus their limited time on the leads most likely to convert. That\'s where Einstein\'s prediction model creates direct business value.'; }
+    feedback.classList.add('show');
+  }
+</script>
+</body>
+</html>
