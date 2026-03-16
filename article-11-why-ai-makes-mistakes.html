@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why AI Makes Mistakes — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; transition:width 0.1s ease; z-index:100; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+  .causes { display:flex; flex-direction:column; gap:16px; margin:24px 0; }
+  .cause-card { border-radius:20px; overflow:hidden; border:1.5px solid var(--purple-mid); cursor:pointer; transition:all 0.25s ease; }
+  .cause-card:hover { border-color:var(--purple); box-shadow:0 6px 24px rgba(123,47,190,0.1); }
+  .cause-card.open { border-color:var(--purple); }
+  .cause-header { display:flex; align-items:center; gap:16px; padding:22px 24px; background:var(--white); }
+  .cause-num { width:36px; height:36px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:16px; font-weight:900; color:white; flex-shrink:0; }
+  .cause-title { font-family:'Fraunces',serif; font-size:19px; font-weight:700; color:var(--purple-dark); flex:1; }
+  .cause-toggle { width:28px; height:28px; background:var(--purple-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; transition:transform 0.3s ease, background 0.2s ease; }
+  .cause-card.open .cause-toggle { transform:rotate(45deg); background:var(--purple); color:white; }
+  .cause-body { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+  .cause-card.open .cause-body { max-height:400px; }
+  .cause-inner { padding:0 24px 24px; }
+  .cause-inner p { font-size:15.5px; line-height:1.7; color:var(--gray-text); margin:14px 0 12px; }
+  .example-box { background:var(--red-pale); border:1.5px solid #FCA5A5; border-radius:12px; padding:14px 16px; font-size:14px; line-height:1.6; color:#7F1D1D; }
+  .example-box strong { color:var(--red); }
+  .mistake-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:700px) { .mistake-grid { grid-template-columns:1fr; } }
+  .mistake-card { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:16px; padding:22px; transition:all 0.2s ease; }
+  .mistake-card:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .mc-icon { font-size:30px; margin-bottom:10px; display:block; }
+  .mc-title { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .mc-desc { font-size:14px; line-height:1.6; color:var(--gray-text); }
+  .oversight { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .ov-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .ov-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .ov-items { display:flex; flex-direction:column; gap:12px; }
+  .ov-item { display:flex; align-items:flex-start; gap:14px; padding:16px 18px; background:var(--white); border-radius:14px; border:1.5px solid var(--purple-mid); transition:all 0.2s ease; cursor:pointer; }
+  .ov-item:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .ov-item.checked { border-color:#6EE7B7; background:#F0FFF4; }
+  .ov-check { width:24px; height:24px; border-radius:6px; border:2px solid var(--purple-mid); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:13px; transition:all 0.2s ease; }
+  .ov-item.checked .ov-check { background:#276749; border-color:#276749; color:white; }
+  .ov-text { font-size:15px; font-weight:600; color:var(--gray-text); }
+  .ov-item.checked .ov-text { color:#276749; }
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 1.3 · Limitations & Risks</div>
+  <h1>Why AI Makes Mistakes — And What That Means for Business</h1>
+  <p class="hero-sub">AI isn't infallible. Understanding exactly why AI fails — and how those failures show up in business — is one of the most practical skills you can develop.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Every time someone blindly trusts an AI output and it turns out to be wrong, there's a cost. Sometimes it's small — an awkward email. Sometimes it's enormous — a financial decision based on fabricated data. Understanding why AI makes mistakes is the first step to making sure you're never the person who trusted it when you shouldn't have.</p>
+    <p>There are three root causes behind virtually every AI error in business. Click each one to understand how it works.</p>
+  </div>
+  <div class="section fade-in">
+    <h2>The Three Root Causes of AI Mistakes</h2>
+    <div class="causes">
+      <div class="cause-card" onclick="toggleCause(this)">
+        <div class="cause-header"><div class="cause-num">1</div><div class="cause-title">Bad data leads to bad results</div><div class="cause-toggle">+</div></div>
+        <div class="cause-body"><div class="cause-inner">
+          <p>AI learns from training data. If that data is flawed, incomplete, outdated, or unrepresentative of the real world, the AI will learn the wrong patterns — and confidently apply them. This is sometimes called "garbage in, garbage out." The AI has no way to know its training data was bad. It just learned what it was shown.</p>
+          <div class="example-box"><strong>Real example:</strong> A bank trains a loan approval AI on 10 years of historical data. That data reflects past human decisions — which were sometimes influenced by bias. The AI learns those same biased patterns and starts rejecting qualified applicants. The AI isn't malicious — it just learned from flawed data.</div>
+        </div></div>
+      </div>
+      <div class="cause-card" onclick="toggleCause(this)">
+        <div class="cause-header"><div class="cause-num">2</div><div class="cause-title">AI misinterprets context and intent</div><div class="cause-toggle">+</div></div>
+        <div class="cause-body"><div class="cause-inner">
+          <p>AI doesn't understand language the way humans do — it predicts patterns. When a request is ambiguous, sarcastic, or emotionally nuanced, AI often misses the point entirely. It gives you an answer to the question it thought you were asking, not the one you actually meant.</p>
+          <div class="example-box"><strong>Real example:</strong> A customer service AI is asked "Can you help me kill my account?" It flags the message as potentially harmful because of the word "kill" — delaying a simple account cancellation request for hours while a human reviews it. Context that's obvious to any person completely stumped the AI.</div>
+        </div></div>
+      </div>
+      <div class="cause-card" onclick="toggleCause(this)">
+        <div class="cause-header"><div class="cause-num">3</div><div class="cause-title">AI lacks real-world context and common sense</div><div class="cause-toggle">+</div></div>
+        <div class="cause-body"><div class="cause-inner">
+          <p>Humans accumulate years of lived experience that helps us recognize when something doesn't make sense — even if the logic seems right on paper. AI doesn't have this. It can produce answers that are technically consistent with patterns it learned but are obviously wrong to anyone with real-world experience.</p>
+          <div class="example-box"><strong>Real example:</strong> An AI scheduling tool books a client call at 3am because it correctly calculated a time zone overlap — without flagging that scheduling a meeting at 3am is completely unreasonable. A human assistant would never do this.</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <h2>How AI Mistakes Show Up in Business</h2>
+    <p>Mistakes in personal use are annoying. In business settings, they can be costly, embarrassing, or worse. Here are the three most common ways AI errors manifest professionally.</p>
+    <div class="mistake-grid">
+      <div class="mistake-card"><span class="mc-icon">📊</span><div class="mc-title">Wrong Predictions</div><p class="mc-desc">AI forecasts that are confidently wrong lead to bad business decisions — over-ordering inventory, under-staffing for demand, misallocating budget.</p></div>
+      <div class="mistake-card"><span class="mc-icon">💬</span><div class="mc-title">Confident Misinformation</div><p class="mc-desc">AI-generated content containing false statistics or fabricated facts — stated with complete confidence — making them hard to spot without careful verification.</p></div>
+      <div class="mistake-card"><span class="mc-icon">🎯</span><div class="mc-title">Off-Target Recommendations</div><p class="mc-desc">AI product recommendations, hiring suggestions, or customer service responses that miss the mark because the model doesn't understand the specific context.</p></div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The most dangerous AI mistake isn't the one that's obviously wrong. It's the one that sounds completely right — until someone with domain expertise checks it.</p></div>
+  </div>
+  <div class="section fade-in">
+    <h2>What Good AI Oversight Looks Like</h2>
+    <p>The solution isn't to avoid AI — it's to build habits of oversight that catch mistakes before they become problems. Check off each practice as you internalize it.</p>
+    <div class="oversight">
+      <div class="ov-label">Human-in-the-loop checklist</div>
+      <div class="ov-items">
+        <div class="ov-item" onclick="toggleOv(this)"><div class="ov-check"></div><div class="ov-text">Never publish or act on AI output without a human reviewing it first</div></div>
+        <div class="ov-item" onclick="toggleOv(this)"><div class="ov-check"></div><div class="ov-text">Treat AI confidence as no indicator of accuracy — verify specifics regardless</div></div>
+        <div class="ov-item" onclick="toggleOv(this)"><div class="ov-check"></div><div class="ov-text">Apply domain expertise — does this output make sense given what you know?</div></div>
+        <div class="ov-item" onclick="toggleOv(this)"><div class="ov-check"></div><div class="ov-text">Ask: what data was this AI trained on — and could that data be flawed?</div></div>
+        <div class="ov-item" onclick="toggleOv(this)"><div class="ov-check"></div><div class="ov-text">Keep humans responsible for all high-stakes decisions — AI informs, humans decide</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🛡️</div><div><h3>The Professional Standard</h3><p>In any business using AI responsibly, there is always a human in the loop on decisions that matter. The goal isn't to slow AI down — it's to combine AI's speed and pattern recognition with human judgment and accountability. That combination is more reliable than either one alone.</p></div></div>
+  </div>
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">An AI content tool generates a market research summary that includes a statistic you've never seen before — "72% of Gen Z consumers prefer voice shopping." The AI cites no source. What should you do?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. Use it — the AI is trained on vast data so it's probably right</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. Search for the original source before using it — this could be a hallucination</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. Add a "source unknown" disclaimer and include it anyway</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Delete it — all AI-generated statistics are unreliable</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The three root causes of AI mistakes: bad training data, misinterpretation of context, and lack of real-world common sense.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>In business, AI mistakes show up as wrong predictions, confident misinformation, and off-target recommendations — all with real financial consequences.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI confidence is not the same as accuracy. The most dangerous mistakes are the ones that sound completely right.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Good AI oversight means keeping humans in the loop on all decisions that matter — AI informs, humans decide.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleCause(c){const o=c.classList.contains('open');document.querySelectorAll('.cause-card').forEach(x=>x.classList.remove('open'));if(!o)c.classList.add('open');}
+  function toggleOv(item){item.classList.toggle('checked');item.querySelector('.ov-check').textContent=item.classList.contains('checked')?'✓':'';}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> An unsourced statistic from an AI tool is a red flag. AI hallucinations often look like plausible-sounding numbers — and those are the most dangerous because they appear credible. Always find the primary source before including any data point in professional work.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Training on large amounts of data doesn\'t make every output accurate. Unsourced statistics are a classic hallucination pattern. Find the primary source, or don\'t use the number.';}f.classList.add('show');}
+</script>
+</body>
+</html>

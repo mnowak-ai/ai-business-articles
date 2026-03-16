@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Think Critically About AI Output — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  .five-questions{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .fq-item{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px 22px;transition:all 0.2s ease;cursor:pointer;}
+  .fq-item:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .fq-item.revealed{border-color:#6EE7B7;background:var(--green-pale);}
+  .fq-num{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+  .fq-question{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:0;}
+  .fq-answer{font-size:14.5px;line-height:1.65;color:var(--gray-text);margin-top:12px;padding-top:12px;border-top:1px solid #6EE7B7;display:none;}
+  .fq-item.revealed .fq-answer{display:block;animation:fadeIn 0.3s ease;}
+  .fq-item.revealed .fq-num{color:var(--green);}
+  .fq-item.revealed .fq-question{color:var(--green);}
+
+  .scenario-box{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sc-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .sc-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .sc-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .ai-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin:16px 0;font-size:14.5px;line-height:1.7;color:var(--gray-text);}
+  .ai-output-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-muted);margin-bottom:8px;}
+  .critique-items{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .critique-item{display:flex;gap:12px;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.55;}
+  .critique-item.flag{background:var(--red-pale);border:1px solid #FCA5A5;color:#7F1D1D;}
+  .critique-item.ok{background:var(--green-pale);border:1px solid #6EE7B7;color:#1A3A2A;}
+  .critique-item span{flex-shrink:0;font-size:16px;}
+  .show-critique-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s ease;margin-top:8px;}
+  .show-critique-btn:hover{background:var(--purple-dark);}
+  .critique-panel{display:none;margin-top:16px;}
+  .critique-panel.show{display:block;animation:fadeIn 0.3s ease;}
+
+  .trust-matrix{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.trust-matrix{grid-template-columns:1fr;}}
+  .tm-card{border-radius:16px;padding:22px;}
+  .tm-card.high-trust{background:var(--green-pale);border:1.5px solid #6EE7B7;}
+  .tm-card.low-trust{background:var(--red-pale);border:1.5px solid #FCA5A5;}
+  .tm-card.medium-trust{background:#FFF7ED;border:1.5px solid #FED7AA;}
+  .tm-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:10px;}
+  .tm-card.high-trust .tm-title{color:#276749;}
+  .tm-card.low-trust .tm-title{color:#E53E3E;}
+  .tm-card.medium-trust .tm-title{color:#92400E;}
+  .tm-items{display:flex;flex-direction:column;gap:6px;}
+  .tm-item{font-size:13.5px;line-height:1.5;color:var(--gray-text);display:flex;gap:8px;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 1.3 · Gap-Filling Essentials</div>
+  <h1>How to Think Critically About AI Output</h1>
+  <p class="hero-sub">Getting an answer from AI is easy. Knowing whether to trust it — and how much — is the skill that separates informed professionals from people who get burned.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Every time you use an AI tool, you're making a judgment call — consciously or not. Is this output good enough to use? Does it need editing? Does it need verification? Should I ignore it entirely? <mark>Critical thinking about AI output is a skill you can build deliberately</mark> — and it's one of the most valuable ones you can have right now.</p>
+    <p>This article gives you a practical framework. Five questions to ask every time you get a significant output from an AI tool.</p>
+  </div>
+  <div class="section fade-in">
+    <h2>The Five Critical Questions</h2>
+    <p>Click each question to see what you're actually checking for and why it matters.</p>
+    <div class="five-questions">
+      <div class="fq-item" onclick="this.classList.toggle('revealed')">
+        <div class="fq-num">Question 1</div>
+        <div class="fq-question">Does this output make sense given what I know about this topic?</div>
+        <div class="fq-answer">Your domain knowledge is the first filter. Even if you're not an expert, you often know enough to spot something obviously wrong or implausible. If an AI tells you a well-known company was founded in 2022 when you know it's been around for decades — that's a red flag to investigate. Trust your intuition when something feels off.</div>
+      </div>
+      <div class="fq-item" onclick="this.classList.toggle('revealed')">
+        <div class="fq-num">Question 2</div>
+        <div class="fq-question">Are there specific facts, numbers, or names I should verify?</div>
+        <div class="fq-answer">Statistics, percentages, dates, revenue figures, names of people, and citations are the highest-risk elements in any AI output. These are where hallucinations most commonly occur — and they're also the most damaging if wrong, because they sound specific and credible. Every data point that you'll use in a professional context needs a primary source.</div>
+      </div>
+      <div class="fq-item" onclick="this.classList.toggle('revealed')">
+        <div class="fq-num">Question 3</div>
+        <div class="fq-question">Is the AI's answer actually responding to what I asked?</div>
+        <div class="fq-answer">AI sometimes answers the question it thought you were asking rather than the one you actually asked — especially when your prompt was ambiguous. Read the output against your original request. Did it address all parts of your question? Did it go in a different direction? A technically good answer to the wrong question is still a wrong answer.</div>
+      </div>
+      <div class="fq-item" onclick="this.classList.toggle('revealed')">
+        <div class="fq-num">Question 4</div>
+        <div class="fq-question">What might the AI not know — or have outdated information about?</div>
+        <div class="fq-answer">AI models have training cutoffs — they don't know about events after a certain date. They also don't know about your specific company, your specific clients, or your specific situation unless you told them. Ask yourself: is this the kind of information the AI would actually have access to? If the answer is "maybe not," verify it.</div>
+      </div>
+      <div class="fq-item" onclick="this.classList.toggle('revealed')">
+        <div class="fq-num">Question 5</div>
+        <div class="fq-question">What are the consequences if this output turns out to be wrong?</div>
+        <div class="fq-answer">Not all AI errors matter equally. If an AI-generated email draft has a slightly awkward phrase, the cost of being wrong is low. If an AI-generated financial summary contains a wrong number that makes it into a board presentation, the cost is high. Scale your verification effort to the stakes involved. Low stakes = quick check. High stakes = thorough verification with primary sources.</div>
+      </div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <h2>Practice: Critique This AI Output</h2>
+    <p>Let's apply the framework to a real example. Read the AI output below, then hit "Show Critique" to see what a critical thinker would flag.</p>
+    <div class="scenario-box">
+      <div class="sc-label">🔍 Critical Thinking Exercise</div>
+      <div class="sc-title">AI-Generated Competitor Analysis</div>
+      <p style="font-size:15px;color:var(--gray-muted);margin-bottom:0;line-height:1.6;">You asked an AI to summarize your main competitor's recent performance for a strategy meeting.</p>
+      <div class="ai-output">
+        <div class="ai-output-label">🤖 AI Response</div>
+        Acme Corp had a strong fiscal year 2024, with revenue of $2.3 billion — up 18% year-over-year. Their CEO, Marcus Webb, announced in February 2025 that they plan to expand into the Southeast Asian market, targeting $500M in new revenue by 2027. Acme's customer satisfaction score currently sits at 87%, placing them in the top quartile of their industry. They recently launched "Acme AI Pro," which has received strong early reviews from enterprise customers.
+      </div>
+      <button class="show-critique-btn" onclick="showCritique()">🔍 Show Critical Analysis</button>
+      <div class="critique-panel" id="critiquePanel">
+        <div class="critique-items">
+          <div class="critique-item flag"><span>🚨</span><div><strong>Revenue figure ($2.3B, +18%):</strong> High risk. Specific financial figures are a common hallucination. Verify against Acme's official earnings report or a verified news source before using in any presentation.</div></div>
+          <div class="critique-item flag"><span>🚨</span><div><strong>"Marcus Webb" as CEO:</strong> Could be hallucinated. Executive names and titles change — always verify the current CEO against the company's official website or LinkedIn.</div></div>
+          <div class="critique-item flag"><span>⚠️</span><div><strong>February 2025 announcement:</strong> This is time-sensitive information. Verify that this announcement actually occurred — and check for any updates since then that might change the picture.</div></div>
+          <div class="critique-item flag"><span>⚠️</span><div><strong>87% customer satisfaction, "top quartile":</strong> This is a specific statistic with no source cited. Where does this number come from? What benchmark is being used? This needs verification.</div></div>
+          <div class="critique-item ok"><span>✅</span><div><strong>"Acme AI Pro" launch:</strong> Verifiable through a quick product search. Lower risk than financial data — but still worth a confirmation that the product exists and the description is accurate.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <h2>When to Trust AI More vs. Less</h2>
+    <div class="trust-matrix">
+      <div class="tm-card high-trust">
+        <div class="tm-title">✅ Trust More</div>
+        <div class="tm-items">
+          <div class="tm-item"><span>•</span><div>Summarizing content you provided</div></div>
+          <div class="tm-item"><span>•</span><div>Explaining established concepts</div></div>
+          <div class="tm-item"><span>•</span><div>Grammar and style suggestions</div></div>
+          <div class="tm-item"><span>•</span><div>Brainstorming and idea generation</div></div>
+          <div class="tm-item"><span>•</span><div>Formatting and restructuring text</div></div>
+        </div>
+      </div>
+      <div class="tm-card low-trust">
+        <div class="tm-title">⚠️ Verify Carefully</div>
+        <div class="tm-items">
+          <div class="tm-item"><span>•</span><div>Specific statistics and numbers</div></div>
+          <div class="tm-item"><span>•</span><div>Recent news and events</div></div>
+          <div class="tm-item"><span>•</span><div>Named individuals and their roles</div></div>
+          <div class="tm-item"><span>•</span><div>Claimed quotes or statements</div></div>
+          <div class="tm-item"><span>•</span><div>Legal, medical, or financial specifics</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Critical thinking about AI output isn't about distrusting AI. It's about knowing which parts to trust automatically and which parts to check — so you can be fast without being reckless.</p></div>
+  </div>
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🎯</div><div><h3>The Professional Mindset</h3><p>The best professionals using AI today are neither blindly trusting nor reflexively suspicious. They've developed calibrated judgment — they know what AI is good at, they know where it tends to go wrong, and they've built verification habits that are proportional to the stakes. That calibrated judgment is what you're building right now.</p></div></div>
+  </div>
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You ask an AI to help draft talking points for a presentation on industry trends. The AI produces 8 talking points with specific statistics and company examples. What is the most important next step?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. Present the talking points immediately — AI is trained on industry data so they're likely accurate</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. Rewrite all the talking points from scratch since AI-generated content can't be trusted</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. Keep the structure and ideas, but verify each specific statistic and company example against primary sources before presenting</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Ask the AI to double-check its own work for accuracy</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The five critical questions: Does this make sense? Are there facts to verify? Is it answering my actual question? What might the AI not know? What are the consequences if it's wrong?</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Highest-risk elements: specific numbers, named people, recent events, citations. These are where hallucinations most commonly hide.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Scale your verification effort to the stakes — quick check for low-stakes use, thorough verification for anything going into a presentation or business decision.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Calibrated judgment — knowing what to trust and what to check — is the professional standard for AI use.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function showCritique(){document.getElementById('critiquePanel').classList.add('show');event.target.style.display='none';}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> The AI-generated structure and ideas are a great starting point — but specific statistics and examples need verification before they appear in a professional presentation. This is the calibrated approach: use AI for speed and structure, apply human judgment for accuracy and stakes.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Neither blind trust nor total rejection is the right answer. The talking points likely have useful ideas and structure — but the specifics (statistics, company examples) carry real hallucination risk in a professional presentation context. Verify the specifics, keep the useful structure.';}f.classList.add('show');}
+</script>
+</body>
+</html>

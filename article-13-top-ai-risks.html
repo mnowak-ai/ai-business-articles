@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top 3 AI Risks in Business — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --orange:#D97706; --orange-pale:#FFFBEB; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  .risk-cards { display:flex; flex-direction:column; gap:20px; margin:24px 0; }
+  .risk-card { border-radius:24px; overflow:hidden; border:1.5px solid var(--purple-mid); }
+  .risk-header { display:grid; grid-template-columns:80px 1fr; gap:0; }
+  .risk-num-col { display:flex; align-items:center; justify-content:center; padding:28px 20px; }
+  .risk-num { font-family:'Fraunces',serif; font-size:52px; font-weight:900; color:var(--purple-mid); line-height:1; }
+  .risk-info { padding:28px 24px 28px 0; }
+  .risk-title { font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:var(--purple-dark); margin-bottom:10px; }
+  .risk-desc { font-size:15.5px; line-height:1.75; color:var(--gray-text); margin-bottom:14px; }
+  .risk-example { background:var(--red-pale); border:1.5px solid #FCA5A5; border-radius:10px; padding:12px 14px; font-size:13.5px; line-height:1.6; color:#7F1D1D; margin-bottom:14px; }
+  .risk-example strong { color:var(--red); }
+  .mitigation { background:var(--purple-pale); border-radius:10px; padding:12px 14px; }
+  .mit-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--purple); margin-bottom:6px; }
+  .mit-text { font-size:13.5px; line-height:1.55; color:var(--purple-dark); }
+  @media(max-width:600px) { .risk-header { grid-template-columns:60px 1fr; } .risk-num { font-size:38px; } .risk-info { padding:20px 16px 20px 0; } }
+
+  .risk-meter { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .meter-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+  .meter-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .meter-rows { display:flex; flex-direction:column; gap:14px; }
+  .meter-row { display:grid; grid-template-columns:160px 1fr 60px; gap:12px; align-items:center; }
+  @media(max-width:500px) { .meter-row { grid-template-columns:1fr; gap:4px; } }
+  .meter-name { font-size:14px; font-weight:600; color:var(--gray-text); }
+  .meter-bar-bg { background:var(--purple-mid); border-radius:100px; height:10px; overflow:hidden; }
+  .meter-bar { height:100%; border-radius:100px; transition:width 1.2s ease; }
+  .meter-pct { font-size:13px; font-weight:700; color:var(--purple); text-align:right; }
+  .meter-row.high .meter-bar { background:var(--red); }
+  .meter-row.med .meter-bar { background:var(--orange); }
+  .meter-row.low { }
+  .meter-row.low .meter-bar { background:#276749; }
+  .animate-btn { background:var(--purple); color:white; border:none; border-radius:12px; padding:12px 24px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s ease; margin-top:20px; }
+  .animate-btn:hover { background:var(--purple-dark); }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 1.3 · Limitations & Risks</div>
+  <h1>The Top 3 Risks of Using AI in Business</h1>
+  <p class="hero-sub">AI creates enormous opportunities — but also real risks that every business professional needs to understand. Here are the three that come up most often, with what to actually do about them.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Knowing that AI has risks isn't enough. You need to understand specifically <mark>what those risks are, why they happen, and what a responsible business does to manage them.</mark> This article breaks down the three most common AI risks in business settings — each with a real example and a practical mitigation strategy.</p>
+  </div>
+  <div class="section fade-in">
+    <div class="risk-cards">
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-num-col"><div class="risk-num">1</div></div>
+          <div class="risk-info">
+            <div class="risk-title">Wrong Recommendations and Predictions</div>
+            <p class="risk-desc">AI makes predictions by finding patterns in historical data. When conditions change — a new competitor enters the market, consumer behavior shifts, an unexpected event occurs — the AI's predictions can become significantly inaccurate. The danger isn't just being wrong; it's being wrong with high confidence, which leads businesses to act on bad information without questioning it.</p>
+            <div class="risk-example"><strong>Real example:</strong> During COVID-19, many demand forecasting AI systems — trained on years of pre-pandemic data — produced wildly inaccurate predictions. Retailers over-ordered some products and critically under-ordered others, leading to significant financial losses. The AI wasn't broken — it just couldn't account for an unprecedented shift it had never seen before.</div>
+            <div class="mitigation">
+              <div class="mit-label">✅ What businesses should do</div>
+              <div class="mit-text">Treat AI predictions as one input among many — not the final word. Maintain human review on high-stakes decisions, regularly test model accuracy against real outcomes, and retrain models when the world changes.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-num-col"><div class="risk-num">2</div></div>
+          <div class="risk-info">
+            <div class="risk-title">Security and Privacy Concerns</div>
+            <p class="risk-desc">AI systems require data to work — often large amounts of sensitive data about customers, employees, or business operations. This creates two related risks: first, that data can be breached or misused; second, that employees feeding data into AI tools may inadvertently expose confidential information to third parties. Many popular AI tools send input data to external servers, meaning anything you type in could potentially be used to train their models.</p>
+            <div class="risk-example"><strong>Real example:</strong> In 2023, Samsung employees accidentally leaked confidential source code and internal meeting notes by pasting them into ChatGPT while trying to get help with a task. The information was transmitted to OpenAI's servers. Samsung subsequently banned the use of generative AI tools on company devices.</div>
+            <div class="mitigation">
+              <div class="mit-label">✅ What businesses should do</div>
+              <div class="mit-text">Establish clear policies about what data can and cannot be entered into AI tools. Use enterprise-grade AI solutions with privacy guarantees. Train employees on data handling before giving them access to AI tools.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-num-col"><div class="risk-num">3</div></div>
+          <div class="risk-info">
+            <div class="risk-title">Overreliance Reducing Human Judgment</div>
+            <p class="risk-desc">This is the subtlest risk — and potentially the most dangerous long-term. When people work alongside AI for extended periods, they can begin to defer to its outputs without applying their own critical thinking. This "automation bias" means errors that a human would normally catch get passed through because the human assumed the AI handled it. Over time, organizations can also lose the human expertise needed to operate without AI if systems go down.</p>
+            <div class="risk-example"><strong>Real example:</strong> Studies of pilots using autopilot systems found that over-reliance on automation degraded their manual flying skills over time — meaning that when autopilot failed in an emergency, some pilots struggled to take control effectively. The same pattern is emerging in white-collar work as AI handles more cognitive tasks.</div>
+            <div class="mitigation">
+              <div class="mit-label">✅ What businesses should do</div>
+              <div class="mit-text">Require humans to genuinely review AI outputs rather than rubber-stamp them. Maintain human expertise through regular practice without AI. Build organizational culture where questioning AI is encouraged, not seen as inefficient.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <h2>How These Risks Compare</h2>
+    <p>Not all risks are equally likely or equally damaging. Here's how the three compare across key dimensions. Hit the button to load the assessment.</p>
+    <div class="risk-meter">
+      <div class="meter-label">Risk Assessment</div>
+      <div class="meter-rows">
+        <div style="font-size:13px; font-weight:700; color:var(--gray-muted); display:grid; grid-template-columns:160px 1fr 60px; gap:12px; margin-bottom:4px;"><span>Risk</span><span>Likelihood in a typical business</span><span style="text-align:right">Score</span></div>
+        <div class="meter-row high"><div class="meter-name">Wrong Predictions</div><div class="meter-bar-bg"><div class="meter-bar" id="bar1" style="width:0%"></div></div><div class="meter-pct">High</div></div>
+        <div class="meter-row med"><div class="meter-name">Privacy / Security</div><div class="meter-bar-bg"><div class="meter-bar" id="bar2" style="width:0%"></div></div><div class="meter-pct">Med</div></div>
+        <div class="meter-row med"><div class="meter-name">Overreliance</div><div class="meter-bar-bg"><div class="meter-bar" id="bar3" style="width:0%"></div></div><div class="meter-pct">Med-High</div></div>
+      </div>
+      <button class="animate-btn" onclick="animateBars()">▶ Load Assessment</button>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The businesses that use AI most effectively aren't the ones that trust it the most. They're the ones that understand its risks well enough to extract its benefits safely.</p></div>
+  </div>
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🧭</div><div><h3>Risk Doesn't Mean Avoid</h3><p>Understanding AI risks isn't an argument against using AI. It's an argument for using it thoughtfully. The companies that ignore these risks don't avoid them — they just encounter them unprepared. Knowing the risks and managing them is exactly what separates responsible AI adoption from reckless adoption.</p></div></div>
+  </div>
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">An employee copies a client's full financial projections into ChatGPT to get help summarizing them for a presentation. What risk are they creating for their company?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The summary might be too short to be useful</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. Confidential client data may be transmitted to a third-party server, creating a privacy and security risk</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. ChatGPT might summarize the financials incorrectly</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. The client might find out their data was used to train an AI model</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Risk 1: Wrong predictions — AI can become significantly inaccurate when real-world conditions change from what it was trained on.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Risk 2: Security and privacy — entering sensitive data into AI tools can expose it to third parties, as Samsung discovered with ChatGPT.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Risk 3: Overreliance — automation bias can erode human critical thinking and expertise over time, making organizations fragile.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Understanding and managing risks is what separates responsible AI adoption from reckless adoption — it's not an argument against using AI.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  let barsAnimated=false;
+  function animateBars(){if(barsAnimated)return;barsAnimated=true;document.getElementById('bar1').style.width='85%';setTimeout(()=>document.getElementById('bar2').style.width='60%',300);setTimeout(()=>document.getElementById('bar3').style.width='72%',600);}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> This is exactly what happened at Samsung. When you paste data into a consumer AI tool, that data is typically sent to external servers — and may be used to improve the model. Confidential client financials should never be entered into any AI tool without verifying the platform\'s data handling policies.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The primary risk here is privacy and security — confidential data being transmitted to a third-party server. The employee\'s intent was good, but the action potentially violated client confidentiality and company data policy.';}f.classList.add('show');}
+</script>
+</body>
+</html>

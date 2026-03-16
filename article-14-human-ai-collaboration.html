@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human + AI Collaboration — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* STRENGTHS TABLE */
+  .strengths { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+  @media(max-width:600px) { .strengths { grid-template-columns:1fr; } }
+  .strength-col { border-radius:20px; padding:28px; }
+  .strength-col.ai { background:var(--purple-pale); border:1.5px solid var(--purple-mid); }
+  .strength-col.human { background:#F0FFF4; border:1.5px solid #6EE7B7; }
+  .sc-title { font-family:'Fraunces',serif; font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .strength-col.ai .sc-title { color:var(--purple-dark); }
+  .strength-col.human .sc-title { color:#276749; }
+  .sc-items { display:flex; flex-direction:column; gap:10px; }
+  .sc-item { display:flex; gap:10px; align-items:flex-start; font-size:14.5px; line-height:1.55; color:var(--gray-text); }
+  .sc-item::before { content:'✓'; font-weight:700; flex-shrink:0; margin-top:1px; }
+  .strength-col.ai .sc-item::before { color:var(--purple); }
+  .strength-col.human .sc-item::before { color:#276749; }
+
+  /* SCENARIOS */
+  .scenarios { display:flex; flex-direction:column; gap:14px; margin:24px 0; }
+  .scenario { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:18px; padding:22px 24px; cursor:pointer; transition:all 0.2s ease; }
+  .scenario:hover { border-color:var(--purple); }
+  .scenario.open { border-color:var(--purple); background:var(--purple-pale); }
+  .sc-header { display:flex; align-items:center; gap:14px; }
+  .sc-emoji { font-size:26px; flex-shrink:0; }
+  .sc-name { font-family:'Fraunces',serif; font-size:18px; font-weight:700; color:var(--purple-dark); flex:1; }
+  .sc-toggle { width:28px; height:28px; background:var(--purple-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; transition:transform 0.3s ease, background 0.2s ease; }
+  .scenario.open .sc-toggle { transform:rotate(45deg); background:var(--purple); color:white; }
+  .sc-body { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+  .scenario.open .sc-body { max-height:300px; }
+  .sc-detail { padding-top:16px; margin-top:14px; border-top:1px solid var(--purple-mid); display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media(max-width:500px) { .sc-detail { grid-template-columns:1fr; } }
+  .sc-role { padding:14px; border-radius:12px; font-size:14px; line-height:1.6; }
+  .sc-role.ai-role { background:var(--purple-pale); }
+  .sc-role.human-role { background:#F0FFF4; }
+  .sc-role-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+  .sc-role.ai-role .sc-role-label { color:var(--purple); }
+  .sc-role.human-role .sc-role-label { color:#276749; }
+
+  /* CAREER CARDS */
+  .career-cards { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .career-cards { grid-template-columns:1fr; } }
+  .career-card { border:1.5px solid var(--purple-mid); border-radius:16px; padding:22px; background:var(--white); transition:all 0.2s ease; }
+  .career-card:hover { border-color:var(--purple); background:var(--purple-pale); transform:translateY(-2px); }
+  .cc-icon { font-size:30px; margin-bottom:10px; display:block; }
+  .cc-skill { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .cc-why { font-size:14px; line-height:1.6; color:var(--gray-text); }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 1.3 · Limitations & Risks</div>
+  <h1>Human + AI Collaboration — Why Humans Still Matter</h1>
+  <p class="hero-sub">AI is powerful. But there are things only humans can do well — and understanding exactly what those things are is the key to building a career that thrives alongside AI, not despite it.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Let's address the fear directly: Will AI take my job? The honest answer is nuanced. AI will change most jobs. It will eliminate some specific tasks. But <mark>entire roles — especially roles that involve judgment, relationships, creativity, and ethical responsibility — are not going away.</mark> What's changing is what those jobs look like, and what skills are most valuable in them.</p>
+    <p>The people who will struggle are those who ignore AI entirely. The people who will thrive are those who understand both what AI can do and what it can't — and position themselves as the human bridge between AI's capabilities and the real-world outcomes that actually matter.</p>
+  </div>
+  <div class="section fade-in">
+    <h2>What AI Does Well vs. What Humans Do Better</h2>
+    <p>This isn't a competition — it's a division of labor. The most effective teams in the AI era will combine both.</p>
+    <div class="strengths">
+      <div class="strength-col ai">
+        <div class="sc-title">🤖 AI Is Great At...</div>
+        <div class="sc-items">
+          <div class="sc-item">Processing huge amounts of data quickly</div>
+          <div class="sc-item">Finding patterns humans would miss</div>
+          <div class="sc-item">Generating first drafts and multiple options fast</div>
+          <div class="sc-item">Automating repetitive, rules-based tasks</div>
+          <div class="sc-item">Working 24/7 without fatigue</div>
+          <div class="sc-item">Applying consistent standards at scale</div>
+          <div class="sc-item">Translating and summarizing large documents</div>
+        </div>
+      </div>
+      <div class="strength-col human">
+        <div class="sc-title">🧠 Humans Are Better At...</div>
+        <div class="sc-items">
+          <div class="sc-item">Understanding nuance, context, and subtext</div>
+          <div class="sc-item">Making ethical and moral judgments</div>
+          <div class="sc-item">Building trust and relationships</div>
+          <div class="sc-item">Creative thinking from lived experience</div>
+          <div class="sc-item">Navigating ambiguous or unprecedented situations</div>
+          <div class="sc-item">Taking responsibility for outcomes</div>
+          <div class="sc-item">Empathy, motivation, and leadership</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <h2>Real Scenarios — Who Does What?</h2>
+    <p>In practice, the best outcomes come from AI and humans each doing what they're best at. Explore these real workplace scenarios.</p>
+    <div class="scenarios">
+      <div class="scenario" onclick="toggleScenario(this)">
+        <div class="sc-header"><div class="sc-emoji">📊</div><div class="sc-name">Quarterly Business Review Presentation</div><div class="sc-toggle">+</div></div>
+        <div class="sc-body"><div class="sc-detail">
+          <div class="sc-role ai-role"><div class="sc-role-label">🤖 AI handles</div>Pulling data from multiple systems, generating visualizations, creating a first-draft slide deck, summarizing key trends from the numbers</div>
+          <div class="sc-role human-role"><div class="sc-role-label">🧠 Human handles</div>Deciding which story to tell, interpreting why the numbers look this way, anticipating audience questions, delivering the presentation with conviction</div>
+        </div></div>
+      </div>
+      <div class="scenario" onclick="toggleScenario(this)">
+        <div class="sc-header"><div class="sc-emoji">😤</div><div class="sc-name">Unhappy Customer Complaint</div><div class="sc-toggle">+</div></div>
+        <div class="sc-body"><div class="sc-detail">
+          <div class="sc-role ai-role"><div class="sc-role-label">🤖 AI handles</div>Surfacing the customer's full history, suggesting response templates, flagging urgency level, routing to the right department</div>
+          <div class="sc-role human-role"><div class="sc-role-label">🧠 Human handles</div>Reading the emotional temperature of the situation, deciding on an exception to policy if needed, building back the customer's trust</div>
+        </div></div>
+      </div>
+      <div class="scenario" onclick="toggleScenario(this)">
+        <div class="sc-header"><div class="sc-emoji">🤝</div><div class="sc-name">Negotiating a Major Contract</div><div class="sc-toggle">+</div></div>
+        <div class="sc-body"><div class="sc-detail">
+          <div class="sc-role ai-role"><div class="sc-role-label">🤖 AI handles</div>Analyzing contract language, flagging unusual clauses, summarizing risks, providing comparable deal benchmarks</div>
+          <div class="sc-role human-role"><div class="sc-role-label">🧠 Human handles</div>Reading the room, building rapport, knowing when to push and when to concede, making the final judgment call on acceptable terms</div>
+        </div></div>
+      </div>
+      <div class="scenario" onclick="toggleScenario(this)">
+        <div class="sc-header"><div class="sc-emoji">💡</div><div class="sc-name">Developing a New Product Idea</div><div class="sc-toggle">+</div></div>
+        <div class="sc-body"><div class="sc-detail">
+          <div class="sc-role ai-role"><div class="sc-role-label">🤖 AI handles</div>Market research, competitor analysis, generating idea variations, summarizing customer feedback, identifying gaps in existing products</div>
+          <div class="sc-role human-role"><div class="sc-role-label">🧠 Human handles</div>The original insight that something is missing, the vision for what it could become, the courage to pursue it, the judgment about which idea is worth betting on</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The most valuable professional in the AI era isn't the one who can do everything AI can do. It's the one who knows exactly what to hand to AI — and what to keep.</p></div>
+  </div>
+  <div class="section fade-in">
+    <h2>The Skills That Will Always Matter</h2>
+    <p>These are the human capabilities that AI cannot replicate — and that will become more valuable, not less, as AI handles more routine work.</p>
+    <div class="career-cards">
+      <div class="career-card"><span class="cc-icon">⚖️</span><div class="cc-skill">Ethical Judgment</div><p class="cc-why">Someone has to decide if an AI output is fair, appropriate, and right. That requires values, not just calculations. Human judgment on ethical questions is irreplaceable.</p></div>
+      <div class="career-card"><span class="cc-icon">🤝</span><div class="cc-skill">Relationship Building</div><p class="cc-why">Clients, partners, employees, and customers all ultimately trust people — not systems. The ability to build genuine human connection is a permanent differentiator.</p></div>
+      <div class="career-card"><span class="cc-icon">🎨</span><div class="cc-skill">Original Creative Vision</div><p class="cc-why">AI remixes what already exists. The original spark — the idea that nobody has had yet — still comes from human experience, curiosity, and imagination.</p></div>
+      <div class="career-card"><span class="cc-icon">🧭</span><div class="cc-skill">Strategic Thinking</div><p class="cc-why">Deciding where to go, what to prioritize, what to risk — these require understanding of context, culture, and consequence that AI cannot fully grasp.</p></div>
+      <div class="career-card"><span class="cc-icon">📣</span><div class="cc-skill">Communication and Persuasion</div><p class="cc-why">Inspiring a team, winning a client, navigating a conflict — these require the full range of human communication, not just correct information delivered efficiently.</p></div>
+      <div class="career-card"><span class="cc-icon">🔄</span><div class="cc-skill">Adaptability</div><p class="cc-why">In a world where AI tools keep changing, the ability to learn quickly, stay curious, and adapt to new workflows is more valuable than mastery of any specific tool.</p></div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🚀</div><div><h3>The Career Opportunity</h3><p>Here's the opportunity hidden inside all of this: most people are either ignoring AI or are afraid of it. The professionals who understand how to work alongside AI effectively — who know when to trust it, when to question it, and what to bring themselves — are genuinely rare right now. That's the gap this certification is designed to help you fill.</p></div></div>
+  </div>
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A company is deciding whether to use AI to make final hiring decisions automatically, without human review. Based on what you've learned, what is the strongest argument against this approach?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. AI is too slow to process large numbers of applications</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. Candidates will prefer to be evaluated by humans</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. Final hiring decisions require ethical judgment and accountability — things only humans can provide — and AI used without oversight can perpetuate bias at scale</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. AI resume screening is not yet technically capable enough</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI will change most jobs — but roles requiring judgment, relationships, creativity, and ethical responsibility are not going away.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The most effective teams combine what AI is good at (speed, scale, pattern recognition) with what humans do better (judgment, empathy, creativity, ethics).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Skills that will always matter: ethical judgment, relationship building, original creative vision, strategic thinking, communication, and adaptability.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The career opportunity: people who know how to work alongside AI effectively — and when to apply their own judgment — are genuinely rare and highly valued.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleScenario(s){const o=s.classList.contains('open');document.querySelectorAll('.scenario').forEach(x=>x.classList.remove('open'));if(!o)s.classList.add('open');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Hiring decisions significantly affect people\'s lives and careers. They require ethical judgment, accountability, and the ability to recognize when a qualified person doesn\'t fit the pattern the AI was trained on. AI can assist in screening, but final decisions should always have a human who is responsible for the outcome.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The core issue isn\'t speed or candidate preference — it\'s that removing all human oversight from decisions this consequential is both ethically problematic and legally risky. AI hiring tools have demonstrated real bias problems, and without a human in the loop, those errors can\'t be caught.';}f.classList.add('show');}
+</script>
+</body>
+</html>
