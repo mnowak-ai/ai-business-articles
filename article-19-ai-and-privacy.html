@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI and Privacy — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --orange:#D97706; --orange-pale:#FFFBEB; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; transition:width 0.1s ease; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* DATA FLOW VISUAL */
+  .data-flow { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .df-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+  .df-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .df-steps { display:flex; flex-direction:column; gap:10px; }
+  .df-step { display:flex; align-items:flex-start; gap:14px; padding:16px 18px; background:var(--white); border-radius:14px; border:1.5px solid var(--purple-mid); transition:all 0.2s ease; }
+  .df-step:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .df-icon { font-size:22px; flex-shrink:0; width:36px; text-align:center; }
+  .df-title { font-weight:700; font-size:15px; color:var(--purple-dark); margin-bottom:4px; }
+  .df-desc { font-size:13.5px; line-height:1.55; color:var(--gray-text); }
+  .df-arrow { text-align:center; font-size:20px; color:var(--purple-mid); padding:2px 0; }
+
+  /* RISK LEVELS */
+  .risk-levels { display:flex; flex-direction:column; gap:12px; margin:24px 0; }
+  .risk-level { border-radius:16px; padding:20px 22px; display:flex; gap:16px; align-items:flex-start; }
+  .risk-level.high { background:var(--red-pale); border:1.5px solid #FCA5A5; }
+  .risk-level.medium { background:var(--orange-pale); border:1.5px solid #FED7AA; }
+  .risk-level.low { background:#F0FFF4; border:1.5px solid #6EE7B7; }
+  .rl-badge { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:4px 10px; border-radius:100px; white-space:nowrap; flex-shrink:0; margin-top:2px; }
+  .risk-level.high .rl-badge { background:#FEE2E2; color:var(--red); }
+  .risk-level.medium .rl-badge { background:#FEF3C7; color:var(--orange); }
+  .risk-level.low .rl-badge { background:#D1FAE5; color:#276749; }
+  .rl-content { flex:1; }
+  .rl-title { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--gray-text); margin-bottom:6px; }
+  .rl-desc { font-size:14px; line-height:1.6; color:var(--gray-text); margin:0; }
+
+  /* SCENARIO CARDS */
+  .scenarios { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .scenarios { grid-template-columns:1fr; } }
+  .scenario-card { border:1.5px solid var(--purple-mid); border-radius:18px; overflow:hidden; cursor:pointer; transition:all 0.25s ease; }
+  .scenario-card:hover { border-color:var(--purple); box-shadow:0 6px 20px rgba(123,47,190,0.1); }
+  .scenario-card.open { border-color:var(--purple); }
+  .sc-head { display:flex; align-items:center; gap:12px; padding:18px 20px; background:var(--white); }
+  .sc-emoji { font-size:24px; flex-shrink:0; }
+  .sc-name { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--purple-dark); flex:1; line-height:1.3; }
+  .sc-tog { width:26px; height:26px; background:var(--purple-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; transition:transform 0.3s, background 0.2s; flex-shrink:0; }
+  .scenario-card.open .sc-tog { transform:rotate(45deg); background:var(--purple); color:white; }
+  .sc-body { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+  .scenario-card.open .sc-body { max-height:300px; }
+  .sc-inner { padding:0 20px 20px; border-top:1px solid var(--purple-mid); }
+  .sc-inner p { font-size:14px; line-height:1.65; color:var(--gray-text); margin:12px 0 0; }
+  .sc-verdict { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; padding:5px 10px; border-radius:100px; margin-top:10px; }
+  .sc-verdict.concern { background:var(--red-pale); color:var(--red); }
+  .sc-verdict.safe { background:#D1FAE5; color:#276749; }
+  .sc-verdict.caution { background:var(--orange-pale); color:var(--orange); }
+
+  /* PROTECTION CHECKLIST */
+  .protect-list { display:flex; flex-direction:column; gap:12px; margin:24px 0; }
+  .protect-item { display:flex; align-items:flex-start; gap:14px; padding:16px 18px; background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:14px; cursor:pointer; transition:all 0.2s ease; }
+  .protect-item:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .protect-item.checked { border-color:#6EE7B7; background:#F0FFF4; }
+  .p-check { width:24px; height:24px; border-radius:6px; border:2px solid var(--purple-mid); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:13px; transition:all 0.2s ease; }
+  .protect-item.checked .p-check { background:#276749; border-color:#276749; color:white; }
+  .p-text { font-size:15px; color:var(--gray-text); flex:1; }
+  .p-text strong { font-weight:700; color:var(--purple-dark); display:block; margin-bottom:3px; }
+  .protect-item.checked .p-text strong { color:#276749; }
+
+  /* BUSINESS POLICY BOX */
+  .policy-box { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .pb-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .pb-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .pb-items { display:flex; flex-direction:column; gap:10px; }
+  .pb-item { display:flex; gap:12px; align-items:flex-start; padding:14px 16px; background:var(--white); border-radius:12px; border:1px solid var(--purple-mid); font-size:14.5px; line-height:1.6; color:var(--gray-text); }
+  .pb-item span { font-size:20px; flex-shrink:0; }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="hero">
+  <div class="lesson-tag">Lesson 1.3 · Gap-Filling Essentials</div>
+  <h1>AI and Privacy — What Happens to Your Data?</h1>
+  <p class="hero-sub">Every time you use an AI tool, data is moving. Understanding where it goes, who can see it, and what risks that creates is essential knowledge for any professional working with AI.</p>
+  <div class="hero-divider"></div>
+</div>
+
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Most people use AI tools without thinking twice about what happens to the information they type in. But in a business context, <mark>data privacy isn't just a personal concern — it's a legal, ethical, and competitive one.</mark> Entering the wrong information into the wrong tool can expose customer data, violate regulations, or hand confidential business information to a competitor's training dataset.</p>
+    <p>This article explains the basics of how AI tools handle your data, what the real risks are, and what both individuals and businesses should do about it.</p>
+  </div>
+
+  <!-- DATA FLOW -->
+  <div class="section fade-in">
+    <h2>What Actually Happens When You Type Into an AI Tool</h2>
+    <p>When you use a consumer AI tool like ChatGPT, Claude, or Gemini, your input doesn't just stay on your screen. Here's what typically happens behind the scenes.</p>
+    <div class="data-flow">
+      <div class="df-label">Data Journey</div>
+      <div class="df-steps">
+        <div class="df-step">
+          <div class="df-icon">⌨️</div>
+          <div><div class="df-title">You type a prompt</div><div class="df-desc">You enter text — a question, a document to summarize, a piece of code, a business strategy idea — into the AI interface.</div></div>
+        </div>
+        <div class="df-arrow">↓</div>
+        <div class="df-step">
+          <div class="df-icon">🌐</div>
+          <div><div class="df-title">Your input is transmitted to external servers</div><div class="df-desc">Your text leaves your device and travels to the AI company's cloud servers. It is no longer only on your machine.</div></div>
+        </div>
+        <div class="df-arrow">↓</div>
+        <div class="df-step">
+          <div class="df-icon">🤖</div>
+          <div><div class="df-title">The AI processes and generates a response</div><div class="df-desc">The model runs on those external servers and produces a response, which is sent back to you.</div></div>
+        </div>
+        <div class="df-arrow">↓</div>
+        <div class="df-step">
+          <div class="df-icon">💾</div>
+          <div><div class="df-title">Your input may be stored and used for training</div><div class="df-desc">Depending on the platform and your settings, your prompts and conversations may be logged and later used to improve the AI model — meaning they could influence future outputs for other users.</div></div>
+        </div>
+      </div>
+    </div>
+    <p>Most free consumer AI tools do this by default. Enterprise and paid tiers of these tools often have stricter data handling policies — but you need to read and understand those policies before assuming your data is protected.</p>
+  </div>
+
+  <!-- RISK LEVELS -->
+  <div class="section fade-in">
+    <h2>Not All Data Carries the Same Risk</h2>
+    <p>The privacy concern with AI tools scales with the sensitivity of what you're entering. Here's a practical framework for thinking about risk level.</p>
+    <div class="risk-levels">
+      <div class="risk-level high">
+        <div class="rl-badge">🔴 High Risk</div>
+        <div class="rl-content">
+          <div class="rl-title">Never enter into a consumer AI tool without a clear data policy</div>
+          <p class="rl-desc">Customer personal data (names, emails, financial info), confidential business strategies, proprietary code or formulas, employee HR records, legal documents, passwords or API keys, medical information.</p>
+        </div>
+      </div>
+      <div class="risk-level medium">
+        <div class="rl-badge">🟡 Caution</div>
+        <div class="rl-content">
+          <div class="rl-title">Use with care — consider anonymizing before entering</div>
+          <p class="rl-desc">Internal meeting notes (remove names and identifying details), client feedback (anonymized), draft business plans (use generic descriptions), financial performance data (use percentages rather than exact figures).</p>
+        </div>
+      </div>
+      <div class="risk-level low">
+        <div class="rl-badge">🟢 Lower Risk</div>
+        <div class="rl-content">
+          <div class="rl-title">Generally safe for most AI tools</div>
+          <p class="rl-desc">Publicly available information, general questions about concepts or industries, creative writing with no real personal data, formatting or editing tasks on non-sensitive text, brainstorming sessions with no proprietary details.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REAL SCENARIOS -->
+  <div class="section fade-in">
+    <h2>Real Scenarios — Privacy Risk or Not?</h2>
+    <p>Let's look at some common workplace AI use cases. Click each one to see the privacy assessment.</p>
+    <div class="scenarios">
+      <div class="scenario-card" onclick="toggleScenario(this)">
+        <div class="sc-head"><div class="sc-emoji">📋</div><div class="sc-name">Pasting a client contract into ChatGPT to get a summary</div><div class="sc-tog">+</div></div>
+        <div class="sc-body"><div class="sc-inner">
+          <p>A client contract contains names, business terms, financial figures, and proprietary deal structures. Pasting it into a consumer AI tool transmits all of this to external servers and potentially into training data.</p>
+          <div class="sc-verdict concern">🔴 Privacy Concern — use an enterprise tool with data protection guarantees, or summarize without the sensitive details</div>
+        </div></div>
+      </div>
+      <div class="scenario-card" onclick="toggleScenario(this)">
+        <div class="sc-head"><div class="sc-emoji">✍️</div><div class="sc-name">Asking AI to help draft a generic blog post about industry trends</div><div class="sc-tog">+</div></div>
+        <div class="sc-body"><div class="sc-inner">
+          <p>This prompt contains no personal, confidential, or proprietary information. You're working with publicly available concepts. The risk of data exposure here is minimal.</p>
+          <div class="sc-verdict safe">🟢 Generally Safe — no sensitive data is being shared</div>
+        </div></div>
+      </div>
+      <div class="scenario-card" onclick="toggleScenario(this)">
+        <div class="sc-head"><div class="sc-emoji">👤</div><div class="sc-name">Uploading a spreadsheet of customer names and emails to analyze with AI</div><div class="sc-tog">+</div></div>
+        <div class="sc-body"><div class="sc-inner">
+          <p>Customer personal data is protected under regulations like GDPR (Europe) and CCPA (California). Uploading it to a third-party AI tool without proper data processing agreements can violate these laws and expose the company to significant fines.</p>
+          <div class="sc-verdict concern">🔴 Serious Privacy Risk — this may violate data protection regulations. Requires enterprise agreements and legal review.</div>
+        </div></div>
+      </div>
+      <div class="scenario-card" onclick="toggleScenario(this)">
+        <div class="sc-head"><div class="sc-emoji">💻</div><div class="sc-name">Using GitHub Copilot to suggest code completions while working</div><div class="sc-tog">+</div></div>
+        <div class="sc-body"><div class="sc-inner">
+          <p>GitHub Copilot sends code snippets to external servers. If that code contains API keys, database credentials, or proprietary algorithms, this creates a risk. Most enterprise plans offer data isolation. Always check what's in the code before using AI assistance on sensitive files.</p>
+          <div class="sc-verdict caution">🟡 Caution — check what's in the code and what data isolation your plan provides</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The rule of thumb: if you'd be uncomfortable seeing that information on the front page of a news website, don't put it in a consumer AI tool.</p></div>
+  </div>
+
+  <!-- WHAT BUSINESSES SHOULD DO -->
+  <div class="section fade-in">
+    <h2>What Responsible Businesses Do</h2>
+    <p>Forward-thinking companies don't leave AI data privacy up to individual employees to figure out. They establish clear policies that everyone understands and follows. Here's what a solid organizational approach looks like.</p>
+    <div class="policy-box">
+      <div class="pb-label">Business AI Data Policy Framework</div>
+      <div class="pb-items">
+        <div class="pb-item"><span>📋</span><div>Classify data sensitivity levels and define which types can and cannot be entered into AI tools — and communicate this clearly to all employees</div></div>
+        <div class="pb-item"><span>🔒</span><div>Use enterprise AI plans with clear data protection agreements (DPAs) for any work involving customer or confidential data — consumer free tiers are not appropriate for business use</div></div>
+        <div class="pb-item"><span>⚖️</span><div>Consult legal counsel on compliance with applicable data protection regulations (GDPR, CCPA, HIPAA, etc.) before deploying AI tools that touch personal data</div></div>
+        <div class="pb-item"><span>🎓</span><div>Train employees on AI data handling before giving them access to AI tools — most breaches happen through well-intentioned but uninformed employees</div></div>
+        <div class="pb-item"><span>🔍</span><div>Regularly audit what data is being entered into AI tools and whether it's appropriate — AI use patterns inside a company can drift over time</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERSONAL PROTECTION CHECKLIST -->
+  <div class="section fade-in">
+    <h2>Your Personal Privacy Checklist</h2>
+    <p>Whether you're a student, an intern, or a full-time professional — these habits protect you and the people whose data you work with. Click each one to mark it as understood.</p>
+    <div class="protect-list">
+      <div class="protect-item" onclick="toggleProtect(this)">
+        <div class="p-check"></div>
+        <div class="p-text"><strong>Read the data policy before using any new AI tool</strong>Does the free version use your inputs for training? Is there an opt-out? Where is data stored? These answers matter.</div>
+      </div>
+      <div class="protect-item" onclick="toggleProtect(this)">
+        <div class="p-check"></div>
+        <div class="p-text"><strong>Never enter real names, emails, or personal details into a consumer AI tool</strong>Anonymize first — replace "John Smith at Acme Corp" with "a client" before asking AI for help drafting a message.</div>
+      </div>
+      <div class="protect-item" onclick="toggleProtect(this)">
+        <div class="p-check"></div>
+        <div class="p-text"><strong>Treat AI chat history as semi-public</strong>Assume your conversations could be reviewed by the AI company for safety or training purposes. If you wouldn't say it in a public forum, think twice.</div>
+      </div>
+      <div class="protect-item" onclick="toggleProtect(this)">
+        <div class="p-check"></div>
+        <div class="p-text"><strong>Know your company's AI policy before using tools at work</strong>Many companies have specific guidelines about which AI tools are approved and what data can be used with them. Find out before you start.</div>
+      </div>
+      <div class="protect-item" onclick="toggleProtect(this)">
+        <div class="p-check"></div>
+        <div class="p-text"><strong>Delete chat history if the tool allows it</strong>Most AI platforms let you delete your conversation history — which also removes those inputs from potential training use. Make this a regular habit.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">⚖️</div>
+      <div>
+        <h3>The Legal Landscape Is Evolving Fast</h3>
+        <p>Data privacy regulations are becoming stricter worldwide. The EU's AI Act, expanded GDPR enforcement, and new state-level US privacy laws are all increasing requirements on companies that use AI to process personal data. Staying informed about these regulations — and ensuring your company's AI use complies with them — is increasingly a core business competency, not a niche legal concern.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">An HR manager wants to use a free AI chatbot to help write performance review templates. She plans to paste in real employee names and their performance notes to get more personalized suggestions. What is the main concern with this approach?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The AI won't be able to understand HR terminology</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. Employee personal data and performance information transmitted to a consumer AI tool may violate privacy regulations and company policy</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. The templates produced will look too generic to be useful</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Free AI tools are less accurate than paid ones for HR tasks</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>When you type into a consumer AI tool, your input is transmitted to external servers and may be stored and used to train future models.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>High-risk data — customer records, confidential strategy, proprietary code, employee information — should never be entered into consumer AI tools without proper data protection agreements.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Responsible businesses classify data sensitivity, use enterprise AI plans, train employees on data handling, and ensure compliance with privacy regulations.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The practical rule: if you'd be uncomfortable seeing it in a headline, don't put it in a consumer AI tool. Anonymize data before using AI to work with sensitive information.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleScenario(card){const o=card.classList.contains('open');document.querySelectorAll('.scenario-card').forEach(x=>x.classList.remove('open'));if(!o)card.classList.add('open');}
+  function toggleProtect(item){item.classList.toggle('checked');item.querySelector('.p-check').textContent=item.classList.contains('checked')?'✓':'';}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Employee performance data is highly sensitive personal information protected by privacy regulations in most jurisdictions. Transmitting it to a consumer AI tool without proper agreements likely violates data protection law — and almost certainly violates company HR policy. The solution: use a generic template approach (no real names or details) or work within an enterprise-grade AI tool with appropriate data handling agreements.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The core concern here is data privacy and legal compliance — not AI capability or output quality. Employee personal data is one of the most protected categories under privacy law. Using a consumer AI tool to process it without proper safeguards is a real legal and ethical risk.';}f.classList.add('show');}
+</script>
+</body>
+</html>
