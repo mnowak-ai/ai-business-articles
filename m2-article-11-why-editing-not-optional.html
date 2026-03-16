@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Editing AI Output Is Not Optional — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  .why-cards{display:flex;flex-direction:column;gap:16px;margin:24px 0;}
+  .why-card{border-radius:20px;border:1.5px solid var(--purple-mid);overflow:hidden;cursor:pointer;transition:all 0.2s ease;}
+  .why-card:hover{border-color:var(--purple);}
+  .why-card.open{border-color:var(--purple);}
+  .why-header{display:flex;align-items:center;gap:16px;padding:20px 24px;background:var(--white);}
+  .why-icon{font-size:28px;flex-shrink:0;}
+  .why-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);flex:1;}
+  .why-toggle{width:28px;height:28px;background:var(--purple-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:transform 0.3s,background 0.2s;flex-shrink:0;}
+  .why-card.open .why-toggle{transform:rotate(45deg);background:var(--purple);color:white;}
+  .why-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+  .why-card.open .why-body{max-height:400px;}
+  .why-inner{padding:0 24px 24px;}
+  .why-desc{font-size:15.5px;line-height:1.75;color:var(--gray-text);margin:14px 0 12px;}
+  .why-example{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:500px){.why-example{grid-template-columns:1fr;}}
+  .we-side{padding:12px 14px;border-radius:12px;font-size:13.5px;line-height:1.65;}
+  .we-side.ai{background:var(--red-pale);border:1.5px solid #FCA5A5;color:#7F1D1D;}
+  .we-side.fixed{background:var(--green-pale);border:1.5px solid #6EE7B7;color:#1A3A2A;}
+  .we-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+  .we-side.ai .we-label{color:var(--red);}
+  .we-side.fixed .we-label{color:var(--green);}
+
+  .real-cost{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .rc-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .rc-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .rc-stories{display:flex;flex-direction:column;gap:12px;}
+  .rc-story{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px 20px;transition:all 0.2s ease;}
+  .rc-story:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .rc-story-tag{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);background:var(--red-pale);padding:3px 8px;border-radius:100px;display:inline-block;margin-bottom:8px;}
+  .rc-story-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .rc-story-desc{font-size:14px;line-height:1.65;color:var(--gray-text);margin:0;}
+
+  .mindset-shift{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+  @media(max-width:600px){.mindset-shift{grid-template-columns:1fr;}}
+  .ms-card{border-radius:16px;padding:24px;}
+  .ms-card.old{background:var(--gray-soft);border:1.5px solid #D1D5DB;}
+  .ms-card.new{background:var(--purple-pale);border:1.5px solid var(--purple-mid);}
+  .ms-tag{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .ms-card.old .ms-tag{color:var(--gray-muted);}
+  .ms-card.new .ms-tag{color:var(--purple);}
+  .ms-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:8px;}
+  .ms-card.old .ms-title{color:var(--gray-text);}
+  .ms-card.new .ms-title{color:var(--purple-dark);}
+  .ms-desc{font-size:14px;line-height:1.6;color:var(--gray-text);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.why-header{padding:16px;gap:12px;}.why-inner{padding:0 16px 16px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.3 · Editing & Improving AI Outputs</div>
+  <h1>Why Editing AI Output Is Not Optional</h1>
+  <p class="hero-sub">AI can produce a draft in seconds. But that draft has specific, predictable problems — and sending it without editing isn't just lazy, it can be genuinely damaging to your professional reputation.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Editing your own writing is hard. You know what you meant to say, so you read what you meant — not what's actually on the page. Editing AI output is a different skill: you're reading as a critical evaluator of someone else's work, looking for problems the author couldn't see.</p>
+    <p>Here's the mindset shift: <mark>an AI draft is not a finished document. It's a structured first attempt that requires your judgment, expertise, and knowledge of the situation to become something worth sending.</mark> The five reasons below explain exactly why — and what each type of problem looks like.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Five Reasons AI Output Always Needs Editing</h2>
+    <p>Click each reason to see what the problem looks like and how to fix it.</p>
+    <div class="why-cards">
+      <div class="why-card" onclick="toggleWhy(this)">
+        <div class="why-header"><div class="why-icon">🎭</div><div class="why-title">AI defaults to generic, template-sounding language</div><div class="why-toggle">+</div></div>
+        <div class="why-body"><div class="why-inner">
+          <p class="why-desc">AI writing tools are trained to produce text that works in the broadest range of situations. That means they default to safe, generic phrasing that sounds professional — but doesn't sound like you, or like a real human who actually knows the recipient. Phrases like "I hope this email finds you well," "please don't hesitate to reach out," and "synergize our efforts going forward" are AI tells that trained readers spot immediately.</p>
+          <div class="why-example">
+            <div class="we-side ai"><div class="we-label">❌ Raw AI</div>"I hope this message finds you well. I am reaching out to touch base regarding our upcoming collaboration and ensure we are aligned on next steps."</div>
+            <div class="we-side fixed"><div class="we-label">✅ After editing</div>"Hi Marcus — quick check-in ahead of Thursday's kickoff. Are we still aligned on the 3pm start time and the agenda I sent last week?"</div>
+          </div>
+        </div></div>
+      </div>
+      <div class="why-card" onclick="toggleWhy(this)">
+        <div class="why-header"><div class="why-icon">🔮</div><div class="why-title">AI doesn't know things you haven't told it</div><div class="why-toggle">+</div></div>
+        <div class="why-body"><div class="why-inner">
+          <p class="why-desc">AI has no access to your company's internal context, your history with a specific client, what happened in the last meeting, or the organizational dynamics at play. If you ask it to "write a follow-up email to a client," it will fill in context from its training data — which may be entirely wrong for your situation. It also doesn't know that this client has been frustrated recently, that there's a budget review next week, or that the relationship is sensitive right now.</p>
+          <div class="why-example">
+            <div class="we-side ai"><div class="we-label">❌ Missing context</div>AI writes enthusiastic, forward-looking follow-up email — not knowing that the client was disappointed by the last deliverable and needs acknowledgment of that first.</div>
+            <div class="we-side fixed"><div class="we-label">✅ After editing</div>Human adds: "I wanted to acknowledge the delay in our last deliverable — that's not the standard we hold ourselves to, and we've made changes to ensure it doesn't happen again."</div>
+          </div>
+        </div></div>
+      </div>
+      <div class="why-card" onclick="toggleWhy(this)">
+        <div class="why-header"><div class="why-icon">🎪</div><div class="why-title">AI invents facts and details with confidence</div><div class="why-toggle">+</div></div>
+        <div class="why-body"><div class="why-inner">
+          <p class="why-desc">This is the most dangerous problem. AI hallucinations are not random — they're plausible-sounding fabrications that fit the pattern of what real answers look like. Specific statistics, named individuals, company details, dates, and sources are all high-risk elements that AI will invent if it doesn't have accurate information in its context. These errors don't look like errors — they look like credible facts.</p>
+          <div class="why-example">
+            <div class="we-side ai"><div class="we-label">❌ Hallucinated detail</div>"According to a 2023 McKinsey study, companies that adopt AI writing tools see a 43% reduction in content production costs." [This specific figure may be invented.]</div>
+            <div class="we-side fixed"><div class="we-label">✅ After verification</div>Search for the actual McKinsey report. If the figure exists and is real, use it. If not, find a real source or remove the statistic entirely.</div>
+          </div>
+        </div></div>
+      </div>
+      <div class="why-card" onclick="toggleWhy(this)">
+        <div class="why-header"><div class="why-icon">📏</div><div class="why-title">AI misjudges length and structure for context</div><div class="why-toggle">+</div></div>
+        <div class="why-body"><div class="why-inner">
+          <p class="why-desc">AI tends to over-explain and under-truncate. It produces thorough drafts — which is great as a starting point, but business communication almost always requires shorter, punchier output than AI naturally provides. A request for "a short follow-up email" often returns something twice as long as necessary. This isn't a failure — it's a starting point that needs a human to cut it down.</p>
+          <div class="why-example">
+            <div class="we-side ai"><div class="we-label">❌ Too long</div>5-paragraph email explaining the full history of the project before finally asking for a simple 15-minute call.</div>
+            <div class="we-side fixed"><div class="we-label">✅ Edited down</div>3-sentence email: reference, ask, specific time options. Everything else was unnecessary.</div>
+          </div>
+        </div></div>
+      </div>
+      <div class="why-card" onclick="toggleWhy(this)">
+        <div class="why-header"><div class="why-icon">🤖</div><div class="why-title">AI can't feel whether the tone is right for this moment</div><div class="why-toggle">+</div></div>
+        <div class="why-body"><div class="why-inner">
+          <p class="why-desc">Even when you specify "professional and warm," AI calibrates tone against an average of what those words mean across thousands of contexts. But the right tone for this specific email, to this specific person, at this specific moment in your relationship — that requires human judgment. AI produces technically appropriate tone; humans produce contextually correct tone.</p>
+          <div class="why-example">
+            <div class="we-side ai"><div class="we-label">❌ Technically warm, wrong for context</div>"It was so wonderful to connect with you at the conference — your insights were truly inspiring!" (Written to a serious, reserved VP who values directness.)</div>
+            <div class="we-side fixed"><div class="we-label">✅ Right for the relationship</div>"Good speaking with you at the conference. Your point about supply chain risk was well-taken — it's something we should discuss further."</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>When Skipping the Edit Goes Wrong</h2>
+    <p>These scenarios illustrate what happens when AI output goes out without adequate human review.</p>
+    <div class="real-cost">
+      <div class="rc-label">Real-World Consequences</div>
+      <div class="rc-stories">
+        <div class="rc-story">
+          <div class="rc-story-tag">⚠️ Scenario</div>
+          <div class="rc-story-title">The Wrong-Named Client</div>
+          <p class="rc-story-desc">A salesperson uses AI to draft personalized follow-ups for 20 leads. She pastes each email directly without reading them. Three go out with the wrong client name because she forgot the AI used the name from her previous prompt. Two clients notice. One responds coldly. The other unsubscribes.</p>
+        </div>
+        <div class="rc-story">
+          <div class="rc-story-tag">⚠️ Scenario</div>
+          <div class="rc-story-title">The Hallucinated Policy Detail</div>
+          <p class="rc-story-desc">An HR coordinator asks AI to draft a memo about the company's new PTO policy. The AI invents a detail about rollover rules that doesn't match the actual policy. The memo goes to all 200 employees. 15 people request PTO rollover based on the wrong information before anyone catches the error. Hours of HR time spent correcting the confusion.</p>
+        </div>
+        <div class="rc-story">
+          <div class="rc-story-tag">⚠️ Scenario</div>
+          <div class="rc-story-title">The Generic Pitch</div>
+          <p class="rc-story-desc">A consultant uses AI to draft a proposal for a major client. The proposal is structurally fine but full of generic business language that could apply to any company. The client, who shared very specific challenges in their briefing call, notices that none of those specifics appear in the proposal. They award the contract to a competitor who clearly listened.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>An AI draft is not a finished document. It's the world's fastest starting point — and it needs a real professional to turn it into something worth sending.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Mindset Shift: From Proofreader to Editor</h2>
+    <p>Most people read AI output looking for typos — that's proofreading. What's needed is editing: a deeper, more critical evaluation. Here's the difference.</p>
+    <div class="mindset-shift">
+      <div class="ms-card old">
+        <div class="ms-tag">❌ Old Mindset</div>
+        <div class="ms-title">Proofreading</div>
+        <p class="ms-desc">Scanning for spelling errors and grammar mistakes. Assuming the content is correct and complete. Looking for surface-level problems. Approving quickly to move on.</p>
+      </div>
+      <div class="ms-card new">
+        <div class="ms-tag">✅ New Mindset</div>
+        <div class="ms-title">Critical Editing</div>
+        <p class="ms-desc">Asking "is this accurate? Is this right for this person? Does this sound like me? Is anything missing? Is anything invented?" Treating every specific claim as unverified until confirmed. Adding what only you know.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">✍️</div><div><h3>The Professional Standard</h3><p>In every company doing AI-assisted writing responsibly, there is a human editorial review step — always. Not because the AI is necessarily wrong, but because the human brings context, relationship knowledge, and accountability that the AI can never have. The edit isn't an extra step — it's the step that makes the output professionally acceptable.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">An AI generates a product announcement email that includes the line: "Our platform has been independently verified to reduce processing errors by 31%, according to a 2024 industry report." You didn't provide this statistic in your prompt. What should you do?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. Keep it — the AI is trained on industry data and likely found this from a real report</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. Treat it as a potential hallucination and verify it against a real source before using it — or remove it entirely</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. Add a footnote saying "source: AI-generated" to be transparent</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Replace it with a round number like "30%" which sounds less suspiciously precise</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The five reasons AI output always needs editing: generic language, missing context, hallucinated facts, wrong length, and misread tone for the specific moment.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI hallucinations are most dangerous when they appear as specific statistics, named sources, and precise figures — they look credible even when they're invented.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The mindset shift: don't proofread AI output — edit it. Ask whether it's accurate, contextually appropriate, the right length, and whether anything crucial is missing.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Editorial review isn't an extra step — it's the step that makes AI output professionally acceptable and keeps you accountable for what goes out under your name.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleWhy(c){const o=c.classList.contains('open');document.querySelectorAll('.why-card').forEach(x=>x.classList.remove('open'));if(!o)c.classList.add('open');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Any specific statistic in AI output that you didn\'t provide should be treated as a potential hallucination until verified. "31%" and "2024 industry report" are exactly the type of precise-sounding details that AI invents confidently. Search for the actual report. If it exists and says what the AI claims, use it with a real citation. If not, cut the statistic — a false performance claim in a product announcement creates serious legal and reputational risk.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Training on industry data doesn\'t mean every specific statistic is real. Adding "AI-generated" as a source is not a valid citation — it signals that the data is unverified, which is worse than having no statistic. And rounding the number doesn\'t make the underlying claim any more accurate. The only right answer is to verify it or remove it.';}f.classList.add('show');}
+</script>
+</body>
+</html>

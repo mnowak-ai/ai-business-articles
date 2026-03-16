@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subject Lines, Headlines & Opening Sentences — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  .subject-pairs{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .sp-pair{border-radius:16px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+  .sp-cols{display:grid;grid-template-columns:1fr 1fr;}
+  @media(max-width:500px){.sp-cols{grid-template-columns:1fr;}}
+  .sp-col{padding:16px 18px;}
+  .sp-col.bad{background:var(--red-pale);}
+  .sp-col.good{background:var(--green-pale);}
+  .sp-col-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+  .sp-col.bad .sp-col-label{color:var(--red);}
+  .sp-col.good .sp-col-label{color:var(--green);}
+  .sp-subject{font-size:14px;font-weight:600;color:var(--gray-text);margin-bottom:6px;}
+  .sp-why{font-size:12.5px;color:var(--gray-muted);line-height:1.5;}
+  .formulas{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.formulas{grid-template-columns:1fr;}}
+  .formula-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;background:var(--white);transition:all 0.2s ease;}
+  .formula-card:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .fc-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .fc-formula{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:10px;}
+  .fc-examples{display:flex;flex-direction:column;gap:6px;}
+  .fc-ex{font-size:13px;color:var(--gray-text);background:var(--gray-soft);padding:6px 10px;border-radius:8px;font-style:italic;}
+  .opening-workshop{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ow-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .ow-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .ow-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .ow-openers{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+  .ow-opener{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all 0.2s ease;}
+  .ow-opener:hover{border-color:var(--purple);}
+  .ow-opener.good{border-color:#6EE7B7;background:var(--green-pale);}
+  .ow-opener.bad{border-color:#FCA5A5;background:var(--red-pale);}
+  .ow-text{font-size:14px;color:var(--gray-text);margin-bottom:6px;font-style:italic;}
+  .ow-verdict{font-size:12px;font-weight:700;display:none;}
+  .ow-opener.good .ow-verdict{display:block;color:var(--green);}
+  .ow-opener.bad .ow-verdict{display:block;color:var(--red);}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Module 2 · Gap-Filling Essential</div>
+  <h1>Subject Lines, Headlines, and Opening Sentences — How to Get Read</h1>
+  <p class="hero-sub">The best-written email in the world doesn't matter if nobody opens it. Your subject line and first sentence determine whether your message gets read or ignored.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>A senior executive receives 150+ emails per day. They scan subject lines for about half a second each before deciding open, skip, or delete. <mark>Your subject line is not a label for your email — it's an advertisement for it.</mark> It needs to tell the reader exactly why they should open this one right now.</p>
+    <p>Most professional writing courses skip this entirely and go straight to body content. But no amount of excellent body content helps if the reader never gets there. This article gives you the practical formulas that consistently get emails opened and messages read.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Makes a Subject Line Work</h2>
+    <p>A good subject line does one of three things: it signals urgency, it delivers value upfront, or it makes the ask instantly clear. A bad subject line is vague, generic, or tries to be clever at the expense of clarity. Compare these pairs.</p>
+    <div class="subject-pairs">
+      <div class="sp-pair">
+        <div class="sp-cols">
+          <div class="sp-col bad"><div class="sp-col-label">❌ Weak</div><div class="sp-subject">"Following up"</div><div class="sp-why">On what? From when? Could be anything. Reader has no reason to prioritize this.</div></div>
+          <div class="sp-col good"><div class="sp-col-label">✅ Strong</div><div class="sp-subject">"Q3 Proposal — Decision Needed by Thursday"</div><div class="sp-why">Specific topic, clear deadline, obvious action required. Reader knows exactly what this is and when it matters.</div></div>
+        </div>
+      </div>
+      <div class="sp-pair">
+        <div class="sp-cols">
+          <div class="sp-col bad"><div class="sp-col-label">❌ Weak</div><div class="sp-subject">"Quick question"</div><div class="sp-why">Provides zero information about what the question is. Reader can't prioritize this without opening it.</div></div>
+          <div class="sp-col good"><div class="sp-col-label">✅ Strong</div><div class="sp-subject">"Quick question: can you join Thursday's 2pm kickoff?"</div><div class="sp-why">The question is right there. Reader can answer without even opening the email — which is the goal.</div></div>
+        </div>
+      </div>
+      <div class="sp-pair">
+        <div class="sp-cols">
+          <div class="sp-col bad"><div class="sp-col-label">❌ Weak</div><div class="sp-subject">"Introduction"</div><div class="sp-why">Who? Why? What do they want? Too vague to prioritize. Likely to be skipped or deleted.</div></div>
+          <div class="sp-col good"><div class="sp-col-label">✅ Strong</div><div class="sp-subject">"Introduction: Marcus Webb, referred by Sarah Chen at Acme"</div><div class="sp-why">A name, a referral, and a connection — the reader knows who sent this and has context to decide whether to open it.</div></div>
+        </div>
+      </div>
+      <div class="sp-pair">
+        <div class="sp-cols">
+          <div class="sp-col bad"><div class="sp-col-label">❌ Weak</div><div class="sp-subject">"RE: RE: RE: RE: Meeting"</div><div class="sp-why">A long reply chain with a generic subject — reader has to guess what's being discussed and where the thread stands.</div></div>
+          <div class="sp-col good"><div class="sp-col-label">✅ Strong</div><div class="sp-subject">"Thursday meeting confirmed — new location attached"</div><div class="sp-why">Status is clear (confirmed), there's new information (new location), and the reader knows to open it for an update.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Four Subject Line Formulas That Work</h2>
+    <div class="formulas">
+      <div class="formula-card"><div class="fc-label">Formula 1</div><div class="fc-formula">[Topic] — [Action needed] by [Deadline]</div><div class="fc-examples"><div class="fc-ex">"Budget approval — sign-off needed by Friday"</div><div class="fc-ex">"Contract renewal — decision needed this week"</div></div></div>
+      <div class="formula-card"><div class="fc-label">Formula 2</div><div class="fc-formula">Quick [ask/question/update]: [Specific thing]</div><div class="fc-examples"><div class="fc-ex">"Quick update: project is on track for October 1st"</div><div class="fc-ex">"Quick question: who owns the client onboarding doc?"</div></div></div>
+      <div class="formula-card"><div class="fc-label">Formula 3</div><div class="fc-formula">[Result/Outcome] — [Context]</div><div class="fc-examples"><div class="fc-ex">"Q3 numbers are in — we hit target"</div><div class="fc-ex">"Client meeting confirmed — Thursday 10am"</div></div></div>
+      <div class="formula-card"><div class="fc-label">Formula 4</div><div class="fc-formula">[Person/Topic] intro, referred by [Name]</div><div class="fc-examples"><div class="fc-ex">"Intro: Jamie Park, referred by David Chen"</div><div class="fc-ex">"Connecting: Alex Wu re your fintech article"</div></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Your subject line is the most important sentence in your email. Most people spend 10 seconds on it. They should spend two minutes.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Opening Sentence — What Comes Next Matters Too</h2>
+    <p>If your subject line is the door, your opening sentence is the handshake. It either reassures the reader they made the right choice opening this — or makes them regret it immediately. Here's what separates strong openers from weak ones.</p>
+
+    <div class="opening-workshop">
+      <div class="ow-label">🔍 Opening Sentence Workshop</div>
+      <div class="ow-title">Good or Bad Opener?</div>
+      <p style="font-size:15px;color:var(--gray-muted);margin-bottom:16px;line-height:1.6;">Click each opening sentence to see if it's strong or weak — and why.</p>
+      <div class="ow-openers">
+        <div class="ow-opener" onclick="revealOpener(this,'bad','❌ Weak — starts with the sender\'s feelings, not the reader\'s needs. The reader doesn\'t need to know you\'re reaching out. They need to know why.')"><div class="ow-text">"I am writing to you today to follow up on our previous conversation regarding the matter we discussed."</div><div class="ow-verdict"></div></div>
+        <div class="ow-opener" onclick="revealOpener(this,'good','✅ Strong — immediately states the purpose and what\'s needed. The reader knows what this is about and what action is required in the first sentence.')"><div class="ow-text">"The Q3 analysis is ready — I need your sign-off on the budget recommendation before Friday's board meeting."</div><div class="ow-verdict"></div></div>
+        <div class="ow-opener" onclick="revealOpener(this,'bad','❌ Weak — this is a filler opener that adds no information. The reader already knows you hope they\'re doing well. Skip it and start with your actual message.')"><div class="ow-text">"I hope this email finds you well and that you\'re having a great week so far!"</div><div class="ow-verdict"></div></div>
+        <div class="ow-opener" onclick="revealOpener(this,'good','✅ Strong — references shared context (the meeting), states the action, and specifies the timeline. Efficient and clear.')"><div class="ow-text">"Following our call last Tuesday, I\'ve attached the revised proposal with the updated pricing you requested — could you review by Thursday?"</div><div class="ow-verdict"></div></div>
+        <div class="ow-opener" onclick="revealOpener(this,'good','✅ Strong — leads with the most important fact immediately. The reader knows the outcome before reading anything else, which is exactly right for a status update.')"><div class="ow-text">"Good news: the client approved the proposal this morning."</div><div class="ow-verdict"></div></div>
+        <div class="ow-opener" onclick="revealOpener(this,'bad','❌ Weak — "touching base" and "circling back" are meaningless filler phrases. What do you actually want? State it directly.')"><div class="ow-text">"Just wanted to touch base and circle back on a few things from our last discussion."</div><div class="ow-verdict"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🤖</div><div><h3>Getting AI to Write Strong Subject Lines</h3><p>AI is actually quite good at generating subject line options when prompted well. Try: "Generate 5 subject line options for an email requesting budget approval for a $50,000 software purchase. The decision-maker is a CFO who values brevity. Include: the topic, the ask, and a clear deadline." Then choose the one that best fits your relationship with that specific person. AI gives you options — you pick the right one.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You're emailing a client to let them know a project milestone has been completed and request their feedback before the next phase begins. Which subject line is most effective?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. "Update"</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. "RE: Project"</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. "Phase 1 Complete — Feedback Needed Before We Proceed"</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. "Checking in on the project status and next steps"</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Subject lines are advertisements, not labels — they need to tell the reader why to open this email right now, not just what topic it relates to.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Strong subject lines use formulas: Topic + Action + Deadline, Quick [ask/update]: specific content, Result — Context, or Introduction referencing a mutual connection.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The opening sentence should immediately deliver value or state the purpose — not warm up with pleasantries or announce that you're writing to them.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Vague filler openers ("I hope this finds you well," "just touching base") signal poor professional writing habits — replace them with the actual message.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function revealOpener(el,type,msg){el.classList.remove('good','bad');el.classList.add(type);el.querySelector('.ow-verdict').textContent=msg;}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Option C does everything a strong subject line should: it states the milestone (Phase 1 Complete), signals what action is required (Feedback Needed), and indicates urgency (Before We Proceed). The client knows immediately what happened, what\'s needed from them, and why it matters. Options A and B are too vague, and D is a sentence, not a subject line.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> "Update," "RE: Project," and a long sentence-form subject line all fail to immediately communicate what happened and what\'s needed. A busy client scanning their inbox needs to know in half a second: what\'s the status, and what do I need to do? Option C delivers both in a single subject line.';}f.classList.add('show');}
+</script>
+</body>
+</html>

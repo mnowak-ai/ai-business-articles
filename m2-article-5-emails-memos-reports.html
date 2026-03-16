@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emails, Memos, and Reports — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --green:#276749; --green-pale:#F0FFF4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; transition:width 0.1s ease; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* FORMAT CARDS */
+  .format-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:0; }
+  .format-tab { padding:11px 22px; border-radius:100px; border:1.5px solid var(--purple-mid); font-size:14px; font-weight:600; color:var(--gray-muted); cursor:pointer; transition:all 0.2s ease; background:var(--white); }
+  .format-tab:hover { border-color:var(--purple); color:var(--purple); }
+  .format-tab.active { background:var(--purple); border-color:var(--purple); color:white; }
+  .format-panel { display:none; margin-top:20px; animation:fadeIn 0.3s ease; }
+  .format-panel.show { display:block; }
+
+  .format-overview { display:grid; grid-template-columns:1fr 2fr; gap:24px; margin-bottom:20px; }
+  @media(max-width:600px) { .format-overview { grid-template-columns:1fr; } }
+  .format-meta { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:16px; padding:22px; }
+  .fm-row { display:flex; flex-direction:column; gap:4px; margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--purple-mid); }
+  .fm-row:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .fm-label { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--purple); }
+  .fm-val { font-size:14px; color:var(--gray-text); line-height:1.5; }
+  .format-guide { font-size:15.5px; line-height:1.8; color:var(--gray-text); }
+
+  /* MOCK DOCUMENTS */
+  .mock-doc { background:var(--white); border:1.5px solid var(--purple-mid); border-radius:16px; overflow:hidden; margin:20px 0; box-shadow:0 4px 16px rgba(0,0,0,0.06); }
+  .mock-doc-bar { padding:10px 16px; background:var(--gray-soft); display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--purple-mid); }
+  .mock-doc-dot { width:8px; height:8px; border-radius:50%; background:var(--purple-mid); }
+  .mock-doc-title { font-size:12px; font-weight:600; color:var(--gray-muted); }
+  .mock-doc-body { padding:20px 22px; font-size:13.5px; line-height:1.75; color:var(--gray-text); }
+  .mock-field { display:grid; grid-template-columns:80px 1fr; gap:8px; margin-bottom:6px; font-size:13px; }
+  .mock-field-label { font-weight:700; color:var(--gray-muted); }
+  .mock-divider { border:none; border-top:1px solid var(--purple-mid); margin:14px 0; }
+  .mock-section-head { font-weight:700; font-size:13px; color:var(--purple-dark); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.06em; font-size:11px; }
+
+  /* WHEN TO USE DECISION TOOL */
+  .decision-tool { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .dt-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .dt-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .dt-title { font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .scenarios { display:flex; flex-direction:column; gap:10px; }
+  .scenario-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start; padding:14px 16px; background:var(--white); border-radius:12px; border:1.5px solid var(--purple-mid); transition:all 0.2s ease; }
+  .scenario-row:hover { border-color:var(--purple); }
+  @media(max-width:500px) { .scenario-row { grid-template-columns:1fr; } }
+  .sr-situation { font-size:14px; color:var(--gray-text); line-height:1.5; }
+  .sr-answer { font-size:13px; font-weight:700; color:var(--purple); background:var(--purple-pale); padding:6px 12px; border-radius:100px; text-align:center; display:inline-block; }
+
+  /* COMPARISON TABLE */
+  .comp-table { width:100%; border-collapse:collapse; margin:24px 0; border-radius:16px; overflow:hidden; border:1.5px solid var(--purple-mid); }
+  .comp-table thead tr { background:var(--purple); }
+  .comp-table thead th { padding:14px 18px; text-align:left; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:white; }
+  .comp-table tbody tr { border-bottom:1px solid var(--purple-mid); transition:background 0.15s; }
+  .comp-table tbody tr:last-child { border-bottom:none; }
+  .comp-table tbody tr:hover { background:var(--purple-pale); }
+  .comp-table td { padding:14px 18px; font-size:14.5px; vertical-align:top; line-height:1.5; color:var(--gray-text); }
+  .comp-table td:first-child { font-weight:600; color:var(--purple-dark); }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.1 · Business Writing Fundamentals</div>
+  <h1>Emails, Memos, and Reports — What's the Difference?</h1>
+  <p class="hero-sub">These three document types are the backbone of professional written communication. Each one has its own purpose, structure, and rules — and using the wrong one for the wrong situation is a surprisingly common mistake.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>A new employee gets asked to "put together something" about a policy change. They write a long email. Their manager wanted a memo. Another employee is asked to "write up your findings" — they write a few bullet points. Leadership wanted a formal report. <mark>Using the wrong format for a situation signals that you don't yet understand how professional communication works.</mark> This article fixes that.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Explore Each Format</h2>
+    <p>Click each format to learn its purpose, structure, and when to use it — including a realistic example of what it looks like.</p>
+
+    <div class="format-tabs">
+      <div class="format-tab active" onclick="showFormat('email',this)">📧 Email</div>
+      <div class="format-tab" onclick="showFormat('memo',this)">📋 Memo</div>
+      <div class="format-tab" onclick="showFormat('report',this)">📊 Report</div>
+    </div>
+
+    <!-- EMAIL PANEL -->
+    <div class="format-panel show" id="panel-email">
+      <div class="format-overview">
+        <div class="format-meta">
+          <div class="fm-row"><div class="fm-label">Best for</div><div class="fm-val">Direct communication, requests, updates, quick questions</div></div>
+          <div class="fm-row"><div class="fm-label">Length</div><div class="fm-val">Short — 1 to 4 short paragraphs ideally</div></div>
+          <div class="fm-row"><div class="fm-label">Tone</div><div class="fm-val">Professional, varies by recipient</div></div>
+          <div class="fm-row"><div class="fm-label">Audience</div><div class="fm-val">Usually 1 to a handful of people</div></div>
+          <div class="fm-row"><div class="fm-label">Response expected</div><div class="fm-val">Almost always yes</div></div>
+        </div>
+        <div class="format-guide">
+          <p>Email is the default format for most day-to-day business communication. It's conversational enough to feel personal but professional enough for business purposes. The key elements every professional email needs are a clear subject line, a proper greeting, a concise body with a clear purpose, a specific ask or next step, and a professional sign-off.</p>
+          <p>Email is <strong>not</strong> the right format when the communication needs a formal record, is going to a large group with important policy information, or requires structured sections and detailed analysis. In those cases, switch to a memo or report.</p>
+        </div>
+      </div>
+      <div class="mock-doc">
+        <div class="mock-doc-bar"><div class="mock-doc-dot"></div><div class="mock-doc-dot"></div><div class="mock-doc-dot"></div><div class="mock-doc-title">Professional Email Example</div></div>
+        <div class="mock-doc-body">
+          <div class="mock-field"><div class="mock-field-label">To:</div><div>marcus.allen@company.com</div></div>
+          <div class="mock-field"><div class="mock-field-label">Subject:</div><div>Q3 Budget Review — Input Needed by Thursday</div></div>
+          <hr class="mock-divider">
+          Hi Marcus,<br><br>
+          I'm pulling together the Q3 budget review for Friday's leadership meeting and need your team's actual vs. projected spend figures. Could you send them over by end of day Thursday?<br><br>
+          If you have any concerns about the numbers before I present them, I'm happy to connect for 15 minutes earlier in the week.<br><br>
+          Thank you,<br>
+          Jamie Chen<br>
+          Senior Financial Analyst
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMO PANEL -->
+    <div class="format-panel" id="panel-memo">
+      <div class="format-overview">
+        <div class="format-meta">
+          <div class="fm-row"><div class="fm-label">Best for</div><div class="fm-val">Official internal announcements, policy changes, formal notices</div></div>
+          <div class="fm-row"><div class="fm-label">Length</div><div class="fm-val">Medium — 1 to 2 pages typically</div></div>
+          <div class="fm-row"><div class="fm-label">Tone</div><div class="fm-val">Formal and professional throughout</div></div>
+          <div class="fm-row"><div class="fm-label">Audience</div><div class="fm-val">Teams, departments, or the whole company</div></div>
+          <div class="fm-row"><div class="fm-label">Response expected</div><div class="fm-val">Sometimes — if action is required</div></div>
+        </div>
+        <div class="format-guide">
+          <p>A memo (short for memorandum) is the format for official internal communication that needs to be clearly documented. When a company changes a policy, announces a reorganization, or issues instructions that every employee needs to understand, a memo is the right tool. The structured header (To / From / Date / Subject) makes it easy to file and reference later.</p>
+          <p>Memos are more formal than emails and less detailed than reports. They state facts clearly, explain impact on the reader, and specify any action required. They are <strong>internal documents</strong> — not for clients or external parties.</p>
+        </div>
+      </div>
+      <div class="mock-doc">
+        <div class="mock-doc-bar"><div class="mock-doc-dot"></div><div class="mock-doc-dot"></div><div class="mock-doc-dot"></div><div class="mock-doc-title">Professional Memo Example</div></div>
+        <div class="mock-doc-body">
+          <div style="font-weight:900;font-family:'Fraunces',serif;font-size:16px;color:var(--purple-dark);margin-bottom:16px;">MEMORANDUM</div>
+          <div class="mock-field"><div class="mock-field-label">To:</div><div>All Staff</div></div>
+          <div class="mock-field"><div class="mock-field-label">From:</div><div>Sarah Thompson, Chief People Officer</div></div>
+          <div class="mock-field"><div class="mock-field-label">Date:</div><div>October 24, 2024</div></div>
+          <div class="mock-field"><div class="mock-field-label">Subject:</div><div>Updated Remote Work Policy — Effective January 1, 2025</div></div>
+          <hr class="mock-divider">
+          <div class="mock-section-head">Overview</div>
+          Effective January 1, 2025, the company will transition to a hybrid work schedule requiring all full-time employees to be in office a minimum of three days per week (Tuesday through Thursday).<br><br>
+          <div class="mock-section-head">What This Means for You</div>
+          Employees may continue working remotely on Mondays and Fridays. Teams should coordinate with their managers to ensure coverage and minimize scheduling conflicts.<br><br>
+          <div class="mock-section-head">Action Required</div>
+          Please complete the desk reservation form in the employee portal by December 15th. Questions should be directed to your manager or HR at hr@company.com.
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT PANEL -->
+    <div class="format-panel" id="panel-report">
+      <div class="format-overview">
+        <div class="format-meta">
+          <div class="fm-row"><div class="fm-label">Best for</div><div class="fm-val">Analysis, research findings, recommendations, performance reviews</div></div>
+          <div class="fm-row"><div class="fm-label">Length</div><div class="fm-val">Long — from 3 pages to dozens, depending on scope</div></div>
+          <div class="fm-row"><div class="fm-label">Tone</div><div class="fm-val">Formal, objective, evidence-based</div></div>
+          <div class="fm-row"><div class="fm-label">Audience</div><div class="fm-val">Leadership, stakeholders, decision-makers</div></div>
+          <div class="fm-row"><div class="fm-label">Response expected</div><div class="fm-val">Usually a decision or approval</div></div>
+        </div>
+        <div class="format-guide">
+          <p>A report is the most formal and detailed of the three formats. It's used when the audience needs to understand a situation deeply, make an informed decision, or have a structured record for future reference. Reports have clear sections — an executive summary (the most important part, always first), background, findings, analysis, and recommendations.</p>
+          <p>The executive summary is so critical it deserves emphasis: it's the part that senior leaders actually read. It should contain the key findings and recommendation in no more than one page — everything else is support for people who need the detail.</p>
+        </div>
+      </div>
+      <div class="mock-doc">
+        <div class="mock-doc-bar"><div class="mock-doc-dot"></div><div class="mock-doc-dot"></div><div class="mock-doc-dot"></div><div class="mock-doc-title">Business Report Structure</div></div>
+        <div class="mock-doc-body">
+          <div style="font-weight:900;font-family:'Fraunces',serif;font-size:15px;color:var(--purple-dark);margin-bottom:4px;">Q3 2024 Marketing Performance Report</div>
+          <div style="font-size:12px;color:var(--gray-muted);margin-bottom:16px;">Prepared by: Marketing Analytics Team | Date: October 28, 2024</div>
+          <hr class="mock-divider">
+          <div class="mock-section-head">Executive Summary</div>
+          Q3 marketing performance exceeded revenue targets by 12% but fell below lead generation goals by 18%. Paid search drove the strongest ROI; social media underperformed. Recommendation: reallocate 30% of social budget to paid search in Q4.<br><br>
+          <div class="mock-section-head">Background</div>
+          This report analyzes Q3 campaign performance across four channels: paid search, social media, email, and content marketing. Data covers July 1 – September 30, 2024.<br><br>
+          <div class="mock-section-head">Key Findings</div>
+          [Data, charts, and analysis — multiple pages]<br><br>
+          <div class="mock-section-head">Recommendations</div>
+          [Specific, numbered action items with rationale]
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Side-by-Side Comparison</h2>
+    <table class="comp-table">
+      <thead><tr><th>Dimension</th><th>📧 Email</th><th>📋 Memo</th><th>📊 Report</th></tr></thead>
+      <tbody>
+        <tr><td>Primary purpose</td><td>Communicate directly with a person or small group</td><td>Make an official internal announcement</td><td>Inform a decision with structured analysis</td></tr>
+        <tr><td>Typical length</td><td>1–4 short paragraphs</td><td>1–2 pages</td><td>3+ pages with sections</td></tr>
+        <tr><td>Formality</td><td>Professional, flexible</td><td>Formal</td><td>Very formal, objective</td></tr>
+        <tr><td>Internal or external</td><td>Both</td><td>Internal only</td><td>Both (different versions)</td></tr>
+        <tr><td>Response expected</td><td>Usually yes</td><td>Sometimes</td><td>Usually a decision</td></tr>
+        <tr><td>AI can help with</td><td>Drafts, tone, subject lines</td><td>First draft, structure</td><td>Outline, summaries, first draft of sections</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Which Format Should You Use?</h2>
+    <p>When you're not sure which format is right, use these situations as your guide.</p>
+    <div class="decision-tool">
+      <div class="dt-label">Format Decision Guide</div>
+      <div class="dt-title">Use This, Not That</div>
+      <div class="scenarios">
+        <div class="scenario-row"><div class="sr-situation">You need to ask a colleague a quick question about a project deadline</div><div><span class="sr-answer">📧 Email</span></div></div>
+        <div class="scenario-row"><div class="sr-situation">HR needs to inform all 200 employees of a new vacation policy</div><div><span class="sr-answer">📋 Memo</span></div></div>
+        <div class="scenario-row"><div class="sr-situation">Leadership wants to see your analysis of why sales were down last quarter</div><div><span class="sr-answer">📊 Report</span></div></div>
+        <div class="scenario-row"><div class="sr-situation">You want to follow up with a client after a meeting</div><div><span class="sr-answer">📧 Email</span></div></div>
+        <div class="scenario-row"><div class="sr-situation">You need to formally document a decision made by the executive team</div><div><span class="sr-answer">📋 Memo</span></div></div>
+        <div class="scenario-row"><div class="sr-situation">The board needs to review your team's performance data before the annual planning meeting</div><div><span class="sr-answer">📊 Report</span></div></div>
+        <div class="scenario-row"><div class="sr-situation">You need to update your manager on a project's status — briefly</div><div><span class="sr-answer">📧 Email</span></div></div>
+        <div class="scenario-row"><div class="sr-situation">You're recommending a new software purchase and need to justify the cost</div><div><span class="sr-answer">📊 Report</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Choosing the right format is itself a communication decision — it signals to your reader how seriously you're taking the situation and how clearly you understand what the moment calls for.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🤖</div><div><h3>AI Can Help You Draft All Three</h3><p>Prompting AI correctly for each format matters. For an email, say: "Draft a professional email to [person] requesting [thing] by [date]." For a memo, say: "Write a formal memo from HR to all staff announcing [policy] with the following details: [details]." For a report, say: "Create an outline for a business report analyzing [topic] with an executive summary, background, findings, and recommendations sections." The more specific your prompt, the more useful the draft.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A company's legal team needs to inform all employees that the non-disclosure agreement (NDA) policy has been updated and that everyone must sign a new form by a specific deadline. Which format is most appropriate?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. An email — it's the fastest way to reach everyone</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. A memo — this is an official internal communication about a formal policy change that needs to be documented</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. A report — policy changes require structured analysis and supporting documentation</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Either email or memo — the format doesn't matter for internal communications</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Emails are for direct person-to-person or small group communication — requests, updates, questions, and follow-ups.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Memos are for official internal announcements to large groups — policy changes, organizational updates, and formal notices that need to be documented.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Reports are for detailed analysis and recommendations to decision-makers — always lead with the executive summary, which is the most important part.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Choosing the wrong format signals poor professional judgment. When in doubt: email for direct communication, memo for official announcements, report for decisions needing analysis.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function showFormat(id,tab){document.querySelectorAll('.format-panel').forEach(p=>p.classList.remove('show'));document.querySelectorAll('.format-tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+id).classList.add('show');tab.classList.add('active');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> This situation has all the hallmarks of a memo: it\'s an official policy change, it requires a formal record, it\'s going to all employees, and there\'s an action required (sign the form by a deadline). A memo\'s structured format — with To, From, Date, Subject, and clear sections — is exactly right for legal and HR communications like this.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> While an email might feel faster, an NDA policy update is a formal legal matter that requires proper documentation. A memo creates an official record, signals the appropriate level of seriousness, and has a structure that makes it easy to file and reference. Format choice communicates how seriously the organization takes the communication.';}f.classList.add('show');}
+</script>
+</body>
+</html>

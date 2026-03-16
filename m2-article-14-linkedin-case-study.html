@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How LinkedIn Uses AI Writing Suggestions — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;--linkedin:#0A66C2;--linkedin-pale:#EFF6FF;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  .company-banner{background:var(--linkedin-pale);border:1.5px solid #93C5FD;border-radius:20px;padding:28px 32px;margin:24px 0;display:flex;align-items:center;gap:20px;}
+  .company-logo{width:56px;height:56px;background:var(--linkedin);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .company-info h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#1E3A5F;margin-bottom:4px;}
+  .company-info p{font-size:14px;color:#1D4ED8;line-height:1.5;margin:0;}
+  @media(max-width:500px){.company-banner{flex-direction:column;}}
+
+  .case-steps{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .cs-step{display:grid;grid-template-columns:100px 1fr;gap:20px;position:relative;}
+  .cs-step:not(:last-child)::after{content:'';position:absolute;left:49px;top:56px;width:2px;height:calc(100% - 16px);background:var(--purple-mid);}
+  .step-badge{display:flex;flex-direction:column;align-items:center;padding-top:4px;}
+  .step-circle{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:1;margin-bottom:4px;}
+  .step-circle.problem{background:var(--red-pale);}
+  .step-circle.solution{background:var(--purple-pale);}
+  .step-circle.result{background:var(--green-pale);}
+  .step-tag{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:100px;white-space:nowrap;}
+  .step-tag.problem{background:var(--red-pale);color:var(--red);}
+  .step-tag.solution{background:var(--purple-pale);color:var(--purple);}
+  .step-tag.result{background:var(--green-pale);color:var(--green);}
+  .step-body{padding:4px 0 32px;}
+  .step-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:10px;}
+  .step-desc{font-size:15.5px;line-height:1.75;color:var(--gray-text);margin:0;}
+
+  .message-demo{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .md-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .md-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .md-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .md-desc{font-size:15px;color:var(--gray-muted);margin-bottom:20px;line-height:1.6;}
+  .md-toggle{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .md-btn{flex:1;padding:11px;border-radius:12px;border:2px solid var(--purple-mid);background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s ease;color:var(--gray-muted);}
+  .md-btn.active{border-color:var(--linkedin);background:var(--linkedin);color:white;}
+  .md-view{display:none;}
+  .md-view.show{display:block;animation:fadeIn 0.3s ease;}
+  .linkedin-mock{background:var(--white);border:1.5px solid #D1D5DB;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .lm-bar{background:var(--linkedin-pale);padding:10px 16px;font-size:12px;font-weight:700;color:var(--linkedin);display:flex;align-items:center;gap:8px;}
+  .lm-dot{width:8px;height:8px;border-radius:50%;background:var(--linkedin);}
+  .lm-body{padding:18px 20px;font-size:14px;line-height:1.85;color:var(--gray-text);white-space:pre-line;}
+  .ai-suggestion{background:var(--linkedin-pale);border:1.5px solid #93C5FD;border-radius:10px;padding:12px 14px;margin-top:12px;}
+  .as-label{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--linkedin);margin-bottom:6px;}
+  .as-text{font-size:13.5px;line-height:1.65;color:#1E3A5F;font-style:italic;}
+  .as-why{font-size:12px;color:var(--gray-muted);margin-top:6px;}
+  .improvements{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+  .imp-item{display:flex;gap:10px;font-size:13px;padding:8px 12px;border-radius:10px;background:var(--green-pale);border:1px solid #6EE7B7;color:#1A3A2A;}
+
+  .feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.feature-grid{grid-template-columns:1fr;}}
+  .feat-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;background:var(--white);transition:all 0.2s ease;}
+  .feat-card:hover{border-color:var(--purple);background:var(--purple-pale);transform:translateY(-2px);}
+  .fc-icon{font-size:30px;margin-bottom:10px;display:block;}
+  .fc-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .fc-desc{font-size:14px;line-height:1.6;color:var(--gray-text);}
+
+  .analysis{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .an-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .an-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .an-q{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:16px 18px;cursor:pointer;transition:all 0.2s ease;margin-bottom:10px;}
+  .an-q:last-child{margin-bottom:0;}
+  .an-q:hover{border-color:var(--purple);}
+  .an-q.open{border-color:var(--purple);background:var(--purple-pale);}
+  .an-q-text{font-size:15px;font-weight:600;color:var(--gray-text);}
+  .an-q.open .an-q-text{color:var(--purple-dark);}
+  .an-answer{font-size:14.5px;line-height:1.65;color:var(--gray-text);margin-top:10px;padding-top:10px;border-top:1px solid var(--purple-mid);display:none;}
+  .an-q.open .an-answer{display:block;animation:fadeIn 0.3s ease;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.message-demo{padding:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.3 · Editing & Improving AI Outputs</div>
+  <h1>Real Company Spotlight: How LinkedIn Uses AI Writing Suggestions</h1>
+  <p class="hero-sub">LinkedIn is used by over 1 billion professionals — and they've built AI writing assistance into the heart of their platform. Their approach is a textbook example of human-in-the-loop AI done right.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>LinkedIn isn't an AI writing company — it's a professional network. But they've recognized that the quality of how their users communicate directly determines the value of the network itself. <mark>Better-written messages lead to better professional connections, more successful job searches, and more productive relationships.</mark> That's why AI writing assistance is now embedded throughout their product.</p>
+    <p>What makes LinkedIn's approach particularly worth studying is the model they've chosen: AI proposes, human decides. Always. This is a case study in responsible AI integration for a use case that touches hundreds of millions of people's professional lives every single day.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="company-banner">
+      <div class="company-logo">💼</div>
+      <div class="company-info">
+        <h3>About LinkedIn</h3>
+        <p>Founded in 2003, LinkedIn is the world's largest professional network with over 1 billion members across 200 countries. Acquired by Microsoft in 2016. Their platform is used for professional networking, job searching, talent acquisition, and B2B marketing. In recent years they've embedded AI features across messages, posts, job applications, and profile optimization — all with human review built in.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Problem → Solution → Result</h2>
+    <div class="case-steps">
+      <div class="cs-step">
+        <div class="step-badge"><div class="step-circle problem">😓</div><div class="step-tag problem">Problem</div></div>
+        <div class="step-body">
+          <div class="step-title">Poor Professional Writing Limits Career Outcomes at Scale</div>
+          <p class="step-desc">LinkedIn observed a consistent pattern: millions of users were sending messages and creating posts that didn't represent them at the level they were actually capable of. Job seekers sent poorly worded connection requests that got ignored. Professionals wrote vague InMails that never got responses. Users posted content that failed to communicate their real expertise. The platform was filled with professional communication leaving significant value on the table — not because users weren't smart, but because professional writing is genuinely hard, especially across language barriers and different writing backgrounds.</p>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="step-badge"><div class="step-circle solution">🤖</div><div class="step-tag solution">Solution</div></div>
+        <div class="step-body">
+          <div class="step-title">AI Suggests — Humans Review, Adjust, and Approve Every Time</div>
+          <p class="step-desc">LinkedIn's AI writing features follow a strict human-in-the-loop model at every step. For messages, AI drafts an opening or full message based on the user's goal and the recipient's profile — but the user sees the draft before anything is sent and can edit or reject it entirely. For posts, AI can suggest improvements to clarity, structure, and professional tone — but the user approves every change. For job applications, AI helps users articulate their experience more effectively — but the user reads and signs off on the final text. The AI never sends or publishes anything independently.</p>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="step-badge"><div class="step-circle result">📈</div><div class="step-tag result">Result</div></div>
+        <div class="step-body">
+          <div class="step-title">More Effective Communication, Better Professional Outcomes</div>
+          <p class="step-desc">LinkedIn reports that users who engage with AI-assisted messaging see higher response rates to their outreach. Posts with AI-assisted clarity improvements show higher engagement. The platform's professional quality has measurably improved — which creates a virtuous cycle: better communication attracts higher-quality connections, which makes the network more valuable for everyone. The human review step is what makes it work — it ensures AI-suggested improvements fit the individual user's real voice and intent before anything goes out.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>LinkedIn's AI in Action — Before and After</h2>
+    <p>Let's see exactly what LinkedIn's approach looks like in practice. Toggle between the original draft, the AI suggestion, and the final human-approved version.</p>
+    <div class="message-demo">
+      <div class="md-label">Interactive Demo</div>
+      <div class="md-title">LinkedIn Connection Message</div>
+      <p class="md-desc">A job seeker wants to connect with a VP of Engineering. Here's the evolution from rough draft to polished final.</p>
+      <div class="md-toggle">
+        <button class="md-btn active" id="btn-before" onclick="showMsg('before')">Original Draft</button>
+        <button class="md-btn" id="btn-after" onclick="showMsg('after')">AI Suggestion</button>
+        <button class="md-btn" id="btn-final" onclick="showMsg('final')">Human-Approved Final</button>
+      </div>
+      <div class="md-view show" id="msg-before">
+        <div class="linkedin-mock">
+          <div class="lm-bar"><div class="lm-dot"></div>Original — Before Any AI Assistance</div>
+          <div class="lm-body">Hey,
+
+I'm looking for a new job. Anyone hiring? I saw your profile and thought maybe we could connect. I'm a software engineer with some experience in backend stuff. Let me know if you're interested.
+
+Thanks</div>
+        </div>
+      </div>
+      <div class="md-view" id="msg-after">
+        <div class="linkedin-mock">
+          <div class="lm-bar"><div class="lm-dot"></div>After LinkedIn AI Suggestion</div>
+          <div class="lm-body">Hello [Name],
+
+I am currently exploring new opportunities in backend engineering and came across your profile. I am interested in connecting and learning more about your experience at [Company].
+
+If you know of any openings or would be willing to share your insights about the industry, I would greatly appreciate your time.
+
+Thank you for considering my connection request.</div>
+        </div>
+        <div class="ai-suggestion">
+          <div class="as-label">🤖 LinkedIn AI — What It Improved</div>
+          <div class="as-text">Improved formality and professional tone. Personalized opening to the recipient's context. Clarified the purpose of the connection request. Removed casual and vague language.</div>
+          <div class="as-why">The user now reviews this suggestion and can accept, edit, or reject it before anything is sent.</div>
+        </div>
+      </div>
+      <div class="md-view" id="msg-final">
+        <div class="linkedin-mock">
+          <div class="lm-bar"><div class="lm-dot"></div>Human-Approved Final Version</div>
+          <div class="lm-body">Hi Sarah,
+
+I've been following Vertex Engineering's work on distributed systems — your recent blog post on latency optimization was genuinely useful in my own projects.
+
+I'm a backend engineer with 4 years of experience in Go and Python, currently exploring new opportunities. I'd love to connect and learn more about your team's work, even if there aren't current openings.
+
+Thanks for your time.</div>
+        </div>
+        <div class="improvements">
+          <div class="imp-item">✅ Kept AI's professional structure and clear purpose</div>
+          <div class="imp-item">✅ Added specific reference to the recipient's blog post — only the human could know this</div>
+          <div class="imp-item">✅ Added real tech stack (Go and Python) — accurate information AI didn't have</div>
+          <div class="imp-item">✅ Humanized the closing — sounds like a real person, not a formal template</div>
+          <div class="imp-item">✅ Result: more professional than the original, more personal than the AI draft — better than either alone</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>LinkedIn's Key AI Writing Features</h2>
+    <div class="feature-grid">
+      <div class="feat-card"><span class="fc-icon">💌</span><div class="fc-name">InMail Draft Assistance</div><p class="fc-desc">AI suggests personalized opening lines for cold outreach based on the recipient's profile — saving time while keeping messages targeted. Users review and edit every message before it's sent.</p></div>
+      <div class="feat-card"><span class="fc-icon">📝</span><div class="fc-name">Post Writing Assistance</div><p class="fc-desc">AI helps users structure and clarify their posts for better professional engagement — tone improvements, structure suggestions, clarity edits — all reviewed and approved before publishing.</p></div>
+      <div class="feat-card"><span class="fc-icon">💼</span><div class="fc-name">Job Application AI</div><p class="fc-desc">AI helps users articulate their experience in cover letters and "About" sections — turning rough notes into polished professional narrative that users read and approve before submitting.</p></div>
+      <div class="feat-card"><span class="fc-icon">🎯</span><div class="fc-name">Profile Optimization</div><p class="fc-desc">AI analyzes a user's profile against job market data and suggests improvements to headlines, summaries, and experience descriptions — with the user making all final editing decisions.</p></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>LinkedIn's model is the template for responsible AI-assisted writing: AI proposes, human decides. The AI brings speed and professionalism. The human brings authenticity, accuracy, and the personal context that makes communication actually connect.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Analyze It Yourself</h2>
+    <div class="analysis">
+      <div class="an-label">Case Study Deep Dive</div>
+      <div class="an-q" onclick="this.classList.toggle('open')">
+        <div class="an-q-text">Why does LinkedIn make human review mandatory rather than letting AI send messages automatically?</div>
+        <div class="an-answer">Because communication on LinkedIn represents a person's professional identity — it has to reflect who they actually are, not a generic professional. If AI sent messages automatically, two problems would emerge: the content might not match the person's actual voice or real information, and the professional accountability — you said this, you sent this — would become ambiguous. Human review isn't a speed bump. It's what makes the communication authentic and trustworthy.</div>
+      </div>
+      <div class="an-q" onclick="this.classList.toggle('open')">
+        <div class="an-q-text">What did the human add to the final message that the AI couldn't have provided?</div>
+        <div class="an-answer">Three critical things: (1) A specific reference to the recipient's blog post — a personal detail that shows genuine research. AI doesn't know what this specific person has published. (2) The real tech stack (Go and Python) — actual details about the user's experience that AI would have to guess. (3) A more authentic, human-sounding closing. All three made the message better than what AI or human would produce alone — which is exactly the point of the human-in-the-loop model.</div>
+      </div>
+      <div class="an-q" onclick="this.classList.toggle('open')">
+        <div class="an-q-text">How does LinkedIn's model apply to AI-assisted writing in any professional context?</div>
+        <div class="an-answer">The LinkedIn model is the workflow you should apply everywhere: use AI to generate a professional, well-structured starting point, then make it yours by adding the specific context, personal knowledge, and authentic voice that AI can't access. The final product should be better than what you'd write from scratch (faster, better structured) and better than what AI would produce alone (more accurate, more personal, more contextually correct).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h3>The Broader Lesson From LinkedIn's Scale</h3>
+        <p>LinkedIn has over 1 billion users. Their AI writing features touch hundreds of millions of professional interactions every single day. The fact that they've maintained mandatory human review at every step — even at that scale — tells you something important about where AI can and cannot be trusted to operate independently in professional communication. If LinkedIn won't automate it, that's worth thinking about for your own work too.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">In the LinkedIn example, the final human-approved message was better than both the original draft AND the AI-suggested version. What is the best explanation for why?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The human fixed the grammar that the AI got wrong</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. The human made it shorter and easier to read</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. The human combined AI's professional structure with personal context — specific details about the recipient and their own real experience — that only the human could know and provide</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. The human rewrote the AI version completely from scratch</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>LinkedIn embedded AI writing assistance because poor professional communication was limiting the value users got from the platform — better writing leads to better professional outcomes.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Their model is human-in-the-loop: AI proposes improvements, humans review and approve before anything goes out. The AI never sends or publishes independently.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The best professional messages combine what AI does well (professional structure, appropriate tone) with what only humans can provide (specific personal context, authentic voice, real details).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>At LinkedIn's scale of 1 billion users, they still maintain mandatory human review — which validates that human editorial judgment is non-negotiable even when AI handles the drafting.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function showMsg(which){['before','after','final'].forEach(id=>{document.getElementById('msg-'+id).classList.toggle('show',id===which);document.getElementById('btn-'+id).classList.toggle('active',id===which);});}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> The final message was better than both because the human brought things that AI simply cannot generate: knowledge of the recipient\'s specific published work, real details about their own technical experience, and an authentic voice. This is the human-in-the-loop model at its best — AI provides the professional skeleton, the human provides everything that makes it a genuine, personal communication.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The AI\'s grammar was fine, and the human didn\'t rewrite from scratch — they built on the AI\'s foundation. The reason the final version was better is that the human added specific personal context that only they could know: the recipient\'s blog post, their own real tech stack, and an authentic voice. That\'s the value of human-in-the-loop.';}f.classList.add('show');}
+</script>
+</body>
+</html>

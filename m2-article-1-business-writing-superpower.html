@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Business Writing Is a Career Superpower — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --green:#276749; --green-pale:#F0FFF4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; transition:width 0.1s ease; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* COST COUNTER */
+  .stat-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .stat-grid { grid-template-columns:1fr 1fr; } }
+  .stat-card { background:var(--purple); border-radius:20px; padding:24px 20px; text-align:center; }
+  .stat-num { font-family:'Fraunces',serif; font-size:38px; font-weight:900; color:white; line-height:1; margin-bottom:8px; }
+  .stat-label { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.4; }
+
+  /* BEFORE/AFTER EMAILS */
+  .email-compare { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+  @media(max-width:600px) { .email-compare { grid-template-columns:1fr; } }
+  .email-box { border-radius:16px; overflow:hidden; border:1.5px solid var(--purple-mid); }
+  .email-box.bad { border-color:#FCA5A5; }
+  .email-box.good { border-color:#6EE7B7; }
+  .email-header { padding:10px 16px; display:flex; align-items:center; gap:8px; }
+  .email-box.bad .email-header { background:var(--red-pale); }
+  .email-box.good .email-header { background:var(--green-pale); }
+  .email-verdict { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
+  .email-box.bad .email-verdict { color:var(--red); }
+  .email-box.good .email-verdict { color:var(--green); }
+  .email-content { padding:16px; background:var(--white); }
+  .email-field { font-size:12px; color:var(--gray-muted); font-weight:600; margin-bottom:3px; }
+  .email-val { font-size:13.5px; color:var(--gray-text); margin-bottom:10px; line-height:1.5; }
+  .email-body { font-size:13.5px; color:var(--gray-text); line-height:1.65; border-top:1px solid var(--purple-mid); padding-top:12px; white-space:pre-line; }
+  .impact-tag { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; padding:6px 12px; border-radius:100px; margin-top:12px; }
+  .impact-tag.bad { background:var(--red-pale); color:var(--red); }
+  .impact-tag.good { background:var(--green-pale); color:var(--green); }
+
+  /* CAREER STAGES */
+  .career-ladder { display:flex; flex-direction:column; gap:12px; margin:24px 0; }
+  .ladder-item { display:flex; gap:16px; align-items:flex-start; padding:18px 20px; border-radius:16px; border:1.5px solid var(--purple-mid); background:var(--white); transition:all 0.2s ease; cursor:default; }
+  .ladder-item:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .ladder-level { width:40px; height:40px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .ladder-title { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--purple-dark); margin-bottom:5px; }
+  .ladder-desc { font-size:14px; line-height:1.6; color:var(--gray-text); margin:0; }
+
+  /* WRITING SKILLS SELF-ASSESS */
+  .self-assess { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .sa-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .sa-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .sa-items { display:flex; flex-direction:column; gap:10px; }
+  .sa-item { background:var(--white); border:1.5px solid var(--purple-mid); border-radius:12px; padding:14px 16px; cursor:pointer; transition:all 0.2s ease; }
+  .sa-item:hover { border-color:var(--purple); }
+  .sa-item.checked { border-color:#6EE7B7; background:var(--green-pale); }
+  .sa-item.needs-work { border-color:#FCA5A5; background:var(--red-pale); }
+  .sa-header { display:flex; align-items:center; gap:12px; }
+  .sa-check { width:22px; height:22px; border-radius:6px; border:2px solid var(--purple-mid); display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; transition:all 0.2s; }
+  .sa-item.checked .sa-check { background:var(--green); border-color:var(--green); color:white; }
+  .sa-item.needs-work .sa-check { background:var(--red); border-color:var(--red); color:white; }
+  .sa-text { font-size:15px; font-weight:600; color:var(--gray-text); flex:1; }
+  .sa-item.checked .sa-text { color:var(--green); }
+  .sa-result { margin-top:16px; padding:14px 16px; background:var(--purple-pale); border-radius:12px; font-size:14.5px; line-height:1.6; color:var(--purple-dark); display:none; }
+  .sa-result.show { display:block; animation:fadeIn 0.3s ease; }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.1 · Business Writing Fundamentals</div>
+  <h1>Why Business Writing Is a Career Superpower</h1>
+  <p class="hero-sub">You might not think of writing as a "skill" in the way coding or data analysis is. But research consistently shows that clear, professional writing is one of the most financially valuable abilities in any workplace.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Here's a stat that might surprise you: a survey by the National Association of Colleges and Employers consistently ranks written communication as the single most desired skill employers look for in new hires — ranking above technical skills, problem-solving, and even teamwork.</p>
+    <p>And yet it's also one of the most overlooked. Most students spend years learning math, science, and technical subjects, and very little time deliberately practicing professional writing. That gap is your opportunity. <mark>The person in any room who communicates most clearly has an outsized influence on every outcome.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Real Cost of Poor Business Writing</h2>
+    <p>Bad writing isn't just annoying — it costs companies real money. A study by the Josh Bersin Company estimated that US businesses lose over $400 billion per year to miscommunication, much of it written. Here are three of the most common ways poor writing creates business problems.</p>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">$400B</div><div class="stat-label">lost annually by US businesses due to miscommunication</div></div>
+      <div class="stat-card"><div class="stat-num">28%</div><div class="stat-label">of workday spent managing unclear or unnecessary communication</div></div>
+      <div class="stat-card"><div class="stat-num">67%</div><div class="stat-label">of managers say unclear writing reduces their team's productivity</div></div>
+    </div>
+    <p>The damage from poor business writing shows up in missed deadlines (because instructions were unclear), strained relationships (because an email came across as rude when it wasn't meant to be), lost clients (because a proposal didn't clearly communicate value), and hours of wasted follow-up trying to clarify what was meant the first time.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>See the Difference — Same Message, Very Different Result</h2>
+    <p>Compare these two emails making the same request. Read them both, then notice what each one communicates beyond the words themselves.</p>
+    <div class="email-compare">
+      <div class="email-box bad">
+        <div class="email-header"><div class="email-verdict">❌ Version A</div></div>
+        <div class="email-content">
+          <div class="email-field">Subject:</div>
+          <div class="email-val">report</div>
+          <div class="email-body">hey can u send the q3 report asap its kind of urgent lmk thx</div>
+          <div class="impact-tag bad">Reads as: unprofessional, lazy, creates confusion about urgency</div>
+        </div>
+      </div>
+      <div class="email-box good">
+        <div class="email-header"><div class="email-verdict">✅ Version B</div></div>
+        <div class="email-content">
+          <div class="email-field">Subject:</div>
+          <div class="email-val">Q3 Report — Needed by Thursday EOD</div>
+          <div class="email-body">Hi Marcus,
+
+Could you please send over the Q3 report by end of day Thursday? I need it to prepare for Friday's leadership meeting.
+
+Thank you,
+Jamie</div>
+          <div class="impact-tag good">Reads as: organized, respectful, clear — easy to act on</div>
+        </div>
+      </div>
+    </div>
+    <p>Both emails are asking for the same thing. But Version B shows that the sender is organized, respects the recipient's time, and knows how to communicate professionally. Over months and years, that difference shapes how people perceive you — and who gets promoted.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>In a world where most communication happens in writing, your writing is your first impression — and often your only one.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How Writing Skills Pay Off at Every Career Stage</h2>
+    <p>The value of professional writing doesn't peak at entry level — it compounds. Here's how it matters differently at each stage of a career.</p>
+    <div class="career-ladder">
+      <div class="ladder-item">
+        <div class="ladder-level">🎓</div>
+        <div><div class="ladder-title">Student / Intern</div><p class="ladder-desc">Clear emails and professional messages make you stand out immediately. Most interns communicate casually — the one who writes professionally gets remembered, trusted with more responsibility, and receives better recommendations.</p></div>
+      </div>
+      <div class="ladder-item">
+        <div class="ladder-level">💼</div>
+        <div><div class="ladder-title">Entry-Level Professional</div><p class="ladder-desc">You're being evaluated constantly, mostly through your written communication. Every email, Slack message, and report is data for your manager. Clear, purposeful writing signals that you think clearly — which is exactly what gets people promoted.</p></div>
+      </div>
+      <div class="ladder-item">
+        <div class="ladder-level">📈</div>
+        <div><div class="ladder-title">Mid-Level Manager</div><p class="ladder-desc">Now your writing ripples outward — you're directing teams, managing client relationships, writing proposals. A well-written proposal can win a six-figure contract. A poorly worded team message can create confusion that takes a week to untangle.</p></div>
+      </div>
+      <div class="ladder-item">
+        <div class="ladder-level">🏆</div>
+        <div><div class="ladder-title">Senior Leader / Executive</div><p class="ladder-desc">At this level, writing is strategy. Your memos, announcements, and communications shape company culture and direction. Leaders who write clearly earn more trust, communicate vision more effectively, and build stronger organizations.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>AI Makes Good Writers Better — Not Bad Writers Irrelevant</h2>
+    <p>You might be thinking: if AI can write for me, does any of this still matter? The answer is yes — more than ever. Here's why.</p>
+    <p>AI writing tools produce better output when given better input. A vague, poorly-considered prompt produces a vague, generic draft. A clear, specific, purposeful prompt — from someone who actually understands good writing — produces something worth using. <mark>AI is a multiplier. It multiplies whatever skills you already have.</mark></p>
+    <p>The professionals who will struggle are those who use AI as a replacement for thinking clearly about what they want to communicate. The professionals who will thrive are those who use AI to produce faster first drafts of communication they already know how to craft well.</p>
+    <p>Understanding what good business writing looks like isn't something AI can give you. It's a judgment skill — and it's exactly what this module is designed to build.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Quick Self-Assessment — Where Are You Right Now?</h2>
+    <p>Be honest with yourself. Click each statement that currently describes your writing habits — this is just for you.</p>
+    <div class="self-assess">
+      <div class="sa-label">Writing Habits Check</div>
+      <div class="sa-items" id="saItems">
+        <div class="sa-item" onclick="toggleSA(this,'checked')"><div class="sa-header"><div class="sa-check"></div><div class="sa-text">I always re-read messages before sending them</div></div></div>
+        <div class="sa-item" onclick="toggleSA(this,'checked')"><div class="sa-header"><div class="sa-check"></div><div class="sa-text">I adjust my tone based on who I'm writing to</div></div></div>
+        <div class="sa-item" onclick="toggleSA(this,'checked')"><div class="sa-header"><div class="sa-check"></div><div class="sa-text">My subject lines clearly tell the reader what the email is about</div></div></div>
+        <div class="sa-item" onclick="toggleSA(this,'checked')"><div class="sa-header"><div class="sa-check"></div><div class="sa-text">I keep my sentences short and avoid unnecessary words</div></div></div>
+        <div class="sa-item" onclick="toggleSA(this,'checked')"><div class="sa-header"><div class="sa-check"></div><div class="sa-text">I always include a clear ask or next step in my messages</div></div></div>
+      </div>
+      <div class="sa-result" id="saResult"></div>
+      <button onclick="showSAResult()" style="background:var(--purple);color:white;border:none;border-radius:12px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:16px;transition:all 0.2s ease;" onmouseover="this.style.background='#4A1580'" onmouseout="this.style.background='#7B2FBE'">See My Assessment →</button>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🚀</div><div><h3>The Opportunity in Front of You</h3><p>Most people your age communicate casually — texts, DMs, informal messages. The ones who take the time to develop professional writing skills now will walk into their first job already operating at a different level. By the end of this module, you'll have a practical toolkit for writing that gets results: emails that get responses, documents that get read, and messages that make you look exactly as capable as you are.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A hiring manager receives 200 applications for a job. The top candidate has excellent technical skills but sends a follow-up email with poor grammar, informal language, and no clear structure. What is the most likely impact?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. No impact — technical skills are what matter most for most jobs</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. The candidate's professional image is damaged — writing quality signals how they'll represent the company to clients and colleagues</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. Minor impact — the hiring manager will overlook it since everyone writes casually now</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. No impact — follow-up emails aren't part of the evaluation process</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Written communication is consistently ranked as the most desired skill by employers — above technical skills and teamwork.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Poor business writing costs US companies an estimated $400 billion per year in lost productivity and miscommunication.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The same message written well vs. poorly creates completely different impressions — and those impressions compound over a career.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI multiplies your existing writing skills — good writers get better with AI, but poor writers don't automatically become good ones.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleSA(item,cls){item.classList.toggle(cls);item.querySelector('.sa-check').textContent=item.classList.contains(cls)?'✓':'';}
+  function showSAResult(){const checked=document.querySelectorAll('.sa-item.checked').length;const total=document.querySelectorAll('.sa-item').length;const r=document.getElementById('saResult');r.classList.add('show');if(checked>=4){r.textContent=`You checked ${checked} of ${total} — strong foundation! You already have good instincts. This module will sharpen those habits and give you tools to be even more effective.`;}else if(checked>=2){r.textContent=`You checked ${checked} of ${total} — good start. There are some habits you're already building, and some clear areas to develop. By the end of this module you'll have all five locked in.`;}else{r.textContent=`You checked ${checked} of ${total} — this module is exactly what you need. These aren't advanced skills — they're foundational ones, and building them now will pay off immediately.`;}}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Every piece of writing is a signal about who you are as a professional. A follow-up email that\'s casual and poorly structured tells a hiring manager that this candidate may communicate the same way with clients — and that\'s a real business risk, regardless of technical ability.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Technical skills matter — but so does how you represent yourself and your company in written communication. Hiring managers evaluate the whole picture, and a poorly written follow-up creates doubt about a candidate\'s professionalism even when their skills are strong.';}f.classList.add('show');}
+</script>
+</body>
+</html>

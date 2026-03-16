@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tone — The Invisible Signal — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --green:#276749; --green-pale:#F0FFF4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; transition:width 0.1s ease; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* SAME MESSAGE DIFFERENT TONES */
+  .tone-messages { display:flex; flex-direction:column; gap:12px; margin:24px 0; }
+  .tone-msg { border-radius:16px; border:1.5px solid var(--purple-mid); overflow:hidden; transition:all 0.2s ease; cursor:pointer; }
+  .tone-msg:hover { border-color:var(--purple); }
+  .tone-msg.selected { border-color:var(--purple); }
+  .tone-msg-header { display:flex; align-items:center; gap:14px; padding:16px 20px; background:var(--gray-soft); }
+  .tone-badge { font-size:12px; font-weight:700; padding:4px 12px; border-radius:100px; flex-shrink:0; }
+  .tone-msg.too-casual .tone-badge { background:var(--red-pale); color:var(--red); }
+  .tone-msg.professional .tone-badge { background:var(--purple-pale); color:var(--purple); }
+  .tone-msg.too-formal .tone-badge { background:#FFF7ED; color:#92400E; }
+  .tone-msg.passive-aggressive .tone-badge { background:#FEE2E2; color:#991B1B; }
+  .tone-msg-body { padding:0 20px 20px; }
+  .tone-msg-text { font-size:14.5px; line-height:1.7; color:var(--gray-text); background:var(--white); padding:14px 16px; border-radius:10px; margin-top:14px; border:1px solid var(--purple-mid); font-style:italic; }
+  .tone-analysis { padding:12px 16px; background:var(--purple-pale); border-radius:10px; margin-top:10px; font-size:13.5px; line-height:1.6; color:var(--purple-dark); display:none; }
+  .tone-msg.selected .tone-analysis { display:block; animation:fadeIn 0.3s ease; }
+  .tone-msg-label { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--purple-dark); flex:1; }
+  .tone-toggle { font-size:14px; flex-shrink:0; color:var(--gray-muted); }
+  .tone-msg.selected .tone-toggle { color:var(--purple); }
+
+  /* AUDIENCE MATRIX */
+  .audience-matrix { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .audience-matrix { grid-template-columns:1fr; } }
+  .am-card { border:1.5px solid var(--purple-mid); border-radius:18px; padding:22px; background:var(--white); transition:all 0.2s ease; }
+  .am-card:hover { border-color:var(--purple); background:var(--purple-pale); transform:translateY(-2px); }
+  .am-icon { font-size:32px; margin-bottom:12px; display:block; }
+  .am-audience { font-family:'Fraunces',serif; font-size:18px; font-weight:700; color:var(--purple-dark); margin-bottom:6px; }
+  .am-signals { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+  .am-signal { font-size:13px; color:var(--gray-text); display:flex; gap:8px; }
+  .am-signal::before { content:'→'; color:var(--purple); flex-shrink:0; font-weight:700; }
+  .am-example { font-size:13px; background:var(--gray-soft); border-radius:8px; padding:10px 12px; color:var(--gray-text); font-style:italic; line-height:1.55; }
+
+  /* TONE KILLERS */
+  .tone-killers { display:flex; flex-direction:column; gap:10px; margin:24px 0; }
+  .tk-item { display:flex; gap:16px; align-items:flex-start; padding:16px 18px; background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:14px; transition:all 0.2s ease; }
+  .tk-item:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .tk-icon { font-size:24px; flex-shrink:0; }
+  .tk-name { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--purple-dark); margin-bottom:5px; }
+  .tk-bad { font-size:13px; color:var(--red); background:var(--red-pale); padding:6px 10px; border-radius:8px; margin-bottom:6px; font-style:italic; }
+  .tk-good { font-size:13px; color:var(--green); background:var(--green-pale); padding:6px 10px; border-radius:8px; font-style:italic; }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.1 · Business Writing Fundamentals</div>
+  <h1>Tone — The Invisible Signal in Everything You Write</h1>
+  <p class="hero-sub">You can write a perfectly accurate, grammatically correct message that still lands completely wrong. That's tone. And mastering it is one of the most nuanced — and most valuable — communication skills you can develop.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Imagine receiving this message from a colleague: "The report would have been more useful if it had been submitted on time." Now imagine receiving: "Thanks for sending over the report — for next time, it would really help to have it by Thursday so I can prep for Friday's meeting." Same underlying message. Completely different emotional experience for the reader.</p>
+    <p>Tone is the emotional layer underneath the words. <mark>It signals how you feel about the person you're writing to, how you feel about the situation, and how seriously you're taking the communication.</mark> People respond to tone before they respond to content — often before they've even consciously registered what the tone is.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Same Message, Four Different Tones</h2>
+    <p>Here's a scenario: a team member hasn't submitted a report that was due yesterday. Someone needs to follow up. Read each version below — notice how each one feels completely different, even though they're all asking for the same thing. Click each one to see the analysis.</p>
+
+    <div class="tone-messages">
+      <div class="tone-msg too-casual" onclick="toggleTone(this)">
+        <div class="tone-msg-header">
+          <div class="tone-badge">Too Casual</div>
+          <div class="tone-msg-label">Version A</div>
+          <div class="tone-toggle">click to analyze</div>
+        </div>
+        <div class="tone-msg-body">
+          <div class="tone-msg-text">"hey!! where's that report lol, kinda need it asap 😬 thx"</div>
+          <div class="tone-analysis">⚠️ The casual tone, emoji, and "lol" make this feel like a text to a friend — not a professional workplace request. It also undersells the urgency. Even if the sender meant it lightly, it signals that they don't take their own deadline seriously, which makes it easy for the recipient to do the same.</div>
+        </div>
+      </div>
+      <div class="tone-msg professional" onclick="toggleTone(this)">
+        <div class="tone-msg-header">
+          <div class="tone-badge">✅ Professional</div>
+          <div class="tone-msg-label">Version B</div>
+          <div class="tone-toggle">click to analyze</div>
+        </div>
+        <div class="tone-msg-body">
+          <div class="tone-msg-text">"Hi Jordan, just following up on the report — I was expecting it yesterday and need it to prepare for tomorrow's meeting. Could you send it over by noon today? Thanks so much."</div>
+          <div class="tone-analysis">✅ This is the sweet spot. It's direct without being harsh. It explains why the report is needed (context helps the recipient understand the urgency). It gives a specific new deadline. It says thank you. The recipient knows exactly what's expected and feels respected while getting the message clearly.</div>
+        </div>
+      </div>
+      <div class="tone-msg too-formal" onclick="toggleTone(this)">
+        <div class="tone-msg-header">
+          <div class="tone-badge">Too Formal</div>
+          <div class="tone-msg-label">Version C</div>
+          <div class="tone-toggle">click to analyze</div>
+        </div>
+        <div class="tone-msg-body">
+          <div class="tone-msg-text">"Dear Mr. Chen, I am writing to formally advise you that the aforementioned report, which was due on the date of the 14th instant, has not been received. I would respectfully request that said documentation be submitted at your earliest possible convenience."</div>
+          <div class="tone-analysis">⚠️ Overly formal language creates distance and can feel cold, condescending, or even threatening — even though none of that was intended. "Aforementioned," "14th instant," "said documentation" — this sounds like a legal notice, not a workplace email. It would likely make the recipient defensive before they even respond.</div>
+        </div>
+      </div>
+      <div class="tone-msg passive-aggressive" onclick="toggleTone(this)">
+        <div class="tone-msg-header">
+          <div class="tone-badge">Passive-Aggressive</div>
+          <div class="tone-msg-label">Version D</div>
+          <div class="tone-toggle">click to analyze</div>
+        </div>
+        <div class="tone-msg-body">
+          <div class="tone-msg-text">"As I mentioned in my previous email, the report was due yesterday. I'm sure you've been busy. It would be great to receive it whenever you get a chance, if that's not too much to ask."</div>
+          <div class="tone-analysis">⚠️ "As I mentioned," "I'm sure you've been busy," and "if that's not too much to ask" are all classic signals of passive-aggressive writing. They express frustration through sarcasm and pointed politeness rather than directly. The recipient will feel criticized and unlikely to respond positively. This is worse than being direct.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Professional tone isn't about being formal. It's about being clear, respectful, and direct — in a way that makes the reader feel valued, not managed.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How to Calibrate Your Tone for Different Audiences</h2>
+    <p>The right tone isn't fixed — it shifts based on who you're writing to, what your relationship is, and what the situation requires. Here are the four most common writing relationships in professional settings.</p>
+    <div class="audience-matrix">
+      <div class="am-card">
+        <span class="am-icon">👔</span>
+        <div class="am-audience">Writing to Your Manager or Executive</div>
+        <div class="am-signals">
+          <div class="am-signal">More formal, more concise</div>
+          <div class="am-signal">Lead with the key point immediately</div>
+          <div class="am-signal">Make it easy to skim and act</div>
+          <div class="am-signal">Avoid slang, casual openers</div>
+        </div>
+        <div class="am-example">"Hi Sarah, quick update on the Q3 project — we're on track for the October 1st deadline. Two items need your input by Thursday. [Items listed below]"</div>
+      </div>
+      <div class="am-card">
+        <span class="am-icon">🤝</span>
+        <div class="am-audience">Writing to a Peer or Teammate</div>
+        <div class="am-signals">
+          <div class="am-signal">More conversational, still professional</div>
+          <div class="am-signal">Can be slightly more casual in opener</div>
+          <div class="am-signal">Collaborative framing ("we," "let's")</div>
+          <div class="am-signal">Direct but warm</div>
+        </div>
+        <div class="am-example">"Hey Marcus — hope your week is going well. Quick question on the budget doc: are the Q3 figures finalized yet? I want to make sure I'm working from the right version."</div>
+      </div>
+      <div class="am-card">
+        <span class="am-icon">🏢</span>
+        <div class="am-audience">Writing to a Client or External Contact</div>
+        <div class="am-signals">
+          <div class="am-signal">Professional and polished throughout</div>
+          <div class="am-signal">Assume less shared context</div>
+          <div class="am-signal">More explicit about next steps</div>
+          <div class="am-signal">Represent the company, not just yourself</div>
+        </div>
+        <div class="am-example">"Hi Ms. Rodriguez, thank you for taking the time to speak with us yesterday. As discussed, I've attached the revised proposal for your review. Please don't hesitate to reach out with any questions."</div>
+      </div>
+      <div class="am-card">
+        <span class="am-icon">📢</span>
+        <div class="am-audience">Writing to a Large Group or All-Staff</div>
+        <div class="am-signals">
+          <div class="am-signal">Clear and inclusive language</div>
+          <div class="am-signal">No inside jokes or assumptions</div>
+          <div class="am-signal">Action items clearly separated</div>
+          <div class="am-signal">Respectful of everyone's time</div>
+        </div>
+        <div class="am-example">"Team — a quick update on the office move. The new location will open on November 1st. Parking information and directions are attached. Please complete the desk assignment form by October 20th."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Six Tone Killers to Eliminate From Your Writing</h2>
+    <p>These phrases and patterns show up constantly in professional writing — and they consistently create the wrong impression. Learn to spot and remove them.</p>
+    <div class="tone-killers">
+      <div class="tk-item"><div class="tk-icon">😤</div><div><div class="tk-name">Passive-Aggressive Politeness</div><div class="tk-bad">❌ "As I mentioned in my previous email..." / "Per my last message..."</div><div class="tk-good">✅ Just say what you need: "Following up on my email from Tuesday — could you send over the file by end of day?"</div></div></div>
+      <div class="tk-item"><div class="tk-icon">🫥</div><div><div class="tk-name">Wishy-Washy Language</div><div class="tk-bad">❌ "I was just wondering if maybe you could possibly..."</div><div class="tk-good">✅ "Could you please..." or "I'd like to request..." — direct but still polite.</div></div></div>
+      <div class="tk-item"><div class="tk-icon">🤖</div><div><div class="tk-name">Corporate Robot Speak</div><div class="tk-bad">❌ "Please be advised that going forward, leveraging our synergies will be mission-critical."</div><div class="tk-good">✅ "From now on, we'll work more closely across teams to get better results."</div></div></div>
+      <div class="tk-item"><div class="tk-icon">😬</div><div><div class="tk-name">Over-Apologizing</div><div class="tk-bad">❌ "Sorry to bother you, I know you're really busy, I hate to ask but..."</div><div class="tk-good">✅ "Quick question when you have a moment:" — respectful without being self-deprecating.</div></div></div>
+      <div class="tk-item"><div class="tk-icon">🎭</div><div><div class="tk-name">Unearned Enthusiasm</div><div class="tk-bad">❌ "Hope this email finds you AMAZING!! 😊🚀 So excited to connect!!"</div><div class="tk-good">✅ "Hope you're well — I'm reaching out because..." — warm but appropriate.</div></div></div>
+      <div class="tk-item"><div class="tk-icon">⚠️</div><div><div class="tk-name">Accusatory Framing</div><div class="tk-bad">❌ "You forgot to include the attachment" / "You missed the deadline"</div><div class="tk-good">✅ "The attachment seems to be missing — could you resend?" — factual, not blaming.</div></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🤖</div><div><h3>How AI Gets Tone Wrong — And How You Fix It</h3><p>AI-generated writing often defaults to one of two tone failures: overly enthusiastic ("I hope this message finds you incredibly well! I am absolutely delighted to assist!") or robotic-formal ("Please be advised that your request has been received and will be processed accordingly"). Neither sounds like a real professional. Your job when editing AI output is to strip out the extremes and dial the tone to match the actual human you're writing to.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A junior employee sends this to their manager: "Hey! Just wanted to circle back on that promotion convo we had — any updates?? Getting kinda anxious lol 😬" What is the primary tone problem?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The message is too long and should be shorter</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. The tone is too casual for a sensitive professional topic — emojis, "lol," and "kinda anxious" are inappropriate for a conversation about career advancement with a manager</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. The employee should not have brought up the promotion at all</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. The message is passive-aggressive</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Tone is the emotional signal underneath the words — readers respond to it before they consciously register what it is.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The professional sweet spot is direct, respectful, and human — not too casual, not too formal, and never passive-aggressive.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Calibrate your tone based on the audience: more formal for executives and external contacts, more conversational for peers, always professional.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Six tone killers to eliminate: passive-aggressive politeness, wishy-washy language, corporate robot speak, over-apologizing, unearned enthusiasm, and accusatory framing.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleTone(msg){const o=msg.classList.contains('selected');document.querySelectorAll('.tone-msg').forEach(m=>{m.classList.remove('selected');m.querySelector('.tone-toggle').textContent='click to analyze';});if(!o){msg.classList.add('selected');msg.querySelector('.tone-toggle').textContent='click to close';}}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Career conversations with managers are high-stakes and need a professional tone. "lol," "kinda anxious," and emojis signal immaturity in this context. A better approach: "Hi [Name] — I wanted to follow up on our conversation about the promotion opportunity. Could we find 15 minutes to discuss next steps? I appreciate your guidance on this."';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The issue here is tone, not content or length. Following up on a promotion conversation is completely appropriate. The problem is how it\'s done — the casual language, emojis, and expression of anxiety create an unprofessional impression in exactly the situation where you need to appear most professional.';}f.classList.add('show');}
+</script>
+</body>
+</html>

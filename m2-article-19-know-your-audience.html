@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Know Your Audience — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  .four-questions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.four-questions{grid-template-columns:1fr;}}
+  .fq-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:24px;background:var(--white);transition:all 0.2s ease;}
+  .fq-card:hover{border-color:var(--purple);background:var(--purple-pale);transform:translateY(-2px);}
+  .fq-num{font-family:'Fraunces',serif;font-size:40px;font-weight:900;color:var(--purple-mid);line-height:1;margin-bottom:10px;}
+  .fq-question{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .fq-why{font-size:14px;line-height:1.6;color:var(--gray-text);}
+  .audience-profiles{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .ap-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:0;}
+  .ap-tab{padding:10px 18px;border-radius:100px;border:1.5px solid var(--purple-mid);font-size:13px;font-weight:600;color:var(--gray-muted);cursor:pointer;transition:all 0.2s;background:var(--white);}
+  .ap-tab.active{background:var(--purple);border-color:var(--purple);color:white;}
+  .ap-panel{display:none;margin-top:16px;animation:fadeIn 0.3s ease;}
+  .ap-panel.show{display:block;}
+  .profile-card{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:20px;padding:28px;}
+  .pc-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+  .pc-avatar{width:52px;height:52px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+  .pc-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);}
+  .pc-role{font-size:13px;color:var(--gray-muted);}
+  .pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  @media(max-width:500px){.pc-grid{grid-template-columns:1fr;}}
+  .pc-attr{background:var(--white);border-radius:12px;padding:14px 16px;}
+  .pc-attr-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .pc-attr-val{font-size:14px;line-height:1.5;color:var(--gray-text);}
+  .pc-sample{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;overflow:hidden;}
+  .pc-sample-bar{background:var(--purple-pale);padding:8px 14px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);}
+  .pc-sample-content{padding:14px 16px;font-size:13.5px;line-height:1.75;color:var(--gray-text);}
+  .same-message{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sm-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .sm-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:600px){.sm-grid{grid-template-columns:1fr;}}
+  .sm-version{border-radius:14px;overflow:hidden;}
+  .sm-bar{padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;}
+  .sm-version.technical .sm-bar{background:#EEF2FF;color:#3730A3;}
+  .sm-version.executive .sm-bar{background:var(--purple-pale);color:var(--purple-dark);}
+  .sm-version.client .sm-bar{background:var(--green-pale);color:var(--green);}
+  .sm-version.team .sm-bar{background:#FFF7ED;color:#92400E;}
+  .sm-content{padding:14px 16px;font-size:13.5px;line-height:1.7;color:var(--gray-text);background:var(--white);}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Module 2 · Gap-Filling Essential</div>
+  <h1>Know Your Audience — The Foundation of All Good Business Communication</h1>
+  <p class="hero-sub">Every writing decision — tone, length, format, detail level, vocabulary — flows from one thing: who is reading this? Get that wrong, and nothing else you do right will save the message.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>There's a reason "know your audience" is the oldest advice in communication. Most professional writing fails not because the writer doesn't know the subject — but because they wrote for themselves rather than for the reader. They included what they found interesting, at the depth they understood it, in the structure that felt natural to them.</p>
+    <p><mark>Audience awareness is the skill of stepping outside your own perspective and asking: what does this specific person need from this specific message, right now?</mark> It changes everything — and it's the thing AI is worst at, which means it's your most important contribution to any AI-assisted document.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Four Questions to Ask Before You Write Anything</h2>
+    <div class="four-questions">
+      <div class="fq-card"><div class="fq-num">1</div><div class="fq-question">What does this person already know?</div><p class="fq-why">This determines how much background to include. Explaining concepts your reader already knows wastes their time and signals you don't understand their expertise level.</p></div>
+      <div class="fq-card"><div class="fq-num">2</div><div class="fq-question">What do they need to decide or do?</div><p class="fq-why">This determines what information to prioritize. Everything in your message should serve the decision or action the reader needs to take — anything that doesn't serve that purpose is noise.</p></div>
+      <div class="fq-card"><div class="fq-num">3</div><div class="fq-question">How much time do they have?</div><p class="fq-why">This determines length. A senior executive skimming their inbox needs a 3-sentence summary. A project team member who will execute based on your instructions needs full detail.</p></div>
+      <div class="fq-card"><div class="fq-num">4</div><div class="fq-question">What's their relationship to this topic emotionally?</div><p class="fq-why">This determines tone. Is this good news? Bad news? A request that might feel like a burden? An update they're anxious about? Emotional context shapes how you frame every message.</p></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Audience Profiles — How Writing Changes for Each</h2>
+    <p>The same information needs to be communicated very differently depending on who's receiving it. Click each profile to see how.</p>
+    <div class="audience-profiles">
+      <div class="ap-tabs">
+        <div class="ap-tab active" onclick="showProfile('exec',this)">👔 Senior Executive</div>
+        <div class="ap-tab" onclick="showProfile('tech',this)">💻 Technical Expert</div>
+        <div class="ap-tab" onclick="showProfile('client',this)">🏢 External Client</div>
+        <div class="ap-tab" onclick="showProfile('team',this)">🤝 Your Peer</div>
+      </div>
+      <div class="ap-panel show" id="profile-exec">
+        <div class="profile-card">
+          <div class="pc-header"><div class="pc-avatar">👔</div><div><div class="pc-name">Senior Executive / Leadership</div><div class="pc-role">VP, Director, C-Suite</div></div></div>
+          <div class="pc-grid">
+            <div class="pc-attr"><div class="pc-attr-label">Time available</div><div class="pc-attr-val">2–5 minutes maximum — often skimming</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">What they want</div><div class="pc-attr-val">Decision, recommendation, and key data — not process</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">Tone</div><div class="pc-attr-val">Confident, concise, direct — no hedging</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">Format</div><div class="pc-attr-val">Short paragraphs, bottom line first, detail available on request</div></div>
+          </div>
+          <div class="pc-sample"><div class="pc-sample-bar">✅ Writing for this audience</div><div class="pc-sample-content"><strong>Subject:</strong> Q3 Marketing Budget — Approval Needed by Thursday<br><br>Q3 marketing results exceeded targets by 14%. Based on this performance, I'm recommending we increase Q4 digital spend by $80K, focused on paid search which drove 67% of conversions. I've attached the full analysis. Could you approve by Thursday so we can brief the agency by Friday?</div></div>
+        </div>
+      </div>
+      <div class="ap-panel" id="profile-tech">
+        <div class="profile-card">
+          <div class="pc-header"><div class="pc-avatar">💻</div><div><div class="pc-name">Technical Expert / Specialist</div><div class="pc-role">Engineer, Analyst, Developer, Specialist</div></div></div>
+          <div class="pc-grid">
+            <div class="pc-attr"><div class="pc-attr-label">Time available</div><div class="pc-attr-val">More patient with detail — if it's relevant</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">What they want</div><div class="pc-attr-val">Precision, accuracy, technical specifics — skip the basics</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">Tone</div><div class="pc-attr-val">Peer-level, direct, factual — they'll flag imprecision</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">Format</div><div class="pc-attr-val">Technical detail is welcome; over-simplification is insulting</div></div>
+          </div>
+          <div class="pc-sample"><div class="pc-sample-bar">✅ Writing for this audience</div><div class="pc-sample-content"><strong>Subject:</strong> API Rate Limit Issue on v2 Endpoint<br><br>We're hitting 429 errors on the /v2/analyze endpoint during batch processing runs over ~200 concurrent requests. The retry logic is currently using fixed 5s intervals — should we switch to exponential backoff? Also confirming the rate limit is 500 req/min per token, not per account — our assumption may be wrong.</div></div>
+        </div>
+      </div>
+      <div class="ap-panel" id="profile-client">
+        <div class="profile-card">
+          <div class="pc-header"><div class="pc-avatar">🏢</div><div><div class="pc-name">External Client / Customer</div><div class="pc-role">Someone outside your organization</div></div></div>
+          <div class="pc-grid">
+            <div class="pc-attr"><div class="pc-attr-label">Time available</div><div class="pc-attr-val">Variable — assume limited unless they've asked for detail</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">What they want</div><div class="pc-attr-val">Clear value, clear next steps, no jargon — you represent the company</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">Tone</div><div class="pc-attr-val">Professional, warm, accountable — they are paying for this relationship</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">Format</div>
+            <div class="pc-attr-val">Polished, no internal shorthand, always make it easy to respond</div></div>
+          </div>
+          <div class="pc-sample"><div class="pc-sample-bar">✅ Writing for this audience</div><div class="pc-sample-content"><strong>Subject:</strong> Project Update — Week 4<br><br>Hi Sarah, quick update on the website project: the homepage and three product pages are complete and ready for your review at the link below. We're on track for the October 15th launch. Could you share feedback by Friday so we can incorporate it before the final build next week? Let me know if you'd like to jump on a call to walk through anything.</div></div>
+        </div>
+      </div>
+      <div class="ap-panel" id="profile-team">
+        <div class="profile-card">
+          <div class="pc-header"><div class="pc-avatar">🤝</div><div><div class="pc-name">Peer / Teammate</div><div class="pc-role">Same level, same team or department</div></div></div>
+          <div class="pc-grid">
+            <div class="pc-attr"><div class="pc-attr-label">Time available</div><div class="pc-attr-val">Usually limited — treat their time as you'd want yours treated</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">What they want</div><div class="pc-attr-val">Clear ask, enough context, human tone — you work together</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">Tone</div><div class="pc-attr-val">Collegial, direct, warm — you have shared context and culture</div></div>
+            <div class="pc-attr"><div class="pc-attr-label">Format</div><div class="pc-attr-val">Conversational is fine; still professional — Slack vs email may differ</div></div>
+          </div>
+          <div class="pc-sample"><div class="pc-sample-bar">✅ Writing for this audience</div><div class="pc-sample-content"><strong>Slack message:</strong><br>Hey Marcus — do you have the final Q3 numbers handy? I need them for the deck I'm building for Thursday. Totally fine if you need until Wednesday, just let me know. Thanks 🙌</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Same Information, Four Different Versions</h2>
+    <p>Here's the exact same news — "we're launching a new product feature next month" — written for four different audiences. Notice how dramatically the message changes while the core fact stays the same.</p>
+    <div class="same-message">
+      <div class="sm-label">One Message, Four Audiences</div>
+      <div class="sm-grid">
+        <div class="sm-version technical"><div class="sm-bar">💻 To the Engineering Team</div><div class="sm-content">We're shipping the AI-assisted search feature on November 1st. The feature flag will be enabled for 10% of users initially, expanding to 100% by November 15th if error rates stay under 0.5%. Please ensure the monitoring dashboard is set up before the 1st. James owns the rollback plan — confirm with him by Friday.</div></div>
+        <div class="sm-version executive"><div class="sm-bar">👔 To Senior Leadership</div><div class="sm-content">We're launching the AI search feature on November 1st — on schedule. Early beta metrics show 23% improvement in search relevance scores. Full rollout by November 15th. No budget impact; all within original project scope.</div></div>
+        <div class="sm-version client"><div class="sm-bar">🏢 To an External Client</div><div class="sm-content">We're excited to share that an enhanced search experience is coming to your platform on November 1st. You'll notice results that are more relevant to your specific queries — no action needed on your end. If you have any questions, feel free to reach out to your account manager.</div></div>
+        <div class="sm-version team"><div class="sm-bar">🤝 To a Teammate</div><div class="sm-content">Quick heads up — AI search is launching November 1st! Make sure your docs are updated with the new feature info before then so support doesn't get caught off guard. James has the full timeline if you need more detail.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Writing for your audience isn't dumbing things down or being strategic — it's respecting the reader enough to give them exactly what they need in the way they can best use it.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🤖</div><div><h3>How to Tell AI About Your Audience</h3><p>When using AI to draft communication, always specify the audience explicitly: "Write this for a non-technical executive who needs to approve a budget" produces completely different output than "Write this for the engineering team implementing the feature." The more specific you are — role, expertise level, what decision they're making, how much time they have — the more targeted the AI output. Audience awareness doesn't just help you write better — it makes your AI prompts dramatically more effective.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A data analyst writes a technical explanation of why a system error occurred and sends it to the CEO with six paragraphs of technical detail. The CEO reads the first paragraph and responds "OK but what do we tell customers?" What went wrong?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The analyst should have used fewer technical terms</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. The analyst wrote for themselves rather than the audience — the CEO needed the business impact and customer communication plan, not a technical root cause analysis</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. The email was too long and should have been three paragraphs instead</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. The analyst should have sent a memo rather than an email</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Before writing anything, ask four questions: What does this person already know? What do they need to decide or do? How much time do they have? What's their emotional relationship to this topic?</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The same information needs to be communicated very differently for executives (concise, decision-first), technical experts (precise, skip basics), clients (polished, no jargon), and peers (conversational, direct).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Audience awareness is the thing AI is worst at — it's your most important contribution to any AI-assisted document, and specifying the audience explicitly in your prompts dramatically improves output quality.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Most professional writing fails because the writer wrote for themselves rather than the reader — audience awareness is the discipline that fixes this.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function showProfile(id,tab){document.querySelectorAll('.ap-panel').forEach(p=>p.classList.remove('show'));document.querySelectorAll('.ap-tab').forEach(t=>t.classList.remove('active'));document.getElementById('profile-'+id).classList.add('show');tab.classList.add('active');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> The analyst had genuinely useful information — but sent the wrong version to the wrong audience. The CEO doesn\'t need to understand how the error happened technically. They need to know: what\'s the business impact, who\'s affected, and what do we tell customers. That\'s a completely different document than a technical root cause analysis. Writing for the audience means asking "what does this specific person actually need from me right now?"';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The problem isn\'t length, terminology, or format — it\'s audience mismatch. The analyst wrote a document that would be perfect for the engineering team and completely wrong for a CEO. The CEO\'s needs are entirely different: business impact, customer impact, what to say publicly. Audience awareness means writing for what the reader needs — not for what you know.';}f.classList.add('show');}
+</script>
+</body>
+</html>

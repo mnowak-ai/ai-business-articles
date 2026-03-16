@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Three Steps to a Great Summary — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  .steps{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .step{display:flex;gap:24px;position:relative;}
+  .step:not(:last-child)::after{content:'';position:absolute;left:23px;top:52px;width:2px;height:calc(100% - 12px);background:var(--purple-mid);}
+  .step-left{flex-shrink:0;padding-top:4px;}
+  .step-num{width:46px;height:46px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:18px;font-weight:900;color:white;z-index:1;}
+  .step-body{padding:4px 0 36px;flex:1;}
+  .step-title{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:var(--purple-dark);margin-bottom:10px;}
+  .step-desc{font-size:15.5px;line-height:1.75;color:var(--gray-text);margin-bottom:14px;}
+  .step-questions{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+  .sq{display:flex;gap:10px;padding:10px 14px;background:var(--purple-pale);border-radius:10px;font-size:14px;color:var(--purple-dark);}
+  .sq::before{content:'→';font-weight:700;color:var(--purple);flex-shrink:0;}
+  .step-demo{border-radius:14px;overflow:hidden;}
+  .sd-bar{padding:10px 16px;background:var(--gray-soft);font-size:12px;font-weight:700;color:var(--purple);}
+  .sd-cols{display:grid;grid-template-columns:1fr 1fr;}
+  @media(max-width:500px){.sd-cols{grid-template-columns:1fr;}}
+  .sd-col{padding:14px 16px;font-size:13.5px;line-height:1.65;}
+  .sd-col.before{background:var(--red-pale);color:#7F1D1D;}
+  .sd-col.after{background:var(--green-pale);color:#1A3A2A;}
+  .sd-col-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+  .sd-col.before .sd-col-label{color:var(--red);}
+  .sd-col.after .sd-col-label{color:var(--green);}
+
+  .live-practice{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .lp-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .lp-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .lp-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .lp-desc{font-size:15px;color:var(--gray-muted);margin-bottom:20px;line-height:1.6;}
+  .stage-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .stage-tab{padding:9px 18px;border-radius:100px;border:1.5px solid var(--purple-mid);font-size:13px;font-weight:600;color:var(--gray-muted);cursor:pointer;transition:all 0.2s;background:var(--white);}
+  .stage-tab.active{background:var(--purple);border-color:var(--purple);color:white;}
+  .stage-panel{display:none;}
+  .stage-panel.show{display:block;animation:fadeIn 0.3s ease;}
+  .doc-view{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;overflow:hidden;}
+  .doc-bar{background:var(--purple-pale);padding:10px 16px;font-size:12px;font-weight:600;color:var(--purple);}
+  .doc-content{padding:18px 20px;font-size:14px;line-height:1.8;color:var(--gray-text);}
+  .highlight{background:var(--purple-mid);border-radius:2px;padding:1px 2px;}
+  .strikethrough{text-decoration:line-through;opacity:0.4;}
+  .added{background:var(--green-pale);border-radius:2px;padding:1px 2px;color:var(--green);}
+  .stage-note{margin-top:12px;padding:12px 14px;background:var(--purple-pale);border-radius:10px;font-size:13.5px;line-height:1.6;color:var(--purple-dark);}
+
+  .checklist-box{background:var(--white);border:2px solid var(--purple);border-radius:20px;padding:32px;margin:24px 0;position:relative;}
+  .cl-title{position:absolute;top:-14px;left:24px;background:var(--white);padding:0 12px;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);}
+  .cl-items{display:flex;flex-direction:column;gap:10px;}
+  .cl-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--gray-soft);border-radius:10px;cursor:pointer;transition:all 0.2s;border:1.5px solid transparent;}
+  .cl-item:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .cl-item.done{border-color:#6EE7B7;background:var(--green-pale);}
+  .cl-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--purple-mid);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all 0.2s;}
+  .cl-item.done .cl-check{background:var(--green);border-color:var(--green);color:white;}
+  .cl-text{font-size:15px;color:var(--gray-text);font-weight:500;}
+  .cl-item.done .cl-text{color:var(--green);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.live-practice{padding:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.4 · Summarizing Information</div>
+  <h1>The Three Steps to a Great Summary — Identify, Remove, Clarify</h1>
+  <p class="hero-sub">Good summaries aren't just shorter versions of the original. They're rebuilt from the ground up around what the reader actually needs. Here's the repeatable method.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Most people approach summarizing by reading something and then trying to write a shorter version. This produces mediocre summaries — they tend to be proportionally shorter but structurally identical to the original, still buried in the same order, still carrying the same weight in all the wrong places.</p>
+    <p><mark>A great summary is built around what the reader needs, not around what the original document contains.</mark> That requires a different process — one that starts with a question, not with the text. Here's the three-step method that produces summaries worth reading.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Three Steps</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-left"><div class="step-num">1</div></div>
+        <div class="step-body">
+          <div class="step-title">Identify — What actually matters here?</div>
+          <p class="step-desc">Before you write a single word of the summary, ask: what does my reader need to know to make a decision or take action? This question forces you to read the source document as an editor, not as a student trying to absorb everything. You're looking for the signal, not capturing the noise.</p>
+          <div class="step-questions">
+            <div class="sq">What is the single most important finding, conclusion, or recommendation?</div>
+            <div class="sq">What are the 2–3 supporting facts that make that finding credible?</div>
+            <div class="sq">What does the reader need to do as a result of this information?</div>
+            <div class="sq">What information changes the picture if the reader doesn't know it?</div>
+          </div>
+          <div class="step-demo">
+            <div class="sd-bar">Step 1 in Action — Identifying What Matters</div>
+            <div class="sd-cols">
+              <div class="sd-col before"><div class="sd-col-label">❌ Trying to capture everything</div>Reading a 20-page sales report and making notes on every section — methodology, historical context, regional breakdown, year-over-year comparison, team composition, market conditions...</div>
+              <div class="sd-col after"><div class="sd-col-label">✅ Identifying what matters</div>Asking: "What does our VP need to make the Q4 budget decision?" Answer: total Q3 revenue, whether we hit target, and the top 2 reasons for any gap. Everything else is detail.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left"><div class="step-num">2</div></div>
+        <div class="step-body">
+          <div class="step-title">Remove — What's filler vs. substance?</div>
+          <p class="step-desc">Once you know what matters, cut everything else. This is where most people hesitate — it feels wrong to leave things out. But information that doesn't serve the reader's decision or understanding doesn't belong in a summary. Background that the reader already knows, methodology that doesn't affect the conclusion, redundant examples, and qualifications that don't change the picture — all of this should go.</p>
+          <div class="step-questions">
+            <div class="sq">Does the reader need this to understand the main point?</div>
+            <div class="sq">Does removing this change the conclusion or recommendation?</div>
+            <div class="sq">Is this background knowledge the reader already has?</div>
+            <div class="sq">Is this a qualification that matters, or hedging that doesn't?</div>
+          </div>
+          <div class="step-demo">
+            <div class="sd-bar">Step 2 in Action — Removing Filler</div>
+            <div class="sd-cols">
+              <div class="sd-col before"><div class="sd-col-label">❌ Keeping everything</div>"This report analyzes Q3 results across all 6 regions using data collected through our CRM system following the methodology established in 2021, and incorporates feedback from 14 sales managers interviewed over a 3-week period..."</div>
+              <div class="sd-col after"><div class="sd-col-label">✅ After removing filler</div>"Q3 revenue came in at $2.1M, 8% below target. The shortfall was driven by two regions: Northeast (down 15%) and Southwest (down 22%)."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left"><div class="step-num">3</div></div>
+        <div class="step-body">
+          <div class="step-title">Clarify — Could someone understand this without reading the original?</div>
+          <p class="step-desc">The final step is making sure the summary stands alone — a reader who hasn't seen the original document can understand it, act on it, and not be confused by anything in it. This means using plain language, defining any jargon the reader might not know, and making the "so what" explicit rather than implied. A summary that requires the reader to go back to the original to make sense of it has failed its purpose.</p>
+          <div class="step-questions">
+            <div class="sq">Can someone who hasn't read the original understand this completely?</div>
+            <div class="sq">Is the recommendation or required action explicit — not implied?</div>
+            <div class="sq">Are there any terms or references that need a brief explanation?</div>
+            <div class="sq">Does the opening sentence immediately convey the main point?</div>
+          </div>
+          <div class="step-demo">
+            <div class="sd-bar">Step 3 in Action — Clarifying for the Reader</div>
+            <div class="sd-cols">
+              <div class="sd-col before"><div class="sd-col-label">❌ Unclear without context</div>"Results are mixed, with some improvement in key markets but continued headwinds in others, consistent with the trends discussed in last quarter's review."</div>
+              <div class="sd-col after"><div class="sd-col-label">✅ Clear and self-contained</div>"Q3 revenue missed target by 8%. The main causes are slower-than-expected recovery in the Northeast and a new competitor entering the Southwest market in August. Recommended action: reallocate $200K from underperforming markets to the Midwest, which exceeded target by 14%."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Watch the Three Steps Applied — Live</h2>
+    <p>Here's a real business document going through all three steps. Toggle through each stage.</p>
+    <div class="live-practice">
+      <div class="lp-label">Live Example</div>
+      <div class="lp-title">Q3 Customer Satisfaction Report → Executive Summary</div>
+      <p class="lp-desc">The original is a 12-page report. Leadership needs a summary for a Monday morning briefing.</p>
+      <div class="stage-tabs">
+        <div class="stage-tab active" onclick="showStage('original',this)">Original Excerpt</div>
+        <div class="stage-tab" onclick="showStage('step1',this)">Step 1: Identify</div>
+        <div class="stage-tab" onclick="showStage('step2',this)">Step 2: Remove</div>
+        <div class="stage-tab" onclick="showStage('step3',this)">Step 3: Final Summary</div>
+      </div>
+      <div class="stage-panel show" id="stage-original">
+        <div class="doc-view"><div class="doc-bar">📄 Original Report Excerpt (of 12 pages)</div>
+        <div class="doc-content">This report presents findings from our Q3 2024 customer satisfaction survey, conducted between July 1st and September 30th, 2024. The survey utilized a Net Promoter Score (NPS) methodology, which has been our standard measurement approach since Q1 2022 when we transitioned from the CSAT framework previously used. A total of 1,847 customers were surveyed across all product tiers, representing a 34% response rate compared to 31% in Q2 2024.<br><br>Overall NPS for Q3 was 58, compared to 51 in Q2 2024 and 44 in Q3 2023, representing a 14% year-over-year improvement. Across product tiers, Enterprise customers gave an NPS of 71 (up from 63 in Q2), Mid-Market customers gave 54 (up from 49), and SMB customers gave 41 (up from 38).<br><br>Key drivers of promoter responses included: product reliability (mentioned by 67% of promoters), customer support responsiveness (mentioned by 58%), and ease of integration (mentioned by 42%). Key drivers of detractor responses included: pricing complexity (mentioned by 71% of detractors), onboarding experience (mentioned by 54%), and feature gaps vs. competitors (mentioned by 39%)...</div></div>
+      </div>
+      <div class="stage-panel" id="stage-step1">
+        <div class="doc-view"><div class="doc-bar">🔍 Step 1: What does leadership actually need?</div>
+        <div class="doc-content">Leadership question for Monday's briefing: "Are customers happier than they were? Why or why not? What should we do about it?"<br><br><strong>Key information identified:</strong><br><br>
+✅ KEEP: NPS is 58 (up from 51 last quarter, up from 44 last year) — clear improvement<br>
+✅ KEEP: Top reason customers are happy: product reliability and support<br>
+✅ KEEP: Top reason customers are unhappy: pricing complexity and onboarding<br>
+✅ KEEP: The "what to do" implication — address pricing clarity and onboarding<br><br>
+❌ SKIP: Survey methodology history (NPS vs CSAT transition)<br>
+❌ SKIP: Response rate statistics (34% vs 31%) — doesn't affect the conclusions<br>
+❌ SKIP: Full breakdown of all percentages — too granular for a briefing</div></div>
+        <div class="stage-note">💡 Leadership doesn't need to know how the survey was conducted — they need to know what customers think and what to do about it.</div>
+      </div>
+      <div class="stage-panel" id="stage-step2">
+        <div class="doc-view"><div class="doc-bar">✂️ Step 2: Draft with filler removed</div>
+        <div class="doc-content">Q3 customer satisfaction improved significantly. Overall NPS reached 58, up from 51 in Q2 and 44 in Q3 last year.<br><br>Customers are most satisfied with product reliability and support responsiveness. The main areas of dissatisfaction are pricing complexity and the onboarding experience — both were the top complaints from customers who gave low scores.<br><br>Recommended actions: simplify pricing communication and improve the onboarding process.<br><br>Full breakdown by segment available on request.</div></div>
+        <div class="stage-note">💡 We've gone from 400+ words to ~80 — and kept every piece of information leadership needs to make a decision.</div>
+      </div>
+      <div class="stage-panel" id="stage-step3">
+        <div class="doc-view"><div class="doc-bar">✅ Final Executive Summary — Ready to Present</div>
+        <div class="doc-content"><strong>Customer Satisfaction — Q3 2024 Briefing</strong><br><br>
+Customer satisfaction improved strongly in Q3. Our Net Promoter Score (NPS — a measure of how likely customers are to recommend us) reached 58, up from 51 last quarter and 44 a year ago. This is our highest NPS on record.<br><br>
+<strong>What's working:</strong> Customers rate product reliability and our support team highest.<br>
+<strong>What needs improvement:</strong> Pricing is seen as confusing, and new customers struggle with onboarding.<br><br>
+<strong>Recommended actions for Q4:</strong><br>
+1. Simplify how we communicate pricing — consider a one-page pricing guide<br>
+2. Review and improve the first 30-day onboarding experience<br><br>
+Full report available on request.</div></div>
+        <div class="stage-note">✅ A reader who never saw the original report can understand the full picture, the context ("NPS" is briefly defined), and exactly what to do next — in under 90 seconds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>A summary isn't a compressed version of the original. It's a rebuilt version designed specifically for the reader who needs to act on it.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Summary Quality Checklist</h2>
+    <p>Before you finalize any summary, run through these checks. Click each one as you confirm it.</p>
+    <div class="checklist-box">
+      <div class="cl-title">Summary Checklist</div>
+      <div class="cl-items">
+        <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-check').textContent=this.classList.contains('done')?'✓':'';"><div class="cl-check"></div><div class="cl-text">The most important finding or recommendation is in the first sentence</div></div>
+        <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-check').textContent=this.classList.contains('done')?'✓':'';"><div class="cl-check"></div><div class="cl-text">Someone who hasn't seen the original can understand this completely</div></div>
+        <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-check').textContent=this.classList.contains('done')?'✓':'';"><div class="cl-check"></div><div class="cl-text">The required action or decision is explicitly stated — not just implied</div></div>
+        <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-check').textContent=this.classList.contains('done')?'✓':'';"><div class="cl-check"></div><div class="cl-text">All jargon is either explained briefly or replaced with plain language</div></div>
+        <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-check').textContent=this.classList.contains('done')?'✓':'';"><div class="cl-check"></div><div class="cl-text">Background or methodology that doesn't affect the conclusion has been removed</div></div>
+        <div class="cl-item" onclick="this.classList.toggle('done');this.querySelector('.cl-check').textContent=this.classList.contains('done')?'✓':'';"><div class="cl-check"></div><div class="cl-text">The summary is appropriate length for the audience — shorter for senior leadership</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🤖</div><div><h3>How AI Fits Into These Three Steps</h3><p>AI is great at Steps 2 and 3 — it can remove filler and rewrite for clarity quickly. Step 1 is harder for AI because it requires knowing the audience and what decision they need to make. That's context you need to provide in your prompt: "Summarize this for a VP who needs to decide whether to increase the marketing budget. Highlight only what affects that decision." The more specific your prompt about who the summary is for and what they need to do, the better the AI's output.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You're summarizing a 25-page project proposal for your manager, who needs to decide whether to approve the budget. Which of the following should you lead with in your summary?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. A description of the project background and how the idea originated</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. The full methodology section explaining how the project will be executed</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. The budget request, the expected ROI, and the key risks — everything the manager needs to make the approval decision</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. A complete list of all project team members and their roles</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Step 1 — Identify: Before writing, ask what your reader needs to know to make a decision. Find the signal, don't capture all the noise.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Step 2 — Remove: Cut everything that doesn't serve the reader's decision. Background they know, methodology that doesn't affect conclusions, redundant examples — all of it goes.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Step 3 — Clarify: Make the summary stand alone. Someone who hasn't read the original should understand the full picture and know exactly what to do next.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The most important finding or recommendation always goes first — never build to a conclusion in a business summary.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function showStage(id,tab){document.querySelectorAll('.stage-panel').forEach(p=>p.classList.remove('show'));document.querySelectorAll('.stage-tab').forEach(t=>t.classList.remove('active'));document.getElementById('stage-'+id).classList.add('show');tab.classList.add('active');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Your manager\'s decision is about the budget. So lead with everything that affects that decision: how much money is being requested, what return is expected, and what the risks are. Background, methodology, and team details can follow or be available on request — but the decision-maker needs the decision-relevant information first, not last.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Background, methodology, and team details are all valuable context — but they don\'t directly answer the question your manager needs to make: "Should I approve this budget?" Lead with the budget request, the expected return, and the key risks. Everything else supports the decision but shouldn\'t precede it.';}f.classList.add('show');}
+</script>
+</body>
+</html>

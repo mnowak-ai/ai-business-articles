@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Use AI to Summarize — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  .prompt-recipe{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pr-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .pr-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .pr-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .pr-desc{font-size:15px;color:var(--gray-muted);margin-bottom:20px;line-height:1.6;}
+  .prompt-anatomy{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:16px;font-size:15px;line-height:1.9;}
+  .p-audience{background:#EDE9FE;border-bottom:2px solid #7C3AED;padding:2px 1px;border-radius:2px;}
+  .p-format{background:#DCFCE7;border-bottom:2px solid #16A34A;padding:2px 1px;border-radius:2px;}
+  .p-purpose{background:#FEF9C3;border-bottom:2px solid #CA8A04;padding:2px 1px;border-radius:2px;}
+  .p-length{background:#FFE4E6;border-bottom:2px solid #E11D48;padding:2px 1px;border-radius:2px;}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;}
+  .legend-dot{width:12px;height:12px;border-radius:3px;}
+
+  .prompt-examples{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .pe-card{border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;cursor:pointer;transition:all 0.2s ease;}
+  .pe-card:hover{border-color:var(--purple);}
+  .pe-card.open{border-color:var(--purple);}
+  .pe-header{display:flex;align-items:center;gap:14px;padding:18px 22px;background:var(--white);}
+  .pe-icon{font-size:24px;flex-shrink:0;}
+  .pe-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);flex:1;}
+  .pe-toggle{width:28px;height:28px;background:var(--purple-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:transform 0.3s,background 0.2s;flex-shrink:0;}
+  .pe-card.open .pe-toggle{transform:rotate(45deg);background:var(--purple);color:white;}
+  .pe-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+  .pe-card.open .pe-body{max-height:400px;}
+  .pe-inner{padding:0 22px 22px;}
+  .pe-prompt{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.7;color:var(--gray-text);font-style:italic;margin:14px 0 10px;}
+  .pe-why{font-size:13.5px;line-height:1.6;color:var(--gray-muted);}
+
+  .when-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.when-grid{grid-template-columns:1fr;}}
+  .wg-col{border-radius:20px;padding:26px;}
+  .wg-col.use{background:var(--green-pale);border:1.5px solid #6EE7B7;}
+  .wg-col.caution{background:var(--red-pale);border:1.5px solid #FCA5A5;}
+  .wg-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;margin-bottom:14px;}
+  .wg-col.use .wg-title{color:var(--green);}
+  .wg-col.caution .wg-title{color:var(--red);}
+  .wg-items{display:flex;flex-direction:column;gap:10px;}
+  .wg-item{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.55;color:var(--gray-text);}
+
+  .verification-box{background:var(--gray-soft);border:2px solid var(--purple);border-radius:20px;padding:28px;margin:24px 0;position:relative;}
+  .vb-title{position:absolute;top:-14px;left:20px;background:var(--white);padding:0 12px;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);}
+  .vb-items{display:flex;flex-direction:column;gap:10px;}
+  .vb-item{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--gray-text);padding:12px 14px;background:var(--white);border-radius:10px;}
+  .vb-item-icon{font-size:18px;flex-shrink:0;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.prompt-recipe{padding:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.4 · Summarizing Information</div>
+  <h1>How to Use AI to Summarize — And When to Do It Yourself</h1>
+  <p class="hero-sub">AI is one of the most powerful summarizing tools ever built — when used correctly. The key is knowing exactly how to prompt it, and when the task requires your judgment instead.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>AI summarization is not just "paste text, get summary." That approach produces generic, often inaccurate results that require heavy editing. <mark>The difference between a mediocre AI summary and an excellent one is almost entirely in how you prompt it.</mark> Give the AI the right context — who the summary is for, what decision it supports, and how long it should be — and you'll get something worth using as a starting point.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Anatomy of a Strong Summarization Prompt</h2>
+    <p>Every effective summarization prompt has four key elements. Together they give the AI exactly what it needs to produce a useful, targeted summary rather than a generic compression of the original.</p>
+    <div class="prompt-recipe">
+      <div class="pr-label">Prompt Anatomy</div>
+      <div class="pr-title">The Four Elements of a Good Summarization Prompt</div>
+      <p class="pr-desc">Here's a fully annotated example. Hover over each colored element to understand what it does.</p>
+      <div class="prompt-anatomy">
+        Summarize the following report <span class="p-purpose">for a VP of Sales who needs to decide whether to expand our team in the Northeast region next quarter</span>. <span class="p-format">Structure the summary as: (1) one-sentence key finding, (2) 3 supporting data points, (3) a clear recommendation</span>. <span class="p-length">Keep the total under 150 words</span>. <span class="p-audience">Avoid technical jargon — the VP has a business background, not a data analytics background</span>.<br><br>[Paste the report here]
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#EDE9FE;border:2px solid #7C3AED;"></div>Purpose (what decision this informs)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#DCFCE7;border:2px solid #16A34A;"></div>Format (structure of the output)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#FEF9C3;border:2px solid #CA8A04;"></div>Length (how much to produce)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#FFE4E6;border:2px solid #E11D48;"></div>Audience (who will read it)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Prompts for Common Summarizing Tasks</h2>
+    <p>Click each task to see a ready-to-use summarization prompt you can adapt.</p>
+    <div class="prompt-examples">
+      <div class="pe-card" onclick="togglePE(this)">
+        <div class="pe-header"><div class="pe-icon">📊</div><div class="pe-name">Summarizing a long business report</div><div class="pe-toggle">+</div></div>
+        <div class="pe-body"><div class="pe-inner">
+          <div class="pe-prompt">"Summarize the following business report for a senior manager who has 2 minutes to review it before a decision meeting. Lead with the single most important finding. Include only the data points that directly support that finding. State the recommended action explicitly at the end. Keep it under 200 words. Use plain language — no jargon. [paste report]"</div>
+          <p class="pe-why">Why it works: Forces the AI to identify the most important finding first rather than summarizing section by section. The decision context helps the AI prioritize correctly.</p>
+        </div></div>
+      </div>
+      <div class="pe-card" onclick="togglePE(this)">
+        <div class="pe-header"><div class="pe-icon">📧</div><div class="pe-name">Summarizing a long email thread</div><div class="pe-toggle">+</div></div>
+        <div class="pe-body"><div class="pe-inner">
+          <div class="pe-prompt">"Summarize this email thread in 3–5 bullet points. Include: (1) what was decided or agreed, (2) who is responsible for each action item, (3) any unresolved questions or next steps. If there are conflicting positions in the thread, note them briefly. Omit greetings, pleasantries, and any discussion that didn't lead to a decision. [paste thread]"</div>
+          <p class="pe-why">Why it works: Specifically asks for action items and decisions rather than a narrative summary, which is what you actually need from a long email thread.</p>
+        </div></div>
+      </div>
+      <div class="pe-card" onclick="togglePE(this)">
+        <div class="pe-header"><div class="pe-icon">📰</div><div class="pe-name">Summarizing a news article or research</div><div class="pe-toggle">+</div></div>
+        <div class="pe-body"><div class="pe-inner">
+          <div class="pe-prompt">"Summarize this article in 2–3 sentences for a business professional in [industry]. Focus on: what happened or was found, why it matters for businesses in this space, and one implication or action businesses should consider. Do not include background or context the reader likely already knows. [paste article]"</div>
+          <p class="pe-why">Why it works: The "why it matters for [industry]" instruction forces the AI to connect the information to a practical business context rather than just restating the article.</p>
+        </div></div>
+      </div>
+      <div class="pe-card" onclick="togglePE(this)">
+        <div class="pe-header"><div class="pe-icon">🤝</div><div class="pe-name">Summarizing meeting notes</div><div class="pe-toggle">+</div></div>
+        <div class="pe-body"><div class="pe-inner">
+          <div class="pe-prompt">"Summarize these meeting notes into a professional follow-up format with three sections: (1) Decisions Made (what was agreed), (2) Action Items (who does what by when — list each person and their task), (3) Open Questions (anything still unresolved that needs follow-up). Remove all filler conversation and focus only on outcomes. Keep it under 150 words. [paste notes]"</div>
+          <p class="pe-why">Why it works: The structured format ensures the summary is actually useful as a reference document, not just a narrative recap that's hard to scan.</p>
+        </div></div>
+      </div>
+      <div class="pe-card" onclick="togglePE(this)">
+        <div class="pe-header"><div class="pe-icon">📋</div><div class="pe-name">Creating an executive summary for a proposal</div><div class="pe-toggle">+</div></div>
+        <div class="pe-body"><div class="pe-inner">
+          <div class="pe-prompt">"Write a one-page executive summary of the following proposal for a C-suite audience. Structure it as: (1) The problem we're solving (1–2 sentences), (2) Our proposed solution (2–3 sentences), (3) Expected outcomes and ROI (2–3 sentences), (4) Budget and timeline (1–2 sentences), (5) Next step for approval (1 sentence). Use confident, clear language. No jargon. [paste proposal]"</div>
+          <p class="pe-why">Why it works: The explicit C-suite audience and structured sections ensure the output matches exactly what senior decision-makers need to see first in a proposal.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI summarization works best when you know exactly what you want before you prompt it. The clearer your purpose and audience, the less editing you'll need to do.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>When to Use AI — And When to Summarize Yourself</h2>
+    <div class="when-grid">
+      <div class="wg-col use">
+        <div class="wg-title">✅ Great for AI summarization</div>
+        <div class="wg-items">
+          <div class="wg-item"><span>📄</span><div>Long documents you've written or gathered yourself — meeting notes, research, reports</div></div>
+          <div class="wg-item"><span>📧</span><div>Email threads and conversations where you need to surface decisions and action items</div></div>
+          <div class="wg-item"><span>📰</span><div>News articles or industry research for internal briefings</div></div>
+          <div class="wg-item"><span>⚡</span><div>Getting a structural first draft you can then personalize and verify</div></div>
+        </div>
+      </div>
+      <div class="wg-col caution">
+        <div class="wg-title">⚠️ Do yourself — or verify carefully</div>
+        <div class="wg-items">
+          <div class="wg-item"><span>🔢</span><div>Documents with critical financial or legal figures — AI can misread numbers</div></div>
+          <div class="wg-item"><span>🤝</span><div>Sensitive client or personnel matters — requires judgment AI doesn't have</div></div>
+          <div class="wg-item"><span>🧠</span><div>Highly technical content in specialized fields — AI may miss nuance or get details wrong</div></div>
+          <div class="wg-item"><span>⚖️</span><div>Anything where a missed detail could have legal, financial, or safety implications</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Always Verify AI Summaries Before Using Them</h2>
+    <p>AI summarization can introduce errors in two ways: it can misrepresent what the original said, or it can omit something critical. Always run these checks before using an AI-generated summary professionally.</p>
+    <div class="verification-box">
+      <div class="vb-title">Verification Checklist</div>
+      <div class="vb-items">
+        <div class="vb-item"><div class="vb-item-icon">🔢</div><div>Check all numbers, percentages, and financial figures against the original source — these are the most error-prone elements in AI summaries</div></div>
+        <div class="vb-item"><div class="vb-item-icon">📌</div><div>Verify the main finding or conclusion — does the AI's summary accurately represent what the original actually concluded?</div></div>
+        <div class="vb-item"><div class="vb-item-icon">❓</div><div>Ask: is anything critical missing? Check whether the summary leaves out any information that would change how the reader understands the situation</div></div>
+        <div class="vb-item"><div class="vb-item-icon">👤</div><div>Verify any names, roles, and attributions — AI sometimes gets these wrong or mixes up who said what</div></div>
+        <div class="vb-item"><div class="vb-item-icon">🎯</div><div>Confirm the "so what" is correct — does the AI's recommended action or implication actually match what the original source recommends?</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">⚡</div><div><h3>The Real Time Saving</h3><p>A well-prompted AI summary of a 20-page report takes about 3 minutes: 1 minute to write the prompt, 30 seconds for AI to generate, and 90 seconds to verify the key facts. Compare that to 45 minutes to read and summarize manually. That's the legitimate time savings — not "AI does it all," but "AI produces a verified starting point in 3 minutes instead of 45."</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You ask AI to summarize a 15-page financial audit report. The summary looks clean and professional. Before using it in an executive presentation, what is the most important verification step?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. Check that the summary is formatted correctly and looks professional</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. Verify every specific financial figure against the original report — numbers are the highest-risk element in AI summaries and errors in financial data in a presentation could have serious consequences</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. Ask the AI to double-check its own summary for accuracy</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Make sure the tone is appropriate for an executive audience</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Strong summarization prompts include four elements: audience (who will read it), purpose (what decision it informs), format (how it should be structured), and length (how long it should be).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI summarization works best for long documents, email threads, news articles, and meeting notes — where it creates a verified starting point much faster than writing from scratch.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Always verify AI summaries before professional use — especially numbers, the main conclusion, names/roles, and anything critical that might have been omitted.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>For sensitive, highly technical, or legally significant content — do the summary yourself, or treat every element of the AI summary as unverified until checked.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function togglePE(c){const o=c.classList.contains('open');document.querySelectorAll('.pe-card').forEach(x=>x.classList.remove('open'));if(!o)c.classList.add('open');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Financial figures are the single highest-risk element in AI summarization. A misread percentage, a transposed number, or a wrong total in an executive presentation can lead to bad decisions — or seriously undermine your credibility. Always verify every number in an AI-generated financial summary against the original source before it goes anywhere near a presentation.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Formatting and tone matter, but they\'re not the highest-risk elements in a financial document. Asking AI to check its own accuracy doesn\'t work — if AI made an error, it can\'t reliably detect it. The critical check is verifying the numbers against the source document, because financial errors in presentations have real consequences.';}f.classList.add('show');}
+</script>
+</body>
+</html>

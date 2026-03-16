@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Grammarly Uses AI — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --green:#276749; --green-pale:#F0FFF4; --grammarly:#15C39A; --grammarly-pale:#E8FBF6; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; transition:width 0.1s ease; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* COMPANY BANNER */
+  .company-banner { background:var(--grammarly-pale); border:1.5px solid #B2EFE2; border-radius:20px; padding:28px 32px; margin:24px 0; display:flex; align-items:center; gap:20px; }
+  .company-logo { width:56px; height:56px; background:var(--grammarly); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; }
+  .company-info h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:#0A5040; margin-bottom:4px; }
+  .company-info p { font-size:14px; color:#155A48; line-height:1.5; margin:0; }
+  @media(max-width:500px) { .company-banner { flex-direction:column; } }
+
+  /* CASE STUDY STEPS */
+  .case-steps { display:flex; flex-direction:column; gap:0; margin:24px 0; }
+  .case-step { display:grid; grid-template-columns:100px 1fr; gap:20px; position:relative; }
+  .case-step:not(:last-child)::after { content:''; position:absolute; left:49px; top:56px; width:2px; height:calc(100% - 16px); background:var(--purple-mid); }
+  .step-badge { display:flex; flex-direction:column; align-items:center; padding-top:4px; }
+  .step-circle { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; z-index:1; margin-bottom:4px; }
+  .step-circle.problem { background:var(--red-pale); }
+  .step-circle.solution { background:var(--purple-pale); }
+  .step-circle.result { background:var(--green-pale); }
+  .step-tag { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:3px 8px; border-radius:100px; white-space:nowrap; }
+  .step-tag.problem { background:var(--red-pale); color:var(--red); }
+  .step-tag.solution { background:var(--purple-pale); color:var(--purple); }
+  .step-tag.result { background:var(--green-pale); color:var(--green); }
+  .step-body { padding:4px 0 32px; }
+  .step-title { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:var(--purple-dark); margin-bottom:10px; }
+  .step-desc { font-size:15.5px; line-height:1.75; color:var(--gray-text); margin:0; }
+
+  /* LIVE DEMO */
+  .demo-box { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .demo-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .demo-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .demo-title { font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .demo-desc { font-size:15px; color:var(--gray-muted); margin-bottom:20px; line-height:1.6; }
+  .demo-toggle { display:flex; gap:8px; margin-bottom:16px; }
+  .demo-btn { flex:1; padding:11px; border-radius:12px; border:2px solid var(--purple-mid); background:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s ease; color:var(--gray-muted); }
+  .demo-btn.active { border-color:var(--purple); background:var(--purple); color:white; }
+  .draft-view { display:none; }
+  .draft-view.show { display:block; animation:fadeIn 0.3s ease; }
+  .email-mock { background:var(--white); border:1.5px solid var(--purple-mid); border-radius:14px; overflow:hidden; margin-bottom:12px; }
+  .email-mock-bar { background:var(--purple-pale); padding:10px 16px; font-size:12px; color:var(--purple); font-weight:600; }
+  .email-mock-body { padding:16px 18px; font-size:14px; line-height:1.75; color:var(--gray-text); white-space:pre-line; }
+  .grammarly-suggestion { display:inline; background:#FFF3CD; border-bottom:2px solid #F59E0B; cursor:pointer; position:relative; }
+  .grammarly-suggestion.tone { background:#E8F4FD; border-bottom-color:#3B82F6; }
+  .grammarly-suggestion.clarity { background:#FEF3C7; border-bottom-color:#F59E0B; }
+  .suggestion-popup { position:absolute; top:100%; left:0; background:white; border:1.5px solid var(--purple-mid); border-radius:10px; padding:10px 14px; font-size:12px; line-height:1.5; white-space:normal; min-width:200px; z-index:10; box-shadow:0 4px 16px rgba(0,0,0,0.1); display:none; color:var(--gray-text); }
+  .grammarly-suggestion:hover .suggestion-popup { display:block; }
+  .sg-type { font-weight:700; color:var(--purple); margin-bottom:4px; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; }
+  .sg-fix { color:var(--green); font-weight:600; }
+  .improvements { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .improvement { display:flex; gap:10px; padding:10px 12px; background:var(--green-pale); border:1px solid #6EE7B7; border-radius:10px; font-size:13.5px; color:#1A3A2A; }
+  .improvement::before { content:'✅'; flex-shrink:0; }
+
+  /* FEATURE CARDS */
+  .feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .feature-grid { grid-template-columns:1fr; } }
+  .feature-card { border:1.5px solid var(--purple-mid); border-radius:18px; padding:22px; background:var(--white); transition:all 0.2s ease; }
+  .feature-card:hover { border-color:var(--purple); background:var(--purple-pale); transform:translateY(-2px); }
+  .fc-icon { font-size:30px; margin-bottom:12px; display:block; }
+  .fc-name { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .fc-desc { font-size:14px; line-height:1.6; color:var(--gray-text); margin-bottom:10px; }
+  .fc-example { font-size:13px; color:var(--purple); background:var(--purple-pale); padding:7px 10px; border-radius:8px; }
+
+  /* METRICS */
+  .metrics { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:24px 0; }
+  @media(max-width:600px) { .metrics { grid-template-columns:1fr 1fr; } }
+  .metric-card { background:var(--purple); border-radius:16px; padding:20px; text-align:center; }
+  .metric-num { font-family:'Fraunces',serif; font-size:32px; font-weight:900; color:white; line-height:1; margin-bottom:6px; }
+  .metric-label { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.4; }
+
+  /* ANALYSIS QUESTIONS */
+  .analysis { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .an-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .an-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .an-questions { display:flex; flex-direction:column; gap:10px; }
+  .an-q { background:var(--white); border:1.5px solid var(--purple-mid); border-radius:14px; padding:16px 18px; cursor:pointer; transition:all 0.2s ease; }
+  .an-q:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .an-q.open { border-color:var(--purple); background:var(--purple-pale); }
+  .an-q-text { font-size:15px; font-weight:600; color:var(--gray-text); }
+  .an-q.open .an-q-text { color:var(--purple-dark); }
+  .an-answer { font-size:14.5px; line-height:1.65; color:var(--gray-text); margin-top:10px; padding-top:10px; border-top:1px solid var(--purple-mid); display:none; }
+  .an-q.open .an-answer { display:block; animation:fadeIn 0.3s ease; }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.1 · Business Writing Fundamentals</div>
+  <h1>Real Company Spotlight: How Grammarly Uses AI to Improve Business Writing</h1>
+  <p class="hero-sub">Grammarly started as a grammar checker. Today it's one of the most widely used AI writing tools in the world — and it offers a clear window into how AI can help people communicate more professionally at work.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>We've covered what good business writing looks like. Now let's look at a real company that built a business around helping people achieve it — and how AI powers every part of what they do.</p>
+    <p>Grammarly is used by over 30 million people daily, including employees at 96% of the Fortune 500. That adoption tells you something important: <mark>professional writing is a widespread challenge, and businesses are willing to invest in solving it.</mark> Let's walk through the case study.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="company-banner">
+      <div class="company-logo">✍️</div>
+      <div class="company-info">
+        <h3>About Grammarly</h3>
+        <p>Founded in 2009, Grammarly is an AI-powered writing assistant used by 30+ million daily users across individuals and enterprises. Their business product serves teams ranging from startups to Fortune 500 companies who want consistent, professional written communication. Revenue estimated at over $200 million annually.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Case Study: Problem → Solution → Result</h2>
+    <div class="case-steps">
+      <div class="case-step">
+        <div class="step-badge"><div class="step-circle problem">😓</div><div class="step-tag problem">Problem</div></div>
+        <div class="step-body">
+          <div class="step-title">Professional Writing Quality Is Inconsistent — and Costly</div>
+          <p class="step-desc">Companies lose enormous amounts of time and money to poorly written communication. Unclear emails create confusion and require follow-up. Tone mistakes damage client relationships. Grammar errors in proposals undermine credibility. The challenge isn't that people don't know writing matters — it's that in the flow of a busy workday, most people don't have time to carefully edit everything they write. They send emails quickly, dash off reports under deadline, and move on. The cumulative cost of that rushed communication is enormous.</p>
+        </div>
+      </div>
+      <div class="case-step">
+        <div class="step-badge"><div class="step-circle solution">🤖</div><div class="step-tag solution">Solution</div></div>
+        <div class="step-body">
+          <div class="step-title">Real-Time AI Writing Assistance — Everywhere You Write</div>
+          <p class="step-desc">Grammarly's solution was to build AI that could operate in real time, inside the tools people already use — Gmail, Google Docs, Outlook, Slack, LinkedIn, and more. Rather than requiring users to go to a separate tool, Grammarly sits quietly in the background and surfaces suggestions as they type. The AI checks not just grammar and spelling but also tone, clarity, formality, conciseness, and engagement — and it explains why each suggestion matters, teaching the user over time.</p>
+        </div>
+      </div>
+      <div class="case-step">
+        <div class="step-badge"><div class="step-circle result">📈</div><div class="step-tag result">Result</div></div>
+        <div class="step-body">
+          <div class="step-title">Measurably Better Communication, Consistently</div>
+          <p class="step-desc">Enterprise customers using Grammarly Business report significant improvements in writing quality across teams. The key insight from Grammarly's research: writing quality isn't just a nice-to-have — it's a business outcome driver. Teams that communicate more clearly make decisions faster, experience fewer miscommunications, and present more professionally to clients. The AI doesn't replace the human writer — it makes the human writer more consistently excellent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>See Grammarly's AI in Action</h2>
+    <p>Compare a raw draft email with what it looks like after Grammarly's AI has analyzed it. Toggle between the two versions — hover over the highlighted suggestions to see what the AI caught and why.</p>
+
+    <div class="demo-box">
+      <div class="demo-label">Interactive Demo</div>
+      <div class="demo-title">Before and After Grammarly</div>
+      <p class="demo-desc">An employee drafting a follow-up to a potential client after a sales meeting.</p>
+
+      <div class="demo-toggle">
+        <button class="demo-btn" id="btnBefore" onclick="showDemo('before')">Raw Draft</button>
+        <button class="demo-btn active" id="btnAfter" onclick="showDemo('after')">With Grammarly AI</button>
+      </div>
+
+      <div class="draft-view" id="demoBefore">
+        <div class="email-mock">
+          <div class="email-mock-bar">📧 Draft — Raw Version</div>
+          <div class="email-mock-body">Subject: meeting
+
+Hey,
+
+Really great meeting you the other day. I wanted to touch base and make sure your good with moving forward. We talked about alot of things and I think we could really help your company out alot. Let me know if you want to like move forward and we can schedule another call or something.
+
+Thx,
+Alex</div>
+        </div>
+      </div>
+
+      <div class="draft-view show" id="demoAfter">
+        <div class="email-mock">
+          <div class="email-mock-bar">📧 After Grammarly AI Analysis</div>
+          <div class="email-mock-body" style="line-height:2;">
+            Subject: <span style="color:var(--green);font-weight:600;">Following Up on Our Meeting — Next Steps</span><br><br>
+            Hi <span class="grammarly-suggestion tone">[Name]<div class="suggestion-popup"><div class="sg-type">Tone & Clarity</div>Using the recipient's name creates a more personal, professional tone than "Hey." <span class="sg-fix">→ Replace "Hey" with "Hi [Name],"</span></div></span>,<br><br>
+            It was <span class="grammarly-suggestion clarity">really great<div class="suggestion-popup"><div class="sg-type">Clarity</div>"Really great" is vague. <span class="sg-fix">→ Try: "It was a pleasure meeting with you"</span></div></span> meeting with you on Tuesday. I wanted to follow up and confirm that <span class="grammarly-suggestion clarity">your<div class="suggestion-popup"><div class="sg-type">Grammar</div">"Your" should be "you're" (you are). <span class="sg-fix">→ "confirm that you're interested"</span></div></span> interested in moving forward.<br><br>
+            Based on our conversation, I believe we can help <span class="grammarly-suggestion clarity">alot<div class="suggestion-popup"><div class="sg-type">Spelling</div>"Alot" is not a word. <span class="sg-fix">→ "a lot" or better: "significantly"</span></div></span> with your team's communication challenges. I'd love to schedule a 30-minute call this week to discuss next steps.<br><br>
+            Are you available Thursday or Friday afternoon?<br><br>
+            Best regards,<br>Alex
+          </div>
+        </div>
+        <div class="improvements">
+          <div class="improvement">Fixed subject line from vague "meeting" to specific and actionable</div>
+          <div class="improvement">Corrected "your" → "you're" (grammar error)</div>
+          <div class="improvement">Fixed "alot" → "a lot" (spelling error)</div>
+          <div class="improvement">Replaced vague "really great" with professional phrasing</div>
+          <div class="improvement">Added specific call duration and concrete time options</div>
+          <div class="improvement">Replaced "Thx" with professional sign-off</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Grammarly's AI Actually Checks</h2>
+    <p>Most people think of Grammarly as a spell-checker. It's significantly more than that. Here's what the AI actually analyzes.</p>
+    <div class="feature-grid">
+      <div class="feature-card"><span class="fc-icon">📝</span><div class="fc-name">Grammar & Spelling</div><p class="fc-desc">Catches errors most spellcheckers miss — context-dependent mistakes like "your" vs "you're," incorrect verb forms, and punctuation issues.</p><div class="fc-example">📌 "Your going to the meeting" → "You're going to the meeting"</div></div>
+      <div class="feature-card"><span class="fc-icon">🎭</span><div class="fc-name">Tone Detection</div><p class="fc-desc">Analyzes the emotional register of your writing and flags when it might come across as too harsh, too casual, passive-aggressive, or unclear in intent.</p><div class="fc-example">📌 Flags "As I mentioned" as potentially passive-aggressive in context</div></div>
+      <div class="feature-card"><span class="fc-icon">✂️</span><div class="fc-name">Conciseness</div><p class="fc-desc">Identifies wordy phrases and suggests tighter alternatives — cutting filler that adds length without adding meaning.</p><div class="fc-example">📌 "Due to the fact that" → "Because"</div></div>
+      <div class="feature-card"><span class="fc-icon">🎯</span><div class="fc-name">Clarity</div><p class="fc-desc">Flags sentences that are confusing or ambiguous and suggests clearer alternatives. Particularly useful for complex technical or business content.</p><div class="fc-example">📌 Flags sentences over 40 words and suggests breaking them up</div></div>
+      <div class="feature-card"><span class="fc-icon">👔</span><div class="fc-name">Formality Level</div><p class="fc-desc">Detects when your writing is more casual or formal than the context warrants and suggests adjustments to match the audience and situation.</p><div class="fc-example">📌 Flags "thx" and "lol" in a professional email context</div></div>
+      <div class="feature-card"><span class="fc-icon">🤖</span><div class="fc-name">Generative Suggestions</div><p class="fc-desc">The newer Grammarly AI can rewrite entire sentences or paragraphs — not just flag issues, but propose complete alternatives you can accept or modify.</p><div class="fc-example">📌 "Improve this paragraph for clarity" → complete rewrite suggestion</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Business Impact</h2>
+    <div class="metrics">
+      <div class="metric-card"><div class="metric-num">30M+</div><div class="metric-label">daily active users across individual and business plans</div></div>
+      <div class="metric-card"><div class="metric-num">96%</div><div class="metric-label">of Fortune 500 companies have employees using Grammarly</div></div>
+      <div class="metric-card"><div class="metric-num">~66%</div><div class="metric-label">reduction in writing-related errors reported by enterprise users</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Grammarly's insight wasn't that people are bad writers — it's that even good writers make avoidable mistakes when they're rushed. AI that catches those mistakes in real time turns good writers into consistently excellent ones.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Analyze It Yourself</h2>
+    <p>Using the Problem → Solution → Result framework from Module 1, test your understanding of this case study.</p>
+    <div class="analysis">
+      <div class="an-label">Case Study Analysis</div>
+      <div class="an-questions">
+        <div class="an-q" onclick="this.classList.toggle('open')">
+          <div class="an-q-text">Why did Grammarly embed into existing tools (Gmail, Docs, Slack) instead of building a standalone writing platform?</div>
+          <div class="an-answer">The best productivity tool is one you don't have to think about using. If Grammarly required users to copy-paste their writing into a separate app, most people wouldn't bother — especially when busy. By working inside the tools people already use every day, Grammarly eliminated the friction that would prevent adoption. This is the same insight Shopify had: embed AI where people already work.</div>
+        </div>
+        <div class="an-q" onclick="this.classList.toggle('open')">
+          <div class="an-q-text">Why does Grammarly explain its suggestions rather than just making automatic fixes?</div>
+          <div class="an-answer">Because the goal isn't just to fix this email — it's to make you a better writer over time. By explaining why a suggestion is made ("this sounds passive-aggressive because..."), Grammarly builds the user's judgment and skills. That makes the product more valuable long-term and creates deeper user loyalty. It's teaching, not just correcting.</div>
+        </div>
+        <div class="an-q" onclick="this.classList.toggle('open')">
+          <div class="an-q-text">What is a potential limitation or risk of relying heavily on Grammarly?</div>
+          <div class="an-answer">Over-reliance could mean writers stop developing their own judgment about tone and clarity — they just accept whatever Grammarly suggests. The AI also can't know your specific relationship with the reader, the cultural context, or the organizational dynamics that might make a suggestion wrong in your specific situation. It's a tool that needs a thinking human behind it, not a replacement for one.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">💡</div><div><h3>How to Use Grammarly Strategically</h3><p>Don't just accept every suggestion blindly. Read each one and understand why it's being made. Use the "Goals" feature to set your audience (expert, general, knowledgeable), formality (informal, neutral, formal), and intent (inform, describe, convince, tell a story) — this makes suggestions far more relevant. And remember: Grammarly is a second pair of eyes, not a replacement for your own judgment about what to say.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">Grammarly's AI flags the phrase "As per my previous email" in a follow-up message. What type of writing issue is it most likely flagging?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. A grammar error — "As per" is grammatically incorrect</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. A spelling mistake that spellcheck would normally catch</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. A tone issue — the phrase can sound passive-aggressive or condescending, even if that wasn't the intent</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. A clarity issue — the phrase is ambiguous and the reader won't understand what "previous email" refers to</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Grammarly was built to solve a real, costly business problem: professional writing quality is inconsistent, especially when people are busy and rushing.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Their solution — embedding AI inside tools people already use — eliminated friction and drove adoption at scale, including 96% of Fortune 500 companies.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Grammarly's AI goes far beyond spellcheck — it analyzes grammar, tone, clarity, conciseness, and formality, and explains each suggestion to teach better habits over time.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Use Grammarly strategically: set your goals (audience, formality, intent) before writing, understand why each suggestion is made, and don't accept suggestions that don't fit your specific context.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function showDemo(which){document.getElementById('demoBefore').classList.toggle('show',which==='before');document.getElementById('demoAfter').classList.toggle('show',which==='after');document.getElementById('btnBefore').classList.toggle('active',which==='before');document.getElementById('btnAfter').classList.toggle('active',which==='after');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> "As per my previous email" is grammatically correct — but Grammarly flags it as a tone issue. The phrase has become associated with passive-aggressive follow-ups and can make the reader feel criticized, even if the writer intended it neutrally. This is exactly the kind of subtle tone insight that makes Grammarly more than a grammar checker.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> "As per my previous email" is grammatically fine and unambiguous. The issue is tone — the phrase has become so associated with pointed, passive-aggressive follow-ups in workplace culture that it can make readers defensive, even when no rudeness was intended. Grammarly\'s tone detection catches this type of subtle issue.';}f.classList.add('show');}
+</script>
+</body>
+</html>

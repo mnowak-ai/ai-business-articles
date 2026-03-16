@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Drafting Workflow — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  .workflow-steps{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .wf-step{display:flex;gap:24px;position:relative;}
+  .wf-step:not(:last-child)::after{content:'';position:absolute;left:23px;top:52px;width:2px;height:calc(100% - 12px);background:var(--purple-mid);}
+  .wf-left{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:4px;}
+  .wf-num{width:46px;height:46px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:18px;font-weight:900;color:white;z-index:1;flex-shrink:0;}
+  .wf-body{padding:4px 0 36px;flex:1;}
+  .wf-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .wf-desc{font-size:15.5px;line-height:1.75;color:var(--gray-text);margin-bottom:12px;}
+  .wf-box{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px 20px;font-size:14px;line-height:1.7;color:var(--gray-text);}
+  .wf-box-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .wf-result{background:var(--green-pale);border:1.5px solid #6EE7B7;border-radius:14px;padding:14px 16px;font-size:13.5px;line-height:1.65;color:#1A3A2A;margin-top:10px;}
+  .wf-result::before{content:'✅ ';font-weight:700;}
+  .wf-warning{background:var(--red-pale);border:1.5px solid #FCA5A5;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.6;color:#7F1D1D;margin-top:10px;}
+  .wf-warning strong{color:var(--red);}
+
+  .live-example{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .le-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .le-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .le-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .le-desc{font-size:15px;color:var(--gray-muted);margin-bottom:20px;line-height:1.6;}
+  .le-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .le-tab{padding:9px 18px;border-radius:100px;border:1.5px solid var(--purple-mid);font-size:13px;font-weight:600;color:var(--gray-muted);cursor:pointer;transition:all 0.2s;background:var(--white);}
+  .le-tab.active{background:var(--purple);border-color:var(--purple);color:white;}
+  .le-panel{display:none;}
+  .le-panel.show{display:block;animation:fadeIn 0.3s ease;}
+  .doc-mock{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;overflow:hidden;}
+  .doc-bar{background:var(--purple-pale);padding:10px 16px;font-size:12px;font-weight:600;color:var(--purple);}
+  .doc-content{padding:18px 20px;font-size:14px;line-height:1.75;color:var(--gray-text);white-space:pre-line;}
+  .edit-highlight{background:#FEF9C3;border-radius:3px;padding:1px 2px;}
+  .added-text{background:#DCFCE7;border-radius:3px;padding:1px 2px;color:var(--green);}
+  .removed-text{background:var(--red-pale);text-decoration:line-through;border-radius:3px;padding:1px 2px;color:var(--red);}
+  .change-log{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+  .change-item{display:flex;gap:10px;font-size:13px;color:var(--gray-text);padding:8px 10px;background:var(--white);border-radius:8px;border:1px solid var(--purple-mid);}
+
+  .time-comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+  @media(max-width:600px){.time-comparison{grid-template-columns:1fr;}}
+  .tc-card{border-radius:20px;padding:28px;border:1.5px solid var(--purple-mid);}
+  .tc-card.traditional{background:var(--gray-soft);}
+  .tc-card.ai-assisted{background:var(--purple-pale);}
+  .tc-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;margin-bottom:16px;}
+  .tc-card.traditional .tc-title{color:var(--gray-text);}
+  .tc-card.ai-assisted .tc-title{color:var(--purple-dark);}
+  .tc-steps{display:flex;flex-direction:column;gap:8px;}
+  .tc-step{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--white);border-radius:8px;font-size:13.5px;}
+  .tc-time{font-weight:700;color:var(--purple);font-size:13px;}
+  .tc-card.ai-assisted .tc-time{color:var(--green);}
+  .tc-total{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:14px;font-weight:700;text-align:center;}
+  .tc-card.traditional .tc-total{background:#F3F4F6;color:var(--gray-text);}
+  .tc-card.ai-assisted .tc-total{background:var(--purple);color:white;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.2 · Using AI to Draft Documents</div>
+  <h1>The AI Drafting Workflow — From Prompt to Published</h1>
+  <p class="hero-sub">Having a repeatable workflow for AI-assisted writing is what separates professionals who use AI efficiently from those who waste time on bad drafts. Here's the complete process.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Most people who struggle with AI writing tools don't have a bad tool — they have no workflow. They write a vague prompt, get a mediocre draft, feel frustrated, and either give up or spend an hour trying to fix something that was never going to work. A clear, repeatable process fixes all of that.</p>
+    <p><mark>The AI drafting workflow has five stages: prepare, prompt, evaluate, refine, and finalize.</mark> Each stage has a specific purpose. Skip one and the whole thing breaks down. Follow it and you can produce polished, professional documents in a fraction of the time it would take to write from scratch.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Five-Stage Workflow</h2>
+    <div class="workflow-steps">
+      <div class="wf-step">
+        <div class="wf-left"><div class="wf-num">1</div></div>
+        <div class="wf-body">
+          <div class="wf-title">Prepare — Know What You Want Before You Start</div>
+          <p class="wf-desc">Before opening any AI tool, answer three questions: Who is this for? What do I want them to think, feel, or do? What are the key facts they need? You cannot write a good prompt without clear answers. If you're fuzzy on these, you'll produce a fuzzy prompt and a useless draft.</p>
+          <div class="wf-box"><div class="wf-box-label">Before you write the prompt, know:</div>
+📍 The recipient and your relationship with them<br>
+🎯 The specific purpose of this document<br>
+📋 The key facts, data, or decisions it needs to contain<br>
+📐 The format, length, and any structural requirements<br>
+🎭 The tone that fits this person and this situation</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-left"><div class="wf-num">2</div></div>
+        <div class="wf-body">
+          <div class="wf-title">Prompt — Give the AI Everything It Needs</div>
+          <p class="wf-desc">Write a complete prompt using the five elements: Role, Task, Context, Format, and Tone. Include the specific facts you gathered in Step 1. The more context you provide, the less editing you'll need to do later. This is where most of your thinking should happen.</p>
+          <div class="wf-box"><div class="wf-box-label">Strong prompt example</div>"Act as a business writing professional. Write a follow-up email to our client Maya Rodriguez, VP of Operations at Thornton Manufacturing. We met at the Chicago trade show last Thursday. She expressed interest in our inventory software and asked for a one-page overview of pricing. She mentioned she has a budget review on October 15th. Email should be warm but professional, 3 short paragraphs, with a clear next step (call this week)."</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-left"><div class="wf-num">3</div></div>
+        <div class="wf-body">
+          <div class="wf-title">Evaluate — Read It Like an Editor, Not a Proofreader</div>
+          <p class="wf-desc">When you get the first draft, don't just check for typos. Read it from the perspective of the recipient. Does it achieve the purpose? Is the tone right? Is anything factually wrong or suspiciously specific? Does it sound like something a human would actually send? Most first drafts need significant work — that's expected.</p>
+          <div class="wf-box"><div class="wf-box-label">Evaluate against these questions</div>
+✅ Does it open with the right tone for this relationship?<br>
+✅ Is the core message (purpose, ask, next step) clear?<br>
+✅ Are there any specific facts or numbers I need to verify?<br>
+✅ Does it sound human, or does it sound like AI wrote it?<br>
+✅ Is anything missing that this person needs to know?<br>
+✅ Is it the right length for the context?</div>
+          <div class="wf-warning"><strong>⚠️ Common first-draft problems:</strong> AI often opens with "I hope this email finds you well" (generic), uses overly formal language, buries the call to action, or includes plausible-sounding but unverified details. Flag all of these.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-left"><div class="wf-num">4</div></div>
+        <div class="wf-body">
+          <div class="wf-title">Refine — Iterate Until It's Right</div>
+          <p class="wf-desc">Give the AI specific refinement instructions rather than starting over from scratch. Tell it exactly what to change and why. Two or three rounds of targeted refinement almost always produces something usable. If after three rounds it's still not working, you may need to rethink the prompt entirely or write the section yourself.</p>
+          <div class="wf-box"><div class="wf-box-label">Effective refinement prompts</div>
+"The opening paragraph is too formal. Rewrite it to sound warmer and more personal — like I'm genuinely happy to reconnect, not sending a template."<br><br>
+"The call to action is vague. Replace it with: 'Are you free for a 20-minute call Wednesday or Thursday afternoon?'"<br><br>
+"Remove the second paragraph — it's unnecessary context. The email reads better without it."</div>
+          <div class="wf-result">After 2–3 rounds of specific refinement, most documents reach 85–90% of final quality.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-left"><div class="wf-num">5</div></div>
+        <div class="wf-body">
+          <div class="wf-title">Finalize — Your Human Pass Makes It Yours</div>
+          <p class="wf-desc">Even after excellent AI iterations, the final pass is yours. Add your personal touch — a specific detail only you would know, an authentic observation, a personalization that shows you actually know this person. Verify every fact. Read it aloud to check if it sounds natural. Then send it.</p>
+          <div class="wf-box"><div class="wf-box-label">Final checklist before sending</div>
+☐ All names and titles are correct<br>
+☐ Every specific fact or number has been verified<br>
+☐ The tone sounds like me, not like a template<br>
+☐ The call to action is specific and actionable<br>
+☐ I read it aloud and it sounds natural<br>
+☐ I'm comfortable putting my name on this</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>See the Workflow in Action</h2>
+    <p>Walk through a real example — a client follow-up email. Toggle between each stage to see how the document evolves.</p>
+    <div class="live-example">
+      <div class="le-label">Live Workflow Example</div>
+      <div class="le-title">Client Follow-Up Email</div>
+      <p class="le-desc">Context: Following up with a potential client after a product demo. They seemed interested but hadn't responded in a week.</p>
+      <div class="le-tabs">
+        <div class="le-tab active" onclick="showStage('prompt',this)">Prompt</div>
+        <div class="le-tab" onclick="showStage('draft1',this)">AI Draft 1</div>
+        <div class="le-tab" onclick="showStage('refine',this)">Refinement</div>
+        <div class="le-tab" onclick="showStage('final',this)">Final</div>
+      </div>
+      <div class="le-panel show" id="stage-prompt">
+        <div class="doc-mock">
+          <div class="doc-bar">📝 The Prompt</div>
+          <div class="doc-content">Act as a professional sales writer. Write a follow-up email to James Chen, Head of Operations at Vertex Logistics. We did a product demo of our route optimization software last Tuesday. He seemed genuinely interested during the call — he asked detailed questions about the API integration. But he hasn't replied to my follow-up email from Thursday. I want to check in without being pushy. Keep it short — 3 sentences max in the body. Warm, human tone. End with a specific, easy-to-say-yes-to question.</div>
+        </div>
+      </div>
+      <div class="le-panel" id="stage-draft1">
+        <div class="doc-mock">
+          <div class="doc-bar">🤖 AI First Draft — Before Human Review</div>
+          <div class="doc-content">Subject: Following Up on Our Route Optimization Demo
+
+Hi James,
+
+I hope this message finds you well. I wanted to follow up on our demonstration of our route optimization software from last Tuesday and see if you had any further thoughts or questions regarding the product and its potential integration capabilities for Vertex Logistics. I understand that you may be busy, and I want to ensure that you have all the information you need to make an informed decision.
+
+Please don't hesitate to reach out if you would like to schedule a follow-up call or if there is anything else I can assist you with.
+
+Best regards,
+[Name]</div>
+        </div>
+        <div class="change-log">
+          <div class="change-item">⚠️ "I hope this message finds you well" — generic opener, AI cliché</div>
+          <div class="change-item">⚠️ Way too long — asked for 3 sentences, got 3 paragraphs</div>
+          <div class="change-item">⚠️ "make an informed decision" — sounds salesy and stiff</div>
+          <div class="change-item">⚠️ No specific question or easy next step</div>
+        </div>
+      </div>
+      <div class="le-panel" id="stage-refine">
+        <div class="doc-mock">
+          <div class="doc-bar">🔄 Refinement Instructions Given</div>
+          <div class="doc-content">"Too long and generic. Cut it to 3 sentences max. Remove 'I hope this message finds you well' — start directly. The question at the end should be: 'Would it be useful to jump on a quick call this week so I can answer any questions about the API integration?' Make it sound like I'm a real person who actually remembers our conversation, not a template."</div>
+        </div>
+      </div>
+      <div class="le-panel" id="stage-final">
+        <div class="doc-mock">
+          <div class="doc-bar">✅ Final Version — After Human Pass</div>
+          <div class="doc-content">Subject: Quick Check-In — Vertex + Route Optimization
+
+Hi James,
+
+Wanted to check back in since we spoke last Tuesday — you had some great questions about the API integration and I want to make sure you got everything you needed. Would it be useful to jump on a 20-minute call this week so I can walk you through those details directly?
+
+Either way, happy to send over any additional documentation in the meantime.
+
+[Name]</div>
+        </div>
+        <div class="change-log">
+          <div class="change-item" style="border-color:#6EE7B7;background:var(--green-pale);color:#1A3A2A;">✅ Opens with a specific reference to James — sounds like a real person</div>
+          <div class="change-item" style="border-color:#6EE7B7;background:var(--green-pale);color:#1A3A2A;">✅ Tight — under 60 words total</div>
+          <div class="change-item" style="border-color:#6EE7B7;background:var(--green-pale);color:#1A3A2A;">✅ Specific, easy-to-answer question about the API integration</div>
+          <div class="change-item" style="border-color:#6EE7B7;background:var(--green-pale);color:#1A3A2A;">✅ Warm and human — no corporate filler language</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The workflow isn't about making AI do all the work. It's about making sure your time is spent where it adds the most value — thinking, judging, and personalizing — while AI handles the heavy lifting of producing words.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Traditional Writing vs AI-Assisted — Time Comparison</h2>
+    <p>Here's how a typical professional email takes shape under each approach. The AI-assisted version isn't faster because it eliminates work — it's faster because it eliminates the blank page.</p>
+    <div class="time-comparison">
+      <div class="tc-card traditional">
+        <div class="tc-title">✍️ Traditional Writing</div>
+        <div class="tc-steps">
+          <div class="tc-step"><span>Staring at blank page</span><div class="tc-time">~5 min</div></div>
+          <div class="tc-step"><span>Writing first draft</span><div class="tc-time">~15 min</div></div>
+          <div class="tc-step"><span>Editing for tone/clarity</span><div class="tc-time">~10 min</div></div>
+          <div class="tc-step"><span>Final proofread</span><div class="tc-time">~5 min</div></div>
+        </div>
+        <div class="tc-total">Total: ~35 minutes</div>
+      </div>
+      <div class="tc-card ai-assisted">
+        <div class="tc-title">🤖 AI-Assisted Workflow</div>
+        <div class="tc-steps">
+          <div class="tc-step"><span>Preparing context & prompt</span><div class="tc-time">~3 min</div></div>
+          <div class="tc-step"><span>AI generates draft</span><div class="tc-time">~30 sec</div></div>
+          <div class="tc-step"><span>Evaluate + refinement rounds</span><div class="tc-time">~5 min</div></div>
+          <div class="tc-step"><span>Human final pass</span><div class="tc-time">~3 min</div></div>
+        </div>
+        <div class="tc-total">Total: ~12 minutes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🔄</div><div><h3>Practice Makes the Workflow Faster</h3><p>The first time you use this workflow it might feel slow — you're not used to writing prompts or evaluating AI output as an editor. By the tenth time, it becomes second nature. The goal is to internalize the workflow until it's automatic: prepare, prompt, evaluate, refine, finalize. Every time. For everything that matters.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">After getting an AI draft, a student immediately submits it as her final product without reading it critically. Which stage of the AI drafting workflow did she skip — and why does it matter?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. She skipped the prompt stage — her original instructions were probably too vague</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. She skipped the evaluate and finalize stages — without critical review, AI errors, wrong facts, generic phrasing, and missing context all go undetected</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. She skipped the prepare stage — she should have thought more before prompting</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. She didn't skip any stage — reviewing AI output is optional for simple documents</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The AI drafting workflow has five stages: Prepare (know your goal), Prompt (give the AI everything it needs), Evaluate (read as an editor), Refine (targeted iterations), Finalize (your human pass).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>First drafts are starting points, not finished products. Most AI first drafts have 3–5 issues that need addressing before they're ready to send.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Refinement is iterative — give specific instructions, not vague complaints. Two or three rounds of targeted feedback almost always produces something usable.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI-assisted writing saves significant time — not by eliminating work but by eliminating the blank page, so your time is spent where it matters most.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function showStage(id,tab){document.querySelectorAll('.le-panel').forEach(p=>p.classList.remove('show'));document.querySelectorAll('.le-tab').forEach(t=>t.classList.remove('active'));document.getElementById('stage-'+id).classList.add('show');tab.classList.add('active');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Skipping the Evaluate and Finalize stages is the most common — and most consequential — mistake in AI-assisted writing. Without a critical review pass, you miss hallucinated facts, generic AI clichés, wrong tone, and missing context. The workflow\'s value comes from combining AI\'s speed with human judgment at the evaluation stage.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The problem isn\'t in the prompt stage — the issue comes after the draft is generated. By submitting the AI draft directly, she skipped the Evaluate stage (critical reading as an editor) and the Finalize stage (human touch and verification). Those two stages are what separate responsible AI use from reckless AI use.';}f.classList.add('show');}
+</script>
+</body>
+</html>

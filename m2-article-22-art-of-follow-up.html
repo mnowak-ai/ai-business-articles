@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Art of the Follow-Up — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  .rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.rules-grid{grid-template-columns:1fr;}}
+  .rule-card{border:1.5px solid var(--purple-mid);border-radius:16px;padding:22px;background:var(--white);transition:all 0.2s ease;}
+  .rule-card:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .rc-icon{font-size:28px;margin-bottom:10px;display:block;}
+  .rc-rule{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .rc-desc{font-size:14px;line-height:1.6;color:var(--gray-text);}
+
+  .followup-types{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .ft-card{border:1.5px solid var(--purple-mid);border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.2s ease;}
+  .ft-card:hover{border-color:var(--purple);}
+  .ft-card.open{border-color:var(--purple);}
+  .ft-header{display:flex;align-items:center;gap:14px;padding:20px 24px;background:var(--white);}
+  .ft-icon{font-size:26px;flex-shrink:0;}
+  .ft-name{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);flex:1;}
+  .ft-toggle{width:28px;height:28px;background:var(--purple-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:transform 0.3s,background 0.2s;flex-shrink:0;}
+  .ft-card.open .ft-toggle{transform:rotate(45deg);background:var(--purple);color:white;}
+  .ft-body{max-height:0;overflow:hidden;transition:max-height 0.45s ease;}
+  .ft-card.open .ft-body{max-height:400px;}
+  .ft-inner{padding:0 24px 24px;}
+  .ft-desc{font-size:15px;line-height:1.75;color:var(--gray-text);margin:14px 0 10px;}
+  .ft-timing{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--purple-pale);border-radius:10px;font-size:13.5px;color:var(--purple-dark);margin-bottom:10px;font-weight:600;}
+  .ft-example{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.7;color:var(--gray-text);font-style:italic;}
+  .ft-example-label{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;font-style:normal;}
+
+  .bad-followups{background:var(--red-pale);border:1.5px solid #FCA5A5;border-radius:20px;padding:28px;margin:24px 0;}
+  .bf-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .bf-label::after{content:'';flex:1;height:1px;background:#FCA5A5;}
+  .bf-items{display:flex;flex-direction:column;gap:10px;}
+  .bf-item{background:var(--white);border-radius:12px;padding:14px 16px;}
+  .bf-bad{font-size:13.5px;color:var(--red);font-style:italic;margin-bottom:5px;}
+  .bf-why{font-size:12.5px;color:var(--gray-muted);}
+
+  .module-complete{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 100%);border-radius:24px;padding:48px 40px;margin:32px 0 0;text-align:center;position:relative;overflow:hidden;}
+  .module-complete::before{content:'🎓';position:absolute;font-size:200px;opacity:0.06;top:-40px;right:-20px;line-height:1;pointer-events:none;}
+  .mc-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9);font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:20px;}
+  .mc-title{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:white;margin-bottom:16px;line-height:1.1;}
+  .mc-sub{font-size:17px;color:rgba(255,255,255,0.8);line-height:1.7;max-width:560px;margin:0 auto 28px;}
+  .mc-lessons{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+  .mc-lesson{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:100px;padding:6px 14px;font-size:12px;color:rgba(255,255,255,0.85);font-weight:500;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 32px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.module-complete{padding:36px 24px;}.ft-header{padding:16px;gap:12px;}.ft-inner{padding:0 16px 16px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Module 2 · Gap-Filling Essential</div>
+  <h1>The Art of the Follow-Up — How to Write Messages That Get Responses</h1>
+  <p class="hero-sub">Most people either follow up too aggressively and damage relationships, or not at all and let opportunities disappear. There's a professional sweet spot — and it's a learnable skill.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Here's an uncomfortable truth about professional communication: when someone doesn't respond to your email, it's usually not because they don't want to — it's because they're busy and your message got buried. <mark>Following up is not annoying. Not following up is how opportunities disappear.</mark></p>
+    <p>The question isn't whether to follow up — it's how to do it in a way that reminds without pressuring, maintains the relationship, and actually gets a response. This article gives you the practical framework, the timing guidelines, and the templates to do it right.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Six Golden Rules of Following Up</h2>
+    <div class="rules-grid">
+      <div class="rule-card"><span class="rc-icon">⏰</span><div class="rc-rule">Wait the right amount of time</div><p class="rc-desc">For external clients: 5–7 business days. For internal colleagues: 2–3 days. For urgent matters with a passed deadline: the next business day. Never follow up the same day you sent the original.</p></div>
+      <div class="rule-card"><span class="rc-icon">✂️</span><div class="rc-rule">Keep it shorter than the original</div><p class="rc-desc">A follow-up shouldn't re-explain everything. Reference the original briefly, state what you need, make it easy to respond in one line. Long follow-ups feel like lectures.</p></div>
+      <div class="rule-card"><span class="rc-icon">🎯</span><div class="rc-rule">Make it easy to say yes</div><p class="rc-desc">"Does Thursday at 2pm work?" gets more responses than "Let me know when you're free." Offer specific options. Reduce friction. The easier you make responding, the more likely they will.</p></div>
+      <div class="rule-card"><span class="rc-icon">💡</span><div class="rc-rule">Add value — don't just nudge</div><p class="rc-desc">The best follow-ups give the recipient something new: an updated timeline, a relevant resource, an answer to a question they might have. Value makes your follow-up feel helpful, not nagging.</p></div>
+      <div class="rule-card"><span class="rc-icon">🔢</span><div class="rc-rule">Know when to stop</div><p class="rc-desc">Three follow-ups is generally the maximum. After three attempts with no response, send a graceful "closing the loop" final message — and move on without burning the relationship.</p></div>
+      <div class="rule-card"><span class="rc-icon">🎭</span><div class="rc-rule">Match the tone to the relationship</div><p class="rc-desc">Following up with a close colleague can be casual and warm. Following up with a new client or senior executive should be more formal and diplomatic. Read the relationship.</p></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Four Follow-Up Templates — Ready to Adapt</h2>
+    <p>Click each situation to see a tested template you can adapt right now.</p>
+    <div class="followup-types">
+
+      <div class="ft-card" onclick="toggleFT(this)">
+        <div class="ft-header"><div class="ft-icon">📋</div><div class="ft-name">Following up on a proposal or quote you sent</div><div class="ft-toggle">+</div></div>
+        <div class="ft-body"><div class="ft-inner">
+          <p class="ft-desc">You've sent a proposal and heard nothing. This needs to check in without sounding desperate or impatient. Keep it brief, reference the proposal specifically, and make it easy to respond or reschedule.</p>
+          <div class="ft-timing">⏰ Wait: 5–7 business days after sending</div>
+          <div class="ft-example">
+            <div class="ft-example-label">✉️ Template</div>
+            Hi [Name], just checking in on the proposal I sent over on [date]. Happy to answer any questions or talk through anything in more detail — are you free for a 20-minute call this week? If the timing isn't right, just let me know and I can follow up in a few weeks.
+          </div>
+        </div></div>
+      </div>
+
+      <div class="ft-card" onclick="toggleFT(this)">
+        <div class="ft-header"><div class="ft-icon">📧</div><div class="ft-name">Following up on an unanswered request from a colleague</div><div class="ft-toggle">+</div></div>
+        <div class="ft-body"><div class="ft-inner">
+          <p class="ft-desc">Internal follow-ups should be direct and efficient — your colleague is busy, not ignoring you. Be specific about what you need and give them a clear, reasonable deadline.</p>
+          <div class="ft-timing">⏰ Wait: 2–3 business days after the original request</div>
+          <div class="ft-example">
+            <div class="ft-example-label">✉️ Template</div>
+            Hey [Name] — just following up on the Q3 data I requested on Monday. I need it to finalize the report by Friday. Could you send it over by Thursday EOD? If something's blocking you, let me know and we'll figure it out. Thanks!
+          </div>
+        </div></div>
+      </div>
+
+      <div class="ft-card" onclick="toggleFT(this)">
+        <div class="ft-header"><div class="ft-icon">🤝</div><div class="ft-name">Following up after a meeting or networking event</div><div class="ft-toggle">+</div></div>
+        <div class="ft-body"><div class="ft-inner">
+          <p class="ft-desc">Post-event follow-ups are relationship-building moments. Reference something specific from your conversation to show you were paying attention, deliver any promised follow-through, and keep the door open warmly.</p>
+          <div class="ft-timing">⏰ Wait: Within 24–48 hours of the meeting or event</div>
+          <div class="ft-example">
+            <div class="ft-example-label">✉️ Template</div>
+            Hi [Name], it was great meeting you at [event] yesterday. I really enjoyed our conversation about [specific topic]. As promised, I've attached [the resource/article]. I'd love to continue the conversation — would you be open to a brief call sometime in the next few weeks?
+          </div>
+        </div></div>
+      </div>
+
+      <div class="ft-card" onclick="toggleFT(this)">
+        <div class="ft-header"><div class="ft-icon">🚪</div><div class="ft-name">The final follow-up — closing the loop gracefully</div><div class="ft-toggle">+</div></div>
+        <div class="ft-body"><div class="ft-inner">
+          <p class="ft-desc">After 2–3 unanswered follow-ups, send one final message that closes the loop without burning the bridge. This protects the relationship and leaves the door open. Surprisingly, this message often gets a response when earlier ones didn't.</p>
+          <div class="ft-timing">⏰ Send: After 2–3 follow-ups with no response</div>
+          <div class="ft-example">
+            <div class="ft-example-label">✉️ Template</div>
+            Hi [Name], I've reached out a few times about [topic] and haven't heard back — I completely understand if the timing isn't right or priorities have shifted. I'll stop following up after this, but wanted to leave the door open. If this becomes relevant again in the future, I'd love to connect. Thanks for your time.
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>A well-crafted follow-up doesn't feel like pressure. It feels like a service — you're making it easy for a busy person to close the loop on something they intended to respond to.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Follow-Up Mistakes That Damage Relationships</h2>
+    <p>These patterns show up constantly — and they're the reason some people's follow-ups get ignored while others get responses.</p>
+    <div class="bad-followups">
+      <div class="bf-label">Common Follow-Up Mistakes</div>
+      <div class="bf-items">
+        <div class="bf-item">
+          <div class="bf-bad">"Just following up on my last email, and the one before that, and the one before that..."</div>
+          <div class="bf-why">Referencing every previous attempt signals desperation and makes the recipient feel hounded. One brief reference to the original is enough.</div>
+        </div>
+        <div class="bf-item">
+          <div class="bf-bad">"I need a response ASAP — this is urgent!" (when it isn't)</div>
+          <div class="bf-why">Manufacturing urgency erodes trust. If something is genuinely urgent, explain why. If it's not, don't claim it is — your credibility matters more than one response.</div>
+        </div>
+        <div class="bf-item">
+          <div class="bf-bad">"Just checking in 😊" with no context</div>
+          <div class="bf-why">This forces the recipient to re-read your previous emails to remember what you're asking about. Reference the specific ask clearly in every follow-up.</div>
+        </div>
+        <div class="bf-item">
+          <div class="bf-bad">Following up after 2 days, then again the next day, then again that afternoon</div>
+          <div class="bf-why">Multiple follow-ups within the same day or two signals poor judgment and desperation. It also makes the recipient dread your name in their inbox.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>Using AI to Draft Follow-Ups</h3>
+        <p>AI is excellent at follow-up drafts when you give it the right context. Try: "Write a professional follow-up email to a client who hasn't responded to a proposal I sent 6 days ago. The proposal was for a website redesign project. Tone: warm but not desperate. Keep it under 60 words. End with a specific, easy-to-answer question." Then personalize with any specific details from your actual relationship. AI gives you the structure; you add the human touch that makes it work.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You sent a project proposal to a potential client on a Monday. It's now Thursday of the same week — four business days later — and you haven't heard back. Should you follow up?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. Yes — four days is too long to wait and you should follow up immediately</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. Not yet — wait until Monday or Tuesday (5–7 business days) before following up on an external proposal</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. No — if they wanted to respond they would have. Following up looks desperate</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Yes — but only if you include a deadline that creates urgency</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Following up is professional — not following up is how opportunities disappear. The question is how to do it without damaging the relationship.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Timing matters: 5–7 days for external, 2–3 days for internal. Keep follow-ups shorter than the original and make it easy for the recipient to respond with a specific, low-friction ask.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>After 2–3 follow-ups with no response, send a graceful closing message and move on. This protects the relationship and often surprisingly gets a response when earlier messages didn't.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Avoid: stacking multiple follow-up references, manufacturing fake urgency, vague "just checking in" messages, and following up multiple times within a day or two.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE COMPLETE BANNER -->
+  <div class="section fade-in">
+    <div class="module-complete">
+      <div class="mc-tag">🎉 Module Complete</div>
+      <div class="mc-title">You've Finished Module 2!</div>
+      <p class="mc-sub">You've covered 22 articles across all four lessons — from business writing fundamentals to AI drafting workflows, editing AI outputs, summarizing information, and essential professional communication skills. That's a complete toolkit for AI-assisted professional communication.</p>
+      <div class="mc-lessons">
+        <div class="mc-lesson">2.1 Business Writing Fundamentals</div>
+        <div class="mc-lesson">2.2 Using AI to Draft Documents</div>
+        <div class="mc-lesson">2.3 Editing & Improving AI Outputs</div>
+        <div class="mc-lesson">2.4 Summarizing Information</div>
+        <div class="mc-lesson">22 Articles Complete</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleFT(c){const o=c.classList.contains('open');document.querySelectorAll('.ft-card').forEach(x=>x.classList.remove('open'));if(!o)c.classList.add('open');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> The standard for external follow-ups on proposals is 5–7 business days — four days is on the short side. Busy professionals often need the full work week to review a proposal, discuss it internally, and formulate a response. Following up too quickly can signal impatience and undermine your professionalism. Wait until Monday or Tuesday next week for the right timing.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Four days is on the short side for an external proposal follow-up. Always following up is correct — not following up is how deals disappear. But timing matters: 5–7 business days respects that the recipient may need time to review, discuss internally, and respond. Wait until early next week for professional timing. And never manufacture urgency that isn\'t real.';}f.classList.add('show');}
+</script>
+</body>
+</html>

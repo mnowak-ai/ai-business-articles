@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Improve Tone in AI Writing — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  .ai-patterns{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .ap-item{border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;transition:all 0.2s ease;}
+  .ap-item:hover{border-color:var(--purple);}
+  .ap-header{display:flex;align-items:center;gap:14px;padding:18px 22px;background:var(--white);cursor:pointer;}
+  .ap-icon{font-size:24px;flex-shrink:0;}
+  .ap-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);flex:1;}
+  .ap-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;background:var(--red-pale);color:var(--red);flex-shrink:0;}
+  .ap-body{padding:0 22px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:550px){.ap-body{grid-template-columns:1fr;}}
+  .ap-side{padding:14px 16px;border-radius:12px;font-size:13.5px;line-height:1.65;}
+  .ap-side.bad{background:var(--red-pale);border:1.5px solid #FCA5A5;color:#7F1D1D;}
+  .ap-side.good{background:var(--green-pale);border:1.5px solid #6EE7B7;color:#1A3A2A;}
+  .ap-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+  .ap-side.bad .ap-label{color:var(--red);}
+  .ap-side.good .ap-label{color:var(--green);}
+
+  .tone-prompts{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .tp-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .tp-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .tp-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .tp-desc{font-size:15px;color:var(--gray-muted);margin-bottom:20px;line-height:1.6;}
+  .prompt-cards{display:flex;flex-direction:column;gap:10px;}
+  .pc-item{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:16px 18px;cursor:pointer;transition:all 0.2s ease;}
+  .pc-item:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .pc-item.copied{border-color:#6EE7B7;background:var(--green-pale);}
+  .pc-situation{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+  .pc-prompt{font-size:14px;line-height:1.6;color:var(--gray-text);font-style:italic;}
+  .pc-copy{font-size:11px;font-weight:700;color:var(--gray-muted);margin-top:8px;display:flex;align-items:center;gap:4px;}
+
+  .humanize-tool{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ht-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .ht-label::after{content:'';flex:1;height:1px;background:var(--purple-mid);}
+  .ht-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .ht-pairs{display:flex;flex-direction:column;gap:12px;margin:16px 0;}
+  .ht-pair{display:grid;grid-template-columns:1fr 36px 1fr;gap:0;align-items:center;}
+  @media(max-width:500px){.ht-pair{grid-template-columns:1fr;gap:8px;}.ht-arrow{transform:rotate(90deg);}}
+  .ht-side{padding:12px 14px;border-radius:12px;font-size:13.5px;line-height:1.55;}
+  .ht-side.robotic{background:var(--red-pale);border:1.5px solid #FCA5A5;color:#7F1D1D;}
+  .ht-side.human{background:var(--green-pale);border:1.5px solid #6EE7B7;color:#1A3A2A;}
+  .ht-arrow{text-align:center;font-size:18px;color:var(--purple);}
+  .ht-label-small{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+  .ht-side.robotic .ht-label-small{color:var(--red);}
+  .ht-side.human .ht-label-small{color:var(--green);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.tone-prompts,.humanize-tool{padding:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.3 · Editing & Improving AI Outputs</div>
+  <h1>How to Improve Tone in AI-Generated Writing</h1>
+  <p class="hero-sub">AI has two default tone failures: overly enthusiastic and robotically formal. Both are recognizable to any experienced reader — and fixing them is one of the most important editing skills you can develop.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>You can always tell when something was written by AI without being edited. Not because of grammar errors — AI's grammar is usually fine. It's the tone. Either it sounds like an overeager assistant who's "absolutely delighted" about everything, or it sounds like a legal document that's been translated from corporate robot into slightly warmer corporate robot.</p>
+    <p>Neither is what you want. <mark>The goal is writing that sounds like a competent, thoughtful professional who actually knows and respects the recipient — and that requires human calibration of tone.</mark> Here's how to recognize and fix the most common patterns.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Six Most Common AI Tone Problems</h2>
+    <p>These patterns show up consistently in AI-generated writing. Each one has a recognizable signature and a straightforward fix.</p>
+    <div class="ai-patterns">
+      <div class="ap-item">
+        <div class="ap-header"><div class="ap-icon">😄</div><div class="ap-name">Unearned Enthusiasm</div><div class="ap-badge">Very Common</div></div>
+        <div class="ap-body">
+          <div class="ap-side bad"><div class="ap-label">❌ AI default</div>"I am absolutely thrilled and delighted to connect with you today and share this incredible opportunity that I am confident will transform your operations!"</div>
+          <div class="ap-side good"><div class="ap-label">✅ Fixed</div>"I wanted to share an opportunity I think could be a strong fit for your team. Here's the overview."</div>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="ap-header"><div class="ap-icon">🤖</div><div class="ap-name">Robotic Formality</div><div class="ap-badge">Very Common</div></div>
+        <div class="ap-body">
+          <div class="ap-side bad"><div class="ap-label">❌ AI default</div>"Please be advised that the aforementioned documentation has been received and is currently under review by the relevant stakeholders."</div>
+          <div class="ap-side good"><div class="ap-label">✅ Fixed</div>"Got your documents — our team is reviewing them now and will follow up by Friday."</div>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="ap-header"><div class="ap-icon">😤</div><div class="ap-name">Hidden Passive-Aggression</div><div class="ap-badge">Common</div></div>
+        <div class="ap-body">
+          <div class="ap-side bad"><div class="ap-label">❌ AI default</div>"As per our previous communication, and as I noted in my last email, the deadline was clearly stated as the 15th of this month."</div>
+          <div class="ap-side good"><div class="ap-label">✅ Fixed</div>"Just a quick reminder that the deadline is the 15th — let me know if you need anything before then."</div>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="ap-header"><div class="ap-icon">🫥</div><div class="ap-name">Empty Filler Phrases</div><div class="ap-badge">Very Common</div></div>
+        <div class="ap-body">
+          <div class="ap-side bad"><div class="ap-label">❌ AI default</div>"I hope this email finds you well. Don't hesitate to reach out if you have any questions or concerns. Looking forward to connecting."</div>
+          <div class="ap-side good"><div class="ap-label">✅ Fixed</div>Cut all three. Start with your actual message. End with your specific ask. Nothing else needed.</div>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="ap-header"><div class="ap-icon">🏢</div><div class="ap-name">Corporate Buzzword Overload</div><div class="ap-badge">Common</div></div>
+        <div class="ap-body">
+          <div class="ap-side bad"><div class="ap-label">❌ AI default</div>"We are excited to synergize our core competencies to leverage best-in-class solutions that will move the needle on your key performance indicators going forward."</div>
+          <div class="ap-side good"><div class="ap-label">✅ Fixed</div>"We can help your team work more efficiently and hit your targets faster. Here's how."</div>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="ap-header"><div class="ap-icon">🎭</div><div class="ap-name">Tone Mismatch for Context</div><div class="ap-badge">Common</div></div>
+        <div class="ap-body">
+          <div class="ap-side bad"><div class="ap-label">❌ Wrong context</div>Upbeat, celebratory tone used in an email addressing a client complaint: "Exciting news — we've had a chance to review your feedback!"</div>
+          <div class="ap-side good"><div class="ap-label">✅ Right context</div>"Thank you for letting us know about this. I understand this wasn't the experience you expected, and I want to make sure we address it properly."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Humanizing Phrases — Word-for-Word Swaps</h2>
+    <p>Sometimes the fastest fix is a direct word swap. These pairs replace AI-sounding language with natural professional English.</p>
+    <div class="humanize-tool">
+      <div class="ht-label">Quick Reference: Tone Swaps</div>
+      <div class="ht-title">Replace Robotic With Human</div>
+      <div class="ht-pairs">
+        <div class="ht-pair">
+          <div class="ht-side robotic"><div class="ht-label-small">❌ Robotic</div>"I hope this email finds you well"</div>
+          <div class="ht-arrow">→</div>
+          <div class="ht-side human"><div class="ht-label-small">✅ Human</div>Delete it entirely. Start with your actual message.</div>
+        </div>
+        <div class="ht-pair">
+          <div class="ht-side robotic"><div class="ht-label-small">❌ Robotic</div>"Please don't hesitate to reach out"</div>
+          <div class="ht-arrow">→</div>
+          <div class="ht-side human"><div class="ht-label-small">✅ Human</div>"Feel free to reach out" or just delete it</div>
+        </div>
+        <div class="ht-pair">
+          <div class="ht-side robotic"><div class="ht-label-small">❌ Robotic</div>"I am reaching out to touch base"</div>
+          <div class="ht-arrow">→</div>
+          <div class="ht-side human"><div class="ht-label-small">✅ Human</div>"Just checking in on..." or state your purpose directly</div>
+        </div>
+        <div class="ht-pair">
+          <div class="ht-side robotic"><div class="ht-label-small">❌ Robotic</div>"At your earliest convenience"</div>
+          <div class="ht-arrow">→</div>
+          <div class="ht-side human"><div class="ht-label-small">✅ Human</div>Give a specific deadline: "by Friday" or "this week"</div>
+        </div>
+        <div class="ht-pair">
+          <div class="ht-side robotic"><div class="ht-label-small">❌ Robotic</div>"I am writing to inform you that"</div>
+          <div class="ht-arrow">→</div>
+          <div class="ht-side human"><div class="ht-label-small">✅ Human</div>Delete it. Just state the information.</div>
+        </div>
+        <div class="ht-pair">
+          <div class="ht-side robotic"><div class="ht-label-small">❌ Robotic</div>"Going forward"</div>
+          <div class="ht-arrow">→</div>
+          <div class="ht-side human"><div class="ht-label-small">✅ Human</div>"From now on" or "starting [date]"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The fastest way to improve AI tone is to ask: "Would a real human I respect actually say this?" If the answer is no, rewrite it until the answer is yes.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Tone Refinement Prompts That Actually Work</h2>
+    <p>Instead of just editing manually, you can prompt the AI to fix its own tone problems. These refinement prompts are specific enough to produce useful results. Click any to copy it.</p>
+    <div class="tone-prompts">
+      <div class="tp-label">Refinement Prompt Library</div>
+      <div class="tp-title">Copy-Paste Tone Fixes</div>
+      <p class="tp-desc">Use these prompts after receiving an AI draft that has tone problems. Paste them in as a follow-up instruction.</p>
+      <div class="prompt-cards">
+        <div class="pc-item" onclick="copyPC(this)">
+          <div class="pc-situation">Too Enthusiastic</div>
+          <div class="pc-prompt">"Rewrite this email with a calmer, more natural tone. Remove any phrases that sound overly enthusiastic or effusive — like 'absolutely thrilled,' 'incredible,' or 'delighted.' It should sound like a professional who's genuinely interested, not a salesperson performing excitement."</div>
+          <div class="pc-copy">📋 Click to copy</div>
+        </div>
+        <div class="pc-item" onclick="copyPC(this)">
+          <div class="pc-situation">Too Formal / Robotic</div>
+          <div class="pc-prompt">"This reads too formally — like a legal document, not a real person. Rewrite it using plain English. Remove any phrase that sounds like it was written by someone trying to sound professional rather than someone who actually is. Keep it professional but human."</div>
+          <div class="pc-copy">📋 Click to copy</div>
+        </div>
+        <div class="pc-item" onclick="copyPC(this)">
+          <div class="pc-situation">Sounds Passive-Aggressive</div>
+          <div class="pc-prompt">"Remove any phrases that could be read as passive-aggressive or pointed — like 'as I mentioned,' 'as previously discussed,' or 'per my last email.' Rewrite those parts to be direct and neutral. The goal is clarity without any implied criticism."</div>
+          <div class="pc-copy">📋 Click to copy</div>
+        </div>
+        <div class="pc-item" onclick="copyPC(this)">
+          <div class="pc-situation">Audience Mismatch</div>
+          <div class="pc-prompt">"This is going to a [senior executive / direct report / close colleague / external client]. Adjust the tone to match that relationship. For [senior executive]: more concise, lead with the point, respect their time. For [close colleague]: warmer, slightly more conversational but still professional."</div>
+          <div class="pc-copy">📋 Click to copy</div>
+        </div>
+        <div class="pc-item" onclick="copyPC(this)">
+          <div class="pc-situation">Sensitive Situation</div>
+          <div class="pc-prompt">"This email is addressing a difficult situation [complaint / mistake / disappointment]. Rewrite it so it opens with acknowledgment rather than explanation. The tone should be empathetic and direct — not defensive, not over-apologetic. The person should feel heard before they hear our response."</div>
+          <div class="pc-copy">📋 Click to copy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🎯</div><div><h3>The Ultimate Tone Test</h3><p>Before sending any AI-assisted document, read it aloud. Your ear catches what your eyes skip over. If you stumble on a phrase, it probably sounds unnatural. If you feel slightly embarrassed reading something out loud — "absolutely delighted," "please don't hesitate" — that's your instinct telling you it needs to go. Trust that instinct.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">An AI-generated email to an unhappy client opens with: "We are excited to update you on the status of your recent issue!" What is the primary tone problem with this opening?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The word "excited" is too casual for a formal business email</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. The tone is completely mismatched for the context — "excited" is an inappropriate emotional register for communicating with someone who has a problem or complaint</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. The phrase "recent issue" is too vague and doesn't specify the problem</div>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. The opening is too short and should include more context</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI has two default tone failures: unearned enthusiasm (too effusive) and robotic formality (too stiff). Both are recognizable and fixable.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Six common AI tone problems: unearned enthusiasm, robotic formality, hidden passive-aggression, empty filler phrases, corporate buzzwords, and context mismatches.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Many tone problems can be fixed with specific refinement prompts that tell the AI exactly what to change — no need to rewrite from scratch.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The ultimate tone test: read your document aloud. If you feel embarrassed saying it, it needs to be rewritten. Trust your instinct.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function copyPC(item){const text=item.querySelector('.pc-prompt').textContent;navigator.clipboard.writeText(text).then(()=>{const lbl=item.querySelector('.pc-copy');const orig=lbl.textContent;lbl.textContent='✅ Copied!';item.classList.add('copied');setTimeout(()=>{lbl.textContent=orig;item.classList.remove('copied');},2000);});}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> "Excited" is the wrong emotional register entirely for a complaint situation. The client has a problem — they need to feel heard and taken seriously, not to receive enthusiasm about their issue being updated. The AI defaulted to its common "positive and energetic" tone setting without accounting for the emotional context. Fixed: "Thank you for bringing this to our attention. I want to make sure this gets resolved properly — here\'s where things stand."';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The issue isn\'t formality level, vagueness, or length. It\'s that "excited" is completely the wrong emotion for this situation. A client with a complaint needs empathy and seriousness — not enthusiasm. Tone must match the emotional context of the situation, not just the general formality level of a business email.';}f.classList.add('show');}
+</script>
+</body>
+</html>

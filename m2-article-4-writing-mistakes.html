@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 7 Most Common Business Writing Mistakes — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --green:#276749; --green-pale:#F0FFF4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; transition:width 0.1s ease; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* MISTAKE CARDS */
+  .mistakes { display:flex; flex-direction:column; gap:16px; margin:24px 0; }
+  .mistake-card { border-radius:20px; border:1.5px solid var(--purple-mid); overflow:hidden; cursor:pointer; transition:all 0.25s ease; }
+  .mistake-card:hover { border-color:var(--purple); box-shadow:0 4px 20px rgba(123,47,190,0.1); }
+  .mistake-card.open { border-color:var(--purple); }
+  .mistake-header { display:flex; align-items:center; gap:16px; padding:20px 24px; background:var(--white); }
+  .mistake-num { font-family:'Fraunces',serif; font-size:28px; font-weight:900; color:var(--purple-mid); width:36px; flex-shrink:0; line-height:1; }
+  .mistake-card.open .mistake-num { color:var(--purple); }
+  .mistake-title { font-family:'Fraunces',serif; font-size:19px; font-weight:700; color:var(--purple-dark); flex:1; }
+  .mistake-toggle { width:28px; height:28px; background:var(--purple-pale); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; transition:transform 0.3s, background 0.2s; flex-shrink:0; }
+  .mistake-card.open .mistake-toggle { transform:rotate(45deg); background:var(--purple); color:white; }
+  .mistake-body { max-height:0; overflow:hidden; transition:max-height 0.45s ease; }
+  .mistake-card.open .mistake-body { max-height:600px; }
+  .mistake-inner { padding:0 24px 24px; }
+  .mistake-desc { font-size:15.5px; line-height:1.75; color:var(--gray-text); margin:14px 0 16px; }
+  .mistake-compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media(max-width:500px) { .mistake-compare { grid-template-columns:1fr; } }
+  .mc-side { padding:14px 16px; border-radius:12px; font-size:13.5px; line-height:1.65; }
+  .mc-side.bad { background:var(--red-pale); border:1.5px solid #FCA5A5; color:#7F1D1D; }
+  .mc-side.good { background:var(--green-pale); border:1.5px solid #6EE7B7; color:#1A3A2A; }
+  .mc-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+  .mc-side.bad .mc-label { color:var(--red); }
+  .mc-side.good .mc-label { color:var(--green); }
+  .mistake-tip { margin-top:12px; padding:12px 14px; background:var(--purple-pale); border-radius:10px; font-size:13.5px; color:var(--purple-dark); line-height:1.6; }
+  .mistake-tip strong { color:var(--purple); }
+
+  /* SPOT THE MISTAKE GAME */
+  .spot-game { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:24px 0; }
+  .sg-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .sg-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .sg-title { font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:var(--purple-dark); margin-bottom:8px; }
+  .sg-desc { font-size:15px; color:var(--gray-muted); margin-bottom:20px; line-height:1.6; }
+  .email-sample { background:var(--white); border:1.5px solid var(--purple-mid); border-radius:14px; overflow:hidden; margin-bottom:16px; }
+  .email-sample-bar { background:var(--purple-pale); padding:10px 16px; font-size:12px; color:var(--purple); font-weight:600; }
+  .email-sample-content { padding:16px 18px; font-size:14.5px; line-height:1.8; color:var(--gray-text); white-space:pre-line; }
+  .mistake-selectors { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+  .mistake-option { display:flex; align-items:center; gap:10px; padding:12px 14px; background:var(--white); border:1.5px solid var(--purple-mid); border-radius:12px; cursor:pointer; font-size:14px; color:var(--gray-text); transition:all 0.2s ease; }
+  .mistake-option:hover { border-color:var(--purple); color:var(--purple); }
+  .mistake-option.correct-pick { border-color:#6EE7B7; background:var(--green-pale); color:var(--green); font-weight:600; }
+  .mistake-option.wrong-pick { border-color:#FCA5A5; background:var(--red-pale); color:var(--red); }
+  .mo-check { width:20px; height:20px; border:2px solid var(--purple-mid); border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:11px; }
+  .spot-result { padding:16px 18px; border-radius:12px; font-size:14.5px; line-height:1.65; display:none; margin-top:8px; }
+  .spot-result.show { display:block; animation:fadeIn 0.3s ease; }
+  .spot-result.good { background:var(--green-pale); border:1.5px solid #6EE7B7; color:#1A3A2A; }
+  .check-btn { background:var(--purple); color:white; border:none; border-radius:12px; padding:12px 24px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s ease; }
+  .check-btn:hover { background:var(--purple-dark); }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } .mistake-header { padding:16px; gap:12px; } .mistake-inner { padding:0 16px 16px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.1 · Business Writing Fundamentals</div>
+  <h1>The 7 Most Common Business Writing Mistakes — And How to Fix Them</h1>
+  <p class="hero-sub">Most business writing errors are completely predictable — and completely fixable once you know what to look for. This is your self-audit guide.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>After reading thousands of pieces of professional writing, patterns emerge. The same mistakes show up over and over — across industries, across experience levels, across companies. The good news: they're not random. Once you learn to recognize them, you can eliminate them from your own writing in a matter of weeks.</p>
+    <p>Click each mistake to see what it looks like and how to fix it.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="mistakes">
+
+      <div class="mistake-card" onclick="toggleMistake(this)">
+        <div class="mistake-header">
+          <div class="mistake-num">1</div>
+          <div class="mistake-title">Writing Too Informally for the Context</div>
+          <div class="mistake-toggle">+</div>
+        </div>
+        <div class="mistake-body"><div class="mistake-inner">
+          <p class="mistake-desc">Casual language, slang, abbreviations, and emojis have their place — in texts with friends, in informal Slack channels. But when they show up in professional emails, proposals, or reports, they signal that the writer isn't taking the situation seriously. This is the most common mistake among newer professionals who are used to communicating casually online.</p>
+          <div class="mistake-compare">
+            <div class="mc-side bad"><div class="mc-label">❌ Too Informal</div>"Hey!! Just checking in on that thing we talked about lol — any updates?? Thx 😊"</div>
+            <div class="mc-side good"><div class="mc-label">✅ Professional</div>"Hi James, following up on our conversation from Tuesday — do you have an update on the timeline? I'd like to confirm before Friday's meeting."</div>
+          </div>
+          <div class="mistake-tip"><strong>Quick fix:</strong> Before sending, ask yourself: would I say this in a job interview? If not, rewrite it.</div>
+        </div></div>
+      </div>
+
+      <div class="mistake-card" onclick="toggleMistake(this)">
+        <div class="mistake-header">
+          <div class="mistake-num">2</div>
+          <div class="mistake-title">Long, Tangled Sentences That Lose the Reader</div>
+          <div class="mistake-toggle">+</div>
+        </div>
+        <div class="mistake-body"><div class="mistake-inner">
+          <p class="mistake-desc">Many people think long, complex sentences sound more intelligent or thorough. They don't. They make the reader work harder — and busy readers give up. A good rule: if you need to re-read a sentence to understand it, it needs to be broken up or simplified.</p>
+          <div class="mistake-compare">
+            <div class="mc-side bad"><div class="mc-label">❌ Too Long</div>"Due to the fact that the project, which has been ongoing since the beginning of the third quarter and involves multiple stakeholders across different departments, is now approaching a critical milestone that requires input from all relevant parties before any final decisions can be made, it would be beneficial to schedule a meeting."</div>
+            <div class="mc-side good"><div class="mc-label">✅ Clear</div>"The project is reaching a key milestone. Before we finalize decisions, we need input from all departments. Let's schedule a meeting this week."</div>
+          </div>
+          <div class="mistake-tip"><strong>Quick fix:</strong> If a sentence is more than 25 words, find the natural break point and split it into two.</div>
+        </div></div>
+      </div>
+
+      <div class="mistake-card" onclick="toggleMistake(this)">
+        <div class="mistake-header">
+          <div class="mistake-num">3</div>
+          <div class="mistake-title">Missing the Point — No Clear Ask or Next Step</div>
+          <div class="mistake-toggle">+</div>
+        </div>
+        <div class="mistake-body"><div class="mistake-inner">
+          <p class="mistake-desc">A message that doesn't tell the reader what to do next forces them to guess — or reply asking what you actually want. This wastes everyone's time and makes you look disorganized. Every business communication should make it crystal clear: what does the reader need to do, and by when?</p>
+          <div class="mistake-compare">
+            <div class="mc-side bad"><div class="mc-label">❌ No Clear Ask</div>"Hi team, just wanted to share the updated budget numbers for this quarter. The report is attached. We've made some adjustments based on last month's review. Let me know what you think."</div>
+            <div class="mc-side good"><div class="mc-label">✅ Clear Ask</div>"Hi team — attached is the updated Q3 budget report. Please review by Friday and reply with any questions or concerns. I'll incorporate feedback before Monday's leadership meeting."</div>
+          </div>
+          <div class="mistake-tip"><strong>Quick fix:</strong> End every email with a single, specific action item: "Please reply by [date]" / "Could you confirm receipt?" / "Let me know if you have questions."</div>
+        </div></div>
+      </div>
+
+      <div class="mistake-card" onclick="toggleMistake(this)">
+        <div class="mistake-header">
+          <div class="mistake-num">4</div>
+          <div class="mistake-title">Reply-All Chaos and CC Overload</div>
+          <div class="mistake-toggle">+</div>
+        </div>
+        <div class="mistake-body"><div class="mistake-inner">
+          <p class="mistake-desc">Nothing derails inbox productivity faster than unnecessary emails. Copying everyone on every communication, replying-all when only one person needs the response, or CCing managers to appear busy are behaviors that signal poor professional judgment. Your CC list is a decision, not a habit.</p>
+          <div class="mistake-compare">
+            <div class="mc-side bad"><div class="mc-label">❌ CC Overload</div>Email to 12 people asking a logistical question that only one person can answer, with the entire leadership team cc'd "for visibility."</div>
+            <div class="mc-side good"><div class="mc-label">✅ Targeted</div>Email directly to the person who can answer. If leadership needs to be aware of the outcome, follow up with a brief update — not a full thread.</div>
+          </div>
+          <div class="mistake-tip"><strong>Quick fix:</strong> Ask for every person in To/CC: "Does this person need to take action or truly need to see this?" If neither, remove them.</div>
+        </div></div>
+      </div>
+
+      <div class="mistake-card" onclick="toggleMistake(this)">
+        <div class="mistake-header">
+          <div class="mistake-num">5</div>
+          <div class="mistake-title">Jargon and Buzzwords That Sound Empty</div>
+          <div class="mistake-toggle">+</div>
+        </div>
+        <div class="mistake-body"><div class="mistake-inner">
+          <p class="mistake-desc">Every industry has its own language — and some of it is genuinely useful shorthand. But corporate buzzwords often substitute for actual thinking. When writing is full of "leverage our synergies," "move the needle," "circle back," and "low-hanging fruit," it signals that the writer hasn't thought clearly about what they're actually trying to say.</p>
+          <div class="mistake-compare">
+            <div class="mc-side bad"><div class="mc-label">❌ Buzzword Heavy</div>"We need to leverage our core competencies to move the needle on customer engagement and drive synergistic outcomes across all touchpoints going forward."</div>
+            <div class="mc-side good"><div class="mc-label">✅ Plain and Clear</div>"We need to improve how we engage customers — specifically by responding faster and personalizing our outreach."</div>
+          </div>
+          <div class="mistake-tip"><strong>Quick fix:</strong> After drafting, highlight any word or phrase that you couldn't easily explain to a high school student. Replace it with plain English.</div>
+        </div></div>
+      </div>
+
+      <div class="mistake-card" onclick="toggleMistake(this)">
+        <div class="mistake-header">
+          <div class="mistake-num">6</div>
+          <div class="mistake-title">Sending Without Proofreading</div>
+          <div class="mistake-toggle">+</div>
+        </div>
+        <div class="mistake-body"><div class="mistake-inner">
+          <p class="mistake-desc">Typos, grammatical errors, wrong names, and missing attachments all signal carelessness — regardless of how smart the content is. In a professional context, errors undermine your credibility. This is especially true in high-stakes communications like proposals, client emails, and executive memos. The five seconds it takes to re-read is always worth it.</p>
+          <div class="mistake-compare">
+            <div class="mc-side bad"><div class="mc-label">❌ Not Proofread</div>"Dear Mr Smith, Thank you for you're time yesterday. As discussed, I've attached the Proposal for you're review. Let me know if their are any questions. Best, [Name"</div>
+            <div class="mc-side good"><div class="mc-label">✅ Proofread</div>"Dear Mr. Smith, Thank you for your time yesterday. As discussed, I've attached the proposal for your review. Please let me know if you have any questions. Best regards, [Name]"</div>
+          </div>
+          <div class="mistake-tip"><strong>Quick fix:</strong> Read your email out loud before sending. Your ear catches mistakes your eyes skip over. Also: always check that mentioned attachments are actually attached.</div>
+        </div></div>
+      </div>
+
+      <div class="mistake-card" onclick="toggleMistake(this)">
+        <div class="mistake-header">
+          <div class="mistake-num">7</div>
+          <div class="mistake-title">Burying the Most Important Point</div>
+          <div class="mistake-toggle">+</div>
+        </div>
+        <div class="mistake-body"><div class="mistake-inner">
+          <p class="mistake-desc">Many writers tell a story that builds to a conclusion — they explain the background, describe the situation, list the considerations, and finally get to the point. This works for novels. It doesn't work for business writing, where readers often skim, read the first two sentences, and move on. Put the most important thing first, every time.</p>
+          <div class="mistake-compare">
+            <div class="mc-side bad"><div class="mc-label">❌ Point Buried</div>"As you know, we've been tracking the performance of our social media campaigns throughout Q3. Based on our analysis, looking at metrics including engagement, reach, and conversion data, and comparing them against last quarter... [3 more paragraphs]... so we recommend pausing the Instagram spend."</div>
+            <div class="mc-side good"><div class="mc-label">✅ Point First</div>"Recommendation: Pause Instagram ad spend for Q4. Our Q3 analysis shows engagement down 34% and cost per conversion up 60% vs. last quarter. Supporting data attached."</div>
+          </div>
+          <div class="mistake-tip"><strong>Quick fix:</strong> Practice the "newspaper test" — write your emails like newspaper articles. Headline first (what happened), then details. Readers can stop at any point and still have the key information.</div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Spot the Mistakes — Can You Find Them All?</h2>
+    <p>Read this email and identify all the mistakes from the list above. Select every mistake you can find, then hit Check.</p>
+    <div class="spot-game">
+      <div class="sg-label">🔍 Practice Exercise</div>
+      <div class="sg-title">How Many Mistakes Can You Spot?</div>
+      <p class="sg-desc">This email has multiple mistakes. Select all that apply.</p>
+      <div class="email-sample">
+        <div class="email-sample-bar">📧 New Email</div>
+        <div class="email-sample-content">Subject: stuff
+
+hey team!! so as you guys prolly know weve been working on the new product launch for a while now and after lots of meetings and back and forth with different departments and stakeholders and various discussions about the direction and approach we should take and what the timeline looks like and also considering market feedback from earlier this year we think we should delay. anyway let me know ur thoughts lol 😊
+
+also pls see attached
+
+thx,
+[Name]</div>
+      </div>
+      <div class="mistake-selectors" id="mistakeSelectors">
+        <div class="mistake-option" onclick="toggleOption(this)" data-correct="true"><div class="mo-check"></div>Mistake 1: Too informal (slang, emojis, "lol")</div>
+        <div class="mistake-option" onclick="toggleOption(this)" data-correct="true"><div class="mo-check"></div>Mistake 2: One massive run-on sentence</div>
+        <div class="mistake-option" onclick="toggleOption(this)" data-correct="true"><div class="mo-check"></div>Mistake 3: No clear ask or next step</div>
+        <div class="mistake-option" onclick="toggleOption(this)" data-correct="false"><div class="mo-check"></div>Mistake 4: Too many people CC'd</div>
+        <div class="mistake-option" onclick="toggleOption(this)" data-correct="false"><div class="mo-check"></div>Mistake 5: Too much corporate jargon</div>
+        <div class="mistake-option" onclick="toggleOption(this)" data-correct="true"><div class="mo-check"></div>Mistake 7: Key point buried at the end</div>
+      </div>
+      <button class="check-btn" onclick="checkSpotGame()">Check My Answers →</button>
+      <div class="spot-result" id="spotResult"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The best business writers aren't the ones who never make mistakes — they're the ones who've built habits that catch mistakes before anyone else sees them.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">🤖</div><div><h3>AI Makes Some of These Better — and Some Worse</h3><p>AI tools like Grammarly and ChatGPT can catch grammar errors and improve sentence length (mistakes 2 and 6). But they can actually make mistakes 1, 5, and 7 worse — AI often produces overly enthusiastic casual language or buries recommendations in lengthy preamble. Know which mistakes AI helps with and which ones require your own editorial judgment.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A proposal email opens with three paragraphs explaining the background and context of a project, then reveals the budget request in the final sentence. What is the primary writing mistake being made?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The email is too long overall</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. The key point (budget request) is buried at the end instead of leading with it</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. Background context should never be included in proposals</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. The tone is too formal</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The 7 most common business writing mistakes: too informal, long tangled sentences, missing the ask, CC overload, empty jargon, not proofreading, and burying the key point.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Put the most important information first — business readers skim and often don't read to the end.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Reading out loud before sending catches errors your eyes miss. Always verify attachments are actually attached.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI can help with some mistakes (grammar, sentence length) but can make others worse (tone, burying the point) — use your own judgment.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleMistake(c){const o=c.classList.contains('open');document.querySelectorAll('.mistake-card').forEach(x=>x.classList.remove('open'));if(!o)c.classList.add('open');}
+  function toggleOption(opt){opt.classList.toggle('selected');opt.querySelector('.mo-check').textContent=opt.classList.contains('selected')?'✓':'';}
+  let spotChecked=false;
+  function checkSpotGame(){if(spotChecked)return;spotChecked=true;const opts=document.querySelectorAll('.mistake-option');let correct=0,total=0;opts.forEach(o=>{const isCorrect=o.dataset.correct==='true';const isSelected=o.classList.contains('selected');total++;if(isCorrect){o.classList.add('correct-pick');if(isSelected)correct++;}else if(isSelected){o.classList.add('wrong-pick');}o.style.pointerEvents='none';});const r=document.getElementById('spotResult');r.classList.add('show','good');r.innerHTML=`You found ${correct} of 4 correct mistakes! The email has: informal language (lol, emojis, slang), one massive run-on sentence, no clear ask (what should the team do with this info?), and the key point — the delay decision — is buried at the very end instead of leading with it.`;}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Business readers — especially decision-makers — often read the first sentence or two and skim the rest. A proposal that hides the ask until the last paragraph risks being misunderstood or not acted on at all. Lead with the recommendation, then provide supporting context for those who want the details.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The length isn\'t necessarily the problem — context is often valuable in proposals. The issue is where the key information lives. The budget request should be the very first thing stated, not the last. Business writing should always lead with the point.';}f.classList.add('show');}
+</script>
+</body>
+</html>

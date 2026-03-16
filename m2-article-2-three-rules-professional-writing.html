@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Three Rules of Professional Writing — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --purple:#7B2FBE; --purple-pale:#F3EAFF; --purple-mid:#E8D5FF; --purple-dark:#4A1580; --white:#FFFFFF; --gray-soft:#F8F7FA; --gray-text:#3D3547; --gray-muted:#8B7FA0; --accent:#C084FC; --red:#E53E3E; --red-pale:#FFF1F1; --green:#276749; --green-pale:#F0FFF4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--gray-text); overflow-x:hidden; }
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:var(--purple); width:0%; z-index:100; transition:width 0.1s ease; }
+  .hero { padding:80px 40px 0; max-width:860px; margin:0 auto; }
+  .lesson-tag { display:inline-flex; align-items:center; gap:8px; background:var(--purple-pale); color:var(--purple); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:8px 16px; border-radius:100px; margin-bottom:32px; border:1.5px solid var(--purple-mid); }
+  .lesson-tag::before { content:''; width:6px; height:6px; background:var(--purple); border-radius:50%; display:inline-block; }
+  h1 { font-family:'Fraunces',serif; font-size:clamp(36px,5.5vw,60px); font-weight:900; line-height:1.05; color:var(--purple-dark); margin-bottom:24px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:18px; line-height:1.7; color:var(--gray-muted); max-width:620px; }
+  .hero-divider { width:60px; height:4px; background:var(--purple); border-radius:2px; margin:32px 0; }
+  .content { max-width:860px; margin:0 auto; padding:0 40px 60px; }
+  .section { padding:32px 0 0; }
+  h2 { font-family:'Fraunces',serif; font-size:30px; font-weight:700; color:var(--purple-dark); margin-bottom:18px; letter-spacing:-0.01em; line-height:1.2; }
+  p { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:16px; }
+  mark { background:var(--purple-mid); color:var(--purple-dark); border-radius:3px; padding:1px 4px; font-weight:500; }
+  .pull-quote { margin:20px 0; padding:28px 36px; background:var(--purple-pale); border-left:5px solid var(--purple); border-radius:0 16px 16px 0; position:relative; overflow:hidden; }
+  .pull-quote::before { content:'"'; position:absolute; top:-10px; left:20px; font-family:'Fraunces',serif; font-size:100px; color:var(--purple-mid); line-height:1; pointer-events:none; }
+  .pull-quote p { font-family:'Fraunces',serif; font-size:21px; font-style:italic; font-weight:300; color:var(--purple-dark); margin:0; position:relative; z-index:1; line-height:1.55; }
+
+  /* RULE TABS */
+  .rule-tabs { display:flex; gap:8px; margin-bottom:0; flex-wrap:wrap; }
+  .rule-tab { padding:11px 22px; border-radius:100px; border:1.5px solid var(--purple-mid); font-size:14px; font-weight:600; color:var(--gray-muted); cursor:pointer; transition:all 0.2s ease; background:var(--white); }
+  .rule-tab:hover { border-color:var(--purple); color:var(--purple); }
+  .rule-tab.active { background:var(--purple); border-color:var(--purple); color:white; }
+  .rule-panel { display:none; margin-top:20px; animation:fadeIn 0.3s ease; }
+  .rule-panel.show { display:block; }
+  .rule-number { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:10px; }
+  .rule-title-big { font-family:'Fraunces',serif; font-size:28px; font-weight:900; color:var(--purple-dark); margin-bottom:12px; }
+  .rule-def { font-size:17px; line-height:1.8; color:var(--gray-text); margin-bottom:20px; }
+
+  /* CLARITY EXAMPLES */
+  .clarity-pairs { display:flex; flex-direction:column; gap:14px; margin:20px 0; }
+  .clarity-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media(max-width:550px) { .clarity-pair { grid-template-columns:1fr; } }
+  .cp-side { border-radius:12px; padding:16px; font-size:14px; line-height:1.65; }
+  .cp-side.unclear { background:var(--red-pale); border:1.5px solid #FCA5A5; color:#7F1D1D; }
+  .cp-side.clear { background:var(--green-pale); border:1.5px solid #6EE7B7; color:#1A3A2A; }
+  .cp-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:5px; }
+  .cp-side.unclear .cp-label { color:var(--red); }
+  .cp-side.clear .cp-label { color:var(--green); }
+
+  /* TONE DIAL */
+  .tone-dial { background:var(--gray-soft); border:1.5px solid var(--purple-mid); border-radius:24px; padding:32px; margin:20px 0; }
+  .td-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .td-label::after { content:''; flex:1; height:1px; background:var(--purple-mid); }
+  .tone-scale { display:flex; align-items:center; gap:0; margin-bottom:20px; }
+  .tone-end { font-size:12px; font-weight:700; color:var(--gray-muted); flex-shrink:0; padding:0 12px; text-align:center; line-height:1.3; }
+  .tone-bar-wrap { flex:1; position:relative; }
+  .tone-bar { height:12px; border-radius:100px; background:linear-gradient(to right, #FCA5A5, #6EE7B7); }
+  .tone-marker { position:absolute; top:50%; transform:translate(-50%,-50%); width:24px; height:24px; background:var(--purple); border-radius:50%; border:3px solid white; box-shadow:0 2px 8px rgba(0,0,0,0.2); cursor:pointer; transition:left 0.3s ease; }
+  .tone-examples { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media(max-width:500px) { .tone-examples { grid-template-columns:1fr; } }
+  .tone-ex { background:var(--white); border:1.5px solid var(--purple-mid); border-radius:12px; padding:14px; font-size:13px; line-height:1.6; color:var(--gray-text); }
+  .tone-ex-label { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--purple); margin-bottom:6px; }
+
+  /* PURPOSE BUILDER */
+  .purpose-cards { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0; }
+  @media(max-width:600px) { .purpose-cards { grid-template-columns:1fr; } }
+  .purpose-card { border:1.5px solid var(--purple-mid); border-radius:16px; padding:22px; background:var(--white); transition:all 0.2s ease; }
+  .purpose-card:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .pc-type { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--purple); background:var(--purple-pale); padding:4px 10px; border-radius:100px; display:inline-block; margin-bottom:10px; }
+  .pc-title { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--purple-dark); margin-bottom:6px; }
+  .pc-goal { font-size:13.5px; color:var(--gray-muted); margin-bottom:10px; font-style:italic; }
+  .pc-example { font-size:13px; color:var(--gray-text); line-height:1.6; background:var(--gray-soft); border-radius:8px; padding:10px 12px; }
+
+  /* CHECKLIST */
+  .writing-checklist { background:var(--white); border:2px solid var(--purple); border-radius:20px; padding:32px; margin:24px 0; position:relative; }
+  .wc-title { position:absolute; top:-14px; left:24px; background:var(--white); padding:0 12px; font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); }
+  .wc-items { display:flex; flex-direction:column; gap:12px; }
+  .wc-item { display:flex; gap:12px; align-items:flex-start; padding:14px 16px; background:var(--gray-soft); border-radius:12px; cursor:pointer; transition:all 0.2s ease; border:1.5px solid transparent; }
+  .wc-item:hover { border-color:var(--purple); background:var(--purple-pale); }
+  .wc-item.done { border-color:#6EE7B7; background:var(--green-pale); }
+  .wc-box { width:22px; height:22px; border-radius:6px; border:2px solid var(--purple-mid); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:11px; transition:all 0.2s; }
+  .wc-item.done .wc-box { background:var(--green); border-color:var(--green); color:white; }
+  .wc-text { font-size:15px; color:var(--gray-text); font-weight:500; }
+  .wc-item.done .wc-text { color:var(--green); font-weight:600; }
+
+  .callout { background:var(--purple); border-radius:20px; padding:32px 36px; margin:24px 0; display:flex; gap:20px; align-items:flex-start; }
+  .callout-icon { font-size:32px; flex-shrink:0; }
+  .callout h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:white; margin-bottom:8px; }
+  .callout p { font-size:15.5px; color:rgba(255,255,255,0.85); line-height:1.65; margin:0; }
+  .quiz { background:var(--purple); border-radius:24px; padding:40px; margin:24px 0; color:white; }
+  .quiz-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .quiz h2 { font-family:'Fraunces',serif; font-size:24px; color:white; margin-bottom:8px; }
+  .quiz-question { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.85); margin-bottom:28px; }
+  .quiz-options { display:flex; flex-direction:column; gap:12px; }
+  .quiz-btn { background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; padding:16px 20px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; text-align:left; cursor:pointer; transition:all 0.2s ease; }
+  .quiz-btn:hover { background:rgba(255,255,255,0.2); transform:translateX(4px); }
+  .quiz-btn.correct { background:rgba(74,222,128,0.25); border-color:#4ade80; color:#d1fae5; }
+  .quiz-btn.wrong { background:rgba(248,113,113,0.2); border-color:#f87171; color:#fecaca; }
+  .quiz-feedback { margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:15px; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; animation:fadeIn 0.3s ease; }
+  .summary { background:var(--purple-pale); border-radius:24px; padding:40px; margin:24px 0 48px; }
+  .summary-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--purple); margin-bottom:16px; }
+  .summary h2 { font-family:'Fraunces',serif; font-size:26px; color:var(--purple-dark); margin-bottom:20px; }
+  .summary-points { display:flex; flex-direction:column; gap:14px; }
+  .summary-point { display:flex; gap:14px; align-items:flex-start; }
+  .point-dot { width:24px; height:24px; background:var(--purple); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .point-dot svg { width:12px; height:12px; }
+  .summary-point p { font-size:16px; line-height:1.65; margin:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  @media(max-width:600px) { .hero,.content { padding-left:24px; padding-right:24px; } .callout { flex-direction:column; gap:12px; padding:24px; } .quiz,.summary { padding:28px 24px; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 2.1 · Business Writing Fundamentals</div>
+  <h1>The Three Rules of Professional Writing</h1>
+  <p class="hero-sub">Every piece of effective business writing shares three qualities: it's clear, it has the right tone, and it has a purpose. Master these three things and the rest follows.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>There are entire books written about business writing — style guides, grammar handbooks, communication frameworks. But if you distill all of it down to the essentials, you get three rules that govern whether a piece of professional writing works or doesn't.</p>
+    <p><mark>Clear. Respectful. Purpose-driven.</mark> These aren't vague ideals. Each one has specific, practical implications for how you write. Let's go deep on all three.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Explore All Three Rules</h2>
+    <p>Click each rule to explore what it really means and see examples in action.</p>
+    <div class="rule-tabs">
+      <div class="rule-tab active" onclick="showRule('clarity',this)">Rule 1: Clear</div>
+      <div class="rule-tab" onclick="showRule('tone',this)">Rule 2: Respectful Tone</div>
+      <div class="rule-tab" onclick="showRule('purpose',this)">Rule 3: Purpose-Driven</div>
+    </div>
+
+    <!-- CLARITY PANEL -->
+    <div class="rule-panel show" id="panel-clarity">
+      <div class="rule-number">Rule 1</div>
+      <div class="rule-title-big">Clear and Easy to Understand</div>
+      <p class="rule-def">Clarity means your reader understands exactly what you mean — on the first read. Not after re-reading twice. Not after asking a follow-up question. The first time. This sounds obvious, but most people write for themselves (what they mean to say) rather than for their reader (what the reader needs to understand).</p>
+      <p>The most common enemies of clarity are: long, tangled sentences; unnecessary jargon; burying the key point in the middle of a paragraph; and vague language that sounds professional but says nothing.</p>
+      <div class="clarity-pairs">
+        <div class="clarity-pair">
+          <div class="cp-side unclear"><div class="cp-label">❌ Unclear</div>Due to the fact that the project, which was discussed in the previous quarter, is now in a stage where we are approaching the completion of the final deliverables, it would be appreciated if you could endeavor to provide your feedback at your earliest convenience.</div>
+          <div class="cp-side clear"><div class="cp-label">✅ Clear</div>The project is nearly complete. Could you please share your feedback by Friday?</div>
+        </div>
+        <div class="clarity-pair">
+          <div class="cp-side unclear"><div class="cp-label">❌ Unclear</div>We are going to be potentially looking into possibly exploring whether there might be some opportunities in the new market segment moving forward going forward.</div>
+          <div class="cp-side clear"><div class="cp-label">✅ Clear</div>We're planning to explore the new market segment in Q2.</div>
+        </div>
+        <div class="clarity-pair">
+          <div class="cp-side unclear"><div class="cp-label">❌ Unclear</div>Please advise as to your thoughts and opinions regarding the attached documentation and provide any and all relevant feedback you may have.</div>
+          <div class="cp-side clear"><div class="cp-label">✅ Clear</div>Please review the attached report and share any feedback by end of day Thursday.</div>
+        </div>
+      </div>
+      <p>Notice the pattern: the clear versions are shorter, more direct, and tell the reader exactly what's happening and what's needed. Clarity almost always means fewer words, not more.</p>
+    </div>
+
+    <!-- TONE PANEL -->
+    <div class="rule-panel" id="panel-tone">
+      <div class="rule-number">Rule 2</div>
+      <div class="rule-title-big">Respectful and Appropriate Tone</div>
+      <p class="rule-def">Tone is how your writing sounds to the reader — the emotional register and level of formality you're communicating at. The right tone shows respect for the recipient, matches the relationship, and fits the context. Get it wrong and even a perfectly written message can land badly.</p>
+      <p>Business writing tone sits on a spectrum. Too casual and you come across as unprofessional. Too stiff and formal and you come across as cold or robotic. The sweet spot is professional but human — clear and respectful without being either sloppy or stiff.</p>
+      <div class="tone-dial">
+        <div class="td-label">The Tone Spectrum</div>
+        <div class="tone-scale">
+          <div class="tone-end">Too<br>Casual</div>
+          <div class="tone-bar-wrap">
+            <div class="tone-bar"></div>
+            <div class="tone-marker" id="toneMarker" style="left:62%"></div>
+          </div>
+          <div class="tone-end">Too<br>Formal</div>
+        </div>
+        <div class="tone-examples">
+          <div class="tone-ex"><div class="tone-ex-label">❌ Too Casual</div>"hey can u send that thing we talked about asap lol thx"</div>
+          <div class="tone-ex" style="border-color:var(--purple);background:var(--purple-pale);"><div class="tone-ex-label" style="color:var(--purple);">✅ The Sweet Spot</div>"Hi Sarah, could you send over the Q3 report when you get a chance? I'd like to review it before Friday's call. Thanks so much."</div>
+          <div class="tone-ex"><div class="tone-ex-label">❌ Too Formal</div>"Dear Ms. Johnson, I am writing to formally request your assistance in obtaining the aforementioned quarterly documentation at your earliest possible convenience."</div>
+        </div>
+      </div>
+      <p>The right tone also depends on your audience and relationship. Writing to a close teammate is different from writing to a senior executive. Writing to a client is different from writing to a vendor. Always ask: how well do I know this person, and what level of formality does this situation require?</p>
+    </div>
+
+    <!-- PURPOSE PANEL -->
+    <div class="rule-panel" id="panel-purpose">
+      <div class="rule-number">Rule 3</div>
+      <div class="rule-title-big">Purpose-Driven — Has a Clear Goal</div>
+      <p class="rule-def">Every piece of professional writing has (or should have) a specific purpose. Before you write a single word, you should be able to answer: what do I want the reader to think, feel, or do after reading this? If you can't answer that question, you're not ready to write yet.</p>
+      <p>Business communication typically serves one of five purposes. Knowing which one you're trying to achieve shapes everything — structure, length, tone, and what you include or leave out.</p>
+      <div class="purpose-cards">
+        <div class="purpose-card"><div class="pc-type">Inform</div><div class="pc-title">Sharing Information</div><div class="pc-goal">Goal: Reader understands something they didn't before</div><div class="pc-example">📝 "The new overtime policy takes effect March 1st. Here's what changes..."</div></div>
+        <div class="purpose-card"><div class="pc-type">Request</div><div class="pc-title">Asking for Something</div><div class="pc-goal">Goal: Reader takes a specific action</div><div class="pc-example">📝 "Could you please review the attached proposal by Friday and share your feedback?"</div></div>
+        <div class="purpose-card"><div class="pc-type">Persuade</div><div class="pc-title">Making a Case</div><div class="pc-goal">Goal: Reader agrees with your position or changes their mind</div><div class="pc-example">📝 "I'd like to make the case for switching to a new CRM. Here's why it would save us 10 hours a week..."</div></div>
+        <div class="purpose-card"><div class="pc-type">Confirm</div><div class="pc-title">Following Up</div><div class="pc-goal">Goal: Reader has a clear record of what was agreed</div><div class="pc-example">📝 "Just confirming our call for Thursday at 2pm EST. I'll send the agenda by Wednesday."</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Before you write, ask three questions: What am I saying? How will it land? What do I need the reader to do? Answer those three things and your writing will always have a foundation.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Your Pre-Send Checklist</h2>
+    <p>Before hitting send on any important business communication, run through these five checks. Click each one to confirm it as you go.</p>
+    <div class="writing-checklist">
+      <div class="wc-title">Pre-Send Checklist</div>
+      <div class="wc-items">
+        <div class="wc-item" onclick="this.classList.toggle('done');this.querySelector('.wc-box').textContent=this.classList.contains('done')?'✓':'';"><div class="wc-box"></div><div class="wc-text">Clarity: Could my reader misunderstand any part of this?</div></div>
+        <div class="wc-item" onclick="this.classList.toggle('done');this.querySelector('.wc-box').textContent=this.classList.contains('done')?'✓':'';"><div class="wc-box"></div><div class="wc-text">Tone: Does this sound professional, respectful, and human?</div></div>
+        <div class="wc-item" onclick="this.classList.toggle('done');this.querySelector('.wc-box').textContent=this.classList.contains('done')?'✓':'';"><div class="wc-box"></div><div class="wc-text">Purpose: Is it obvious what I'm asking or telling the reader?</div></div>
+        <div class="wc-item" onclick="this.classList.toggle('done');this.querySelector('.wc-box').textContent=this.classList.contains('done')?'✓':'';"><div class="wc-box"></div><div class="wc-text">Length: Have I cut anything that doesn't serve the purpose?</div></div>
+        <div class="wc-item" onclick="this.classList.toggle('done');this.querySelector('.wc-box').textContent=this.classList.contains('done')?'✓':'';"><div class="wc-box"></div><div class="wc-text">Next step: Does the reader know exactly what happens next?</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout"><div class="callout-icon">💡</div><div><h3>These Rules Apply to AI-Assisted Writing Too</h3><p>When you use AI to draft an email or document, your job as the editor is to check it against these three rules. Is it clear? Does the tone fit the recipient and context? Does it have a specific purpose with a clear ask or next step? AI can produce plausible-sounding text that fails all three. Your judgment as a professional writer is what makes AI-generated content actually effective.</p></div></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A manager sends this email to her team: "I wanted to touch base regarding the ongoing situation with respect to the aforementioned deliverable and gauge where things stand at this juncture." What is the primary problem with this message?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The tone is too casual for a manager to use with their team</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. The message is too short to convey what the manager needs</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. The message lacks clarity — it's full of vague language and doesn't tell the reader what deliverable is being referenced or what's actually being asked</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. The message is missing a subject line</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Rule 1 — Clarity: Write for the reader, not for yourself. Use short sentences, direct language, and put the key point first. Clarity almost always means fewer words.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Rule 2 — Respectful Tone: Aim for the sweet spot between too casual and too stiff. Adjust based on your relationship with the reader and the formality of the situation.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Rule 3 — Purpose-Driven: Know your goal before you write. Business writing informs, requests, persuades, or confirms — and the reader should always know which one it is.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>These three rules apply equally to AI-assisted writing — your job as editor is to check every draft against all three before sending.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function showRule(id,tab){document.querySelectorAll('.rule-panel').forEach(p=>p.classList.remove('show'));document.querySelectorAll('.rule-tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+id).classList.add('show');tab.classList.add('active');}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> This message is a classic example of "sounds professional, communicates nothing." Words like "touch base," "aforementioned," "at this juncture," and "gauge where things stand" are vague filler. The reader doesn\'t know which deliverable, what information is needed, or by when. Clarity failure.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The tone is actually fine — somewhat formal but not inappropriate. The real problem is clarity. The message uses a lot of words to say very little. What deliverable? What does "gauge where things stand" mean — does the manager want an update, a meeting, a document? The reader doesn\'t know.';}f.classList.add('show');}
+</script>
+</body>
+</html>
