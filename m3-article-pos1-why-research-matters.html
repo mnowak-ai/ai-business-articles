@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Good Research Is the Difference Between a Smart Decision and a Costly Mistake — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Failure case cards */
+  .failure-cards{display:flex;flex-direction:column;gap:16px;margin:24px 0;}
+  .fc{border-radius:20px;overflow:hidden;border:1.5px solid var(--purple-mid);cursor:pointer;transition:border-color 0.2s;}
+  .fc:hover,.fc.open{border-color:var(--purple);}
+  .fc-header{display:flex;align-items:center;gap:14px;padding:20px 24px;background:var(--white);transition:background 0.2s;}
+  .fc.open .fc-header{background:var(--purple-pale);}
+  .fc-loss{flex-shrink:0;background:var(--red-pale);border-radius:12px;padding:6px 14px;text-align:center;}
+  .fc-loss-num{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--red);line-height:1;}
+  .fc-loss-label{font-size:10px;color:var(--red);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;}
+  .fc-info{flex:1;}
+  .fc-company{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);}
+  .fc-tagline{font-size:13px;color:var(--gray-muted);margin-top:2px;}
+  .fc-toggle{font-size:20px;color:var(--purple);transition:transform 0.3s;flex-shrink:0;}
+  .fc.open .fc-toggle{transform:rotate(45deg);}
+  .fc-body{max-height:0;overflow:hidden;transition:max-height 0.45s ease;}
+  .fc.open .fc-body{max-height:500px;}
+  .fc-detail{padding:0 24px 24px;border-top:1px solid var(--purple-mid);}
+  .fc-what{font-size:15px;line-height:1.75;padding-top:16px;margin-bottom:12px;}
+  .fc-research-gap{background:var(--red-pale);border-radius:12px;padding:14px 16px;font-size:14.5px;line-height:1.65;border-left:4px solid var(--red);margin-bottom:10px;}
+  .fc-rg-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--red);margin-bottom:6px;}
+  .fc-lesson{background:var(--green-pale);border-radius:12px;padding:14px 16px;font-size:14.5px;line-height:1.65;border-left:4px solid #6EE7B7;color:var(--green);}
+  .fc-lesson-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
+
+  /* Cost of bad decision calc */
+  .cost-calc{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cc-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cc-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cc-sub{font-size:15px;color:var(--gray-muted);margin-bottom:24px;}
+  .cc-scenario-select{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .cc-btn{padding:9px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .cc-btn:hover,.cc-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .cc-run{background:var(--purple);color:white;border:none;border-radius:12px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .cc-run:hover{background:var(--purple-dark);}
+  .cc-output{display:none;margin-top:20px;}
+  .cc-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .cc-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:540px){.cc-compare{grid-template-columns:1fr;}}
+  .cc-col{border-radius:16px;padding:22px;border:1.5px solid;}
+  .cc-col.bad{background:var(--red-pale);border-color:#FCA5A5;}
+  .cc-col.good{background:var(--green-pale);border-color:#6EE7B7;}
+  .cc-col-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;}
+  .cc-col.bad .cc-col-label{color:var(--red);}
+  .cc-col.good .cc-col-label{color:var(--green);}
+  .cc-col-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .cc-col-cost{font-family:'Fraunces',serif;font-size:32px;font-weight:900;margin-bottom:6px;}
+  .cc-col.bad .cc-col-cost{color:var(--red);}
+  .cc-col.good .cc-col-cost{color:var(--green);}
+  .cc-col-desc{font-size:14px;line-height:1.65;}
+
+  /* Research vs. no research stat row */
+  .stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr;}}
+  .stat-card{background:var(--purple);border-radius:20px;padding:24px 18px;text-align:center;}
+  .stat-num{font-family:'Fraunces',serif;font-size:38px;font-weight:900;color:white;line-height:1;margin-bottom:8px;}
+  .stat-label{font-size:13px;color:rgba(255,255,255,0.82);line-height:1.4;}
+
+  /* The payoff section */
+  .payoff-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.payoff-grid{grid-template-columns:1fr;}}
+  .pg-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;background:var(--white);}
+  .pg-icon{font-size:30px;margin-bottom:10px;display:block;}
+  .pg-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pg-desc{font-size:14.5px;line-height:1.65;color:var(--gray-text);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Module 3 · Before You Begin</div>
+  <h1>Why Good Research Is the Difference Between a Smart Decision and a Costly Mistake</h1>
+  <p class="hero-sub">Every major business failure has something in common: someone made a consequential decision without enough information. And every major business success has the opposite. Research isn't busywork — it's the foundation everything else is built on.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Before we get into the mechanics of business research — what types exist, how to run them, how to use AI to speed them up — it's worth pausing on a more fundamental question: why does research matter so much in the first place?</p>
+    <p>The honest answer is that it's not just about having more information. <mark>Research is what separates people who get lucky from people who make consistently good decisions.</mark> Luck runs out. A systematic approach to understanding markets, competitors, and customers compounds over time into a durable competitive advantage.</p>
+    <p>The fastest way to feel this is through contrast — looking at what happens when decisions get made without good research versus when they don't.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What It Costs to Skip the Research</h2>
+    <p>These are real companies. Real failures. Each one traces directly back to a research gap — something they could have found out, didn't, and paid a severe price for. Click each to see the full story.</p>
+    <div class="failure-cards">
+
+      <div class="fc" onclick="toggleFC(this)">
+        <div class="fc-header">
+          <div class="fc-loss"><div class="fc-loss-num">$130B</div><div class="fc-loss-label">Market Value Lost</div></div>
+          <div class="fc-info"><div class="fc-company">New Coke (Coca-Cola, 1985)</div><div class="fc-tagline">The most famous product failure in history — caused entirely by a research design flaw</div></div>
+          <div class="fc-toggle">+</div>
+        </div>
+        <div class="fc-body"><div class="fc-detail">
+          <div class="fc-what">Coca-Cola spent $4 million and 2 years developing New Coke. Blind taste tests showed consumers preferred the new formula over both original Coke and Pepsi. They launched confidently — and faced the most catastrophic public backlash in consumer product history. Within 79 days, they pulled it and relaunched Classic Coke.</div>
+          <div class="fc-research-gap"><div class="fc-rg-label">❌ The Research Gap</div>The blind taste tests were technically valid — but measured the wrong thing. Sipping a small sample of a new formula in a lab tells you nothing about whether people will accept replacing a product they've had an emotional relationship with for decades. The research answered "which tastes better in a blind sip?" — not "how will consumers react to losing something they love?" Two different questions entirely.</div>
+          <div class="fc-lesson"><div class="fc-lesson-label">✅ The Research Lesson</div>Measuring the right thing matters as much as measuring accurately. Customer research needs to capture emotional attachment and identity, not just taste preference. The questions you ask shape the answers you get — and the wrong question gives you dangerously confident wrong answers.</div>
+        </div></div>
+      </div>
+
+      <div class="fc" onclick="toggleFC(this)">
+        <div class="fc-header">
+          <div class="fc-loss"><div class="fc-loss-num">$8.5B</div><div class="fc-loss-label">Written Off</div></div>
+          <div class="fc-info"><div class="fc-company">HP + Autonomy Acquisition (2011)</div><div class="fc-tagline">The due diligence that wasn't done — and the $8.8 billion that disappeared</div></div>
+          <div class="fc-toggle">+</div>
+        </div>
+        <div class="fc-body"><div class="fc-detail">
+          <div class="fc-what">Hewlett-Packard acquired British software company Autonomy for $11.1 billion in 2011 — a significant premium over its market value. Within a year, HP wrote off $8.8 billion of that, citing "serious accounting improprieties" at Autonomy. The deal became one of the most scrutinized M&A failures in tech history.</div>
+          <div class="fc-research-gap"><div class="fc-rg-label">❌ The Research Gap</div>Independent due diligence on Autonomy's financials was inadequate. Multiple red flags that were visible in the company's financial structure — unusual revenue recognition practices, hardware-heavy "software" sales — were either not investigated deeply enough or were raised and ignored. The research existed. The commitment to following it wherever it led did not.</div>
+          <div class="fc-lesson"><div class="fc-lesson-label">✅ The Research Lesson</div>Research findings are only valuable if decision-makers are willing to act on what they find — including things they'd rather not see. Confirmation bias (looking for reasons to proceed with a deal you're excited about) is one of the most expensive failure modes in business research.</div>
+        </div></div>
+      </div>
+
+      <div class="fc" onclick="toggleFC(this)">
+        <div class="fc-header">
+          <div class="fc-loss"><div class="fc-loss-num">$1B+</div><div class="fc-loss-label">Investment Written Off</div></div>
+          <div class="fc-info"><div class="fc-company">Quibi (2020)</div><div class="fc-tagline">$1.75 billion raised, 6 months to shutdown — a market research miss at massive scale</div></div>
+          <div class="fc-toggle">+</div>
+        </div>
+        <div class="fc-body"><div class="fc-detail">
+          <div class="fc-what">Quibi raised $1.75 billion to build a short-form mobile video platform designed to be watched only on phones in under 10 minutes per clip. It launched in April 2020, attracted major Hollywood talent, and shut down in October 2020 — six months after launch — having attracted only 500,000 subscribers against a target of 7.4 million.</div>
+          <div class="fc-research-gap"><div class="fc-rg-label">❌ The Research Gap</div>The core premise — that people want premium, cinematic short-form video exclusively on phones — was never validated with real users before $1.75 billion was deployed. The few consumer tests that were run showed warning signs. Competitors (YouTube, TikTok, Netflix) already occupied the "short video on mobile" space. The assumption that people would pay $5/month for phone-only content was never rigorously tested.</div>
+          <div class="fc-lesson"><div class="fc-lesson-label">✅ The Research Lesson</div>The scale of the investment never changed the urgency of validation. Even with $1.75 billion available, the right approach is to validate the core assumption with real users at small scale before full deployment. Research that would have cost $50K could have prevented a $1.75 billion mistake.</div>
+        </div></div>
+      </div>
+
+      <div class="fc" onclick="toggleFC(this)">
+        <div class="fc-header">
+          <div class="fc-loss"><div class="fc-loss-num">$2B</div><div class="fc-loss-label">Market Cap Destroyed</div></div>
+          <div class="fc-info"><div class="fc-company">Target Canada (2013–2015)</div><div class="fc-tagline">Canada's largest retail failure — caused by research that was never done on the ground</div></div>
+          <div class="fc-toggle">+</div>
+        </div>
+        <div class="fc-body"><div class="fc-detail">
+          <div class="fc-what">Target entered Canada in 2013 with massive fanfare, opening 133 stores simultaneously — the largest retail expansion in Canadian history. Two years later, every store was closed. Target Canada filed for bankruptcy in 2015, writing off $2 billion USD and leaving 17,600 Canadians unemployed.</div>
+          <div class="fc-research-gap"><div class="fc-rg-label">❌ The Research Gap</div>Target's U.S. research didn't translate to Canada. The supply chain complexity of operating in Canada — different regulations, different supplier relationships, different consumer price expectations — was dramatically underestimated. Canadian consumers had built high expectations from cross-border shopping; empty shelves and higher-than-expected prices created immediate, lasting disappointment. Market research had been conducted at a high level, but the operational and pricing reality on the ground had not been adequately studied.</div>
+          <div class="fc-lesson"><div class="fc-lesson-label">✅ The Research Lesson</div>Market research needs to match the context it's being applied to. U.S. consumer research in U.S. conditions doesn't tell you how Canadian consumers in Canadian market conditions will respond. Local, specific, ground-level research is irreplaceable — even if you have excellent research from an adjacent market.</div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>In every one of these cases, the research that would have prevented the failure was available, affordable, and achievable. The gap wasn't access to information — it was the commitment to getting it before making the call.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Real Cost of Research vs. No Research</h2>
+    <p>Select a business decision type to see the cost comparison between decisions made with good research versus decisions made without it.</p>
+    <div class="cost-calc">
+      <div class="cc-label">💰 Cost Comparison Calculator</div>
+      <div class="cc-title">Research vs. No Research</div>
+      <div class="cc-sub">See the real financial difference between investing in research and skipping it.</div>
+      <div class="cc-scenario-select">
+        <button class="cc-btn active" onclick="selectScenario(this,'launch')">🚀 Product Launch</button>
+        <button class="cc-btn" onclick="selectScenario(this,'hire')">👥 Senior Hire</button>
+        <button class="cc-btn" onclick="selectScenario(this,'market')">🌍 Market Entry</button>
+        <button class="cc-btn" onclick="selectScenario(this,'vendor')">🤝 Vendor Selection</button>
+      </div>
+      <button class="cc-run" onclick="showCost()">Show Cost Comparison →</button>
+      <div class="cc-output" id="ccOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Numbers That Make the Case</h2>
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">70%</div><div class="stat-label">of new products fail — the majority due to market or customer research gaps, not execution failures</div></div>
+      <div class="stat-card"><div class="stat-num">5–10×</div><div class="stat-label">the ROI of market research investment, on average, when it prevents a major strategic mistake</div></div>
+      <div class="stat-card"><div class="stat-num">$1</div><div class="stat-label">spent on research before a decision is worth $50+ in avoided costs from a bad decision that proceeds</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Research Actually Gives You</h2>
+    <p>Research doesn't just prevent bad outcomes. It creates positive compounding advantages that show up in every decision you make with it.</p>
+    <div class="payoff-grid">
+      <div class="pg-card"><span class="pg-icon">🎯</span><div class="pg-title">Confidence in Your Direction</div><p class="pg-desc">When you've validated your assumptions with real data, you can commit to a direction fully — rather than hedging, second-guessing, or pivoting prematurely because you're not sure you had it right.</p></div>
+      <div class="pg-card"><span class="pg-icon">⚡</span><div class="pg-title">Faster Decisions</div><p class="pg-desc">Counterintuitively, good upfront research speeds up decisions. Teams that have the data don't argue about assumptions — they debate strategy. "We don't know enough" is one of the biggest decision-speed killers.</p></div>
+      <div class="pg-card"><span class="pg-icon">💰</span><div class="pg-title">Better Resource Allocation</div><p class="pg-desc">Research tells you which opportunities are worth pursuing before you commit capital and people. It's the difference between allocating your limited resources toward the highest-probability bets versus spreading them equally across guesses.</p></div>
+      <div class="pg-card"><span class="pg-icon">🛡️</span><div class="pg-title">Defensible Decisions</div><p class="pg-desc">When you can show the data and reasoning behind a decision, you can defend it to leadership, investors, or colleagues — even if the outcome is uncertain. "We made the best decision we could with what we knew" is far more credible when you actually did the research.</p></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>This Module Changes What Research Costs You</h3>
+        <p>The historical argument against thorough research has always been time and money — it takes weeks and costs thousands of dollars to do properly. That's no longer true. The AI research skills you'll build in this module compress what used to take weeks into hours. The ROI case for research was already overwhelming when it was expensive. Now that it's fast and cheap, there's almost no defensible reason to skip it before a significant decision.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">Coca-Cola ran extensive taste tests before launching New Coke and got positive results. The launch still failed catastrophically. What does this tell us about business research?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Research can't be trusted — even thorough research led Coca-Cola to the wrong conclusion</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. The quality of research depends entirely on whether you're asking the right question — Coca-Cola answered "which formula tastes better in a blind sip?" but needed to answer "how will customers react to losing something they're emotionally attached to?" Those are different research questions</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. Consumer products are too unpredictable for research to be useful</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Coca-Cola should have done more taste tests with larger sample sizes</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Every major business failure examined here — New Coke, HP/Autonomy, Quibi, Target Canada — traces directly to a specific, identifiable research gap that could have been addressed before the decision was made.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Research failures aren't always about doing no research — they're often about asking the wrong question, letting confirmation bias shape what you look for, or ignoring findings that contradict what you want to believe.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Good research pays back far more than it costs — in confidence, speed, resource efficiency, and defensibility. The ROI case for research is overwhelmingly positive even before factoring in the disasters it prevents.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI is making research faster and cheaper than ever — which means the barrier to thorough research before major decisions has essentially disappeared. The skills in this module remove the last excuse for skipping it.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleFC(c){const o=c.classList.contains('open');document.querySelectorAll('.fc').forEach(x=>x.classList.remove('open'));if(!o)c.classList.add('open');}
+
+  const scenarios={
+    launch:{bad:{title:'No Research — Launch Blind',cost:'$2.4M',desc:'Average cost of a failed product launch: development ($800K), marketing ($600K), inventory written off ($400K), team time ($300K), reputational damage and delayed revenue ($300K). Most of this is unrecoverable.'},good:{title:'With Research — Validated Launch',cost:'$85K',desc:'Market research ($20K), customer interviews and surveys ($15K), prototype testing ($30K), competitive analysis ($20K). If research reveals a fatal flaw: total loss is $85K. If research confirms viability: launch with dramatically higher success probability.'}},
+    hire:{bad:{title:'No Research — Wrong Hire',cost:'$240K',desc:'Average cost of a bad senior hire: salary during tenure (~$150K), severance (~$40K), recruiter fees for replacement (~$30K), productivity loss during transition (~$20K). Most companies experience this once per year.'},good:{title:'With Research — Thorough Vetting',cost:'$8K',desc:'Reference checks ($500), background screening ($500), structured skills assessment ($2K), additional interview rounds ($5K). Research that takes 2–3 weeks and saves an average of $240K in bad hire costs.'}},
+    market:{bad:{title:'No Research — Market Entry Fail',cost:'$15M',desc:'Estimated cost of a failed international market entry for a mid-size company: setup and legal ($2M), hiring and training ($3M), marketing spend ($4M), inventory and operations ($4M), exit costs ($2M). Target Canada lost $2B at enterprise scale.'},good:{title:'With Research — Validated Entry',cost:'$150K',desc:'Market sizing and competitive research ($30K), regulatory and legal landscape review ($40K), customer research in target market ($50K), pilot program with limited inventory ($30K). Enough to confirm viability before committing full capital.'}},
+    vendor:{bad:{title:'No Research — Wrong Vendor',cost:'$380K',desc:'Cost of switching vendors mid-contract after a bad selection: early termination fees ($80K), migration costs ($120K), productivity loss during transition ($100K), delay in deliverables to customers ($80K).'},good:{title:'With Research — Proper Due Diligence',cost:'$12K',desc:'Reference calls with existing customers ($1K), security and compliance audit ($4K), pilot contract with limited scope ($5K), contract legal review ($2K). Research that prevents a $380K switching nightmare.'}},
+  };
+  let selScenario='launch';
+  function selectScenario(btn,s){document.querySelectorAll('.cc-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selScenario=s;document.getElementById('ccOutput').classList.remove('show');}
+  function showCost(){
+    const d=scenarios[selScenario];
+    const out=document.getElementById('ccOutput');
+    out.innerHTML=`<div class="cc-compare"><div class="cc-col bad"><div class="cc-col-label">❌ Without Research</div><div class="cc-col-title">${d.bad.title}</div><div class="cc-col-cost">${d.bad.cost}</div><div class="cc-col-desc">${d.bad.desc}</div></div><div class="cc-col good"><div class="cc-col-label">✅ With Research</div><div class="cc-col-title">${d.good.title}</div><div class="cc-col-cost">${d.good.cost}</div><div class="cc-col-desc">${d.good.desc}</div></div></div>`;
+    out.className='cc-output show';
+  }
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> New Coke is a masterclass in the most dangerous type of research failure: thorough research that answered the wrong question. The data was real. The methodology was sound. The sample size was large. But "which formula tastes better in a 3-oz blind sip test" is not the same research question as "how will our most loyal customers react to us permanently replacing a product they\'ve grown up with?" The lesson: before designing research, spend as much time getting the question right as you do getting the methodology right.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The lesson isn\'t that research is untrustworthy — it\'s that the value of research is entirely dependent on whether you\'re asking the right question. More taste tests with larger samples would have produced the same misleading result. Consumer product research absolutely works — when it\'s designed to capture the right dimension of consumer behavior for the actual decision being made.';}f.classList.add('show');}
+</script>
+</body>
+</html>

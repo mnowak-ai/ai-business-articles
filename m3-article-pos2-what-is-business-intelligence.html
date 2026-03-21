@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Business Intelligence? The Basics Every Professional Should Know — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* BI pipeline visual */
+  .bi-pipeline{display:flex;align-items:stretch;gap:0;margin:24px 0;border-radius:20px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+  @media(max-width:620px){.bi-pipeline{flex-direction:column;}}
+  .bp-step{flex:1;padding:22px 16px;text-align:center;background:var(--white);position:relative;}
+  .bp-step:not(:last-child)::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--purple);z-index:1;background:var(--white);padding:2px 0;}
+  @media(max-width:620px){.bp-step:not(:last-child)::after{content:'↓';right:auto;left:50%;bottom:-12px;top:auto;transform:translateX(-50%);}}
+  .bp-step:nth-child(odd){background:var(--gray-soft);}
+  .bp-icon{font-size:30px;margin-bottom:10px;display:block;}
+  .bp-name{font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .bp-desc{font-size:12.5px;line-height:1.5;color:var(--gray-muted);}
+
+  /* BI categories */
+  .bi-categories{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.bi-categories{grid-template-columns:1fr;}}
+  .bic{border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;}
+  .bic-header{padding:16px 20px;background:var(--purple);}
+  .bic-icon{font-size:26px;display:block;margin-bottom:4px;}
+  .bic-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:white;}
+  .bic-tag{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;}
+  .bic-body{padding:16px 20px;background:var(--white);}
+  .bic-question{font-weight:700;color:var(--purple-dark);font-size:14.5px;margin-bottom:8px;}
+  .bic-examples{font-size:14px;line-height:1.65;color:var(--gray-text);}
+  .bic-tools{font-size:12.5px;color:var(--purple);font-weight:600;margin-top:8px;}
+
+  /* BI in the wild explorer */
+  .bi-wild{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .bw-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .bw-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .bw-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .bw-companies{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .bw-co{padding:9px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .bw-co:hover,.bw-co.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .bw-run{background:var(--purple);color:white;border:none;border-radius:12px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .bw-run:hover{background:var(--purple-dark);}
+  .bw-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:22px;margin-top:16px;display:none;}
+  .bw-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .bw-co-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:14px;}
+  .bw-bi-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--purple-mid);}
+  .bw-bi-item:last-child{border-bottom:none;}
+  .bw-bi-cat{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--purple);min-width:90px;flex-shrink:0;margin-top:2px;}
+  .bw-bi-text{font-size:14.5px;line-height:1.6;}
+
+  /* AI + BI relationship */
+  .ai-bi-rel{display:grid;grid-template-columns:1fr 60px 1fr;gap:12px;align-items:center;margin:24px 0;}
+  @media(max-width:520px){.ai-bi-rel{grid-template-columns:1fr;}.ai-bi-arrow{transform:rotate(90deg);}}
+  .ai-bi-box{border-radius:16px;padding:20px 22px;}
+  .ai-bi-box.bi{background:var(--purple-pale);border:1.5px solid var(--purple-mid);}
+  .ai-bi-box.ai{background:var(--purple);border:1.5px solid var(--purple);}
+  .ai-bi-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;}
+  .ai-bi-box.bi .ai-bi-label{color:var(--purple);}
+  .ai-bi-box.ai .ai-bi-label{color:rgba(255,255,255,0.6);}
+  .ai-bi-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:8px;}
+  .ai-bi-box.bi .ai-bi-title{color:var(--purple-dark);}
+  .ai-bi-box.ai .ai-bi-title{color:white;}
+  .ai-bi-desc{font-size:14px;line-height:1.65;}
+  .ai-bi-box.bi .ai-bi-desc{color:var(--gray-text);}
+  .ai-bi-box.ai .ai-bi-desc{color:rgba(255,255,255,0.85);}
+  .ai-bi-arrow{text-align:center;font-size:28px;color:var(--purple);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Module 3 · Before You Begin</div>
+  <h1>What Is Business Intelligence? The Basics Every Professional Should Know</h1>
+  <p class="hero-sub">Business Intelligence is the system that turns raw data into decisions. It underpins everything in this module — and once you understand it, you'll see it everywhere you look in a modern organization.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>You'll hear the term "Business Intelligence" — or just "BI" — a lot in professional settings. It gets used loosely to mean everything from "looking at a spreadsheet" to "deploying a $500K analytics platform." Before diving into the research skills in this module, it's worth getting a clear, grounded understanding of what BI actually means and why it matters.</p>
+    <p><mark>Business Intelligence is the process of collecting, organizing, analyzing, and presenting data in a way that helps organizations make better decisions.</mark> It's not a specific tool or technology — it's a concept that describes the entire system of turning information into insight. AI is increasingly the most powerful accelerator of that system.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The BI Pipeline: From Raw Data to Decision</h2>
+    <p>Every BI system, from a simple spreadsheet to a complex enterprise platform, moves data through the same essential stages.</p>
+    <div class="bi-pipeline">
+      <div class="bp-step"><span class="bp-icon">🗄️</span><div class="bp-name">Collect</div><div class="bp-desc">Gather data from sales systems, surveys, web analytics, market reports</div></div>
+      <div class="bp-step"><span class="bp-icon">🧹</span><div class="bp-name">Store & Clean</div><div class="bp-desc">Organize, deduplicate, and structure the data so it's usable</div></div>
+      <div class="bp-step"><span class="bp-icon">🔍</span><div class="bp-name">Analyze</div><div class="bp-desc">Find patterns, trends, and anomalies — what does the data show?</div></div>
+      <div class="bp-step"><span class="bp-icon">📊</span><div class="bp-name">Visualize</div><div class="bp-desc">Present findings in charts, dashboards, and reports that humans can read</div></div>
+      <div class="bp-step"><span class="bp-icon">✅</span><div class="bp-name">Decide</div><div class="bp-desc">Use the insight to make a specific, informed business action</div></div>
+    </div>
+    <p>AI is transforming steps 3 and 4 in particular — finding patterns and generating visualizations far faster than any human analyst team. But steps 1–2 (data quality) and step 5 (decision) remain heavily human-dependent.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 4 Types of Business Intelligence</h2>
+    <p>BI isn't just one thing — it asks four distinct types of questions, each more sophisticated than the last.</p>
+    <div class="bi-categories">
+      <div class="bic">
+        <div class="bic-header"><span class="bic-icon">🔎</span><div class="bic-name">Descriptive BI</div><div class="bic-tag">What happened?</div></div>
+        <div class="bic-body">
+          <div class="bic-question">Looks backward at what already occurred.</div>
+          <div class="bic-examples">Sales reports, traffic dashboards, quarterly reviews, customer counts, revenue by region. The most basic and most common form of BI — most companies are doing this already.</div>
+          <div class="bic-tools">Tools: Tableau, Google Looker, Excel dashboards</div>
+        </div>
+      </div>
+      <div class="bic">
+        <div class="bic-header"><span class="bic-icon">🔬</span><div class="bic-name">Diagnostic BI</div><div class="bic-tag">Why did it happen?</div></div>
+        <div class="bic-body">
+          <div class="bic-question">Digs into root causes behind what the data shows.</div>
+          <div class="bic-examples">Why did sales drop in Q3? Why is churn higher in one region? Why did this campaign outperform others? Moves from "what" to "why" — requires more sophisticated analysis.</div>
+          <div class="bic-tools">Tools: SQL analysis, cohort analysis, A/B test results</div>
+        </div>
+      </div>
+      <div class="bic">
+        <div class="bic-header"><span class="bic-icon">🔮</span><div class="bic-name">Predictive BI</div><div class="bic-tag">What will happen?</div></div>
+        <div class="bic-body">
+          <div class="bic-question">Uses historical patterns to forecast future outcomes.</div>
+          <div class="bic-examples">Revenue forecasting, churn prediction, inventory demand modeling, lead scoring. This is where machine learning and AI play their biggest role — detecting patterns too complex for human analysis.</div>
+          <div class="bic-tools">Tools: Salesforce Einstein, ML models, forecasting platforms</div>
+        </div>
+      </div>
+      <div class="bic">
+        <div class="bic-header"><span class="bic-icon">🎯</span><div class="bic-name">Prescriptive BI</div><div class="bic-tag">What should we do?</div></div>
+        <div class="bic-body">
+          <div class="bic-question">Goes beyond prediction to recommend a specific action.</div>
+          <div class="bic-examples">AI recommends adjusting pricing, suggests optimal inventory levels, identifies the highest-value customers to contact. The most advanced form — AI moves from insight to recommendation.</div>
+          <div class="bic-tools">Tools: AI decision engines, recommendation systems, optimization platforms</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Most companies are excellent at Descriptive BI — they know what happened. The competitive advantage lives in Predictive and Prescriptive BI — knowing what will happen and what to do about it before your competitors do.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>BI in Action: Real Companies, Real Applications</h2>
+    <p>Select a company to see how they apply BI across all four types in practice.</p>
+    <div class="bi-wild">
+      <div class="bw-label">🏢 BI in the Wild</div>
+      <div class="bw-title">How Real Companies Use Business Intelligence</div>
+      <div class="bw-sub">Select a company to see their BI ecosystem in action.</div>
+      <div class="bw-companies">
+        <button class="bw-co active" onclick="selectCo(this,'amazon')">🛒 Amazon</button>
+        <button class="bw-co" onclick="selectCo(this,'netflix')">🎬 Netflix</button>
+        <button class="bw-co" onclick="selectCo(this,'uber')">🚗 Uber</button>
+        <button class="bw-co" onclick="selectCo(this,'starbucks')">☕ Starbucks</button>
+      </div>
+      <button class="bw-run" onclick="showBI()">Show BI Applications →</button>
+      <div class="bw-output" id="bwOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How AI Has Changed BI</h2>
+    <p>Business Intelligence existed for decades before AI. What AI has changed is the speed, scale, and sophistication of every step in the pipeline.</p>
+    <div class="ai-bi-rel">
+      <div class="ai-bi-box bi">
+        <div class="ai-bi-label">Traditional BI</div>
+        <div class="ai-bi-title">Structured, Slow, Backward-Looking</div>
+        <div class="ai-bi-desc">Required dedicated analyst teams, expensive software licenses, weeks-long report cycles. Mostly descriptive and diagnostic — telling you what happened and sometimes why.</div>
+      </div>
+      <div class="ai-bi-arrow">→</div>
+      <div class="ai-bi-box ai">
+        <div class="ai-bi-label">AI-Augmented BI</div>
+        <div class="ai-bi-title">Fast, Scalable, Forward-Looking</div>
+        <div class="ai-bi-desc">AI handles analysis at machine speed, enables natural-language queries instead of SQL, and pushes into predictive and prescriptive territory that was previously only available to organizations with large data science teams.</div>
+      </div>
+    </div>
+    <p>The most important shift: BI used to be something only large companies with dedicated data teams could do well. AI has democratized access to sophisticated intelligence — a startup founder with the right tools can now run the same quality market and competitive analysis that enterprise teams used to pay millions for.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>You're Learning to Use the Most Accessible BI Tools Ever Built</h3>
+        <p>The AI tools you'll learn to use in this module — ChatGPT, Claude, Perplexity, Crunchbase — are fundamentally BI tools. They let you ask questions about markets, competitors, and customers and get structured, analytical answers. You're not just learning to use chatbots. You're learning to use the most accessible, affordable business intelligence platform that has ever existed. That context should change how seriously you take the skills ahead.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A retail company runs a weekly sales report showing revenue by store and product category. This is an example of which type of Business Intelligence?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,true)">A. Descriptive BI — it shows what happened (sales by store/category) without explaining why or predicting what will happen next</button>
+        <button class="quiz-btn" onclick="answer(this,false)">B. Diagnostic BI — it analyzes the root cause of sales performance</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. Predictive BI — it uses historical data to forecast future sales</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Prescriptive BI — it recommends specific actions to improve sales</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Business Intelligence is the system of turning data into decisions — collecting, organizing, analyzing, visualizing, and acting on information to make better business choices.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The four BI types move from simple to sophisticated: Descriptive (what happened), Diagnostic (why), Predictive (what will happen), Prescriptive (what to do). Competitive advantage lives at the top two levels.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI has transformed BI from a slow, backward-looking system available only to large enterprises into a fast, forward-looking capability accessible to anyone with the right skills and tools.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The AI tools in this module are BI tools — you're learning to run market intelligence, competitive analysis, and customer research at a level that used to require expensive analyst teams and enterprise software.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const biData={
+    amazon:{name:'Amazon — BI Across Every Business Unit',items:[
+      {cat:'Descriptive',text:'Real-time dashboards showing sales by category, region, and product across millions of SKUs — updated continuously throughout the day.'},
+      {cat:'Diagnostic',text:'"Why did Product X sell 40% less this week?" — automated root cause analysis comparing pricing changes, competitor actions, review trends, and inventory levels.'},
+      {cat:'Predictive',text:'Anticipatory shipping — Amazon predicts what you\'re likely to order next and pre-positions inventory near your location before you order, reducing delivery time.'},
+      {cat:'Prescriptive',text:'Automated pricing engine adjusts prices on 2.5 million products every 10 minutes based on demand signals, competitor pricing, and inventory levels.'}
+    ]},
+    netflix:{name:'Netflix — BI Powering Every Creative Decision',items:[
+      {cat:'Descriptive',text:'Viewing completion rates, pause points, rewatch behavior, and content ratings tracked for every piece of content across 240M+ subscriber sessions daily.'},
+      {cat:'Diagnostic',text:'"Why did Season 2 retain fewer viewers than Season 1?" — episode-level drop-off analysis identifying exactly where and when viewers disengaged.'},
+      {cat:'Predictive',text:'Content investment modeling predicts the likely ROI of a new show before production begins, based on audience overlap with similar content and creator track records.'},
+      {cat:'Prescriptive',text:'Personalized thumbnail selection — Netflix shows different cover images for the same show to different users based on what their viewing history suggests they respond to.'}
+    ]},
+    uber:{name:'Uber — BI Running a Two-Sided Marketplace',items:[
+      {cat:'Descriptive',text:'Real-time dashboards showing driver supply, rider demand, average ETAs, and surge multipliers by geographic cell across every city simultaneously.'},
+      {cat:'Diagnostic',text:'"Why did driver satisfaction drop in Chicago last month?" — multi-variable analysis connecting earnings, surge frequency, cancellation rates, and passenger ratings.'},
+      {cat:'Predictive',text:'Demand forecasting predicts rider surge 15–30 minutes in advance, allowing Uber to pre-incentivize drivers to move to high-demand areas before the surge hits.'},
+      {cat:'Prescriptive',text:'Dynamic pricing algorithm prescribes the exact multiplier at each moment to balance supply and demand — not just showing what prices should be but actively setting them.'}
+    ]},
+    starbucks:{name:'Starbucks — BI Personalizing at Global Scale',items:[
+      {cat:'Descriptive',text:'Transaction-level data from 17M+ Starbucks Rewards members — every drink ordered, every store visited, every time of day — tracked and stored.'},
+      {cat:'Diagnostic',text:'"Why are 25–34 year olds visiting less frequently?" — behavioral analysis comparing order history, price sensitivity, mobile order usage, and store proximity data.'},
+      {cat:'Predictive',text:'Churn prediction model identifies Rewards members who are at risk of lapsing 30 days before it happens, based on changes in visit frequency and spending patterns.'},
+      {cat:'Prescriptive',text:'Personalized offers engine generates individual promotional offers for each of 17M members — prescribing the specific discount, product, and timing most likely to drive a visit for that person.'}
+    ]}
+  };
+
+  let selCo='amazon';
+  function selectCo(btn,co){document.querySelectorAll('.bw-co').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selCo=co;document.getElementById('bwOutput').classList.remove('show');}
+  function showBI(){
+    const d=biData[selCo];
+    const out=document.getElementById('bwOutput');
+    out.innerHTML=`<div class="bw-co-name">${d.name}</div>${d.items.map(i=>`<div class="bw-bi-item"><div class="bw-bi-cat">${i.cat}</div><div class="bw-bi-text">${i.text}</div></div>`).join('')}`;
+    out.className='bw-output show';
+  }
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> A weekly sales report by store and category is classic Descriptive BI — it summarizes what already happened in a structured, readable format. It doesn\'t analyze why certain stores performed differently, it doesn\'t predict next week\'s sales, and it doesn\'t recommend any specific actions. Those would require Diagnostic, Predictive, and Prescriptive BI respectively. Most reports that land in inboxes every week are Descriptive BI — useful, but the lowest rung of the intelligence ladder.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[0].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The key word is "showing" — this report is displaying what happened, not analyzing causes, predicting futures, or recommending actions. Diagnostic BI would explain why certain stores underperformed. Predictive BI would forecast next week\'s numbers. Prescriptive BI would suggest which stores need specific interventions. A standard revenue report does none of these — it\'s Descriptive.';}f.classList.add('show');}
+</script>
+</body>
+</html>

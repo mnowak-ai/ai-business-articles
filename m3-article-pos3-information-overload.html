@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Information Overload Is Real: How to Find the Signal in the Noise — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Data flood visual */
+  .data-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.data-stats{grid-template-columns:1fr 1fr;}}
+  .ds-card{background:var(--purple);border-radius:20px;padding:22px 16px;text-align:center;}
+  .ds-num{font-family:'Fraunces',serif;font-size:34px;font-weight:900;color:white;line-height:1;margin-bottom:6px;}
+  .ds-label{font-size:13px;color:rgba(255,255,255,0.82);line-height:1.4;}
+
+  /* The 3 traps */
+  .traps{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .trap{border:1.5px solid var(--purple-mid);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
+  .trap:hover,.trap.open{border-color:var(--purple);}
+  .trap-header{display:flex;align-items:center;gap:14px;padding:18px 22px;background:var(--white);transition:background 0.2s;}
+  .trap.open .trap-header{background:var(--purple-pale);}
+  .trap-icon{font-size:26px;flex-shrink:0;}
+  .trap-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);flex:1;}
+  .trap-toggle{font-size:18px;color:var(--purple);transition:transform 0.3s;}
+  .trap.open .trap-toggle{transform:rotate(45deg);}
+  .trap-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+  .trap.open .trap-body{max-height:400px;}
+  .trap-detail{padding:0 22px 22px;border-top:1px solid var(--purple-mid);}
+  .trap-desc{font-size:15px;line-height:1.75;padding-top:14px;margin-bottom:12px;}
+  .trap-fix{background:var(--green-pale);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.65;border-left:3px solid #6EE7B7;color:var(--green);}
+  .trap-fix-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);margin-bottom:4px;}
+
+  /* Signal vs noise filter */
+  .signal-filter{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sf-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sf-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sf-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .sf-context{background:var(--purple);border-radius:12px;padding:14px 16px;color:white;margin-bottom:16px;}
+  .sf-context-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:4px;}
+  .sf-context-text{font-size:15px;line-height:1.65;}
+  .sf-items{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+  .sf-item{display:flex;align-items:center;gap:12px;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all 0.2s;}
+  .sf-item:hover:not(.sorted){border-color:var(--purple);background:var(--purple-pale);}
+  .sf-item.signal{background:var(--green-pale);border-color:#6EE7B7;}
+  .sf-item.noise{background:var(--red-pale);border-color:#FCA5A5;}
+  .sf-item-text{flex:1;font-size:14.5px;line-height:1.5;}
+  .sf-item-badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:100px;flex-shrink:0;}
+  .sf-item.signal .sf-item-badge{background:#6EE7B7;color:var(--green);}
+  .sf-item.noise .sf-item-badge{background:#FCA5A5;color:var(--red);}
+  .sf-sort-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .sf-sort-btn:hover{background:var(--purple-dark);}
+  .sf-result{margin-top:14px;padding:14px 16px;border-radius:12px;font-size:15px;line-height:1.65;display:none;}
+  .sf-result.show{display:block;animation:fadeIn 0.3s ease;background:var(--purple-pale);color:var(--purple-dark);}
+
+  /* 5 filters */
+  .filters{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.filters{grid-template-columns:1fr;}}
+  .filter-card{border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px;background:var(--white);}
+  .filter-icon{font-size:26px;margin-bottom:8px;display:block;}
+  .filter-q{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .filter-desc{font-size:14px;line-height:1.65;color:var(--gray-text);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Module 3 · Before You Begin</div>
+  <h1>Information Overload Is Real: How to Find the Signal in the Noise</h1>
+  <p class="hero-sub">We live in a world with more data, more reports, and more sources than any human can process. The skill that separates good researchers from overwhelmed ones isn't access to more information — it's knowing what to ignore.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Here's a scenario that will feel familiar: you're researching a topic and you start with a simple Google search. Twenty minutes later you have 14 tabs open, three conflicting statistics, two reports that partially answer your question, and you're less sure what you think than when you started.</p>
+    <p>This is information overload — and it's not a personal failure. <mark>The volume of information available has grown faster than any human being's capacity to process it.</mark> The modern challenge of research isn't finding enough information. It's filtering out enough irrelevant information to find what actually matters.</p>
+    <p>Before you start using AI to research markets, competitors, and customers in this module, you need a mental framework for this filtering process. Without it, AI makes the problem worse — it can generate information faster than you can ever evaluate it.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Scale of the Problem</h2>
+    <div class="data-stats">
+      <div class="ds-card"><div class="ds-num">328M</div><div class="ds-label">Terabytes of data created globally every single day in 2024</div></div>
+      <div class="ds-card"><div class="ds-num">2.5M</div><div class="ds-label">Blog posts published every day — most of which cite or misrepresent research from other sources</div></div>
+      <div class="ds-card"><div class="ds-num">47%</div><div class="ds-label">of business professionals report making worse decisions when given too much information vs. the right amount</div></div>
+    </div>
+    <p>More data does not automatically produce better decisions. After a certain threshold, more information actually degrades decision quality — because cognitive bandwidth is finite, and processing irrelevant information consumes the same mental resources as processing relevant information.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 3 Information Traps Researchers Fall Into</h2>
+    <p>Most research sessions go wrong in one of three predictable ways. Click each to learn the pattern and how to break it.</p>
+    <div class="traps">
+      <div class="trap" onclick="toggleTrap(this)">
+        <div class="trap-header"><div class="trap-icon">🌀</div><div class="trap-name">The Rabbit Hole Trap</div><div class="trap-toggle">+</div></div>
+        <div class="trap-body"><div class="trap-detail">
+          <div class="trap-desc">You start researching one topic and follow links, related articles, and tangential findings until you've spent an hour reading fascinating things that have nothing to do with the original question. Your 30 minutes of research turns into 3 hours and you're less focused than when you started.</div>
+          <div class="trap-fix"><div class="trap-fix-label">✅ The Fix</div>Write your specific research question at the top of the page before you start. Every time you encounter new information, ask: "Does this directly answer my specific question?" If no — skip it, bookmark it for later, or ignore it. The research question is your anchor.</div>
+        </div></div>
+      </div>
+      <div class="trap" onclick="toggleTrap(this)">
+        <div class="trap-header"><div class="trap-icon">🔄</div><div class="trap-name">The "One More Source" Trap</div><div class="trap-toggle">+</div></div>
+        <div class="trap-body"><div class="trap-detail">
+          <div class="trap-desc">You feel like you never have quite enough information to be confident in a conclusion. So you keep reading one more article, one more report, one more study — searching for a level of certainty that doesn't exist. Research without a stopping rule goes on forever.</div>
+          <div class="trap-fix"><div class="trap-fix-label">✅ The Fix</div>Set a stopping rule before you start. "I will form a conclusion when I have 3 independent sources that agree, or when the last 30 minutes of research hasn't changed my view." Diminishing returns in research are real — your 8th source rarely adds value that your 3rd didn't already provide.</div>
+        </div></div>
+      </div>
+      <div class="trap" onclick="toggleTrap(this)">
+        <div class="trap-header"><div class="trap-icon">✅</div><div class="trap-name">The Confirmation Bias Trap</div><div class="trap-toggle">+</div></div>
+        <div class="trap-body"><div class="trap-detail">
+          <div class="trap-desc">You already have an answer in mind, and your research unconsciously searches for information that confirms it. You notice and remember sources that agree with your hypothesis and discount or skim sources that challenge it. The research feels thorough but is actually one-sided.</div>
+          <div class="trap-fix"><div class="trap-fix-label">✅ The Fix</div>Actively search for the strongest argument against your hypothesis. Before concluding, ask: "What would make this wrong?" or "What would someone who disagrees with my conclusion cite?" When using AI, explicitly prompt it: "What are the strongest counterarguments to [your hypothesis]?"</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The best researchers aren't the ones who read the most. They're the ones who know fastest what not to read — and apply their limited time only to the information that actually changes their answer.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Signal vs. Noise: Practice Filtering</h2>
+    <p>You're researching whether to launch a new productivity app targeting remote workers. Below is a list of information you could gather. Decide which is signal (directly relevant to your decision) and which is noise (interesting but not decision-critical). Click each item to reveal the answer.</p>
+    <div class="signal-filter">
+      <div class="sf-label">🎮 Signal vs. Noise Sorter</div>
+      <div class="sf-title">Filter This Research List</div>
+      <div class="sf-sub">Click each item to reveal whether it's signal or noise for this specific research question.</div>
+      <div class="sf-context">
+        <div class="sf-context-label">Your Research Question</div>
+        <div class="sf-context-text">Should we launch a paid productivity app targeting remote workers in the U.S., at $12/month?</div>
+      </div>
+      <div class="sf-items" id="sfItems"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 5 Questions That Filter Information Fast</h2>
+    <p>Before adding any piece of information to your research, run it through these five filters. If it passes all five, include it. If it fails any one, consider whether it's actually worth your time.</p>
+    <div class="filters">
+      <div class="filter-card"><span class="filter-icon">🎯</span><div class="filter-q">Does this directly answer my specific question?</div><p class="filter-desc">Not a related question, not a question you might have later — the specific question you're researching right now. If you can't draw a straight line from this information to your decision, it's probably noise.</p></div>
+      <div class="filter-card"><span class="filter-icon">📅</span><div class="filter-q">Is this recent enough to still be relevant?</div><p class="filter-desc">For fast-moving topics (technology, markets, consumer behavior), information more than 2 years old may be actively misleading. Always check publication dates before investing time in a source.</p></div>
+      <div class="filter-card"><span class="filter-icon">🏛️</span><div class="filter-q">Is this source credible enough to trust?</div><p class="filter-desc">Blog posts, opinion pieces, and marketing content get shared constantly but carry very different evidential weight than peer-reviewed studies, government data, or reporting from major news organizations.</p></div>
+      <div class="filter-card"><span class="filter-icon">⚡</span><div class="filter-q">Would this change my conclusion?</div><p class="filter-desc">If your answer would be the same regardless of what this source says, you don't need it. Research should be gathering information that has the potential to change your mind — not validating what you already believe.</p></div>
+      <div class="filter-card" style="grid-column:1/-1;"><span class="filter-icon">⏱️</span><div class="filter-q">Is the time to read this worth the information I'll get?</div><p class="filter-desc">A 40-page report contains a lot of information — but the executive summary often contains 90% of what you need in 2% of the time. Read strategically: executive summaries, conclusions, and key findings sections first. Only go deeper when the summary signals something genuinely important.</p></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>AI Is Both the Cause and the Cure</h3>
+        <p>Here's the irony: AI tools can generate information faster than ever, which makes information overload worse if you use them without discipline. But AI can also be the best filtering tool you have — if you use it correctly. Instead of asking "tell me everything about X," ask "what are the 3 most important things I need to know about X to make this specific decision?" That reframing turns AI from a firehose into a filter. The discipline of the right question is everything.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You're researching whether your company should expand into a new market. After reviewing 5 sources, you have a clear preliminary conclusion. The most professional next step is:</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Keep researching until you've read everything available — more information always leads to better decisions</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. Actively seek out 1–2 sources that argue against your preliminary conclusion — testing your finding against the strongest counterargument is what separates a well-reasoned conclusion from a confirmation bias loop</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. Stop researching — 5 sources is enough for any business decision</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Discard the preliminary conclusion and start fresh — forming conclusions before finishing research leads to bias</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Information overload is a real cognitive problem — after a threshold, more information degrades decision quality rather than improving it. The skill is knowing what to filter out, not finding more to read in.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The three research traps: the rabbit hole (losing your question), the "one more source" loop (no stopping rule), and confirmation bias (finding what you want to find). Each has a specific, learnable fix.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The 5 filtering questions: Does this answer my specific question? Is it recent enough? Is the source credible? Would it change my conclusion? Is the time investment worth the information yield?</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI can accelerate information overload — or become your best filtering tool. The difference is framing: "tell me everything about X" vs. "what are the 3 most important things I need to know about X to make this specific decision?"</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleTrap(t){const o=t.classList.contains('open');document.querySelectorAll('.trap').forEach(x=>x.classList.remove('open'));if(!o)t.classList.add('open');}
+
+  const sfData=[
+    {text:'The U.S. remote work market: 30M+ remote workers, growing 11% annually',type:'signal',reason:'Directly confirms the size of your target market — essential for evaluating opportunity scale.'},
+    {text:'A Medium blog post listing "10 productivity apps you should try in 2024"',type:'noise',reason:'Interesting for finding competitors to research, but as an uncited opinion piece it\'s not reliable research evidence for your decision.'},
+    {text:'Survey showing 68% of remote workers pay for at least one productivity tool',type:'signal',reason:'Directly validates willingness to pay in your target segment — one of the most critical questions for a paid app.'},
+    {text:'The history of productivity software dating back to the 1980s',type:'noise',reason:'Historically interesting but has no bearing on whether a $12/month app will succeed with remote workers in 2024.'},
+    {text:'App Store data showing Notion and Todoist have 4.7+ star ratings with 200K+ reviews',type:'signal',reason:'Competitive benchmark data that tells you what quality standard you need to meet to compete in this market.'},
+    {text:'A Forbes article about a celebrity entrepreneur\'s morning routine',type:'noise',reason:'Zero relevance to your specific research question about app viability.'},
+    {text:'Churn rate benchmarks for SaaS productivity tools ($5–15/month tier): avg 8.5% monthly',type:'signal',reason:'Critical financial modeling data — you need this to build a realistic revenue projection and evaluate whether $12/month is viable.'},
+    {text:'Remote work productivity statistics from a study commissioned by a co-working space company',type:'noise',reason:'Potentially biased source — a co-working company has financial incentive to show productivity benefits of flexible work. Treat with skepticism without independent corroboration.'},
+  ];
+
+  function renderSF(){
+    const c=document.getElementById('sfItems');
+    c.innerHTML=sfData.map((item,i)=>`<div class="sf-item" id="sfi${i}" onclick="revealSF(${i})"><div class="sf-item-text">${item.text}</div></div>`).join('');
+  }
+
+  function revealSF(i){
+    const item=sfData[i];
+    const el=document.getElementById('sfi'+i);
+    if(el.classList.contains('sorted'))return;
+    el.classList.add('sorted',item.type);
+    el.innerHTML=`<div class="sf-item-text">${item.text}<div style="font-size:13px;margin-top:6px;font-style:italic;opacity:0.8">${item.reason}</div></div><div class="sf-item-badge">${item.type==='signal'?'✅ Signal':'🚫 Noise'}</div>`;
+  }
+  renderSF();
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Forming a preliminary conclusion after 5 sources is good research practice — it gives you a hypothesis to test. The dangerous next step would be to keep finding more sources that confirm it. The professional step is to stress-test it: find the best argument against your conclusion, read it carefully, and see if it changes anything. If it doesn\'t, you have a more robust, defensible conclusion. If it does, you\'ve avoided a consequential error.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> More information doesn\'t automatically mean better decisions — that\'s the core insight of this article. And 5 sources may be plenty — or insufficient — depending on the decision, not the number. And forming a preliminary conclusion during research isn\'t bias — it\'s how good reasoning works. The bias risk is in how you treat that preliminary conclusion: do you test it against counterarguments, or protect it from challenge?';}f.classList.add('show');}
+</script>
+</body>
+</html>
