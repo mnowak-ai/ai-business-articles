@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is a Target Market? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* 4 segment cards */
+  .seg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:580px){.seg-grid{grid-template-columns:1fr;}}
+  .seg-card{border:1.5px solid var(--purple-mid);border-radius:20px;padding:24px;background:var(--white);transition:all 0.2s;}
+  .seg-card:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .seg-icon{font-size:32px;margin-bottom:10px;display:block;}
+  .seg-type{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .seg-name{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .seg-desc{font-size:14.5px;line-height:1.6;color:var(--gray-text);margin-bottom:10px;}
+  .seg-example{font-size:13px;color:var(--gray-muted);font-style:italic;}
+
+  /* Persona Builder */
+  .persona-builder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pb-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .pb-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pb-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:24px;}
+  .pb-controls{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+  @media(max-width:540px){.pb-controls{grid-template-columns:1fr;}}
+  .pb-field label{display:block;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+  .pb-field select{width:100%;padding:10px 14px;border:1.5px solid var(--purple-mid);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-text);background:var(--white);cursor:pointer;}
+  .pb-generate{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;width:100%;margin-top:6px;}
+  .pb-generate:hover{background:var(--purple-dark);}
+  .pb-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;min-height:120px;display:none;}
+  .pb-output.show{display:block;animation:fadeIn 0.3s ease;}
+  .pb-persona-name{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .pb-persona-tag{font-size:13px;color:var(--gray-muted);margin-bottom:16px;}
+  .pb-persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:480px){.pb-persona-grid{grid-template-columns:1fr;}}
+  .pb-persona-item{background:var(--purple-pale);border-radius:10px;padding:10px 14px;}
+  .pb-item-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .pb-item-text{font-size:14px;line-height:1.55;color:var(--gray-text);}
+
+  /* Narrow vs broad */
+  .compare-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.compare-row{grid-template-columns:1fr;}}
+  .cr-card{border-radius:18px;padding:24px;}
+  .cr-card.bad{background:var(--red-pale);border:1.5px solid #FCA5A5;}
+  .cr-card.good{background:var(--green-pale);border:1.5px solid #6EE7B7;}
+  .cr-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+  .cr-card.bad .cr-label{color:var(--red);}
+  .cr-card.good .cr-label{color:var(--green);}
+  .cr-text{font-size:15px;line-height:1.7;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.1 · Introduction to Business Research</div>
+  <h1>What Is a Target Market? Understanding Who Businesses Sell To</h1>
+  <p class="hero-sub">Every product and service is built for someone specific. When a business tries to sell to "everyone," it usually ends up selling to no one. Defining your target market is one of the most important research decisions a business makes.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Imagine you're selling premium noise-canceling headphones at $350 a pair. You have a limited marketing budget. Do you spend it advertising to everyone, or do you focus on the specific group of people most likely to see the value in premium headphones and actually buy them?</p>
+    <p>The answer — for any business with limited resources (which is all of them) — is to focus. <mark>A target market is the specific group of people a business aims its products, services, and messaging toward.</mark> Not every product is for every person. The businesses that define their target market clearly consistently outperform the ones that try to appeal to everyone.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 4 Ways Businesses Define Their Target Market</h2>
+    <p>Businesses don't just guess who their customers are — they research it. And they typically define their target market using four types of information, called segmentation variables. Click to explore each one.</p>
+    <div class="seg-grid">
+      <div class="seg-card">
+        <span class="seg-icon">👥</span>
+        <div class="seg-type">Segmentation Type 1</div>
+        <div class="seg-name">Demographic</div>
+        <p class="seg-desc">Age, gender, income, education level, occupation, family size. The basic "who are they" data that's easiest to measure.</p>
+        <div class="seg-example">Example: Women aged 28–45, college-educated, household income $75K+</div>
+      </div>
+      <div class="seg-card">
+        <span class="seg-icon">🗺️</span>
+        <div class="seg-type">Segmentation Type 2</div>
+        <div class="seg-name">Geographic</div>
+        <p class="seg-desc">Location, region, climate, urban vs. rural. Where your customers are physically located and how that shapes what they need.</p>
+        <div class="seg-example">Example: Urban dwellers in cities with populations over 500,000</div>
+      </div>
+      <div class="seg-card">
+        <span class="seg-icon">🧠</span>
+        <div class="seg-type">Segmentation Type 3</div>
+        <div class="seg-name">Psychographic</div>
+        <p class="seg-desc">Values, lifestyle, interests, attitudes, personality. The harder-to-measure but often more powerful "who are they really" data.</p>
+        <div class="seg-example">Example: Health-conscious, environmentally aware, willing to pay more for quality</div>
+      </div>
+      <div class="seg-card">
+        <span class="seg-icon">🛒</span>
+        <div class="seg-type">Segmentation Type 4</div>
+        <div class="seg-name">Behavioral</div>
+        <p class="seg-desc">Purchase frequency, brand loyalty, how they use the product, what benefits they seek. Based on how they actually behave, not just who they are.</p>
+        <div class="seg-example">Example: Purchases fitness equipment 2–3 times per year, brand loyal, researches before buying</div>
+      </div>
+    </div>
+    <p>The most powerful target market definitions combine all four. A business that knows its customers are "urban, college-educated women in their 30s who prioritize health and buy fitness products 3x per year" can build a product, a price point, and a marketing message that speaks directly and specifically to that person.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>When you try to speak to everyone, you end up speaking to no one. A well-defined target market means every dollar of research, development, and marketing goes toward the people who will actually respond to it.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Too Broad vs. Too Narrow: Finding the Right Fit</h2>
+    <p>One of the biggest mistakes businesses make is defining their target market either too broadly (trying to appeal to everyone) or too narrowly (such a small group they can't build a sustainable business). Here's what both look like:</p>
+    <div class="compare-row">
+      <div class="cr-card bad">
+        <div class="cr-label">❌ Too Broad</div>
+        <div class="cr-text">"Our target market is anyone who exercises." This is essentially everyone — it gives no useful direction for product design, pricing, or messaging. A product built for "everyone who exercises" usually ends up being ideal for no one.</div>
+      </div>
+      <div class="cr-card good">
+        <div class="cr-label">✅ Right Fit</div>
+        <div class="cr-text">"Our target market is amateur marathon runners aged 25–40 in major metro areas who train 4+ times per week and spend $500+ per year on running gear." This is specific enough to inform every decision.</div>
+      </div>
+    </div>
+    <div class="compare-row">
+      <div class="cr-card bad">
+        <div class="cr-label">❌ Too Narrow</div>
+        <div class="cr-text">"Our target market is left-handed female marathon runners in Chicago who drink black coffee." This is so specific that the market size is likely too small to build a business around — you'd run out of potential customers immediately.</div>
+      </div>
+      <div class="cr-card good">
+        <div class="cr-label">✅ Right Fit</div>
+        <div class="cr-text">"Our target market is serious recreational runners in the U.S. aged 25–45 who prioritize performance gear." Specific enough to differentiate, large enough to sustain a business.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Build a Customer Persona</h2>
+    <p>Businesses don't just define their target market statistically — they bring it to life through customer personas. A persona is a fictional but realistic profile of a specific type of customer. Use the builder below to generate one.</p>
+    <div class="persona-builder">
+      <div class="pb-label">🎮 Persona Builder</div>
+      <div class="pb-title">Build Your Target Customer</div>
+      <div class="pb-subtitle">Select the product type and audience segment, then generate a realistic customer persona.</div>
+      <div class="pb-controls">
+        <div class="pb-field">
+          <label>Product Type</label>
+          <select id="pbProduct">
+            <option value="fitness">Fitness App</option>
+            <option value="finance">Personal Finance Tool</option>
+            <option value="food">Meal Delivery Service</option>
+            <option value="fashion">Sustainable Clothing Brand</option>
+          </select>
+        </div>
+        <div class="pb-field">
+          <label>Target Segment</label>
+          <select id="pbSegment">
+            <option value="young">Young Professional (22–32)</option>
+            <option value="parent">Busy Parent (30–45)</option>
+            <option value="student">College Student (18–23)</option>
+            <option value="exec">Senior Executive (40–55)</option>
+          </select>
+        </div>
+      </div>
+      <button class="pb-generate" onclick="generatePersona()">Generate Customer Persona →</button>
+      <div class="pb-output" id="pbOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>AI Can Build Customer Personas in Minutes</h3>
+        <p>One of the most time-saving uses of AI in business research is persona development. You can describe a product and a general customer segment, and AI can generate a detailed, realistic persona — name, background, motivations, frustrations, buying behavior, and more. This used to require expensive market research agencies. Now it's a prompt away. The key is giving AI enough specific context so the persona reflects your actual business, not a generic template.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A startup is building a premium dog food brand made with human-grade ingredients, priced at $80/month. Their investor asks who their target market is. Which answer is most useful for making product, pricing, and marketing decisions?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. "Dog owners" — there are 90 million dogs in the U.S., so the market is huge</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. "People who love their pets" — these customers will spend whatever it takes</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. "Dog owners aged 28–45 with household incomes above $80K, who treat pets as family members, already buy premium pet products, and are willing to pay for quality ingredients" — specific, behavioral, and income-qualified</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. "Anyone who can afford $80 per month" — the price itself filters the target market</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A target market is the specific group of people a business designs its product, pricing, and messaging for. Trying to sell to "everyone" almost always results in selling to no one effectively.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Businesses define their target market through four segmentation lenses: demographic (who they are), geographic (where they are), psychographic (what they value), and behavioral (how they act).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The sweet spot is a target market that's specific enough to inform real decisions but large enough to sustain a business. Too broad gives no direction. Too narrow runs out of customers.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Customer personas bring target markets to life as realistic profiles — and AI can generate detailed personas in minutes when given the right context and constraints.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const personas={
+    fitness:{young:{name:'Jordan Lee',tag:'The Motivated Minimalist · Fitness App · Young Professional',items:[{l:'Age & Location',t:'27, lives in Austin, TX. Rents a 1BR apartment, works at a tech startup.'},{ l:'Goals',t:'Wants to stay in shape despite a busy schedule. Runs 3x/week, no gym membership.'},{ l:'Frustrations',t:'Overwhelmed by complex workout plans. Wants quick, effective sessions under 30 minutes.'},{ l:'Buying Behavior',t:'Will pay for apps that save time. Reads reviews on Reddit before purchasing anything.'}]},parent:{name:'Melissa Carter',tag:'The Efficient Parent · Fitness App · Busy Parent',items:[{l:'Age & Location',t:'38, suburban Chicago. Two kids (7 and 11). Works full-time in healthcare.'},{ l:'Goals',t:'Wants to feel strong and healthy. Has 20-minute windows when kids are asleep.'},{ l:'Frustrations',t:'Hates apps that require equipment. Needs workouts she can do silently at 10pm.'},{ l:'Buying Behavior',t:'Subscribes if there\'s a free trial. Influenced by recommendations from parent Facebook groups.'}]},student:{name:'Marcus Webb',tag:'The Budget-Conscious Beginner · Fitness App · College Student',items:[{l:'Age & Location',t:'20, on-campus at Ohio State. Has access to a gym but rarely goes alone.'},{ l:'Goals',t:'Wants to build muscle and gain confidence. Saw friends get results and wants the same.'},{ l:'Frustrations',t:'Doesn\'t know where to start. Intimidated by gym culture. Budget is extremely tight.'},{ l:'Buying Behavior',t:'Only pays for things under $10/month. Relies heavily on TikTok and YouTube for guidance.'}]},exec:{name:'David Chen',tag:'The Performance-Focused Executive · Fitness App · Senior Executive',items:[{l:'Age & Location',t:'51, Manhattan. Travels 10+ days/month for work. Has a home gym and hotel access.'},{ l:'Goals',t:'Maintain peak physical performance. Manages stress. Wants data and measurable progress.'},{ l:'Frustrations',t:'Apps designed for beginners feel condescending. Needs elite-level programming.'},{ l:'Buying Behavior',t:'Pays premium without hesitation if quality is clear. Reads business press, not social media.'}]}},
+    finance:{young:{name:'Priya Sharma',tag:'The Debt-Aware Earner · Finance Tool · Young Professional',items:[{l:'Age & Location',t:'25, Seattle. $68K salary at an ad agency. $31K in student loans.'},{ l:'Goals',t:'Pay off debt in 4 years. Start investing. Stop living paycheck to paycheck.'},{ l:'Frustrations',t:'Feels guilty spending money. Wants a tool that shows her a clear path forward, not just a budget.'},{ l:'Buying Behavior',t:'Tried free apps. Ready to pay $10/month for something that actually works.'}]},parent:{name:'Kevin & Sara Torres',tag:'The Family Savers · Finance Tool · Busy Parents',items:[{l:'Age & Location',t:'Both 36, Phoenix. Combined income $140K. Two kids, mortgage, 1 car payment.'},{ l:'Goals',t:'Save for college, pay off mortgage early, take a family vacation each year.'},{ l:'Frustrations',t:'Can\'t agree on spending priorities. Need a tool they can use together as a couple.'},{ l:'Buying Behavior',t:'Would pay up to $20/month. Recommended by a friend is the #1 purchase trigger.'}]},student:{name:'Aisha Johnson',tag:'The Financially Anxious Freshman · Finance Tool · College Student',items:[{l:'Age & Location',t:'19, attending UT Austin. Part-time barista, $800/month income.'},{ l:'Goals',t:'Not overdraft. Build an emergency fund of $500. Understand what a 401K is.'},{ l:'Frustrations',t:'Nobody taught her personal finance. Banks feel complicated and condescending.'},{ l:'Buying Behavior',t:'Needs it to be free or under $5/month. Discovered via Instagram or a campus finance club.'}]},exec:{name:'Robert Haines',tag:'The Wealth Optimizer · Finance Tool · Senior Executive',items:[{l:'Age & Location',t:'54, San Francisco. $400K+ income. Has a financial advisor but wants more control.'},{ l:'Goals',t:'Tax optimization, estate planning coordination, performance vs. benchmarks.'},{ l:'Frustrations',t:'Existing tools are built for people starting out. Wants institutional-grade insights.'},{ l:'Buying Behavior',t:'Price-insensitive. Needs trust and privacy guarantees before downloading anything.'}]}},
+    food:{young:{name:'Taylor Kim',tag:'The Convenience Seeker · Meal Delivery · Young Professional',items:[{l:'Age & Location',t:'29, Denver. Works in marketing. Cooks maybe once a week by choice.'},{ l:'Goals',t:'Eat healthier without planning. Avoid the 7pm "what\'s for dinner" panic.'},{ l:'Frustrations',t:'Cooking after a long day feels like a punishment. Takeout is expensive and greasy.'},{ l:'Buying Behavior',t:'Subscribes and cancels based on schedule. Values ease of skipping weeks.'}]},parent:{name:'Lisa & Tom Murphy',tag:'The Family Planners · Meal Delivery · Busy Parents',items:[{l:'Age & Location',t:'Both 41, Nashville. Three kids aged 5-14. Very different food preferences in the household.'},{ l:'Goals',t:'Get a home-cooked meal on the table 4x per week without 45 minutes of planning.'},{ l:'Frustrations',t:'Kids are picky. Needs meals that are customizable and don\'t require culinary skill.'},{ l:'Buying Behavior',t:'Subscribe for 3-6 months, pause in summer. Respond to family-focused marketing.'}]},student:{name:'James Park',tag:'The First-Timer · Meal Delivery · College Student',items:[{l:'Age & Location',t:'22, off-campus apartment for first time. Zero cooking skills, full schedule.'},{ l:'Goals',t:'Eat actual food, not just ramen. Learn basic cooking without it being overwhelming.'},{ l:'Frustrations',t:'Doesn\'t know what to buy at the grocery store. Wastes food constantly.'},{ l:'Buying Behavior',t:'Student discount is essential. Influenced by roommate recommendations.'}]},exec:{name:'Sandra Walsh',tag:'The Premium Foodie · Meal Delivery · Senior Executive',items:[{l:'Age & Location',t:'48, Boston. Entertains clients at home. Values quality ingredients above all.'},{ l:'Goals',t:'Restaurant-quality meals at home. Impress guests. Not compromise on sourcing.'},{ l:'Frustrations',t:'Mainstream meal kits feel generic. Wants chef-designed, seasonal menus with premium proteins.'},{ l:'Buying Behavior',t:'Pays $25+ per meal without hesitation if quality justifies it. Brand prestige matters.'}]}},
+    fashion:{young:{name:'Zoe Martinez',tag:'The Conscious Trendsetter · Sustainable Fashion · Young Professional',items:[{l:'Age & Location',t:'26, Portland. Works at a nonprofit. Politically and environmentally aware.'},{ l:'Goals',t:'Build a wardrobe she\'s proud of — stylish but not contributing to fast fashion waste.'},{ l:'Frustrations',t:'Sustainable brands are often boring or too expensive. Wants both ethics AND aesthetic.'},{ l:'Buying Behavior',t:'Researches brand practices before buying. Follows sustainable fashion influencers on IG.'}]},parent:{name:'Nina Okafor',tag:'The Practical Values Shopper · Sustainable Fashion · Busy Parent',items:[{l:'Age & Location',t:'37, Minneapolis. Wants to model values to her kids. Shops twice a year intentionally.'},{ l:'Goals',t:'Buy fewer, better things. Teach her family about conscious consumption.'},{ l:'Frustrations',t:'Can\'t tell which brands are genuinely sustainable vs. greenwashing.'},{ l:'Buying Behavior',t:'Reads brand transparency reports. Shops during Earth Month promotions.'}]},student:{name:'Alex Rivera',tag:'The Value-Driven Discoverer · Sustainable Fashion · College Student',items:[{l:'Age & Location',t:'20, attending NYU. Grew up hearing about climate change. Shops thrift first.'},{ l:'Goals',t:'Look good, feel good, do less harm. On a very tight budget.'},{ l:'Frustrations',t:'Sustainable brands price out students. Feels like ethics are only for wealthy people.'},{ l:'Buying Behavior',t:'Shops sales, secondhand, and student discounts. Shares finds on TikTok.'}]},exec:{name:'Claire Thompson',tag:'The Quietly Ethical Leader · Sustainable Fashion · Senior Executive',items:[{l:'Age & Location',t:'50, Chicago. Dresses professionally, leads a team of 60. Values understated quality.'},{ l:'Goals',t:'Replace fast fashion with lasting investment pieces she feels good about wearing.'},{ l:'Frustrations',t:'Most sustainable brands don\'t make polished, professional clothing.'},{ l:'Buying Behavior',t:'Willing to spend $300+ per piece if quality and ethics are proven. No logos preferred.'}]}}
+  };
+
+  function generatePersona(){
+    const prod=document.getElementById('pbProduct').value;
+    const seg=document.getElementById('pbSegment').value;
+    const d=personas[prod][seg];
+    const out=document.getElementById('pbOutput');
+    out.innerHTML=`<div class="pb-persona-name">${d.name}</div><div class="pb-persona-tag">${d.tag}</div><div class="pb-persona-grid">${d.items.map(i=>`<div class="pb-persona-item"><div class="pb-item-label">${i.l}</div><div class="pb-item-text">${i.t}</div></div>`).join('')}</div>`;
+    out.className='pb-output show';
+  }
+
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> This answer combines demographic (age, income), psychographic (treat pets as family, value quality ingredients), and behavioral (already buy premium pet products) segmentation. It\'s specific enough to inform product development, pricing strategy, and the exact message that marketing should use — all of which would be very different if targeting a general "dog owner" audience.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Options A and B are too broad — "dog owners" and "people who love pets" are enormous, undifferentiated groups that give no useful direction. Option D is a trap: price does filter by income, but it tells you nothing about motivations, values, or behavior. The most useful target market definition is always multi-dimensional — combining who they are, what they value, and how they act.';}f.classList.add('show');}
+</script>
+</body>
+</html>

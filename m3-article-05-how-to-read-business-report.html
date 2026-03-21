@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Read a Business Report Without Getting Lost — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Mock report with hotspots */
+  .mock-report{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:0;margin:24px 0;overflow:hidden;}
+  .mr-toolbar{background:var(--purple-dark);padding:12px 20px;display:flex;align-items:center;gap:8px;}
+  .mr-dot{width:10px;height:10px;border-radius:50%;}
+  .mr-title{color:rgba(255,255,255,0.6);font-size:13px;flex:1;text-align:center;}
+  .mr-body{padding:28px;}
+  .mr-section{margin-bottom:20px;position:relative;}
+  .mr-section-title{font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .mr-hotspot{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--purple);color:white;border-radius:50%;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;flex-shrink:0;}
+  .mr-hotspot:hover{background:var(--purple-dark);transform:scale(1.15);}
+  .mr-content{font-size:14px;line-height:1.7;color:var(--gray-text);background:var(--white);border-radius:10px;padding:14px 16px;border:1px solid var(--purple-mid);}
+  .mr-content.highlight{border-color:var(--purple);background:var(--purple-pale);}
+  .mr-tooltip{margin-top:10px;padding:12px 16px;background:var(--purple);color:white;border-radius:10px;font-size:14px;line-height:1.6;display:none;animation:fadeIn 0.2s ease;}
+  .mr-tooltip.show{display:block;}
+
+  /* Reading order steps */
+  .reading-steps{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .rs-item{display:flex;gap:16px;align-items:flex-start;}
+  .rs-item:not(:last-child){padding-bottom:24px;border-left:2px dashed var(--purple-mid);margin-left:19px;padding-left:0;}
+  .rs-num{width:40px;height:40px;background:var(--purple);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:18px;font-weight:700;flex-shrink:0;margin-left:-21px;}
+  .rs-item:first-child .rs-num{margin-left:0;}
+  .rs-item:not(:first-child) .rs-num{margin-left:-21px;}
+  .rs-content{padding:4px 0 0 16px;flex:1;}
+  .rs-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .rs-desc{font-size:15px;line-height:1.7;color:var(--gray-text);}
+
+  /* Red flag checklist */
+  .flag-list{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .flag-item{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;border-radius:12px;border:1.5px solid;}
+  .flag-item.red{background:var(--red-pale);border-color:#FCA5A5;}
+  .flag-item.yellow{background:#FFFBEB;border-color:#FCD34D;}
+  .flag-item.green{background:var(--green-pale);border-color:#6EE7B7;}
+  .flag-icon{font-size:20px;flex-shrink:0;}
+  .flag-text{font-size:15px;line-height:1.6;}
+  .flag-text strong{display:block;margin-bottom:3px;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.1 · Introduction to Business Research</div>
+  <h1>How to Read a Business Report Without Getting Lost</h1>
+  <p class="hero-sub">Business reports can look intimidating — dense pages filled with data, charts, and jargon. But every report follows a pattern. Once you know the pattern, you can extract what matters in a fraction of the time most people spend.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>In Module 3, you're going to encounter a lot of business reports — market research reports, competitive analyses, industry trend summaries, financial reports. If you've never had to read one professionally, they can feel overwhelming. Long. Dense. Full of technical language and charts that seem disconnected from each other.</p>
+    <p>Here's the good news: <mark>every business report follows a predictable structure</mark>, and once you understand that structure, you can navigate any report efficiently — finding what's actually relevant to your decision without reading every word.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Anatomy of a Business Report</h2>
+    <p>Click the purple hotspot buttons next to each section to learn exactly what it contains and what you should be looking for when you read it.</p>
+    <div class="mock-report">
+      <div class="mr-toolbar">
+        <div class="mr-dot" style="background:#FF5F57"></div>
+        <div class="mr-dot" style="background:#FFBD2E"></div>
+        <div class="mr-dot" style="background:#28C840"></div>
+        <div class="mr-title">📄 Sample Industry Research Report</div>
+      </div>
+      <div class="mr-body">
+        <div class="mr-section">
+          <div class="mr-section-title"><span class="mr-hotspot" onclick="toggleTip('t1',this)">1</span> Executive Summary</div>
+          <div class="mr-content" id="sec1">The U.S. plant-based food market reached $8.1 billion in 2023, up 12% year-over-year. Growth is driven primarily by flexitarian consumers aged 25–44. Key opportunities exist in the snack and frozen meal segments. Three competitive threats identified. Full findings follow.</div>
+          <div class="mr-tooltip" id="t1">💡 <strong>Read this first — always.</strong> The executive summary gives you the entire report in 1–2 paragraphs. If a decision-maker only has 2 minutes, this is what they read. It should tell you: what the report found, what the key numbers are, and what the main recommendation or implication is. If the summary doesn't answer your question, you know which section to jump to.</div>
+        </div>
+        <div class="mr-section">
+          <div class="mr-section-title"><span class="mr-hotspot" onclick="toggleTip('t2',this)">2</span> Methodology</div>
+          <div class="mr-content" id="sec2">Data collected from 1,200 consumer surveys (nationally representative), 14 industry expert interviews, and analysis of point-of-sale data from 3,400 retail locations between Jan–Dec 2023. Margin of error: ±2.8% at 95% confidence.</div>
+          <div class="mr-tooltip" id="t2">💡 <strong>Check this to verify trust.</strong> The methodology section tells you how the data was gathered. Key questions: Was the sample size large enough? Is it recent? Does the research method match the claim? A survey of 50 people in one city can't tell you about a national market. You don't need to read this deeply — just scan it to confirm the research was conducted seriously.</div>
+        </div>
+        <div class="mr-section">
+          <div class="mr-section-title"><span class="mr-hotspot" onclick="toggleTip('t3',this)">3</span> Key Findings</div>
+          <div class="mr-content" id="sec3">Finding 1: 67% of consumers aged 25–44 report reducing meat consumption. Finding 2: Frozen plant-based meals grew 34% vs. 8% for refrigerated options. Finding 3: Price remains primary barrier — 54% cite cost as reason for not buying more frequently. Finding 4: Brand trust is the #1 purchase driver for first-time buyers.</div>
+          <div class="mr-tooltip" id="t3">💡 <strong>This is the core of the report.</strong> Key findings are the specific data points and patterns the research uncovered. Each finding should be a clear, numbered statement that stands alone. When you use AI to summarize a report, this section is what you want it to extract. Look for: numbers, percentages, comparisons, and any finding marked as "statistically significant."</div>
+        </div>
+        <div class="mr-section">
+          <div class="mr-section-title"><span class="mr-hotspot" onclick="toggleTip('t4',this)">4</span> Analysis & Interpretation</div>
+          <div class="mr-content" id="sec4">The divergence between frozen and refrigerated growth rates suggests supply chain advantages in frozen formats are enabling faster scaling. Price sensitivity concentrated in the 35–54 demographic suggests premium positioning may be more viable with 25–34 year-olds. The emphasis on brand trust indicates first-mover advantages for brands investing in authenticity marketing.</div>
+          <div class="mr-tooltip" id="t4">💡 <strong>This is where opinions enter.</strong> The analysis section is the author\'s interpretation of what the findings mean. It\'s valuable — but note that it\'s interpretation, not pure data. A different analyst might reach different conclusions from the same findings. When evaluating AI-generated research, pay close attention to where findings end and interpretation begins. Ask: is this a fact from the data, or someone\'s reading of the data?</div>
+        </div>
+        <div class="mr-section">
+          <div class="mr-section-title"><span class="mr-hotspot" onclick="toggleTip('t5',this)">5</span> Recommendations</div>
+          <div class="mr-content" id="sec5">1. Prioritize frozen SKU expansion in Q3. 2. Develop sub-$6 price point product for mass retail channel. 3. Allocate 30% of marketing budget to brand authenticity content targeting 25–34 demographic. 4. Commission follow-up study on regional taste preference variations.</div>
+          <div class="mr-tooltip" id="t5">💡 <strong>Action items — but verify the logic.</strong> Recommendations tell you what someone thinks should be done based on the findings and analysis. They\'re the most business-critical section for decision-makers. Check that each recommendation logically follows from a specific finding. If a recommendation isn\'t supported by a finding, that\'s a red flag. AI can generate recommendations — but a human must verify the connection between data and suggested action.</div>
+        </div>
+        <div class="mr-section" style="margin-bottom:0;">
+          <div class="mr-section-title"><span class="mr-hotspot" onclick="toggleTip('t6',this)">6</span> Appendix / Data Tables</div>
+          <div class="mr-content" id="sec6">Table A: Survey demographics breakdown. Table B: Regional market size data by state. Table C: Historical category growth rates 2019–2023. Table D: Full list of retail partners included in POS analysis...</div>
+          <div class="mr-tooltip" id="t6">💡 <strong>Skip unless you need specifics.</strong> The appendix contains the raw data, full tables, and supporting detail behind the key findings. Most professionals never read it unless they need to verify a specific number or dig deeper into one data point. If a finding seems surprising or you want to understand exactly how a number was calculated, this is where you go. In day-to-day report reading, you can usually skip it entirely.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 5-Minute Report Reading Method</h2>
+    <p>You'll never have enough time to read every report cover-to-cover. Professional researchers develop a fast-reading technique that extracts the essential information in minutes. Here's the sequence:</p>
+    <div class="reading-steps">
+      <div class="rs-item"><div class="rs-num">1</div><div class="rs-content"><div class="rs-title">Read the Executive Summary (2 minutes)</div><p class="rs-desc">Start here. Always. This tells you whether the report is relevant to your question and what the main finding is. If the executive summary doesn't answer your question, note which section does and jump directly there. Don't read sequentially from page 1.</p></div></div>
+      <div class="rs-item"><div class="rs-num">2</div><div class="rs-content"><div class="rs-title">Scan section headers (30 seconds)</div><p class="rs-desc">Quickly skim all the section titles to get a mental map of what the report covers. This helps you know which sections to prioritize and which to skip entirely for your specific research question.</p></div></div>
+      <div class="rs-item"><div class="rs-num">3</div><div class="rs-content"><div class="rs-title">Read Key Findings in full (1 minute)</div><p class="rs-desc">These are usually bulleted or numbered. Read every finding — they're typically brief. Highlight or note any finding that directly relates to your research question.</p></div></div>
+      <div class="rs-item"><div class="rs-num">4</div><div class="rs-content"><div class="rs-title">Read relevant analysis sections (1 minute)</div><p class="rs-desc">Only read analysis sections that connect to findings you care about. Skip sections about market segments or regions irrelevant to your specific question.</p></div></div>
+      <div class="rs-item"><div class="rs-num">5</div><div class="rs-content"><div class="rs-title">Check the methodology (30 seconds)</div><p class="rs-desc">Quickly verify the sample size, recency, and data collection method. If the research methodology has serious gaps, note them — they affect how much you should trust the conclusions.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Reading a business report isn't about absorbing every word. It's about finding the specific information that answers the specific question you came with — and getting out.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Red Flags to Watch For in Any Report</h2>
+    <p>Not every business report is trustworthy. These are the warning signs that should make you question the data before using it to make a decision.</p>
+    <div class="flag-list">
+      <div class="flag-item red"><div class="flag-icon">🚩</div><div class="flag-text"><strong>No methodology section</strong>If a report makes claims without explaining how the data was collected, treat it as opinion, not research.</div></div>
+      <div class="flag-item red"><div class="flag-icon">🚩</div><div class="flag-text"><strong>Very small sample sizes</strong>"Based on a survey of 23 respondents" cannot tell you how an entire market behaves. Look for sample sizes of at least 200+ for meaningful patterns.</div></div>
+      <div class="flag-item red"><div class="flag-icon">🚩</div><div class="flag-text"><strong>The report is more than 3 years old</strong>Markets change fast. A 2019 industry report about consumer behavior predates major shifts (pandemic, inflation, AI adoption). Always check the publication date.</div></div>
+      <div class="flag-item yellow"><div class="flag-icon">⚠️</div><div class="flag-text"><strong>Recommendations that don't follow from findings</strong>If a recommendation is made but no specific finding supports it, that's either a logic gap or an agenda. Ask: what data point makes this recommendation the right one?</div></div>
+      <div class="flag-item yellow"><div class="flag-icon">⚠️</div><div class="flag-text"><strong>Report commissioned by a company with an interest in the findings</strong>A study commissioned by a supplement company that finds supplements are highly effective should be treated with extra skepticism. Always check who funded the research.</div></div>
+      <div class="flag-item green"><div class="flag-icon">✅</div><div class="flag-text"><strong>Green flag: multiple independent sources agree</strong>When two or three independent research organizations reach similar findings through different methods, the data is much more trustworthy. Triangulation is your best friend.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>Use AI to Navigate Reports — But Check Its Work</h3>
+        <p>You can paste a research report into an AI tool and ask it to extract the key findings, summarize the methodology, or identify the main recommendations. This can save enormous amounts of time. But AI can miss nuance, misrepresent numbers, or overlook red flags in methodology. Always spot-check AI summaries against the actual report — especially for any finding you plan to use in a business decision. AI accelerates the reading. Your judgment validates it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You're handed a 40-page market research report and need to brief your manager in 10 minutes on whether the report supports expanding into a new product category. What should you read first?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. Start from the introduction and read through — you might miss something important if you skip ahead</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. Read the executive summary first, then jump to the key findings — those two sections will tell you almost everything you need for a 10-minute brief</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. Skip to the recommendations — they'll tell you directly whether to expand or not</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Read the appendix data tables — that's where the actual numbers are</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Business reports follow a predictable structure: executive summary, methodology, key findings, analysis, recommendations, and appendix. Each section serves a different purpose.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Always read the executive summary first — it tells you the most important findings in 1–2 paragraphs and tells you whether to keep reading or where to jump next.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Watch for red flags: no methodology, tiny sample sizes, old data, unsupported recommendations, and reports funded by parties with a stake in the findings.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI can summarize reports fast — but always spot-check AI summaries against the actual document before using the findings in a real business decision.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  let openTip=null;
+  function toggleTip(id,btn){const t=document.getElementById(id);const isOpen=t.classList.contains('show');document.querySelectorAll('.mr-tooltip').forEach(x=>x.classList.remove('show'));document.querySelectorAll('.mr-hotspot').forEach(x=>{x.style.background='var(--purple)';x.textContent=x.textContent;});document.querySelectorAll('.mr-content').forEach(x=>x.classList.remove('highlight'));if(!isOpen){t.classList.add('show');btn.style.background='var(--purple-dark)';t.previousElementSibling.classList.add('highlight');}}
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly the right approach.</strong> The executive summary was written specifically for this situation — to give someone the essential findings quickly. After reading it, the key findings section gives you the specific data points your manager will ask about. These two sections together will cover 90% of what you need for a 10-minute brief. Jump to other sections only if a specific question comes up that those two sections don\'t answer.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Reading sequentially wastes time when you have a specific question. The recommendations section is useful but tells you what the report\'s authors think — which you can\'t evaluate without the findings. The appendix is raw data for deep dives. The executive summary + key findings approach is the professional standard for quickly extracting actionable information from long documents.';}f.classList.add('show');}
+</script>
+</body>
+</html>
