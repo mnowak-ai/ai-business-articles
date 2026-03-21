@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What to Do When AI Gives You Conflicting Information — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Conflict types */
+  .conflict-types{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .ct{border:1.5px solid var(--purple-mid);border-radius:16px;overflow:hidden;}
+  .ct-header{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--purple-pale);}
+  .ct-icon{font-size:26px;flex-shrink:0;}
+  .ct-info{flex:1;}
+  .ct-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);}
+  .ct-why{font-size:13px;color:var(--gray-muted);margin-top:2px;}
+  .ct-body{padding:16px 20px;background:var(--white);}
+  .ct-example{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  @media(max-width:520px){.ct-example{grid-template-columns:1fr;}}
+  .ct-ex-box{background:var(--gray-soft);border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.6;}
+  .ct-ex-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .ct-resolve{background:var(--green-pale);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.65;border-left:3px solid #6EE7B7;color:var(--green);}
+
+  /* 4-step resolution framework */
+  .resolution-steps{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.resolution-steps{grid-template-columns:1fr;}}
+  .rs{border:1.5px solid var(--purple-mid);border-radius:16px;padding:22px;background:var(--white);}
+  .rs-num{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--purple-mid);line-height:1;margin-bottom:8px;}
+  .rs-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .rs-desc{font-size:14px;line-height:1.65;color:var(--gray-text);}
+
+  /* Live conflict resolver game */
+  .resolver{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .res-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .res-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .res-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .res-conflict{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:12px;}
+  .res-sources{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  @media(max-width:520px){.res-sources{grid-template-columns:1fr;}}
+  .res-src{border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.6;}
+  .res-src.a{background:var(--purple-pale);border:1px solid var(--purple-mid);}
+  .res-src.b{background:#FFFBEB;border:1px solid #FCD34D;}
+  .res-src-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+  .res-src.a .res-src-label{color:var(--purple);}
+  .res-src.b .res-src-label{color:#92400E;}
+  .res-q{font-weight:700;color:var(--purple-dark);font-size:15px;margin-bottom:10px;}
+  .res-opts{display:flex;flex-direction:column;gap:8px;}
+  .res-opt{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:10px;padding:12px 16px;font-size:14.5px;cursor:pointer;transition:all 0.2s;text-align:left;font-family:'DM Sans',sans-serif;}
+  .res-opt:hover:not([disabled]){border-color:var(--purple);background:var(--purple-pale);}
+  .res-opt.correct{background:var(--green-pale);border-color:#6EE7B7;color:var(--green);}
+  .res-opt.wrong{background:var(--red-pale);border-color:#FCA5A5;color:var(--red);}
+  .res-fb{margin-top:10px;padding:12px 14px;border-radius:10px;font-size:14px;line-height:1.65;display:none;}
+  .res-fb.show{display:block;animation:fadeIn 0.2s ease;}
+  .res-fb.good{background:var(--green-pale);color:var(--green);}
+  .res-fb.bad{background:var(--red-pale);color:var(--red);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.3 · Evaluating AI Outputs</div>
+  <h1>What to Do When AI Gives You Conflicting Information</h1>
+  <p class="hero-sub">Ask the same question twice — or to two different tools — and you may get two different answers. This isn't always a sign that AI is broken. Often it reveals something more interesting about the data itself.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>It happens more often than most people expect: you ask AI a research question, get a specific answer, ask again — and get a different number. Or you run the same query through two tools and they disagree. Your first instinct might be to assume one of them is hallucinating. <mark>But conflicting AI responses are often a signal worth investigating, not just an error to dismiss.</mark></p>
+    <p>Understanding why AI gives conflicting answers — and having a systematic process for resolving the conflict — turns what feels like a frustrating problem into a genuine research skill.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Why AI Responses Conflict: The 4 Root Causes</h2>
+    <p>Before you can resolve a conflict, you need to understand where it comes from. Most AI conflicts trace back to one of four causes.</p>
+    <div class="conflict-types">
+
+      <div class="ct">
+        <div class="ct-header"><div class="ct-icon">📏</div><div class="ct-info"><div class="ct-name">Different Definitions / Scope</div><div class="ct-why">Most common cause — both answers are technically correct, just measuring different things</div></div></div>
+        <div class="ct-body">
+          <div class="ct-example">
+            <div class="ct-ex-box"><div class="ct-ex-label">Response A</div>"The global e-commerce market is worth $5.8 trillion"</div>
+            <div class="ct-ex-box"><div class="ct-ex-label">Response B</div>"Global e-commerce reached $6.3 trillion"</div>
+          </div>
+          <div class="ct-resolve">✅ <strong>Resolution:</strong> Find each figure's original source. One may include China's domestic market; the other may exclude it. One may include digital services; the other only counts retail transactions. Neither is wrong — they measure different scopes. Pick the definition that matches what you actually need to show.</div>
+        </div>
+      </div>
+
+      <div class="ct">
+        <div class="ct-header"><div class="ct-icon">📅</div><div class="ct-info"><div class="ct-name">Different Time Periods</div><div class="ct-why">One answer reflects an older snapshot; another reflects a more recent update</div></div></div>
+        <div class="ct-body">
+          <div class="ct-example">
+            <div class="ct-ex-box"><div class="ct-ex-label">Response A</div>"Tesla holds 18% of the global EV market"</div>
+            <div class="ct-ex-box"><div class="ct-ex-label">Response B</div>"Tesla's EV market share is approximately 14%"</div>
+          </div>
+          <div class="ct-resolve">✅ <strong>Resolution:</strong> Check the date each figure comes from. EV market share shifts quarterly. The lower figure may reflect more recent data after BYD's growth. Always verify which time period applies and cite the date alongside any market share figure.</div>
+        </div>
+      </div>
+
+      <div class="ct">
+        <div class="ct-header"><div class="ct-icon">🔤</div><div class="ct-info"><div class="ct-name">Ambiguous Phrasing in Your Question</div><div class="ct-why">Your question had more than one valid interpretation, so AI answered different versions</div></div></div>
+        <div class="ct-body">
+          <div class="ct-example">
+            <div class="ct-ex-box"><div class="ct-ex-label">Response A</div>"Spotify was founded in 2006"</div>
+            <div class="ct-ex-box"><div class="ct-ex-label">Response B</div>"Spotify launched in 2008"</div>
+          </div>
+          <div class="ct-resolve">✅ <strong>Resolution:</strong> Both are correct — "founded" (incorporated) vs. "launched" (public availability) are different events. When you asked "when was Spotify founded?", both interpretations were valid. Clarify which milestone you need, then verify that specific date from a primary source.</div>
+        </div>
+      </div>
+
+      <div class="ct">
+        <div class="ct-header"><div class="ct-icon">❌</div><div class="ct-info"><div class="ct-name">Genuine Error in One Response</div><div class="ct-why">One answer is simply wrong — a true hallucination or outdated information presented as current</div></div></div>
+        <div class="ct-body">
+          <div class="ct-example">
+            <div class="ct-ex-box"><div class="ct-ex-label">Response A</div>"Slack was acquired by Salesforce in 2021 for $27.7 billion"</div>
+            <div class="ct-ex-box"><div class="ct-ex-label">Response B</div>"Slack was acquired by Microsoft in 2021 for $27.7 billion"</div>
+          </div>
+          <div class="ct-resolve">✅ <strong>Resolution:</strong> This is a genuine error — Salesforce is correct, Microsoft is wrong. The dollar figure is the same; the acquirer is different. Cross-reference against a primary source (company press release, SEC filing, or reputable news coverage) to determine which is accurate. This is where independent verification is non-negotiable.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>When two AI responses conflict, your first question shouldn't be "which one is right?" It should be "why are they different?" — because the answer often tells you something important about the data itself.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 4-Step Conflict Resolution Framework</h2>
+    <div class="resolution-steps">
+      <div class="rs"><div class="rs-num">01</div><div class="rs-title">Don't Pick Arbitrarily</div><p class="rs-desc">Never resolve a conflict by choosing the response that seems better, higher, lower, or more recent without evidence. That's just a different kind of random selection.</p></div>
+      <div class="rs"><div class="rs-num">02</div><div class="rs-title">Identify the Root Cause</div><p class="rs-desc">Ask: is this a definition difference, a time period difference, an ambiguous question, or a genuine error? The resolution approach depends entirely on which it is.</p></div>
+      <div class="rs"><div class="rs-num">03</div><div class="rs-title">Find the Original Source</div><p class="rs-desc">For each conflicting figure, trace it back to its origin. What report, database, or filing did this number come from? Understanding the source usually resolves the conflict.</p></div>
+      <div class="rs"><div class="rs-num">04</div><div class="rs-title">Choose Based on Fit</div><p class="rs-desc">Use the figure whose definition, methodology, and time period best matches what your specific research question actually needs to demonstrate.</p></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Practice: Resolve These Conflicts</h2>
+    <div class="resolver">
+      <div class="res-label">🎮 Conflict Resolver</div>
+      <div class="res-title">Two Responses Disagree — What Do You Do?</div>
+      <div class="res-sub">For each conflict, choose the right resolution approach.</div>
+
+      <div class="res-conflict" id="rc1">
+        <div class="res-sources">
+          <div class="res-src a"><div class="res-src-label">🤖 AI Tool 1</div>"The average U.S. worker spends 28% of their workday on email."</div>
+          <div class="res-src b"><div class="res-src-label">🤖 AI Tool 2</div>"U.S. workers spend about 20% of their time on email-related tasks."</div>
+        </div>
+        <div class="res-q">How should you resolve this 8-point discrepancy?</div>
+        <div class="res-opts">
+          <button class="res-opt" onclick="resAnswer(this,1,'wrong')">A. Use 28% — it's a stronger, more memorable statistic</button>
+          <button class="res-opt" onclick="resAnswer(this,1,'correct')">B. Find the original research study for each figure — the gap likely reflects different methodologies (e.g., one measures time in inbox, the other includes email-related meetings). Use whichever study's definition best fits your presentation's point</button>
+          <button class="res-opt" onclick="resAnswer(this,1,'wrong')">C. Average them and say "approximately 24%"</button>
+        </div>
+        <div class="res-fb" id="rfb1"></div>
+      </div>
+
+      <div class="res-conflict" id="rc2">
+        <div class="res-sources">
+          <div class="res-src a"><div class="res-src-label">🤖 AI Tool 1</div>"Amazon was founded in 1994 by Jeff Bezos."</div>
+          <div class="res-src b"><div class="res-src-label">🤖 AI Tool 2</div>"Amazon launched in 1995 as an online bookstore."</div>
+        </div>
+        <div class="res-q">Is this a real conflict, and if so, how do you resolve it?</div>
+        <div class="res-opts">
+          <button class="res-opt" onclick="resAnswer(this,2,'correct')">A. This isn't a real conflict — both are correct. 1994 = incorporation; 1995 = public website launch. Clarify which milestone your context requires, then use the appropriate date</button>
+          <button class="res-opt" onclick="resAnswer(this,2,'wrong')">B. 1995 is more accurate — that's when Amazon actually became a business</button>
+          <button class="res-opt" onclick="resAnswer(this,2,'wrong')">C. One must be hallucinating — verify both against Wikipedia</button>
+        </div>
+        <div class="res-fb" id="rfb2"></div>
+      </div>
+
+      <div class="res-conflict" id="rc3">
+        <div class="res-sources">
+          <div class="res-src a"><div class="res-src-label">🤖 AI Tool 1</div>"Apple's revenue in fiscal year 2023 was $383 billion."</div>
+          <div class="res-src b"><div class="res-src-label">🤖 AI Tool 2</div>"Apple reported annual revenue of $394 billion for 2023."</div>
+        </div>
+        <div class="res-q">Apple is a public company — how do you definitively resolve this?</div>
+        <div class="res-opts">
+          <button class="res-opt" onclick="resAnswer(this,3,'wrong')">A. Use $394 billion — the higher figure is more likely to be accurate for a company Apple's size</button>
+          <button class="res-opt" onclick="resAnswer(this,3,'wrong')">B. Both are probably rounding errors — use "$390 billion (approx.)"</button>
+          <button class="res-opt" onclick="resAnswer(this,3,'correct')">C. Go directly to Apple's investor relations page (apple.com/investor) or their 10-K SEC filing for the exact figure. Public company financials are definitively verifiable from primary sources — never use an AI-estimated number when the real one is one search away</button>
+        </div>
+        <div class="res-fb" id="rfb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h3>Conflicting Responses Are Actually a Gift</h3>
+        <p>When AI gives you two different answers, that conflict is forcing you to do the one thing that transforms research from "good enough" to "genuinely reliable" — find the original source. A researcher who encounters conflicting figures and traces both back to their methodological origins comes out of the process with a much deeper understanding of the data than someone who got a single answer and moved on. The conflict does the work of pointing you toward the real research.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">Two AI tools give you different figures for the same country's GDP: $25.5 trillion vs $23.0 trillion. Before doing anything else, what is the most important first question to ask?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Which AI tool is more reliable overall?</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. Are these figures measuring the same thing? One may be nominal GDP and the other purchasing power parity (PPP) — different methodologies that always produce different numbers for the same economy</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. Which figure is more recent — use the latest one</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Average them — the truth is probably somewhere in between</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Conflicting AI responses come from four causes: different definitions/scope, different time periods, ambiguous questions, or a genuine error in one response. Identifying the root cause determines the right resolution.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Never resolve a conflict by picking the higher, lower, more recent, or more impressive figure. Always trace both back to their original sources to understand what each is actually measuring.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Many apparent conflicts aren't errors at all — they're definitional differences. Two figures can both be accurate while measuring different things, different time periods, or different scopes of the same topic.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Conflicting responses are valuable — they force you to find original sources, which always produces better research than accepting a single AI answer without investigation.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const resFb={
+    1:{correct:'✅ <strong>Right approach.</strong> The 8-point gap almost certainly reflects a methodology difference — how "email time" was defined, what types of tasks were included, and how data was collected. McKinsey\'s famous "28% on email" figure from their 2012 report has a specific methodology that differs from more recent studies. Finding the original source for each reveals whether you\'re comparing apples to apples — and helps you choose the figure that best supports your specific point.',wrong:'❌ Choosing the stronger or averaged statistic without understanding what it measures is how bad research gets made. The methodology gap between 20% and 28% is real and meaningful — and using either figure without understanding its origin means you can\'t defend it if challenged.'},
+    2:{correct:'✅ <strong>Exactly right.</strong> This is a definitional conflict, not an error. Both dates are correct for different milestones. Amazon was incorporated in 1994 but the amazon.com website launched in 1995. If you\'re writing about Amazon\'s founding history, clarify which milestone is relevant. "Founded in 1994" and "launched to the public in 1995" are both accurate and serve different rhetorical purposes.',wrong:'❌ Both figures can be right simultaneously — they describe different milestones. 1994 (incorporation) and 1995 (public launch) are equally valid Amazon dates for different contexts. Wikipedia is a secondary source and often combines both dates. The right action is clarifying which milestone your context requires, not picking one as "more correct."'},
+    3:{correct:'✅ <strong>Perfect approach.</strong> Apple files quarterly and annual earnings with the SEC — the exact revenue figure is in their 10-K filing and on their investor relations website. For public company financials, there\'s never a reason to use AI\'s estimate when the definitive figure is one search away. This is the clearest example of when primary sources are unambiguous, accessible, and should always be used instead of AI approximations.',wrong:'❌ For public company financials, you never need to estimate, average, or guess. Apple files exact figures with the SEC — and their investor relations page makes them publicly accessible. Using an AI-estimated revenue figure when the real number is one search away is unnecessary risk. Always use primary financial sources for company revenue data.'}
+  };
+  const resDone={};
+  function resAnswer(btn,i,type){if(resDone[i])return;resDone[i]=true;document.querySelectorAll(`#rc${i} .res-opt`).forEach(b=>b.disabled=true);const fb=document.getElementById('rfb'+i);if(type==='correct'){btn.classList.add('correct');fb.className='res-fb good show';fb.innerHTML=resFb[i].correct;}else{btn.classList.add('wrong');const correctBtn=document.querySelector(`#rc${i} .res-opt:nth-child(${i===1?2:i===2?1:3})`);if(correctBtn)correctBtn.classList.add('correct');fb.className='res-fb bad show';fb.innerHTML=resFb[i].wrong;}}
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> GDP is measured in multiple ways that always produce different numbers. Nominal GDP uses current market prices; PPP-adjusted GDP accounts for cost-of-living differences and produces a higher or lower number depending on the country. A $2.5 trillion difference for the same country is completely consistent with two valid measurements of the same economy. The "which tool is more reliable" and "use the most recent" instincts are both wrong here — you first need to know if they\'re even measuring the same thing.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Tool reliability, recency, and averaging all miss the real issue — different GDP measurements (nominal vs. PPP) always produce significantly different figures for the same economy, and both can be technically accurate. The conflict is definitional, not an error. The right first question is always: are these figures measuring the same concept the same way?';}f.classList.add('show');}
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Difference Between AI Confidence and AI Accuracy — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* The 4 quadrants — big visual centrepiece */
+  .quadrant-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:24px 0;border-radius:20px;overflow:hidden;border:3px solid var(--purple);}
+  .quad{padding:28px 24px;}
+  .quad.hh{background:var(--green-pale);}
+  .quad.hl{background:var(--red-pale);}
+  .quad.lh{background:#FFFBEB;}
+  .quad.ll{background:var(--purple-pale);}
+  .quad-axis{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+  .quad.hh .quad-axis,.quad.lh .quad-axis{color:var(--green);}
+  .quad.hl .quad-axis{color:var(--red);}
+  .quad.ll .quad-axis{color:var(--purple);}
+  .quad-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:10px;}
+  .quad.hh .quad-title{color:var(--green);}
+  .quad.hl .quad-title{color:var(--red);}
+  .quad.lh .quad-title{color:#92400E;}
+  .quad.ll .quad-title{color:var(--purple-dark);}
+  .quad-desc{font-size:14px;line-height:1.65;}
+  .quad-action{font-size:13px;margin-top:10px;font-weight:600;}
+  .quad.hh .quad-action{color:var(--green);}
+  .quad.hl .quad-action{color:var(--red);}
+  .quad.lh .quad-action{color:#92400E;}
+  .quad.ll .quad-action{color:var(--purple);}
+  .quad-axis-labels{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:3px;}
+  .quad-axis-label{text-align:center;font-size:12px;font-weight:700;color:var(--gray-muted);padding:6px;background:var(--gray-soft);}
+
+  /* Tone vs truth demo */
+  .tone-demo{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .td-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .td-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .td-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .td-pairs{display:flex;flex-direction:column;gap:16px;}
+  .td-pair{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;overflow:hidden;}
+  .td-pair-header{background:var(--purple-dark);padding:10px 18px;font-size:12px;font-weight:700;color:white;letter-spacing:0.06em;text-transform:uppercase;}
+  .td-pair-body{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+  @media(max-width:540px){.td-pair-body{grid-template-columns:1fr;}}
+  .td-response{padding:16px 18px;font-size:14.5px;line-height:1.75;}
+  .td-response.confident{border-right:1px solid var(--purple-mid);}
+  @media(max-width:540px){.td-response.confident{border-right:none;border-bottom:1px solid var(--purple-mid);}}
+  .td-response-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+  .td-response.confident .td-response-label{color:var(--red);}
+  .td-response.uncertain .td-response-label{color:var(--green);}
+  .td-verdict{padding:10px 18px;background:var(--purple-pale);font-size:13.5px;display:flex;gap:10px;align-items:center;}
+  .td-verdict-icon{font-size:18px;flex-shrink:0;}
+  .td-verdict-text{line-height:1.5;}
+
+  /* Red flags for confidence language */
+  .confidence-flags{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .cf-item{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-radius:12px;}
+  .cf-item.danger{background:var(--red-pale);border:1.5px solid #FCA5A5;}
+  .cf-item.safe{background:var(--green-pale);border:1.5px solid #6EE7B7;}
+  .cf-icon{font-size:20px;flex-shrink:0;}
+  .cf-text{font-size:15px;line-height:1.6;}
+  .cf-text strong{display:block;margin-bottom:4px;}
+
+  /* Interactive classifier */
+  .classifier{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cl-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cl-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cl-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .cl-response{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:12px;}
+  .cl-text{font-family:monospace;font-size:14px;line-height:1.75;background:var(--gray-soft);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+  .cl-q{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:10px;}
+  .cl-opts{display:flex;gap:8px;flex-wrap:wrap;}
+  .cl-opt{padding:10px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .cl-opt:hover:not([disabled]){border-color:var(--purple);background:var(--purple-pale);}
+  .cl-opt.correct{background:var(--green-pale);border-color:#6EE7B7;color:var(--green);}
+  .cl-opt.wrong{background:var(--red-pale);border-color:#FCA5A5;color:var(--red);}
+  .cl-fb{margin-top:10px;padding:12px 14px;border-radius:10px;font-size:14.5px;line-height:1.65;display:none;}
+  .cl-fb.show{display:block;animation:fadeIn 0.2s ease;}
+  .cl-fb.good{background:var(--green-pale);color:var(--green);}
+  .cl-fb.bad{background:var(--red-pale);color:var(--red);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.quad{padding:20px 16px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.3 · Evaluating AI Outputs</div>
+  <h1>The Difference Between AI Confidence and AI Accuracy</h1>
+  <p class="hero-sub">AI always sounds certain. Whether it's completely right or completely wrong, the tone, structure, and professional phrasing look identical. This is the most important thing to understand about evaluating any AI output.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>A human expert who doesn't know something usually signals it — they hedge, they say "I think," they ask follow-up questions. AI doesn't do this by default. When AI generates a response, it produces the most statistically likely text given your prompt — and that text is always formatted like a confident, authoritative answer, regardless of whether the underlying information is accurate.</p>
+    <p><mark>Confidence is a feature of AI's text generation, not an indicator of its accuracy.</mark> The same model, with the same tone, can give you a fact that's been verified a thousand times and a statistic it just invented — and the presentation will look completely identical. This is the most important principle in AI evaluation.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 4-Quadrant Framework</h2>
+    <p>AI responses actually fall into four possible combinations of confidence and accuracy. Only one is safe to use without verification. The most dangerous is the one that looks safest.</p>
+    <div class="quadrant-grid">
+      <div class="quad hh">
+        <div class="quad-axis">High Confidence · High Accuracy</div>
+        <div class="quad-title">✅ The Safe Zone</div>
+        <p class="quad-desc">AI is authoritative AND correct. This is the majority of responses on well-covered factual topics — historical dates, widely reported company facts, established scientific principles.</p>
+        <div class="quad-action">→ Still verify for high-stakes use, but generally reliable</div>
+      </div>
+      <div class="quad hl">
+        <div class="quad-axis">High Confidence · Low Accuracy</div>
+        <div class="quad-title">🚨 The Danger Zone</div>
+        <p class="quad-desc">AI sounds completely authoritative but is wrong. This is where hallucinations live. Fabricated citations, invented statistics, wrong company facts — all delivered in the same polished professional tone as correct information.</p>
+        <div class="quad-action">→ The most dangerous quadrant — indistinguishable from the safe zone by tone alone</div>
+      </div>
+      <div class="quad lh">
+        <div class="quad-axis">Low Confidence · High Accuracy</div>
+        <div class="quad-title">⚠️ The Undervalued Zone</div>
+        <p class="quad-desc">AI hedges ("this may vary," "I'm not entirely certain") but is actually correct. Don't dismiss hedged AI responses as incompetent — they often signal honest self-awareness about areas of genuine uncertainty.</p>
+        <div class="quad-action">→ Verify, but the hedging itself is useful signal — AI flagging its own uncertainty</div>
+      </div>
+      <div class="quad ll">
+        <div class="quad-axis">Low Confidence · Low Accuracy</div>
+        <div class="quad-title">📋 The Honest Zone</div>
+        <p class="quad-desc">AI acknowledges uncertainty AND is genuinely uncertain. "I'm not sure about this, but..." followed by hedged information is the most honest output AI can produce when it doesn't have reliable information.</p>
+        <div class="quad-action">→ The most trustworthy failure mode — AI is telling you what it doesn't know</div>
+      </div>
+    </div>
+    <div class="quad-axis-labels">
+      <div class="quad-axis-label">Confident responses</div>
+      <div class="quad-axis-label">Hedged responses</div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The most dangerous AI response isn't the one that says "I'm not sure." It's the one that says nothing of the sort — but is wrong anyway.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Same Confidence, Different Truth</h2>
+    <p>The best way to feel this principle is to see it directly. Compare these response pairs — one confident and wrong, one uncertain and right.</p>
+    <div class="tone-demo">
+      <div class="td-label">🔍 Confidence vs. Accuracy Demo</div>
+      <div class="td-title">Same Topic, Different Accuracy</div>
+      <div class="td-sub">Notice how the confident response doesn't sound any different from a correct one — that's the danger.</div>
+      <div class="td-pairs">
+        <div class="td-pair">
+          <div class="td-pair-header">Topic: When was the iPhone first released?</div>
+          <div class="td-pair-body">
+            <div class="td-response confident">
+              <div class="td-response-label">🚨 Confident — and wrong</div>
+              "The original iPhone was released on June 29, 2007, when Steve Jobs unveiled it at the Macworld Conference to widespread acclaim. It featured a 3.5-inch touchscreen and revolutionary multi-touch interface."
+            </div>
+            <div class="td-response uncertain">
+              <div class="td-response-label">✅ Also confident — and actually right</div>
+              "The original iPhone was released on June 29, 2007. Steve Jobs announced it at the Macworld Conference in January 2007, but the public sale began June 29th. It featured a 3.5-inch multi-touch display."
+            </div>
+          </div>
+          <div class="td-verdict"><div class="td-verdict-icon">⚠️</div><div class="td-verdict-text">Wait — both say June 29, 2007. The subtle error: Jobs unveiled it at <em>Macworld</em>, not when it was "released." Both responses sound confident. Only one has the event/date relationship exactly right. You'd need to check to know which.</div></div>
+        </div>
+        <div class="td-pair">
+          <div class="td-pair-header">Topic: Asking AI for a specific statistic it may not know precisely</div>
+          <div class="td-pair-body">
+            <div class="td-response confident">
+              <div class="td-response-label">🚨 Confident — risky</div>
+              "According to industry data, the global cybersecurity market was valued at $217.9 billion in 2023 and is expected to grow at a CAGR of 12.3% through 2028."
+            </div>
+            <div class="td-response uncertain">
+              <div class="td-response-label">✅ Hedged — more honest</div>
+              "Market size estimates for cybersecurity vary by source — figures I've seen range from approximately $200–250 billion for 2023. I'd recommend checking a current report from Gartner or IDC for a precise, citable figure."
+            </div>
+          </div>
+          <div class="td-verdict"><div class="td-verdict-icon">💡</div><div class="td-verdict-text">The confident response gives a specific-looking number that sounds authoritative but may be hallucinated. The hedged response is more honest about uncertainty and actively points you to verification. The hedged response is better research practice.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Warning Signs in Confident AI Language</h2>
+    <p>Certain patterns in AI language should raise your verification instinct even when the overall tone sounds authoritative.</p>
+    <div class="confidence-flags">
+      <div class="cf-item danger"><div class="cf-icon">🚩</div><div class="cf-text"><strong>Very precise statistics: "grew 34.7% to $478.2 billion"</strong>False precision is a hallucination signature. Real market data rarely comes in non-rounded numbers. Precision that looks like it came from a financial model is often fabricated.</div></div>
+      <div class="cf-item danger"><div class="cf-icon">🚩</div><div class="cf-text"><strong>Full citation with author + journal + year + statistic all in one sentence</strong>Any time AI gives you the complete package — named researcher, named publication, specific year, specific percentage — every element needs independent verification. This is the classic hallucinated citation pattern.</div></div>
+      <div class="cf-item danger"><div class="cf-icon">🚩</div><div class="cf-text"><strong>"Studies consistently show..." / "Research has proven..."</strong>Sweeping statements about what "studies" show, without naming a specific study, are often aggregated or fabricated. Ask AI to name the specific study — if it can't, the claim is suspect.</div></div>
+      <div class="cf-item safe"><div class="cf-icon">✅</div><div class="cf-text"><strong>"I'm not certain about this, but..." / "This may vary by source..."</strong>Hedging language is actually a green flag — it means AI is accurately representing its own uncertainty. A hedged response with a verification suggestion is more honest and more useful than confident fabrication.</div></div>
+      <div class="cf-item safe"><div class="cf-icon">✅</div><div class="cf-text"><strong>"Based on my training data as of [date]..." / "You may want to verify this..."</strong>AI proactively acknowledging its limitations is the ideal behaviour. When AI flags potential staleness or recommends verification, treat that as a reliable partner behaviour — not a sign of weakness.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Classify the Response</h2>
+    <p>For each AI response below, identify which quadrant of the Confidence vs. Accuracy framework it most likely falls into.</p>
+    <div class="classifier">
+      <div class="cl-label">🎮 Quadrant Classifier</div>
+      <div class="cl-title">Which Quadrant Is This?</div>
+      <div class="cl-sub">Read each response and classify it using the 4-quadrant framework.</div>
+
+      <div class="cl-response" id="clr1">
+        <div class="cl-text">🤖 "I should be transparent: I'm not fully certain of the exact current market share figures for this sector, as they change frequently. My training data suggested Salesforce held approximately 19–22% of the CRM market in 2022, but I'd strongly recommend checking a recent Gartner or IDC report for current figures."</div>
+        <div class="cl-q">Which quadrant does this response most likely represent?</div>
+        <div class="cl-opts">
+          <button class="cl-opt" onclick="clAnswer(this,1,'wrong')">🚨 High Confidence, Low Accuracy (Danger Zone)</button>
+          <button class="cl-opt" onclick="clAnswer(this,1,'correct')">📋 Low Confidence, Low/Unknown Accuracy (Honest Zone)</button>
+          <button class="cl-opt" onclick="clAnswer(this,1,'wrong')">✅ High Confidence, High Accuracy (Safe Zone)</button>
+        </div>
+        <div class="cl-fb" id="clfb1"></div>
+      </div>
+
+      <div class="cl-response" id="clr2">
+        <div class="cl-text">🤖 "According to the 2023 Deloitte Global AI Survey, 89% of business leaders reported AI as a top strategic priority, with 76% planning to increase AI investment by at least 30% over the next fiscal year."</div>
+        <div class="cl-q">What is the verification risk with this response?</div>
+        <div class="cl-opts">
+          <button class="cl-opt" onclick="clAnswer(this,2,'wrong')">Low risk — Deloitte is a credible firm so this is reliable</button>
+          <button class="cl-opt" onclick="clAnswer(this,2,'correct')">High risk — specific survey name + precise percentages is the hallucination pattern for invented citations; verify on Deloitte's actual website before using these figures</button>
+          <button class="cl-opt" onclick="clAnswer(this,2,'wrong')">Medium risk — the percentages seem plausible so probably accurate</button>
+        </div>
+        <div class="cl-fb" id="clfb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h3>Reframe Your Instinct: Confident = Verify Harder</h3>
+        <p>Most people's instinct is to trust confident language and question hesitant language. With AI, this instinct needs to be partially reversed. When AI hedges and expresses uncertainty, that's honest behaviour — worth noting, worth verifying, but a trustworthy signal. When AI is maximally confident and specific, that's actually when your verification instinct should kick in hardest, because confident AI responses carry the highest hallucination risk — they're the ones that look safest while potentially being the most dangerous.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">An AI response says: "I'm not entirely confident in this figure, but global drone delivery market estimates I've encountered range from $5–11 billion for 2023 depending on how 'commercial drone delivery' is defined. I'd recommend checking a current industry report for a citable figure." How should you interpret this response?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Dismiss it — if AI isn't confident, the information is useless</button>
+        <button class="quiz-btn" onclick="answer(this,false)">B. Use the midpoint of $8 billion — AI's range suggests that's a reasonable estimate</button>
+        <button class="quiz-btn" onclick="answer(this,true)">C. This is actually a high-quality response — AI is honestly representing the range and definitional ambiguity in this market, and correctly directing you to verify. Use this as a starting point for finding a citable primary source, not as the final figure</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Ask AI again with more confidence — it should be able to give a single definitive number</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI confidence and AI accuracy are completely independent. The same professional tone and authoritative language appears in both correct responses and hallucinated ones — tone cannot be used as a reliability signal.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The 4 quadrants: High Confidence + High Accuracy (safe), High Confidence + Low Accuracy (most dangerous), Low Confidence + High Accuracy (undervalued), Low Confidence + Low Accuracy (most honest). The danger zone looks identical to the safe zone.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Hedging language is a green flag, not a red one. When AI expresses uncertainty and recommends verification, it's demonstrating honest self-awareness about its own limitations — that's valuable behaviour.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Reframe your instinct: when AI is maximally confident and specific, that's when you should verify hardest — not relax. The most dangerous responses are the ones that look the most trustworthy.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const clFb={
+    1:{correct:'✅ <strong>Right classification.</strong> This response sits in the Low Confidence / Unknown Accuracy zone — and that\'s the most honest output AI can produce when it genuinely isn\'t certain. Note the value: AI tells you the approximate range, flags the recency risk, and points you to where to verify. This is AI behaving well under uncertainty. The appropriate response is to use the range as a starting point and find an actual Gartner or IDC report to cite.',wrong:'❌ Not quite. This response explicitly hedges and expresses uncertainty — it\'s not presenting itself as confident. It belongs in the Low Confidence zone, which is actually the most honest quadrant. Don\'t dismiss hedged responses as useless — they often contain accurate directional information alongside honest self-limitation.'},
+    2:{correct:'✅ <strong>Exactly right.</strong> Specific survey name + named organization + two precise percentages in one sentence is the hallucination signature for invented citations. Deloitte does publish real surveys — but AI may have generated a plausible-sounding version of one that doesn\'t actually exist, or combined statistics from different surveys. Before using these figures, go directly to Deloitte\'s insights website and search for their actual 2023 AI survey. If the survey and figures can\'t be found there, they\'re fabricated.',wrong:'❌ Plausibility is not the same as accuracy. The specific format — named organization + named survey year + two precise percentages — is exactly the pattern AI uses when fabricating citations. The fact that the numbers "seem right" is exactly the problem: hallucinated statistics are designed to seem right. This needs verification against Deloitte\'s actual published research before use.'}
+  };
+  const clDone={};
+  function clAnswer(btn,i,type){if(clDone[i])return;clDone[i]=true;document.querySelectorAll(`#clr${i} .cl-opt`).forEach(b=>b.disabled=true);const fb=document.getElementById('clfb'+i);if(type==='correct'){btn.classList.add('correct');fb.className='cl-fb good show';fb.innerHTML=clFb[i].correct;}else{btn.classList.add('wrong');document.querySelectorAll(`#clr${i} .cl-opt`)[i===1?1:1].classList.add('correct');fb.className='cl-fb bad show';fb.innerHTML=clFb[i].wrong;}}
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> This is AI behaving well. It\'s honestly representing: (1) that market size figures vary by definition, (2) what range it\'s encountered, and (3) that you need a primary source to cite it accurately. Hedged + directional + verification-pointing is the best possible AI behaviour when genuine uncertainty exists. Using the midpoint without finding a source, or demanding a single confident number, would both lead to worse outcomes than treating this as a useful starting point for real research.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> AI\'s hedged response is more valuable than it appears. Dismissing it loses directional information about the market range. Using the midpoint as an estimate fabricates precision that wasn\'t there. And demanding a single definitive number will just produce a confident hallucination — which is the worse outcome. The hedged response is pointing you correctly toward what good research actually requires.';}f.classList.add('show');}
+</script>
+</body>
+</html>

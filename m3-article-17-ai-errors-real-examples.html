@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When AI Sounds Right But Isn't — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Error type stat bar */
+  .stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr;}}
+  .stat-card{background:var(--purple);border-radius:20px;padding:24px 18px;text-align:center;}
+  .stat-num{font-family:'Fraunces',serif;font-size:38px;font-weight:900;color:white;line-height:1;margin-bottom:8px;}
+  .stat-label{font-size:13px;color:rgba(255,255,255,0.82);line-height:1.4;}
+
+  /* Case study accordion */
+  .cases{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .case{border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;transition:border-color 0.2s;}
+  .case:hover,.case.open{border-color:var(--purple);}
+  .case-header{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;background:var(--white);transition:background 0.2s;}
+  .case.open .case-header{background:var(--purple-pale);}
+  .case-num{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--purple-mid);flex-shrink:0;width:32px;}
+  .case.open .case-num{color:var(--purple);}
+  .case-info{flex:1;}
+  .case-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);}
+  .case-sub{font-size:13px;color:var(--gray-muted);margin-top:2px;}
+  .case-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;flex-shrink:0;}
+  .badge-red{background:var(--red-pale);color:var(--red);}
+  .badge-yellow{background:#FEF9C3;color:#92400E;}
+  .badge-purple{background:var(--purple-pale);color:var(--purple);}
+  .case-toggle{font-size:20px;color:var(--purple);transition:transform 0.3s;flex-shrink:0;}
+  .case.open .case-toggle{transform:rotate(45deg);}
+  .case-body{max-height:0;overflow:hidden;transition:max-height 0.45s ease;}
+  .case.open .case-body{max-height:700px;}
+  .case-detail{padding:0 22px 22px;border-top:1px solid var(--purple-mid);}
+  .case-wrong{background:var(--red-pale);border-radius:12px;padding:16px 18px;margin:16px 0 10px;border-left:4px solid var(--red);}
+  .case-wrong-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+  .case-wrong-text{font-size:15px;line-height:1.75;}
+  .case-lesson{background:var(--green-pale);border-radius:12px;padding:16px 18px;border-left:4px solid #6EE7B7;}
+  .case-lesson-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
+  .case-lesson-text{font-size:15px;line-height:1.75;color:var(--green);}
+
+  /* Pattern recognition quiz */
+  .pattern-game{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pg-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .pg-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pg-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .pg-scenario{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:12px;}
+  .pg-response{font-family:monospace;font-size:14px;line-height:1.7;background:var(--gray-soft);border-radius:10px;padding:14px 16px;margin-bottom:14px;color:var(--gray-text);}
+  .pg-q{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:10px;}
+  .pg-opts{display:flex;flex-direction:column;gap:8px;}
+  .pg-opt{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:10px;padding:12px 16px;font-size:14.5px;cursor:pointer;transition:all 0.2s;text-align:left;font-family:'DM Sans',sans-serif;}
+  .pg-opt:hover:not([disabled]){border-color:var(--purple);background:var(--purple-pale);}
+  .pg-opt.correct{background:var(--green-pale);border-color:#6EE7B7;color:var(--green);}
+  .pg-opt.wrong{background:var(--red-pale);border-color:#FCA5A5;color:var(--red);}
+  .pg-fb{margin-top:10px;padding:12px 14px;border-radius:10px;font-size:14.5px;line-height:1.65;display:none;}
+  .pg-fb.show{display:block;animation:fadeIn 0.2s ease;}
+  .pg-fb.good{background:var(--green-pale);color:var(--green);}
+  .pg-fb.bad{background:var(--red-pale);color:var(--red);}
+
+  /* Prevention checklist */
+  .prevention{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.prevention{grid-template-columns:1fr;}}
+  .prev-card{border:1.5px solid var(--purple-mid);border-radius:16px;padding:22px;background:var(--white);}
+  .prev-icon{font-size:28px;margin-bottom:10px;display:block;}
+  .prev-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .prev-desc{font-size:14px;line-height:1.65;color:var(--gray-text);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.3 · Evaluating AI Outputs</div>
+  <h1>When AI Sounds Right But Isn't: 5 Real Examples of AI Errors in Business</h1>
+  <p class="hero-sub">The most dangerous AI errors aren't the obvious ones. They're specific, confident, and professionally phrased — while being subtly or significantly wrong. Recognizing these patterns in the wild is the best preparation for catching them in your own work.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Reading about AI hallucination in theory is useful. But what does it actually look like when it happens in a professional context? What type of information gets fabricated most often? And what should you have done differently to catch it?</p>
+    <p><mark>The examples below aren't hypothetical — each reflects a real category of AI error that has caused genuine professional consequences.</mark> Reading them builds a mental model of what to watch for, so when a similar pattern appears in your own AI research, your instincts kick in before it reaches your presentation.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num">~38%</div><div class="stat-label">of AI responses contain at least one factual inaccuracy in independent testing</div></div>
+      <div class="stat-card"><div class="stat-num">$100K+</div><div class="stat-label">estimated legal costs from a single case of AI-hallucinated legal citations in 2023</div></div>
+      <div class="stat-card"><div class="stat-num">5 min</div><div class="stat-label">average time to verify a specific AI claim against an independent source</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>5 Cases: What Went Wrong & What to Learn</h2>
+    <p>Click each case to read what happened, why AI got it wrong, and the exact prevention habit that would have caught it.</p>
+    <div class="cases">
+
+      <div class="case" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-num">01</div>
+          <div class="case-info">
+            <div class="case-title">The Invented Legal Cases</div>
+            <div class="case-sub">Citations · Legal filing · Federal court</div>
+          </div>
+          <div class="case-badge badge-red">Hallucinated citations</div>
+          <div class="case-toggle">+</div>
+        </div>
+        <div class="case-body"><div class="case-detail">
+          <div class="case-wrong">
+            <div class="case-wrong-label">❌ What Happened</div>
+            <div class="case-wrong-text">In 2023, a U.S. attorney used ChatGPT to research legal precedents for a court brief and submitted six case citations — complete with realistic case names, court jurisdictions, and convincing summaries. None of the cases existed. When opposing counsel searched for them and found nothing, the judge held a hearing. The attorney faced sanctions, public embarrassment, and a court order to explain how it happened.</div>
+          </div>
+          <div class="case-lesson">
+            <div class="case-lesson-label">✅ The Prevention</div>
+            <div class="case-lesson-text">Every citation from AI must be independently verified before use in any professional document — no exceptions. AI generates text that follows citation patterns rather than retrieving actual sources. For legal, medical, or financial documents, search the specific case, study, or report in a primary database (Westlaw, PubMed, SEC EDGAR) before citing it anywhere.</div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="case" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-num">02</div>
+          <div class="case-info">
+            <div class="case-title">The Outdated Market Share</div>
+            <div class="case-sub">Competitive intelligence · Strategy presentation · Wrong by 13 points</div>
+          </div>
+          <div class="case-badge badge-yellow">Stale data</div>
+          <div class="case-toggle">+</div>
+        </div>
+        <div class="case-body"><div class="case-detail">
+          <div class="case-wrong">
+            <div class="case-wrong-label">❌ What Happened</div>
+            <div class="case-wrong-text">A marketing team used AI to research a competitor's market position before a strategy presentation. AI reported 12% market share — accurate from two years prior. In reality, the competitor had made two major acquisitions and grown to 31% share. The team spent weeks building a strategy that dramatically underestimated the competitive threat, leading to an embarrassing revision three months later.</div>
+          </div>
+          <div class="case-lesson">
+            <div class="case-lesson-label">✅ The Prevention</div>
+            <div class="case-lesson-text">Market share data for fast-moving sectors can shift dramatically in 12–18 months, and AI won't always flag that its information is outdated. For any competitive intelligence that influences strategy, verify against current primary sources — competitor investor relations pages, industry tracker reports, or recent news from the last 6–12 months.</div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="case" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-num">03</div>
+          <div class="case-info">
+            <div class="case-title">The Misrepresented Research Study</div>
+            <div class="case-sub">Academic citation · Business case · Working paper treated as published research</div>
+          </div>
+          <div class="case-badge badge-yellow">Citation misrepresented</div>
+          <div class="case-toggle">+</div>
+        </div>
+        <div class="case-body"><div class="case-detail">
+          <div class="case-wrong">
+            <div class="case-wrong-label">❌ What Happened</div>
+            <div class="case-wrong-text">A consultant cited a "Harvard Business School study" that AI described as finding a 47% productivity improvement from AI tools. The study existed — but it was a single researcher's working paper, not published peer-reviewed research, and the 47% figure came from one company's self-reported data. When the client asked to see the full study, the credentials didn't hold up. The consultant had presented a preliminary working paper as established research.</div>
+          </div>
+          <div class="case-lesson">
+            <div class="case-lesson-label">✅ The Prevention</div>
+            <div class="case-lesson-text">AI often can't distinguish between working papers, conference presentations, blog posts, and peer-reviewed journal articles. Before citing any study in a professional context, find the original source and check: Is it peer-reviewed? What journal? What was the sample size? Who funded it? A working paper is very different from replicated peer-reviewed research — and the distinction matters enormously when building a business case.</div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="case" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-num">04</div>
+          <div class="case-info">
+            <div class="case-title">The Mixed-Up Competitors</div>
+            <div class="case-sub">Competitive brief · Sales team · Wrong company's pricing used</div>
+          </div>
+          <div class="case-badge badge-red">Company confusion</div>
+          <div class="case-toggle">+</div>
+        </div>
+        <div class="case-body"><div class="case-detail">
+          <div class="case-wrong">
+            <div class="case-wrong-label">❌ What Happened</div>
+            <div class="case-wrong-text">A sales team asked AI to research a key competitor's pricing model. AI mixed up two similarly-named companies in the same space, attributing one company's pricing to the other. The team built their entire competitive pitch around incorrect pricing information and discovered the error live during a client call when the client mentioned a specific price point that contradicted their brief completely.</div>
+          </div>
+          <div class="case-lesson">
+            <div class="case-lesson-label">✅ The Prevention</div>
+            <div class="case-lesson-text">AI frequently confuses companies with similar names, companies in the same industry, or companies that have undergone name changes or mergers. For competitive pricing and feature intelligence especially, always cross-reference with the competitor's own public pricing page or product website before building any pitch or brief around it. Start with the source, not the summary.</div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="case" onclick="toggleCase(this)">
+        <div class="case-header">
+          <div class="case-num">05</div>
+          <div class="case-info">
+            <div class="case-title">The Fabricated Executive Quote</div>
+            <div class="case-sub">Thought leadership · LinkedIn post · Quote never said</div>
+          </div>
+          <div class="case-badge badge-purple">Invented quote</div>
+          <div class="case-toggle">+</div>
+        </div>
+        <div class="case-body"><div class="case-detail">
+          <div class="case-wrong">
+            <div class="case-wrong-label">❌ What Happened</div>
+            <div class="case-wrong-text">A marketing manager asked AI for a quote from a well-known CEO about the future of AI in retail. AI produced a convincing, plausible quote with attribution. The manager published it on LinkedIn as part of a thought leadership post. The quote had never been said. A follower who worked at the CEO's company flagged it publicly. The post was taken down, but not before it had been shared dozens of times and the company's reputation for accuracy was questioned.</div>
+          </div>
+          <div class="case-lesson">
+            <div class="case-lesson-label">✅ The Prevention</div>
+            <div class="case-lesson-text">Never use an AI-generated attribution quote without verifying it against a primary source — an interview transcript, a published article, a recorded speech, or official company communications. AI will generate quotes that sound exactly like someone would say — but it cannot confirm they actually said it. If you want a real quote, search for interviews with the person or check their official statements directly.</div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI errors don't announce themselves. They arrive in the same professional tone, the same confident language, the same logical structure as correct information. Pattern recognition is your best early-warning system.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Identify the Error Type</h2>
+    <p>Read each AI response below and identify which category of error it most likely represents.</p>
+    <div class="pattern-game">
+      <div class="pg-label">🎮 Error Pattern Recognition</div>
+      <div class="pg-title">What Type of Error Is This?</div>
+      <div class="pg-sub">Read the AI output and identify the most likely error category.</div>
+
+      <div class="pg-scenario" id="pgs1">
+        <div class="pg-response">🤖 "According to a 2022 MIT Sloan Management Review study by Dr. Jennifer Walsh, companies that implement AI-assisted hiring reduce time-to-hire by 67% while maintaining quality scores above 90th percentile."</div>
+        <div class="pg-q">What type of AI error is most likely present here?</div>
+        <div class="pg-opts">
+          <button class="pg-opt" onclick="pgAnswer(this,1,'wrong')">A. Outdated information — this study may have been superseded</button>
+          <button class="pg-opt" onclick="pgAnswer(this,1,'correct')">B. Fabricated citation — specific author + journal + precise statistics is a hallucination red flag; verify every element independently before using this</button>
+          <button class="pg-opt" onclick="pgAnswer(this,1,'wrong')">C. Biased framing — only showing the positive outcome</button>
+        </div>
+        <div class="pg-fb" id="pgfb1"></div>
+      </div>
+
+      <div class="pg-scenario" id="pgs2">
+        <div class="pg-response">🤖 "Salesforce's current CEO is Marc Benioff, who co-founded the company in 1999. Under his leadership, Salesforce reached $26.5 billion in annual revenue in fiscal year 2023."</div>
+        <div class="pg-q">What should you verify before using this in a presentation?</div>
+        <div class="pg-opts">
+          <button class="pg-opt" onclick="pgAnswer(this,2,'wrong')">A. Nothing — Salesforce is a well-known company so AI would have accurate information</button>
+          <button class="pg-opt" onclick="pgAnswer(this,2,'correct')">B. All three facts: confirm Benioff is still CEO (leadership changes happen), verify the founding year, and confirm the revenue figure from Salesforce's own investor relations — even "obvious" facts about major companies should be verified for high-stakes use</button>
+          <button class="pg-opt" onclick="pgAnswer(this,2,'wrong')">C. Only the revenue figure — executive names and founding years don't change</button>
+        </div>
+        <div class="pg-fb" id="pgfb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Prevention Habits That Catch These Errors</h2>
+    <div class="prevention">
+      <div class="prev-card"><span class="prev-icon">🔗</span><div class="prev-title">Verify Before You Cite</div><p class="prev-desc">Never paste a citation from AI directly into a document. Search the specific source in a primary database and confirm it exists and says what AI claims it says.</p></div>
+      <div class="prev-card"><span class="prev-icon">📅</span><div class="prev-title">Date-Check Competitive Data</div><p class="prev-desc">For any company or market data, check when AI's information is from. Verify competitive facts (leadership, market share, pricing) against sources from the last 6–12 months.</p></div>
+      <div class="prev-card"><span class="prev-icon">🔍</span><div class="prev-title">Go to the Source's Source</div><p class="prev-desc">When AI cites a study, find the actual study. Check: Is it peer-reviewed? What was the sample size? Is the methodology sound? A working paper isn't the same as published research.</p></div>
+      <div class="prev-card"><span class="prev-icon">🏢</span><div class="prev-title">Check Competitors Directly</div><p class="prev-desc">For pricing, features, and positioning, go directly to the competitor's own website rather than relying on AI's summary. Company websites are the authoritative source on company information.</p></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h3>The Pattern That Connects All 5 Cases</h3>
+        <p>Every case above shares one failure mode: someone trusted AI's confident presentation and skipped independent verification before using the information in a professional context. The fix is always the same — not using AI less, but adding a verification step for any specific, citable claim before it leaves your drafts and enters the world. Five minutes of checking is all that separates these outcomes from their much better alternatives.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">Looking across all 5 cases, what single habit would have prevented every one of these errors?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Not using AI for professional research at all</button>
+        <button class="quiz-btn" onclick="answer(this,false)">B. Using only paid enterprise AI tools instead of free versions</button>
+        <button class="quiz-btn" onclick="answer(this,true)">C. Independently verifying every specific, citable claim — citations, statistics, company facts, quotes — against a primary source before using it in any professional document</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Asking AI to double-check its own responses before using them</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The five most common AI error patterns in business: fabricated citations, outdated competitive data, misrepresented research quality, mixed-up company details, and invented quotes.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>All five errors share one cause: specific, citable claims were used without independent verification. The same five-minute verification habit would have prevented every case.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Recognizing these error patterns builds the professional instinct to pause and check whenever AI produces something that looks "too perfect" — specific, authoritative, and exactly what you needed.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Prevention is simple and fast: verify citations before citing, date-check competitive data, find the actual study, check competitor websites directly, never use attributed quotes without a primary source.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleCase(c){const o=c.classList.contains('open');document.querySelectorAll('.case').forEach(x=>x.classList.remove('open'));if(!o)c.classList.add('open');}
+
+  const pgFb={
+    1:{correct:'✅ <strong>Right call.</strong> Specific author + named journal + very precise percentages is the hallucination pattern for invented academic citations. The specificity makes it feel credible but that\'s exactly how hallucinated citations look. Before using this in any document, search for "Jennifer Walsh MIT Sloan 2022 AI hiring" in Google Scholar or MIT\'s publication database. If it doesn\'t show up, it doesn\'t exist.',wrong:'❌ The primary concern here isn\'t recency or framing — it\'s the citation itself. Specific named researcher + specific named journal + very precise statistics is the classic hallucination signature for invented academic references. Always verify citations like this independently before using them.'},
+    2:{correct:'✅ <strong>Exactly right.</strong> Even for well-known companies, specific facts can change. CEOs step down; revenue figures update quarterly; founding details get nuanced over time. For high-stakes presentations, all three facts deserve a quick check — Salesforce\'s investor relations page (for revenue), their official leadership page (for current CEO), and a credible historical source for founding year. None of this takes more than 5 minutes.',wrong:'❌ Not quite. Executive roles absolutely change — that\'s exactly the kind of fact AI might have outdated. Founding years can also be more complex than they appear (incorporation vs. public launch vs. product launch). For any high-stakes presentation, verify all citable facts against primary sources. "It\'s a well-known company" is not the same as "AI has current accurate information about it."'}
+  };
+  const pgDone={};
+  function pgAnswer(btn,i,type){if(pgDone[i])return;pgDone[i]=true;document.querySelectorAll(`#pgs${i} .pg-opt`).forEach(b=>b.disabled=true);const fb=document.getElementById('pgfb'+i);if(type==='correct'){btn.classList.add('correct');fb.className='pg-fb good show';fb.innerHTML=pgFb[i].correct;}else{btn.classList.add('wrong');document.querySelectorAll(`#pgs${i} .pg-opt`)[type==='wrong'?1:0].classList.add('correct');fb.className='pg-fb bad show';fb.innerHTML=pgFb[i].wrong;}}
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Avoiding AI entirely would eliminate the efficiency gains. Paid tools are better in some ways but still hallucinate. Asking AI to check itself doesn\'t work — it uses the same process that produced the error. The only reliable solution is independent verification of specific, citable claims against primary sources. This habit works regardless of the AI tool, the topic, or the stakes involved.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Avoiding AI entirely loses the productivity benefit. Paid tools are more capable in some ways but still hallucinate. And asking AI to verify its own responses is circular — it uses the same pattern-prediction process that created the error in the first place. Independent verification against a primary source is the only check that actually works.';}f.classList.add('show');}
+</script>
+</body>
+</html>
