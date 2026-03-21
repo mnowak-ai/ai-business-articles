@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is AI Hallucination? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Hallucination types */
+  .hall-cards{display:flex;flex-direction:column;gap:16px;margin:24px 0;}
+  .hall-card{border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
+  .hall-card:hover,.hall-card.open{border-color:var(--purple);}
+  .hall-header{display:flex;align-items:center;gap:14px;padding:18px 22px;background:var(--white);}
+  .hall-card.open .hall-header{background:var(--purple-pale);}
+  .hall-icon{font-size:28px;flex-shrink:0;}
+  .hall-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);flex:1;}
+  .hall-toggle{font-size:20px;color:var(--purple);transition:transform 0.3s;}
+  .hall-card.open .hall-toggle{transform:rotate(45deg);}
+  .hall-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+  .hall-card.open .hall-body{max-height:400px;}
+  .hall-detail{padding:0 22px 20px;border-top:1px solid var(--purple-mid);}
+  .hall-explain{font-size:15px;line-height:1.75;margin-bottom:14px;padding-top:14px;}
+  .hall-example-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .hall-example{background:var(--gray-soft);border-radius:10px;padding:14px 16px;}
+  .hall-fake{background:var(--red-pale);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:13.5px;margin-bottom:8px;color:var(--red);border-left:3px solid var(--red);}
+  .hall-real{background:var(--green-pale);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:13.5px;color:var(--green);border-left:3px solid #6EE7B7;}
+
+  /* Why it happens visual */
+  .why-box{background:var(--purple);border-radius:20px;padding:32px;margin:24px 0;color:white;}
+  .why-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;margin-bottom:20px;}
+  .why-steps{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:560px){.why-steps{grid-template-columns:1fr;}}
+  .why-step{background:rgba(255,255,255,0.12);border-radius:14px;padding:18px 20px;}
+  .why-step-num{font-family:'Fraunces',serif;font-size:32px;font-weight:900;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:6px;}
+  .why-step-text{font-size:14.5px;line-height:1.65;color:rgba(255,255,255,0.9);}
+
+  /* Spot it game */
+  .spot-game{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sg-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sg-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sg-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .sg-scenario{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:14px;}
+  .sg-prompt{font-size:13px;color:var(--gray-muted);margin-bottom:8px;font-style:italic;}
+  .sg-response{font-size:15px;line-height:1.75;margin-bottom:14px;}
+  .sg-q{font-weight:700;color:var(--purple-dark);font-size:15px;margin-bottom:10px;}
+  .sg-opts{display:flex;flex-direction:column;gap:8px;}
+  .sg-opt{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:10px;padding:12px 16px;font-size:14.5px;cursor:pointer;transition:all 0.2s;text-align:left;font-family:'DM Sans',sans-serif;}
+  .sg-opt:hover:not([disabled]){border-color:var(--purple);background:var(--purple-pale);}
+  .sg-opt.correct{background:var(--green-pale);border-color:#6EE7B7;color:var(--green);}
+  .sg-opt.wrong{background:var(--red-pale);border-color:#FCA5A5;color:var(--red);}
+  .sg-fb{margin-top:10px;padding:12px 14px;border-radius:10px;font-size:14.5px;line-height:1.6;display:none;}
+  .sg-fb.show{display:block;animation:fadeIn 0.2s ease;}
+  .sg-fb.good{background:var(--green-pale);color:var(--green);}
+  .sg-fb.bad{background:var(--red-pale);color:var(--red);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.3 · Evaluating AI Outputs</div>
+  <h1>What Is AI Hallucination? Why AI Makes Up Facts Confidently</h1>
+  <p class="hero-sub">AI doesn't lie — but it can generate completely false information with total confidence and zero warning. Understanding why this happens, and what it looks like, is essential to using AI safely in business.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>In 2023, a lawyer submitted a legal brief to a U.S. federal court that cited six case precedents — all of which were entirely made up by ChatGPT. The cases had realistic names, docket numbers, and convincing summaries. None of them existed. The lawyer hadn't verified a single one. The judge was not amused.</p>
+    <p>This is AI hallucination in its most dramatic form. <mark>AI hallucination happens when an AI generates information that sounds plausible and confident but is completely or partially false.</mark> It doesn't happen because AI is trying to deceive — it happens because of how AI fundamentally works. Understanding the mechanism helps you spot it before it embarrasses you.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Why Does AI Hallucinate?</h2>
+    <div class="why-box">
+      <div class="why-title">The Prediction Problem</div>
+      <div class="why-steps">
+        <div class="why-step"><div class="why-step-num">01</div><div class="why-step-text">AI language models are trained to predict the most likely next word or phrase based on patterns in vast amounts of text data.</div></div>
+        <div class="why-step"><div class="why-step-num">02</div><div class="why-step-text">When asked a question, AI generates text that statistically "fits" — that sounds like a correct answer — even when it doesn't actually know the answer.</div></div>
+        <div class="why-step"><div class="why-step-num">03</div><div class="why-step-text">AI has no built-in "I don't know" mechanism. If forced to answer, it will generate something plausible-sounding rather than admit uncertainty.</div></div>
+        <div class="why-step"><div class="why-step-num">04</div><div class="why-step-text">The result: fabricated statistics, invented names, fictional citations — all delivered in the same confident tone as accurate information.</div></div>
+      </div>
+    </div>
+    <p>Think of it this way: AI is like a very well-read student who's great at <em>sounding knowledgeable</em> but sometimes fills in gaps in their actual knowledge with plausible-sounding guesses — without flagging that they're guessing.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 4 Types of AI Hallucination</h2>
+    <p>Not all hallucinations look the same. Click each type to learn what it looks like and see a real example.</p>
+    <div class="hall-cards">
+      <div class="hall-card" onclick="toggleHall(this)">
+        <div class="hall-header"><div class="hall-icon">🔢</div><div class="hall-name">Fabricated Statistics</div><div class="hall-toggle">+</div></div>
+        <div class="hall-body"><div class="hall-detail">
+          <div class="hall-explain">AI invents specific numbers — percentages, dollar figures, growth rates — that sound precise and researched but have no basis in reality. These are the most dangerous hallucinations because specific numbers feel authoritative and credible.</div>
+          <div class="hall-example-label">Example</div>
+          <div class="hall-example">
+            <div class="hall-fake">❌ AI says: "The global sustainable packaging market grew 34.7% in 2023, reaching $478.2 billion."</div>
+            <div class="hall-real">✅ Reality: The number sounds very specific and believable — but no such precise figure exists in any published report. AI generated a statistically-formatted number that fits the pattern of market research reports.</div>
+          </div>
+        </div></div>
+      </div>
+      <div class="hall-card" onclick="toggleHall(this)">
+        <div class="hall-header"><div class="hall-icon">📚</div><div class="hall-name">Invented Citations</div><div class="hall-toggle">+</div></div>
+        <div class="hall-body"><div class="hall-detail">
+          <div class="hall-explain">AI creates fake research studies, journal articles, legal cases, or reports — complete with realistic titles, author names, publication names, and dates. These often look completely legitimate at a glance.</div>
+          <div class="hall-example-label">Example</div>
+          <div class="hall-example">
+            <div class="hall-fake">❌ AI says: "According to Smith & Johnson (2022) in the Journal of Business Innovation, companies using AI for customer service see a 41% reduction in resolution time."</div>
+            <div class="hall-real">✅ Reality: No such study exists. The names, journal, year, and statistic were all generated by AI to fit the pattern of an academic citation. Search for it and you'll find nothing.</div>
+          </div>
+        </div></div>
+      </div>
+      <div class="hall-card" onclick="toggleHall(this)">
+        <div class="hall-header"><div class="hall-icon">🏢</div><div class="hall-name">Wrong Company Facts</div><div class="hall-toggle">+</div></div>
+        <div class="hall-body"><div class="hall-detail">
+          <div class="hall-explain">AI confidently states incorrect facts about real companies — wrong founding dates, incorrect revenue figures, wrong CEOs, products that don't exist, mergers that never happened, or mixing up two similar companies.</div>
+          <div class="hall-example-label">Example</div>
+          <div class="hall-example">
+            <div class="hall-fake">❌ AI says: "Slack was acquired by Microsoft in 2021 for $27.7 billion, making it Microsoft's largest acquisition."</div>
+            <div class="hall-real">✅ Reality: Slack was acquired by Salesforce (not Microsoft) in 2021 for $27.7 billion. AI confused two real acquisitions and mixed the details. The dollar figure was right; the acquirer was completely wrong.</div>
+          </div>
+        </div></div>
+      </div>
+      <div class="hall-card" onclick="toggleHall(this)">
+        <div class="hall-header"><div class="hall-icon">📅</div><div class="hall-name">Outdated as If Current</div><div class="hall-toggle">+</div></div>
+        <div class="hall-body"><div class="hall-detail">
+          <div class="hall-explain">AI presents old information as if it's current — stating a CEO who left two years ago as the current leader, or citing market conditions from its training period as the present situation, with no indication anything has changed.</div>
+          <div class="hall-example-label">Example</div>
+          <div class="hall-example">
+            <div class="hall-fake">❌ AI says: "Bob Iger stepped down as Disney CEO in 2020, with Bob Chapek currently serving as CEO."</div>
+            <div class="hall-real">✅ Reality: Bob Iger returned as Disney CEO in November 2022 after Chapek was ousted. AI's training data captured an earlier state. It's not technically "made up" — it was once true — but presenting old facts as current is equally dangerous.</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI doesn't know what it doesn't know. It can't feel the absence of information the way a person can. When a human expert doesn't know an answer, they feel the uncertainty. AI just generates the next likely word.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Spot the Hallucination</h2>
+    <p>Read each AI response below and identify what type of hallucination (if any) is present.</p>
+    <div class="spot-game">
+      <div class="sg-label">🎮 Hallucination Spotter</div>
+      <div class="sg-title">What's Wrong With This Response?</div>
+      <div class="sg-sub">Read each AI output carefully and identify the issue.</div>
+
+      <div class="sg-scenario" id="sc1">
+        <div class="sg-prompt">Prompt: "Who founded Netflix and when?"</div>
+        <div class="sg-response">🤖 AI: "Netflix was founded in 1997 by Reed Hastings and Marc Randolph. The company initially operated as a DVD-by-mail service before pivoting to streaming in 2007."</div>
+        <div class="sg-q">What's your assessment of this response?</div>
+        <div class="sg-opts">
+          <button class="sg-opt" onclick="spotAnswer(this,1,'correct')">A. This appears accurate — the founding year, founders, and initial model are all correct</button>
+          <button class="sg-opt" onclick="spotAnswer(this,1,'wrong')">B. The founding year is wrong — Netflix was founded in 2001</button>
+          <button class="sg-opt" onclick="spotAnswer(this,1,'wrong')">C. Marc Randolph didn't co-found Netflix — Reed Hastings founded it alone</button>
+        </div>
+        <div class="sg-fb" id="fb1"></div>
+      </div>
+
+      <div class="sg-scenario" id="sc2">
+        <div class="sg-prompt">Prompt: "What was Amazon's revenue in Q3 2024?"</div>
+        <div class="sg-response">🤖 AI: "Amazon reported Q3 2024 revenue of $143.1 billion, representing a 15.6% increase year-over-year, driven primarily by AWS growth of 22% and strong advertising revenue."</div>
+        <div class="sg-q">What's the main risk with this response?</div>
+        <div class="sg-opts">
+          <button class="sg-opt" onclick="spotAnswer(this,2,'wrong')">A. The response is clearly wrong — Amazon doesn't report quarterly earnings</button>
+          <button class="sg-opt" onclick="spotAnswer(this,2,'correct')">B. This is a high-risk response — real-time financial data like quarterly earnings is exactly where AI hallucination is most dangerous. These specific figures need to be verified directly from Amazon's investor relations page</button>
+          <button class="sg-opt" onclick="spotAnswer(this,2,'wrong')">C. This is fine — Amazon is a public company so AI would have accurate earnings data</button>
+        </div>
+        <div class="sg-fb" id="fb2"></div>
+      </div>
+
+      <div class="sg-scenario" id="sc3">
+        <div class="sg-prompt">Prompt: "Cite a study showing that remote work increases productivity"</div>
+        <div class="sg-response">🤖 AI: "A 2021 Stanford study by Nicholas Bloom et al., published in the Quarterly Journal of Economics, found that remote workers showed a 13% performance increase compared to office-based counterparts, driven by fewer sick days and quieter working conditions."</div>
+        <div class="sg-q">What should you do before using this citation?</div>
+        <div class="sg-opts">
+          <button class="sg-opt" onclick="spotAnswer(this,3,'wrong')">A. Use it as-is — Stanford studies are highly credible</button>
+          <button class="sg-opt" onclick="spotAnswer(this,3,'wrong')">B. Verify just the percentage — the journal and author names are probably correct</button>
+          <button class="sg-opt" onclick="spotAnswer(this,3,'correct')">C. Verify every element independently — author, journal name, year, and publication — before citing it anywhere. AI frequently fabricates realistic-looking academic citations even when some elements are real</button>
+        </div>
+        <div class="sg-fb" id="fb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🛡️</div>
+      <div>
+        <h3>The Single Best Hallucination Defense</h3>
+        <p>The most reliable way to protect yourself is deceptively simple: never trust a specific number, citation, or named fact from AI without checking it against an independent source. AI's general summaries and frameworks are usually trustworthy. It's the specific, verifiable details — statistics, citations, company facts, dates — where hallucinations hide. Develop the habit of treating every specific detail as a claim to verify, not a fact to accept.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">AI hallucination is most accurately described as:</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. AI deliberately providing false information to mislead users</button>
+        <button class="quiz-btn" onclick="answer(this,false)">B. AI producing errors only when it doesn't have access to the internet</button>
+        <button class="quiz-btn" onclick="answer(this,true)">C. AI generating plausible-sounding but false or inaccurate information confidently, because it predicts likely text patterns rather than retrieving verified facts</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. AI making mistakes only on obscure topics it wasn't trained on</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI hallucination is when AI generates false information confidently — not from deception, but because it predicts likely text patterns rather than retrieving verified facts.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The four types: fabricated statistics, invented citations, wrong company facts, and outdated information presented as current. All can look completely convincing.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Hallucinations are most dangerous in specific, verifiable details — statistics, citations, named facts, and recent events. General frameworks and summaries are usually more reliable.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The defense: treat every specific number, citation, and named fact as a claim to verify against an independent source — not a fact to accept on AI's authority.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleHall(card){const o=card.classList.contains('open');document.querySelectorAll('.hall-card').forEach(c=>c.classList.remove('open'));if(!o)card.classList.add('open');}
+
+  const spotFb={
+    1:{correct:'✅ <strong>Correct assessment.</strong> Netflix was indeed founded in 1997 by both Reed Hastings and Marc Randolph as a DVD-by-mail service, pivoting to streaming around 2007. This is a case where AI got it right — all verifiable facts check out. This is a reminder that AI is often accurate; the goal isn\'t paranoia, it\'s systematic checking of high-stakes claims.',wrong:'❌ <strong>Not quite.</strong> This is actually one of the cases where AI got it right. Netflix was founded in 1997, by both Hastings and Randolph. The right instinct is to verify — but after checking, this response holds up.'},
+    2:{correct:'✅ <strong>Exactly right.</strong> Real-time financial data is hallucination territory. Even if these numbers look plausible, quarterly earnings are precise financial disclosures that must come from Amazon\'s official investor relations page or a verified financial data provider like Bloomberg or Reuters. Never cite earnings figures from AI without verifying from the primary source.',wrong:'❌ <strong>Not right.</strong> Amazon absolutely reports quarterly earnings — that\'s not the issue. The issue is that specific financial figures (exact revenue, exact growth percentages) are prime hallucination territory. These numbers must come from Amazon\'s actual filings, not from AI\'s pattern-matching.'},
+    3:{correct:'✅ <strong>Right approach.</strong> Interestingly, there IS a real Nicholas Bloom study on remote work productivity — but AI frequently garbles the details of real studies (wrong journal, wrong year, wrong percentage). Even when the core is real, the specifics may be fabricated. Every element of an academic citation needs independent verification before you use it in any professional context.',wrong:'❌ <strong>Not thorough enough.</strong> Even when one element seems right, others may be fabricated. AI very frequently gets author names correct (because they appear in its training data) while inventing journal names, dates, or statistics around them. The entire citation — every single element — needs independent verification.'}
+  };
+  const spotDone={};
+  function spotAnswer(btn,i,type){if(spotDone[i])return;spotDone[i]=true;document.querySelectorAll(`#sc${i} .sg-opt`).forEach(b=>b.disabled=true);const fb=document.getElementById('fb'+i);if(type==='correct'){btn.classList.add('correct');fb.className='sg-fb good show';fb.innerHTML=spotFb[i].correct;}else{btn.classList.add('wrong');document.querySelectorAll(`#sc${i} .sg-opt`)[0].classList.add('correct');fb.className='sg-fb bad show';fb.innerHTML=spotFb[i].wrong;}}
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Hallucination isn\'t deliberate deception — it\'s a structural feature of how language models work. They predict statistically likely text, which often happens to be accurate, but sometimes produces plausible-sounding fabrications. Internet access can help (real-time tools like Perplexity pull current data) but even web-connected AI can hallucinate in how it synthesizes what it finds. And hallucinations happen on well-known topics too — not just obscure ones.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> AI doesn\'t deliberately mislead — it\'s a side effect of how the technology works. It can hallucinate even with internet access. And some of the most dangerous hallucinations happen on very common topics (company facts, market statistics) because the training data contains many similar-sounding but slightly different versions of the same type of information.';}f.classList.add('show');}
+</script>
+</body>
+</html>

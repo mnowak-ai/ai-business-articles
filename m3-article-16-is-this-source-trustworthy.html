@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Is This Source Trustworthy? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* SIFT framework */
+  .sift-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+  @media(max-width:560px){.sift-cards{grid-template-columns:1fr;}}
+  .sift-card{border-radius:20px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+  .sift-header{padding:18px 22px;background:var(--purple);}
+  .sift-letter{font-family:'Fraunces',serif;font-size:48px;font-weight:900;color:rgba(255,255,255,0.25);line-height:1;}
+  .sift-word{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:white;margin-top:-8px;}
+  .sift-body{padding:18px 22px;background:var(--white);}
+  .sift-question{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:8px;}
+  .sift-desc{font-size:14px;line-height:1.65;color:var(--gray-text);}
+  .sift-action{font-size:13px;color:var(--purple);margin-top:8px;font-weight:600;}
+
+  /* Source evaluator game */
+  .source-eval{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .se-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .se-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .se-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .se-source{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:14px;}
+  .se-source-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .se-source-icon{font-size:28px;flex-shrink:0;}
+  .se-source-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);}
+  .se-source-url{font-size:13px;color:var(--gray-muted);font-family:monospace;}
+  .se-details{font-size:14.5px;line-height:1.65;margin-bottom:14px;}
+  .se-q{font-weight:700;color:var(--purple-dark);font-size:15px;margin-bottom:10px;}
+  .se-opts{display:flex;gap:8px;flex-wrap:wrap;}
+  .se-opt{padding:9px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .se-opt:hover:not([disabled]){border-color:var(--purple);background:var(--purple-pale);}
+  .se-opt.correct{background:var(--green-pale);border-color:#6EE7B7;color:var(--green);}
+  .se-opt.wrong{background:var(--red-pale);border-color:#FCA5A5;color:var(--red);}
+  .se-fb{margin-top:10px;padding:12px 14px;border-radius:10px;font-size:14px;line-height:1.65;display:none;}
+  .se-fb.show{display:block;animation:fadeIn 0.2s ease;}
+  .se-fb.good{background:var(--green-pale);color:var(--green);}
+  .se-fb.bad{background:var(--red-pale);color:var(--red);}
+
+  /* Source tier ladder */
+  .tier-ladder{display:flex;flex-direction:column;gap:8px;margin:24px 0;}
+  .tier{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:14px;border:1.5px solid;}
+  .tier.t1{background:var(--green-pale);border-color:#6EE7B7;}
+  .tier.t2{background:#ECFDF5;border-color:#A7F3D0;}
+  .tier.t3{background:#FFFBEB;border-color:#FCD34D;}
+  .tier.t4{background:#FFF7ED;border-color:#FED7AA;}
+  .tier.t5{background:var(--red-pale);border-color:#FCA5A5;}
+  .tier-num{font-family:'Fraunces',serif;font-size:20px;font-weight:900;width:32px;text-align:center;flex-shrink:0;}
+  .tier.t1 .tier-num,.tier.t2 .tier-num{color:var(--green);}
+  .tier.t3 .tier-num{color:#92400E;}
+  .tier.t4 .tier-num{color:#C2410C;}
+  .tier.t5 .tier-num{color:var(--red);}
+  .tier-label{font-weight:700;font-size:15px;color:var(--purple-dark);flex:1;}
+  .tier-example{font-size:13px;color:var(--gray-muted);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.3 · Evaluating AI Outputs</div>
+  <h1>Is This Source Trustworthy? A Framework for Evaluating AI Research</h1>
+  <p class="hero-sub">Not all sources AI points you toward are equally reliable. Knowing how to quickly evaluate source quality — before you stake your work on it — is one of the most transferable research skills you can develop.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>When AI provides a statistic or summarizes a study, it often cites a source — or points toward one. But the source itself needs to be evaluated. A citation from a company's own marketing white paper is fundamentally different from a peer-reviewed academic study, even if both look like "research" on the surface.</p>
+    <p><mark>Source evaluation is the skill of quickly assessing whether information comes from a trustworthy origin.</mark> It's been taught in journalism and academia for decades — and it matters more than ever in the age of AI, where confident language makes all sources sound equally authoritative.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The SIFT Framework</h2>
+    <p>SIFT is a practical four-step method developed at Stanford for evaluating sources quickly. Each letter is an action. Use this whenever AI points you to a source or makes a claim you want to verify.</p>
+    <div class="sift-cards">
+      <div class="sift-card">
+        <div class="sift-header"><div class="sift-letter">S</div><div class="sift-word">Stop</div></div>
+        <div class="sift-body">
+          <div class="sift-question">Before you read and react, pause.</div>
+          <p class="sift-desc">Your first impression of a source can activate confirmation bias — if the headline matches what you want to believe, you'll be tempted to accept it without checking. Stop and take a breath before engaging with any source AI cites.</p>
+          <div class="sift-action">→ Ask: Am I about to accept this because it confirms what I already think?</div>
+        </div>
+      </div>
+      <div class="sift-card">
+        <div class="sift-header"><div class="sift-letter">I</div><div class="sift-word">Investigate the Source</div></div>
+        <div class="sift-body">
+          <div class="sift-question">Who created this, and why?</div>
+          <p class="sift-desc">Before reading the content, quickly check the source itself. Is it a company with a financial stake in the findings? A think tank with a known ideology? A researcher with credentials in this area? The publisher's identity shapes everything.</p>
+          <div class="sift-action">→ Ask: Who made this, and do they have a reason to be biased?</div>
+        </div>
+      </div>
+      <div class="sift-card">
+        <div class="sift-header"><div class="sift-letter">F</div><div class="sift-word">Find Better Coverage</div></div>
+        <div class="sift-body">
+          <div class="sift-question">Does another credible source confirm this?</div>
+          <p class="sift-desc">Don't just evaluate one source in isolation. Search for how other credible outlets have covered the same claim. If multiple independent sources confirm a finding, your confidence can increase significantly. If no one else has covered it, that's a red flag.</p>
+          <div class="sift-action">→ Ask: What do other reliable sources say about this same claim?</div>
+        </div>
+      </div>
+      <div class="sift-card">
+        <div class="sift-header"><div class="sift-letter">T</div><div class="sift-word">Trace Claims to Their Origin</div></div>
+        <div class="sift-body">
+          <div class="sift-question">Where did this actually come from?</div>
+          <p class="sift-desc">Many sources cite other sources. Follow the chain back to the original research or data. Often you'll find a statistic that's been misquoted, taken out of context, or the original methodology doesn't support the conclusion being drawn from it.</p>
+          <div class="sift-action">→ Ask: What is the original source of this data, and does it actually support this claim?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Source Trust Hierarchy</h2>
+    <p>Not all sources deserve equal credibility. Here's how to think about the relative trustworthiness of different source types — from most to least reliable for business research.</p>
+    <div class="tier-ladder">
+      <div class="tier t1"><div class="tier-num">1</div><div><div class="tier-label">Primary Sources — Original Data</div><div class="tier-example">Company SEC filings, government databases, peer-reviewed studies, official earnings reports</div></div></div>
+      <div class="tier t2"><div class="tier-num">2</div><div><div class="tier-label">Reputable Independent Research</div><div class="tier-example">McKinsey, Gartner, Pew Research, academic journals, major investigative journalism outlets</div></div></div>
+      <div class="tier t3"><div class="tier-num">3</div><div><div class="tier-label">Credible News Coverage with Citations</div><div class="tier-example">Reuters, AP, Bloomberg, FT — factual reporting that cites original sources</div></div></div>
+      <div class="tier t4"><div class="tier-num">4</div><div><div class="tier-label">Industry Publications & Blogs (with caution)</div><div class="tier-example">Trade journals, industry newsletters — useful context, but check funding sources and methodology</div></div></div>
+      <div class="tier t5"><div class="tier-num">5</div><div><div class="tier-label">Company-Funded Research & Marketing Content</div><div class="tier-example">White papers, case studies, surveys commissioned by companies about their own products</div></div></div>
+    </div>
+    <p>Tier 5 isn't always wrong — but it has a systematic incentive problem. A study a company commissions to show their product works should be treated with the same skepticism you'd apply to a customer review written by the company's own employees.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Evaluating a source takes 60 seconds. Presenting a flawed source to leadership takes much longer to recover from. The math is obvious.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Rate These Sources</h2>
+    <p>Practice applying source evaluation. For each source below, decide whether you'd use it in a business research brief, use it with caveats, or not use it without further verification.</p>
+    <div class="source-eval">
+      <div class="se-label">🎮 Source Evaluator</div>
+      <div class="se-title">Would You Use This Source?</div>
+      <div class="se-sub">Rate each source's trustworthiness for a business research brief.</div>
+
+      <div class="se-source" id="src1">
+        <div class="se-source-header"><div class="se-source-icon">📊</div><div><div class="se-source-name">U.S. Bureau of Labor Statistics</div><div class="se-source-url">bls.gov/news.release/empsit</div></div></div>
+        <div class="se-details">Monthly jobs report showing unemployment rate, job additions by sector, wage growth. Published monthly by the federal government. Methodology published openly, data collected from hundreds of thousands of establishments.</div>
+        <div class="se-q">How would you rate this source?</div>
+        <div class="se-opts">
+          <button class="se-opt" onclick="seAnswer(this,1,'correct')">✅ Use directly — primary government data, highly reliable</button>
+          <button class="se-opt" onclick="seAnswer(this,1,'wrong')">⚠️ Use with caveats — government data can be politically manipulated</button>
+          <button class="se-opt" onclick="seAnswer(this,1,'wrong')">❌ Don't use — could be outdated</button>
+        </div>
+        <div class="se-fb" id="sfb1"></div>
+      </div>
+
+      <div class="se-source" id="src2">
+        <div class="se-source-header"><div class="se-source-icon">📄</div><div><div class="se-source-name">"AI Boosts Sales 47%: A Case Study" — SalesBot Inc. Blog</div><div class="se-source-url">salesbot.com/blog/ai-boosts-sales-study</div></div></div>
+        <div class="se-details">A post on SalesBot's own company blog reporting that businesses using their AI software saw a 47% average sales increase. Based on "internal analysis of 200 customer accounts."</div>
+        <div class="se-q">How would you rate this source?</div>
+        <div class="se-opts">
+          <button class="se-opt" onclick="seAnswer(this,2,'wrong')">✅ Use directly — 200 accounts is a reasonable sample size</button>
+          <button class="se-opt" onclick="seAnswer(this,2,'correct')">⚠️ Use with heavy caveats or don't use — self-reported data by the company selling the product has obvious selection bias and financial incentive to show positive results</button>
+          <button class="se-opt" onclick="seAnswer(this,2,'wrong')">❌ Never use any company blog data for research</button>
+        </div>
+        <div class="se-fb" id="sfb2"></div>
+      </div>
+
+      <div class="se-source" id="src3">
+        <div class="se-source-header"><div class="se-source-icon">🏛️</div><div><div class="se-source-name">Pew Research Center — "AI Attitudes Survey 2024"</div><div class="se-source-url">pewresearch.org/science/2024/ai-attitudes</div></div></div>
+        <div class="se-details">Annual survey of 5,100 U.S. adults on attitudes toward AI. Methodology published with full question wording, sampling approach, and margin of error. Pew is a nonpartisan research organization funded by an independent charitable foundation.</div>
+        <div class="se-q">How would you rate this source?</div>
+        <div class="se-opts">
+          <button class="se-opt" onclick="seAnswer(this,3,'correct')">✅ Use directly — strong methodology, independent funding, large sample, transparent</button>
+          <button class="se-opt" onclick="seAnswer(this,3,'wrong')">⚠️ Use with caveats — surveys are inherently unreliable</button>
+          <button class="se-opt" onclick="seAnswer(this,3,'wrong')">❌ Don't use — Pew has a political bias</button>
+        </div>
+        <div class="se-fb" id="sfb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🔗</div>
+      <div>
+        <h3>AI Often Cites Tier 4–5 Sources Without Warning</h3>
+        <p>When AI summarizes research, it doesn't automatically flag that a statistic came from a company's own marketing white paper rather than independent research. The language sounds equally authoritative regardless of source quality. This is why source evaluation can't be delegated to AI — it requires your judgment to check who created the original data and what their incentives were. Always ask: "Who funded this research, and what did they need it to show?"</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">AI gives you a statistic: "73% of consumers prefer sustainable packaging." The only source listed is a white paper published by EcoPackage Co., a sustainable packaging manufacturer. What's the most important concern?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. The sample size might be too small — 73% isn't a convincing majority</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. The source has a direct financial interest in the finding — a sustainable packaging company commissioning research about consumer preference for sustainable packaging has an obvious incentive to produce favorable results. This doesn't mean the number is wrong, but it can't be used as independent evidence</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. White papers are never valid sources for business research</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. The statistic could be outdated — consumer preferences change quickly</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The SIFT framework: Stop before reacting, Investigate the source, Find better coverage elsewhere, Trace claims to their original origin. Four actions that take under 60 seconds.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Sources exist on a trust hierarchy: primary data and independent research at the top; company-funded white papers at the bottom. Same confident language, very different reliability.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The key source evaluation question is always: who funded this, and what did they need it to show? Financial incentives create predictable bias in research findings.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI doesn't flag source quality — it presents all citations with equal confidence. Source evaluation is a human judgment that cannot be delegated to the tool that cited the source.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const seFb={
+    1:{correct:'✅ <strong>Right.</strong> BLS data is Tier 1 — primary government statistical data collected with rigorous methodology from hundreds of thousands of sources, fully transparent, and updated regularly. U.S. government economic statistics are among the most reliable data sources available for business research. Use directly and cite the specific release and date.',wrong:'❌ <strong>Not quite.</strong> U.S. Bureau of Labor Statistics data is primary government statistical data — one of the most reliable source categories available. While no source is perfect, BLS methodology is publicly documented and independently reviewed. The idea that government economic statistics are typically "politically manipulated" isn\'t supported by how BLS actually operates.'},
+    2:{correct:'✅ <strong>Exactly right.</strong> This is a classic Tier 5 source problem. A company publishing research showing their own product is highly effective has an obvious financial incentive to produce favorable results. "Internal analysis" means they selected which accounts to include, how to measure success, and how to frame the findings — with no independent oversight. The 47% figure might be real, but it can\'t be used as independent evidence. You\'d need independent research to support this claim.',wrong:'❌ <strong>Not the right takeaway.</strong> The sample size isn\'t the main issue — the fundamental problem is financial incentive. A company analyzing its own product\'s performance has every reason to select favorable customers, favorable metrics, and favorable comparison periods. And "never use any company blog data" is too absolute — factual company announcements (earnings, product launches) can be reliable. The rule is: company-funded research about the effectiveness of their own products needs independent verification.'},
+    3:{correct:'✅ <strong>Right call.</strong> Pew Research is a Tier 2 source — independent funding, transparent methodology, large nationally representative sample, question wording published openly. It\'s nonpartisan by organizational mandate and funding structure. This is exactly the type of survey data you can cite with confidence in professional research, as long as you note the date and the fact that it\'s self-reported survey data (all survey research has this characteristic).',wrong:'❌ <strong>Not accurate.</strong> Pew Research is one of the most credible polling and research organizations in the world. Their methodology is fully transparent, they\'re nonpartisan by design, and their work is widely cited in peer-reviewed academic research. Surveys are not "inherently unreliable" — good survey methodology with large, representative samples produces highly reliable data. And Pew\'s nonpartisan status is well-established and auditable through their funding structure.'}
+  };
+  const seDone={};
+  function seAnswer(btn,i,type){if(seDone[i])return;seDone[i]=true;document.querySelectorAll(`#src${i} .se-opt`).forEach(b=>b.disabled=true);const fb=document.getElementById('sfb'+i);if(type==='correct'){btn.classList.add('correct');fb.className='se-fb good show';fb.innerHTML=seFb[i].correct;}else{btn.classList.add('wrong');document.querySelectorAll(`#src${i} .se-opt`)[type==='wrong'&&i===1?0:1].classList.add('correct');fb.className='se-fb bad show';fb.innerHTML=seFb[i].wrong;}}
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> This is the classic source evaluation problem: a company with a direct financial stake in the conclusion commissioned research about that conclusion. EcoPackage Co. profits if consumers prefer sustainable packaging — which means they had every reason to design a survey that produces a favorable result, select a favorable sample, or frame questions in leading ways. The statistic may or may not be accurate, but it cannot be used as independent evidence. You\'d need a neutral third party\'s research to make this claim credibly.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite the core issue.</strong> 73% is actually a majority regardless of sample size concerns. White papers can be valid with independent methodology. And while recency matters, the bigger problem here is the source\'s fundamental conflict of interest. Before you worry about sample size or date, you need to ask: who funded this, and what did they need it to show? That question answers everything about how much weight to give the finding.';}f.classList.add('show');}
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spot the Bias: How to Identify One-Sided AI Responses — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Bias types grid */
+  .bias-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:580px){.bias-grid{grid-template-columns:1fr;}}
+  .bias-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:24px;background:var(--white);transition:all 0.2s;}
+  .bias-card:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .bias-icon{font-size:32px;margin-bottom:10px;display:block;}
+  .bias-type{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .bias-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .bias-desc{font-size:14.5px;line-height:1.65;color:var(--gray-text);}
+  .bias-signal{font-size:13px;color:var(--gray-muted);margin-top:8px;font-style:italic;}
+
+  /* Before/after rebalancer */
+  .rebalancer{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .rb-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .rb-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .rb-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .rb-topics{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .rb-topic{padding:9px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .rb-topic:hover,.rb-topic.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .rb-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+  @media(max-width:560px){.rb-compare{grid-template-columns:1fr;}}
+  .rb-panel{border-radius:14px;overflow:hidden;}
+  .rb-panel-header{padding:12px 16px;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;}
+  .rb-panel.biased .rb-panel-header{background:#FCA5A5;color:var(--red);}
+  .rb-panel.balanced .rb-panel-header{background:#6EE7B7;color:var(--green);}
+  .rb-panel-body{padding:16px;background:var(--white);border:1.5px solid var(--purple-mid);border-top:none;border-radius:0 0 14px 14px;font-size:14.5px;line-height:1.75;}
+  .rb-show-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;margin-top:4px;}
+  .rb-show-btn:hover{background:var(--purple-dark);}
+  .rb-output{display:none;margin-top:16px;}
+  .rb-output.show{display:block;animation:fadeIn 0.3s ease;}
+
+  /* Critique activity - ties to lesson slide */
+  .critique-activity{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ca-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .ca-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ca-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .ca-summary{background:var(--purple);border-radius:14px;padding:20px 22px;margin-bottom:20px;color:white;}
+  .ca-sum-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;}
+  .ca-sum-text{font-size:15px;line-height:1.75;}
+  .ca-tasks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  @media(max-width:600px){.ca-tasks{grid-template-columns:1fr;}}
+  .ca-task{border-radius:12px;padding:16px;}
+  .ca-task.inaccuracy{background:var(--red-pale);border:1.5px solid #FCA5A5;}
+  .ca-task.bias{background:#FFFBEB;border:1.5px solid #FCD34D;}
+  .ca-task.clarity{background:var(--purple-pale);border:1.5px solid var(--purple-mid);}
+  .ca-task-icon{font-size:22px;margin-bottom:6px;display:block;}
+  .ca-task-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;}
+  .ca-task.inaccuracy .ca-task-label{color:var(--red);}
+  .ca-task.bias .ca-task-label{color:#92400E;}
+  .ca-task.clarity .ca-task-label{color:var(--purple);}
+  .ca-task-q{font-size:14px;line-height:1.6;font-weight:600;color:var(--purple-dark);margin-bottom:10px;}
+  .ca-reveal-btn{background:var(--white);border:1.5px solid;border-radius:8px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;width:100%;}
+  .ca-task.inaccuracy .ca-reveal-btn{border-color:#FCA5A5;color:var(--red);}
+  .ca-task.bias .ca-reveal-btn{border-color:#FCD34D;color:#92400E;}
+  .ca-task.clarity .ca-reveal-btn{border-color:var(--purple-mid);color:var(--purple);}
+  .ca-answer{margin-top:10px;font-size:13.5px;line-height:1.65;display:none;}
+  .ca-answer.show{display:block;animation:fadeIn 0.2s ease;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.3 · Evaluating AI Outputs</div>
+  <h1>Spot the Bias: How to Identify One-Sided AI Responses</h1>
+  <p class="hero-sub">AI doesn't always lie — sometimes it just tells you part of the story. One-sided responses, missing perspectives, and overly positive or negative framing can lead you to make decisions based on an incomplete picture.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>The Lesson 3.3 video showed three forms of bias in AI outputs: one-sided opinions, missing perspectives, and overly positive or negative framing. All three can appear in AI research responses — and all three are harder to catch than outright factual errors because the information may be technically accurate while still being misleading.</p>
+    <p><mark>Bias in AI research isn't always about false information — it's often about selective information.</mark> AI trained on certain types of content may systematically emphasize some perspectives over others. A response can be factually correct in every specific claim and still give you a distorted picture of reality because of what it left out.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 4 Types of AI Bias to Watch For</h2>
+    <div class="bias-grid">
+      <div class="bias-card">
+        <span class="bias-icon">⚖️</span>
+        <div class="bias-type">Bias Type 1</div>
+        <div class="bias-name">One-Sided Opinions</div>
+        <p class="bias-desc">AI presents one perspective on a contested topic as if it's the established consensus, omitting equally valid opposing views. Common on topics where debates exist among experts.</p>
+        <div class="bias-signal">🔍 Signal: Response only argues one direction on a topic where reasonable people disagree</div>
+      </div>
+      <div class="bias-card">
+        <span class="bias-icon">⚠️</span>
+        <div class="bias-type">Bias Type 2</div>
+        <div class="bias-name">Missing Perspectives</div>
+        <p class="bias-desc">AI focuses on the mainstream or most-covered viewpoint while systematically ignoring minority perspectives, dissenting voices, or stakeholders who are underrepresented in training data.</p>
+        <div class="bias-signal">🔍 Signal: Response doesn't address who might disagree or be disadvantaged</div>
+      </div>
+      <div class="bias-card">
+        <span class="bias-icon">😊</span>
+        <div class="bias-type">Bias Type 3</div>
+        <div class="bias-name">Overly Positive Framing</div>
+        <p class="bias-desc">AI presents a topic, company, or technology in an unrealistically positive light — emphasizing benefits while glossing over real risks, limitations, or criticism. Often happens when training data skews toward marketing content.</p>
+        <div class="bias-signal">🔍 Signal: Response reads like a sales pitch with no counterbalancing concerns</div>
+      </div>
+      <div class="bias-card">
+        <span class="bias-icon">😠</span>
+        <div class="bias-type">Bias Type 4</div>
+        <div class="bias-name">Overly Negative Framing</div>
+        <p class="bias-desc">The opposite problem — AI presents excessive criticism or risk without fairly representing success cases, benefits, or nuance. Can happen when training data over-represents critical or journalistic content about a topic.</p>
+        <div class="bias-signal">🔍 Signal: Every mention of a topic is framed as risky, problematic, or controversial</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>A biased AI response isn't always wrong — it's often just incomplete. The missing half of the story is what gets you into trouble when making decisions.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>See It: Biased vs. Balanced Responses</h2>
+    <p>Select a topic and see the difference between a biased and a balanced AI response on the same subject.</p>
+    <div class="rebalancer">
+      <div class="rb-label">🔍 Bias Detector</div>
+      <div class="rb-title">Biased vs. Balanced</div>
+      <div class="rb-sub">Choose a topic to see how bias shows up — and what a balanced response looks like instead.</div>
+      <div class="rb-topics">
+        <button class="rb-topic active" onclick="selectTopic(this,'remote')">🏠 Remote Work</button>
+        <button class="rb-topic" onclick="selectTopic(this,'ai')">🤖 AI in Hiring</button>
+        <button class="rb-topic" onclick="selectTopic(this,'gig')">🚗 Gig Economy</button>
+      </div>
+      <button class="rb-show-btn" onclick="showComparison()">Show Comparison →</button>
+      <div class="rb-output" id="rbOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Activity: Critique the AI Summary</h2>
+    <p>This activity mirrors the one from the Lesson 3.3 video. Read the AI summary below and identify one inaccuracy, one bias or missing detail, and one thing that needs clarification.</p>
+    <div class="critique-activity">
+      <div class="ca-label">🎮 Critique Activity</div>
+      <div class="ca-title">Analyze This AI Summary</div>
+      <div class="ca-sub">From the lesson: read the summary, find the problems, then reveal the answers.</div>
+      <div class="ca-summary">
+        <div class="ca-sum-label">🤖 AI Project Summary</div>
+        <div class="ca-sum-text">"The project saw significant growth in Q3, exceeding all targets by 20%. Customer satisfaction is at an all-time high due to the new feature launch. The team is working efficiently, though some minor delays occurred in the initial phase. Overall, the outlook is extremely positive."</div>
+      </div>
+      <div class="ca-tasks">
+        <div class="ca-task inaccuracy">
+          <span class="ca-task-icon">❌</span>
+          <div class="ca-task-label">Find the Inaccuracy</div>
+          <div class="ca-task-q">What specific claim in this summary could be factually wrong or needs data to support it?</div>
+          <button class="ca-reveal-btn" onclick="revealCA('a1',this)">Reveal Answer</button>
+          <div class="ca-answer" id="a1">The "exceeding all targets by 20%" claim is presented as fact with no supporting data. Did all targets get exceeded, or just some? "All targets by exactly 20%" is an extremely precise claim — where does this number come from? Without a data source, this is assertion, not fact.</div>
+        </div>
+        <div class="ca-task bias">
+          <span class="ca-task-icon">⚠️</span>
+          <div class="ca-task-label">Find the Bias</div>
+          <div class="ca-task-q">What perspective or important information is missing that creates a one-sided picture?</div>
+          <button class="ca-reveal-btn" onclick="revealCA('a2',this)">Reveal Answer</button>
+          <div class="ca-answer" id="a2">The delays are massively downplayed as "minor" with no context about their actual impact. Were they minor to the business, or minor to the person writing this summary? What caused them? Did they affect revenue, customer commitments, or future timelines? A balanced summary would fairly characterize the delays, not dismiss them with one adjective.</div>
+        </div>
+        <div class="ca-task clarity">
+          <span class="ca-task-icon">❓</span>
+          <div class="ca-task-label">Find What Needs Clarity</div>
+          <div class="ca-task-q">What statement is vague, undefined, or needs specific reasoning to be meaningful?</div>
+          <button class="ca-reveal-btn" onclick="revealCA('a3',this)">Reveal Answer</button>
+          <div class="ca-answer" id="a3">"Customer satisfaction is at an all-time high" — measured how? What survey? What score? What was the previous high? "All-time high" is a superlative claim that requires a measurement methodology and comparison point to mean anything. Without those, it's marketing language, not a research finding.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The De-Biasing Prompt Technique</h2>
+    <p>The most powerful tool against AI bias is asking for it explicitly. These prompts force AI to present a more complete, balanced picture:</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin:20px 0;">
+      <div style="background:var(--gray-soft);border-radius:12px;padding:16px 18px;border:1.5px solid var(--purple-mid);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;">Counterargument prompt</div>
+        <div style="font-family:monospace;font-size:14px;line-height:1.65;">"Now give me the strongest counterarguments to what you just said."</div>
+      </div>
+      <div style="background:var(--gray-soft);border-radius:12px;padding:16px 18px;border:1.5px solid var(--purple-mid);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;">Stakeholder audit prompt</div>
+        <div style="font-family:monospace;font-size:14px;line-height:1.65;">"Who would disagree with this analysis, and what would their objection be?"</div>
+      </div>
+      <div style="background:var(--gray-soft);border-radius:12px;padding:16px 18px;border:1.5px solid var(--purple-mid);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;">Missing perspective prompt</div>
+        <div style="font-family:monospace;font-size:14px;line-height:1.65;">"What important perspective or stakeholder did your response not represent?"</div>
+      </div>
+      <div style="background:var(--gray-soft);border-radius:12px;padding:16px 18px;border:1.5px solid var(--purple-mid);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;">Risk balance prompt</div>
+        <div style="font-family:monospace;font-size:14px;line-height:1.65;">"What are the most significant risks or criticisms of this approach that you didn't mention?"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h3>A Strong Critique Has Three Parts</h3>
+        <p>The lesson video showed what makes a critique actually useful: you need all three — <strong>what's wrong</strong> (identify the specific inaccuracy or bias), <strong>why it matters</strong> (explain the real-world impact on decisions), and <strong>what you'd fix</strong> (propose a specific correction or improvement). A critique that only identifies problems without explaining why they matter or how to fix them is frustration without value. Close the loop.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You ask AI to analyze the pros and cons of implementing a four-day work week. The response lists 6 benefits in detail and mentions "some challenges exist around client expectations." What type of AI bias is this an example of, and what should you do?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Fabricated statistics — the benefits listed might not be real</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. Overly positive framing with missing perspectives — the response heavily emphasizes benefits while minimizing challenges. Follow up by explicitly asking AI to elaborate on the challenges and give you the strongest arguments against a four-day work week</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. This is a balanced response — mentioning challenges at all shows fairness</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Knowledge cutoff bias — AI doesn't have recent data on four-day work week outcomes</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI bias comes in four forms: one-sided opinions, missing perspectives, overly positive framing, and overly negative framing. All are harder to catch than factual errors because individual claims can be accurate.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A biased AI response is often not false — it's selective. The missing half of the story is what leads to bad decisions.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>De-biasing prompts — asking for counterarguments, stakeholder perspectives, and risks not mentioned — are the most effective tools for getting a more complete picture from AI.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A strong critique has three parts: what's wrong, why it matters for decisions, and what specific fix you'd propose. All three are needed for a critique to be useful.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const topics={
+    remote:{
+      biased:'Remote work has been proven to dramatically increase employee productivity. Studies consistently show remote workers complete more tasks, experience higher job satisfaction, and report lower stress levels. Companies that have adopted remote work policies see reduced overhead costs and access to global talent pools. The evidence overwhelmingly supports remote work as the superior model for modern organizations.',
+      balanced:'Research on remote work shows mixed results that vary significantly by role type, industry, and individual. Some studies show productivity gains for individual-focused tasks, while others show declines in collaborative work and mentorship quality. Benefits include flexibility, reduced commute time, and cost savings for employees and companies. Challenges include difficulties with onboarding, social isolation, career development for junior employees, and blurred work-life boundaries. The optimal approach appears to differ by team and context rather than applying universally.'
+    },
+    ai:{
+      biased:'AI-powered hiring tools represent a major advancement in recruitment efficiency, helping companies identify top talent faster while eliminating human bias from the process. AI can screen hundreds of applications in minutes, ensuring objective evaluation based on skills and qualifications rather than subjective human judgment. Companies using AI hiring tools report significant improvements in hire quality and faster time-to-fill.',
+      balanced:'AI hiring tools offer efficiency gains in application screening and can reduce certain forms of human bias — but they can also introduce or amplify others if trained on historical data reflecting past discriminatory practices. Research has documented cases where AI hiring tools deprioritized candidates based on proxies correlated with protected characteristics (like resume gaps associated with caregiving). Benefits include speed and consistency at scale. Significant concerns include algorithmic discrimination, reduced transparency in hiring decisions, and the difficulty of auditing AI systems for bias. Regulatory scrutiny of AI hiring tools is increasing in multiple jurisdictions.'
+    },
+    gig:{
+      biased:'The gig economy has been devastated by exploitation and worker insecurity. Gig workers are systematically denied basic employment protections, healthcare benefits, and retirement savings while platforms extract maximum profit. The misclassification of workers as independent contractors has created a new class of working poor without any safety net, fundamentally undermining labor protections built over a century.',
+      balanced:'The gig economy presents genuine trade-offs that different workers value differently. Many gig workers cite flexibility, autonomy, and supplemental income as meaningful benefits — surveys show a significant portion actively prefer gig work over traditional employment. Simultaneously, research documents real concerns: income volatility, lack of employer-sponsored benefits, and limited legal protections for workers who need consistent income. Policy debates center on whether gig work can be redesigned to preserve flexibility while extending more protections, with different countries and states taking varied approaches. The "right" assessment depends significantly on worker circumstances and what they most value.'
+    }
+  };
+
+  let selTopic='remote';
+  function selectTopic(btn,t){document.querySelectorAll('.rb-topic').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selTopic=t;document.getElementById('rbOutput').classList.remove('show');}
+  function showComparison(){
+    const d=topics[selTopic];
+    const out=document.getElementById('rbOutput');
+    out.innerHTML=`<div class="rb-compare"><div class="rb-panel biased"><div class="rb-panel-header">❌ Biased Response</div><div class="rb-panel-body">${d.biased}</div></div><div class="rb-panel balanced"><div class="rb-panel-header">✅ Balanced Response</div><div class="rb-panel-body">${d.balanced}</div></div></div>`;
+    out.className='rb-output show';
+  }
+
+  function revealCA(id,btn){
+    document.getElementById(id).className='ca-answer show';
+    btn.style.display='none';
+  }
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Six detailed benefits vs. one vague mention of "some challenges" is a textbook overly positive framing with missing perspectives. The response isn\'t necessarily fabricating anything — it may just be emphasizing the more popular side of a genuinely contested topic. The fix is the de-biasing prompt: "Now give me the strongest arguments against implementing a four-day work week, including business risks and implementation challenges."';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Fabricated statistics would mean the specific benefits listed are invented numbers — that\'s a separate issue. Knowledge cutoff bias would apply if recent research wasn\'t included — also separate. And a response that vastly emphasizes one side while nearly dismissing the other is absolutely not balanced just because it acknowledged challenges exist. Asymmetric depth = one-sided response.';}f.classList.add('show');}
+</script>
+</body>
+</html>

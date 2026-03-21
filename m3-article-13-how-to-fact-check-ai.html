@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Fact-Check an AI Response — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* 5 step checklist */
+  .steps{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .step{display:flex;gap:0;}
+  .step-left{width:40px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;}
+  .step-num{width:40px;height:40px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:white;flex-shrink:0;z-index:1;}
+  .step-line{width:2px;background:var(--purple-mid);flex:1;margin:4px 0;}
+  .step:last-child .step-line{display:none;}
+  .step-body{flex:1;padding:0 0 28px 20px;}
+  .step-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .step-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .step-desc{font-size:15px;line-height:1.7;color:var(--gray-text);margin-bottom:10px;}
+  .step-tip{background:var(--purple-pale);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.6;color:var(--purple-dark);}
+
+  /* Sandbox fact-check */
+  .sandbox{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sb-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sb-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sb-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .sb-response{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:22px;margin-bottom:16px;}
+  .sb-rlabel{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-muted);margin-bottom:10px;}
+  .sb-text{font-size:15.5px;line-height:1.9;}
+  .claim{cursor:pointer;border-bottom:2px dashed var(--purple-mid);padding:1px 0;transition:all 0.15s;}
+  .claim:hover{background:var(--purple-pale);}
+  .claim.verified{border-color:#6EE7B7;background:var(--green-pale);}
+  .claim.caution{border-color:#FCD34D;background:#FFFBEB;}
+  .claim.wrong{border-color:#FCA5A5;background:var(--red-pale);}
+  .sb-result{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:16px;margin-top:12px;font-size:14.5px;line-height:1.7;display:none;animation:fadeIn 0.2s ease;}
+  .sb-result.show{display:block;}
+  .sb-result.r-ok{border-color:#6EE7B7;}
+  .sb-result.r-warn{border-color:#FCD34D;}
+  .sb-result.r-bad{border-color:#FCA5A5;}
+  .sb-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;}
+  .sb-leg{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gray-muted);}
+  .sb-leg-line{width:20px;height:3px;border-radius:2px;}
+
+  /* Triage grid */
+  .triage{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.triage{grid-template-columns:1fr;}}
+  .triage-card{border-radius:18px;padding:22px;border:1.5px solid;}
+  .triage-card.high{background:var(--red-pale);border-color:#FCA5A5;}
+  .triage-card.mid{background:#FFFBEB;border-color:#FCD34D;}
+  .triage-card.low{background:var(--green-pale);border-color:#6EE7B7;}
+  .triage-badge{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+  .triage-card.high .triage-badge{color:var(--red);}
+  .triage-card.mid .triage-badge{color:#92400E;}
+  .triage-card.low .triage-badge{color:var(--green);}
+  .triage-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:10px;}
+  .triage-list{font-size:14px;line-height:1.9;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.3 · Evaluating AI Outputs</div>
+  <h1>How to Fact-Check an AI Response: A Step-by-Step Guide</h1>
+  <p class="hero-sub">AI gives you confident answers — but confident isn't the same as correct. A simple five-step process lets you verify any AI response quickly before you stake your reputation on it.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Here's a scenario that plays out in offices every day: someone asks AI for a market statistic, gets a precise-sounding number, pastes it into a presentation — and later finds out the number was wrong, outdated, or completely invented. The damage to their credibility? Real. Preventable? Completely.</p>
+    <p><mark>Fact-checking AI doesn't mean distrusting it — it means using it responsibly.</mark> The goal is a fast, reliable process you run on any AI output before sharing it, so you can present with full confidence. Here are the five steps.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 5-Step Fact-Check Process</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-label">Step 1 · Identify</div>
+          <div class="step-title">Flag Every Specific Claim</div>
+          <p class="step-desc">Read the AI response and mentally mark every claim that could be wrong — statistics, dollar figures, dates, named companies, leadership positions, and causal statements ("X happened because of Y").</p>
+          <div class="step-tip">🎯 <strong>Action:</strong> Don't start verifying yet. First, inventory everything that needs checking. Underline numbers, bold company names, circle dates. Know what you're working with before diving in.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-label">Step 2 · Prioritize</div>
+          <div class="step-title">Rank by Stakes</div>
+          <p class="step-desc">Not every claim deserves equal checking effort. A statistic you'll present to a board needs rigorous verification. A background fact in a first-draft note only needs a light check. Triage by how damaging it would be if the claim turned out to be wrong.</p>
+          <div class="step-tip">🎯 <strong>Action:</strong> Sort claims into High (presenting this publicly), Medium (internal use), Low (background context). Verify High claims first — and most thoroughly.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-label">Step 3 · Source</div>
+          <div class="step-title">Find an Independent Source</div>
+          <p class="step-desc">For every high-stakes claim, find at least one independent, primary source that confirms it — not another AI tool, but a government database, company filing, published research study, or a reputable news outlet citing its original source.</p>
+          <div class="step-tip">🎯 <strong>Action:</strong> Search the specific claim in Perplexity, Google, or a relevant database. Look for the original source of the data — not a blog summarizing data, but the actual study, report, or official filing it came from.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-label">Step 4 · Check Recency</div>
+          <div class="step-title">Verify When the Information Is From</div>
+          <p class="step-desc">Even correct facts go stale. AI models have training cutoffs — they may not know about a CEO change, a market reversal, or an updated statistic. Always check when the information was originally published.</p>
+          <div class="step-tip">🎯 <strong>Action:</strong> When you find a source, check its publication date. For fast-changing topics (company leadership, pricing, market size), anything more than 18 months old should be flagged as potentially outdated.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-label">Step 5 · Act</div>
+          <div class="step-title">Replace, Remove, or Caveat</div>
+          <p class="step-desc">Once you've checked each claim: replace wrong facts with correct ones, remove claims you can't verify at all, and add honest caveats to anything you're keeping but aren't fully certain about.</p>
+          <div class="step-tip">🎯 <strong>Action:</strong> Never present unverified AI claims as established facts. If you can't verify in time, say "I'll confirm before the final version" — that's far better than presenting something wrong to leadership.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Practice: Click Every Claim That Needs Checking</h2>
+    <p>Below is a sample AI-generated market research response. Click on any underlined phrase to reveal its fact-check status — verified, needs caution, or actually inaccurate.</p>
+    <div class="sandbox">
+      <div class="sb-label">🔬 Fact-Check Sandbox</div>
+      <div class="sb-title">Analyze This AI Response</div>
+      <div class="sb-sub">Click each underlined claim to reveal whether it's accurate, uncertain, or wrong.</div>
+      <div class="sb-response">
+        <div class="sb-rlabel">🤖 AI Research Response — Unverified</div>
+        <div class="sb-text">
+          The global EV market was worth <span class="claim" onclick="reveal('ev','ok')">approximately $388 billion in 2023</span>, with growth projected to reach <span class="claim" onclick="reveal('proj','warn')">over $1 trillion by 2030</span>. Tesla currently holds <span class="claim" onclick="reveal('tesla','warn')">roughly 18% of the global EV market</span>, though <span class="claim" onclick="reveal('byd','ok')">BYD surpassed Tesla in total EV sales in 2023</span>. The U.S. Inflation Reduction Act provides <span class="claim" onclick="reveal('ira','ok')">a $7,500 tax credit for eligible EV purchases</span>. The average new EV costs <span class="claim" onclick="reveal('price','warn')">approximately $55,000 in the U.S.</span>, compared to the average new gasoline vehicle at <span class="claim" onclick="reveal('gas','bad')">around $27,000</span>.
+        </div>
+      </div>
+      <div class="sb-result" id="sb-ev"></div>
+      <div class="sb-result" id="sb-proj"></div>
+      <div class="sb-result" id="sb-tesla"></div>
+      <div class="sb-result" id="sb-byd"></div>
+      <div class="sb-result" id="sb-ira"></div>
+      <div class="sb-result" id="sb-price"></div>
+      <div class="sb-result" id="sb-gas"></div>
+      <div class="sb-legend">
+        <div class="sb-leg"><div class="sb-leg-line" style="background:#6EE7B7"></div>Verified accurate</div>
+        <div class="sb-leg"><div class="sb-leg-line" style="background:#FCD34D"></div>Needs verification / may be outdated</div>
+        <div class="sb-leg"><div class="sb-leg-line" style="background:#FCA5A5"></div>Likely inaccurate — check this</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Five minutes of fact-checking before a presentation is an investment in your credibility. One wrong statistic in front of a senior leader erases weeks of good work. Verified data builds trust that compounds over time.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How Much Checking Does Each Situation Need?</h2>
+    <div class="triage">
+      <div class="triage-card high">
+        <div class="triage-badge">🔴 Verify Rigorously</div>
+        <div class="triage-title">High Stakes</div>
+        <div class="triage-list">• Executive presentations<br>• Board materials<br>• Client proposals<br>• Press releases<br>• Published reports<br>• Legal documents</div>
+      </div>
+      <div class="triage-card mid">
+        <div class="triage-badge">🟡 Spot-Check Key Facts</div>
+        <div class="triage-title">Medium Stakes</div>
+        <div class="triage-list">• Internal team briefings<br>• Strategy documents<br>• Planning materials<br>• Training content<br>• Competitive summaries</div>
+      </div>
+      <div class="triage-card low">
+        <div class="triage-badge">🟢 Light Review</div>
+        <div class="triage-title">Lower Stakes</div>
+        <div class="triage-list">• Personal research notes<br>• First-draft brainstorms<br>• Background reading<br>• Learning new topics<br>• Exploratory questions</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h3>Ask AI to Flag Its Own Uncertainty</h3>
+        <p>Here's an underused trick: at the end of any research prompt, add "Please flag any claims in your response where you're less certain, or where information may have changed since your training." Most AI models will honestly identify where they're uncertain — giving you a prioritized checklist of exactly what to verify first. It's not foolproof, but it can cut your verification time in half.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You're preparing a client proposal and AI gives you a specific market share percentage for a competitor. What is the minimum you should do before including it in the proposal?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Nothing — AI tools are reliable enough for client documents at this point</button>
+        <button class="quiz-btn" onclick="answer(this,false)">B. Ask a second AI tool the same question — if both agree, it's verified</button>
+        <button class="quiz-btn" onclick="answer(this,true)">C. Find an independent primary or credible secondary source — a company filing, published industry report, or reputable news article with a date</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Add a footnote that says "per AI research" to protect yourself</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The 5-step process: flag every specific claim → rank by stakes → find an independent source → check the date → replace, remove, or caveat.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Triage your effort by stakes — board presentations need rigorous verification; personal brainstorms need only a light review. Match the depth of checking to the consequence of being wrong.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A second AI agreeing with the first is NOT verification — both may share the same incorrect training data. Always find an independent, primary source.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Adding "flag your own uncertainty" to any research prompt gives you a prioritized list of exactly what to verify — cutting your checking time in half.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const claims={
+    ev:{type:'ok',text:'✅ <strong>Generally Accurate.</strong> Multiple industry sources (BloombergNEF, IEA, Grand View Research) place the 2023 global EV market in the $380–400 billion range. Defensible — but always cite your specific source and year in a formal document.'},
+    proj:{type:'warn',text:'⚠️ <strong>Needs Verification.</strong> Various analysts do project $1T+ by 2030, but estimates vary significantly. Before presenting this, find the specific analyst firm making this claim and note their methodology. "Analysts project" is too vague for a business proposal — cite the source.'},
+    tesla:{type:'warn',text:'⚠️ <strong>Needs Verification.</strong> Tesla\'s global share varies by region and changes quarterly. The ~18% figure appeared in some 2023 estimates, but this is a fast-moving number. Always pull the most current quarterly data from a recent news report or industry tracker.'},
+    byd:{type:'ok',text:'✅ <strong>Verified Accurate.</strong> BYD did surpass Tesla in total EV deliveries in Q4 2023, a widely reported and verified fact. Multiple credible sources (Reuters, Bloomberg, company earnings) confirm this. Good to use — with a date cited.'},
+    ira:{type:'ok',text:'✅ <strong>Accurate — but verify current eligibility rules.</strong> The base $7,500 credit exists in the IRA. However, eligibility rules (vehicle price caps, buyer income limits, assembly location requirements) are complex and have changed. The credit amount is correct; the eligibility details always need checking against current IRS guidelines.'},
+    price:{type:'warn',text:'⚠️ <strong>Ballpark but verify.</strong> Average EV prices have been declining rapidly. The $55K figure may reflect 2022–2023 data but Tesla and others have made significant price cuts. Check Kelley Blue Book or Cox Automotive\'s most recent monthly report for the current average.'},
+    gas:{type:'bad',text:'❌ <strong>Likely Inaccurate.</strong> The average new vehicle transaction price in the U.S. has consistently been $45,000–$48,000 range in recent years — not $27,000. That figure is significantly understated and would raise credibility questions if presented to anyone familiar with auto market pricing. This is a hallucination or error that needs to be corrected.'}
+  };
+
+  function reveal(id,type){
+    const el=document.getElementById('sb-'+id);
+    const d=claims[id];
+    el.innerHTML=d.text;
+    el.className='sb-result show r-'+(type==='ok'?'ok':type==='warn'?'warn':'bad');
+    document.querySelectorAll('.claim').forEach(c=>{
+      if(c.getAttribute('onclick').includes("'"+id+"'")){
+        c.classList.remove('verified','caution','wrong');
+        c.classList.add(type==='ok'?'verified':type==='warn'?'caution':'wrong');
+      }
+    });
+  }
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Client proposals are high-stakes documents. A wrong market share figure in a proposal can undermine your credibility with the client and expose your company to embarrassment. The minimum standard is one independent, citable source — a company filing, industry research report, or credible news article. That takes 5 minutes and protects your credibility completely.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> AI tools aren\'t reliable enough for client-facing documents without verification. A second AI agreeing is NOT verification — both may share identical wrong training data. And a "per AI research" footnote doesn\'t protect you from a wrong number — it just signals you didn\'t check it. The only real protection is an independent source.';}f.classList.add('show');}
+</script>
+</body>
+</html>
