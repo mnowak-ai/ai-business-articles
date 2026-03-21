@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Salesforce Einstein? AI in Real Business Operations — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Mock Einstein dashboard */
+  .einstein-dash{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;overflow:hidden;margin:24px 0;}
+  .ed-toolbar{background:#0070D2;padding:12px 20px;display:flex;align-items:center;gap:8px;}
+  .ed-dot{width:10px;height:10px;border-radius:50%;}
+  .ed-brand{color:white;font-size:14px;font-weight:700;flex:1;text-align:center;}
+  .ed-body{padding:24px;}
+  .ed-header{margin-bottom:20px;}
+  .ed-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .ed-sub{font-size:13px;color:var(--gray-muted);}
+  .ed-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+  @media(max-width:580px){.ed-grid{grid-template-columns:1fr 1fr;}}
+  .ed-widget{background:var(--white);border-radius:12px;padding:16px;border:1px solid var(--purple-mid);position:relative;cursor:pointer;transition:border-color 0.2s;}
+  .ed-widget:hover{border-color:var(--purple);}
+  .ed-widget-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray-muted);margin-bottom:8px;}
+  .ed-widget-val{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--purple-dark);line-height:1;}
+  .ed-widget-sub{font-size:12px;color:var(--gray-muted);margin-top:4px;}
+  .ed-widget-badge{position:absolute;top:8px;right:8px;background:var(--purple-pale);color:var(--purple);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;}
+  .ed-hotspot{width:18px;height:18px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:700;position:absolute;top:-6px;right:-6px;cursor:pointer;transition:transform 0.2s;}
+  .ed-hotspot:hover{transform:scale(1.2);}
+  .ed-tooltip{background:var(--white);border:1.5px solid var(--purple);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.65;margin-top:12px;display:none;animation:fadeIn 0.2s ease;}
+  .ed-tooltip.show{display:block;}
+  .ed-lead-list{background:var(--white);border-radius:12px;border:1px solid var(--purple-mid);overflow:hidden;}
+  .ed-lead-header{display:grid;grid-template-columns:1fr 80px 100px 80px;background:var(--purple-pale);padding:8px 14px;font-size:12px;font-weight:700;color:var(--purple-dark);}
+  .ed-lead-row{display:grid;grid-template-columns:1fr 80px 100px 80px;padding:10px 14px;border-top:1px solid var(--purple-mid);font-size:13px;align-items:center;}
+  .ed-lead-row:nth-child(odd){background:var(--gray-soft);}
+  .ed-score{border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;text-align:center;}
+  .ed-score.high{background:#DCFCE7;color:var(--green);}
+  .ed-score.med{background:#FFFBEB;color:#92400E;}
+  .ed-score.low{background:var(--red-pale);color:var(--red);}
+
+  /* Feature tabs */
+  .feature-tabs{margin:24px 0;}
+  .ft-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:0;}
+  .ft-btn{padding:10px 18px;border-radius:10px 10px 0 0;border:1.5px solid var(--purple-mid);border-bottom:none;background:var(--white);color:var(--gray-muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .ft-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .ft-panels{border:1.5px solid var(--purple-mid);border-radius:0 12px 12px 12px;background:var(--white);}
+  .ft-panel{display:none;padding:28px;}
+  .ft-panel.active{display:block;animation:fadeIn 0.3s ease;}
+  .ft-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .ft-desc{font-size:15.5px;line-height:1.75;margin-bottom:16px;}
+  .ft-impact{display:flex;align-items:center;gap:12px;background:var(--green-pale);border-radius:10px;padding:12px 16px;border-left:3px solid #6EE7B7;}
+  .ft-impact-icon{font-size:22px;flex-shrink:0;}
+  .ft-impact-text{font-size:14.5px;line-height:1.6;color:var(--green);}
+
+  /* Bigger picture: AI in enterprise */
+  .enterprise-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.enterprise-cards{grid-template-columns:1fr;}}
+  .ec{border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px;background:var(--white);}
+  .ec-icon{font-size:28px;margin-bottom:8px;display:block;}
+  .ec-name{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ec-desc{font-size:14px;line-height:1.6;color:var(--gray-text);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.ft-btn{font-size:12px;padding:8px 12px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.4 · Supporting Decisions</div>
+  <h1>What Is Salesforce Einstein? AI in Real Business Operations</h1>
+  <p class="hero-sub">The lesson video used Salesforce Einstein as a case study for how AI supports business decisions in practice. This article goes deeper — showing exactly what it does, how it's used, and what it represents about the broader role of AI in enterprise software.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>When most people think of "AI in business," they imagine chatbots and content generation tools. But the most impactful AI deployments in large organizations happen inside the systems companies already use — CRM platforms, HR tools, financial software — where AI works in the background, surfacing insights that would otherwise require weeks of manual analysis.</p>
+    <p>Salesforce Einstein is the best-known example of this category. <mark>Einstein is the AI layer built directly into Salesforce's CRM platform</mark> — the software that millions of sales and marketing teams use to manage customer relationships. It analyzes customer data, sales activity, and behavioral signals to give teams a predictive, proactive intelligence layer on top of their existing workflow.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Einstein Actually Does — An Interactive Look</h2>
+    <p>Explore the key Einstein features below. Click each tab to understand what the feature does and the business impact it creates.</p>
+    <div class="feature-tabs">
+      <div class="ft-nav">
+        <button class="ft-btn active" onclick="switchFT(0)">🎯 Lead Scoring</button>
+        <button class="ft-btn" onclick="switchFT(1)">🔮 Opportunity Forecast</button>
+        <button class="ft-btn" onclick="switchFT(2)">⚠️ Churn Prediction</button>
+        <button class="ft-btn" onclick="switchFT(3)">📧 Next Best Action</button>
+      </div>
+      <div class="ft-panels">
+        <div class="ft-panel active" id="ftp0">
+          <div class="ft-title">Einstein Lead Scoring</div>
+          <div class="ft-desc">Einstein analyzes patterns in historical data to predict which leads are most likely to convert into customers. It scores every lead in the system on a 1–100 scale, considering factors like engagement behavior, company size, industry match, and fit with your ideal customer profile — all automatically, without manual analysis.</div>
+          <div class="ft-desc">Without Einstein, a sales team of 10 reps might have 500 leads in their CRM and spend hours trying to figure out who to call first. With Einstein scoring, every rep wakes up to a prioritized list — highest probability deals at the top.</div>
+          <div class="ft-impact"><div class="ft-impact-icon">📈</div><div class="ft-impact-text"><strong>Business impact:</strong> Salesforce reports that customers using Einstein Lead Scoring see 30%+ improvements in conversion rate because reps focus time on leads most likely to close rather than working the list in arbitrary order.</div></div>
+        </div>
+        <div class="ft-panel" id="ftp1">
+          <div class="ft-title">Opportunity Forecasting</div>
+          <div class="ft-desc">Einstein analyzes every open sales deal — stage, size, engagement history, historical win rates for similar deals — and generates a revenue forecast. Instead of sales managers manually reviewing each deal and guessing close probability, Einstein produces a data-driven forecast automatically.</div>
+          <div class="ft-desc">Critically, Einstein also flags "at-risk" deals — opportunities that the rep may have marked as "on track" but whose engagement patterns suggest are actually stalling. This gives managers a heads-up before a deal is lost, not after.</div>
+          <div class="ft-impact"><div class="ft-impact-icon">🎯</div><div class="ft-impact-text"><strong>Business impact:</strong> More accurate revenue forecasting reduces the surprise gaps between projected and actual revenue that derail financial planning. "At-risk" flagging lets managers intervene in time to save deals that would otherwise have gone quiet.</div></div>
+        </div>
+        <div class="ft-panel" id="ftp2">
+          <div class="ft-title">Churn Prediction</div>
+          <div class="ft-desc">For subscription businesses, Einstein analyzes customer behavior patterns to predict which accounts are at risk of canceling before the renewal date. Patterns like declining login frequency, reduced feature usage, missed support responses, and comparison shopping signals all feed into a churn score.</div>
+          <div class="ft-desc">Customer success teams can then prioritize outreach to at-risk accounts — offering additional support, training, or strategic check-ins — before the customer has made a decision to leave.</div>
+          <div class="ft-impact"><div class="ft-impact-icon">🛡️</div><div class="ft-impact-text"><strong>Business impact:</strong> Retaining an existing customer costs 5–7× less than acquiring a new one. Early churn prediction dramatically improves retention rates by turning reactive "we lost the customer" situations into proactive interventions.</div></div>
+        </div>
+        <div class="ft-panel" id="ftp3">
+          <div class="ft-title">Next Best Action</div>
+          <div class="ft-desc">Einstein surfaces real-time recommendations for what a sales or service rep should do next with a specific customer — send a particular email, offer a discount, schedule a demo, or escalate to a senior rep. These recommendations are generated based on what similar customers at similar stages responded positively to historically.</div>
+          <div class="ft-desc">Instead of a rep guessing the right move, they get a specific, data-backed suggestion: "Based on this customer's profile, customers who received a personalized ROI analysis at this stage converted at 3× the rate."</div>
+          <div class="ft-impact"><div class="ft-impact-icon">💡</div><div class="ft-impact-text"><strong>Business impact:</strong> New reps perform like experienced ones faster. Experienced reps find prompts that they might have missed. The "AI suggests, human decides" model applies perfectly here — the rep always makes the final call on whether to follow the recommendation.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>A Simulated Einstein Dashboard</h2>
+    <p>This is what the AI-powered insights look like in a real Salesforce environment. Click the purple info buttons on any widget to understand what Einstein is doing behind the number.</p>
+    <div class="einstein-dash">
+      <div class="ed-toolbar">
+        <div class="ed-dot" style="background:#FF5F57"></div>
+        <div class="ed-dot" style="background:#FFBD2E"></div>
+        <div class="ed-dot" style="background:#28C840"></div>
+        <div class="ed-brand">⚡ Salesforce Einstein — Sales Dashboard</div>
+      </div>
+      <div class="ed-body">
+        <div class="ed-header">
+          <div class="ed-title">Q4 Pipeline Intelligence</div>
+          <div class="ed-sub">AI-powered insights · Updated 2 hours ago · 47 active opportunities</div>
+        </div>
+        <div class="ed-grid">
+          <div class="ed-widget" style="position:relative;">
+            <div class="ed-widget-label">Pipeline Value</div>
+            <div class="ed-widget-val">$2.4M</div>
+            <div class="ed-widget-sub">vs $1.8M last Q4</div>
+            <div class="ed-hotspot" onclick="showTip('t1',this)">?</div>
+          </div>
+          <div class="ed-widget" style="position:relative;">
+            <div class="ed-widget-label">AI Win Prediction</div>
+            <div class="ed-widget-val">$1.1M</div>
+            <div class="ed-widget-sub">Expected to close this quarter</div>
+            <div class="ed-widget-badge">Einstein</div>
+            <div class="ed-hotspot" onclick="showTip('t2',this)">?</div>
+          </div>
+          <div class="ed-widget" style="position:relative;">
+            <div class="ed-widget-label">At-Risk Deals</div>
+            <div class="ed-widget-val" style="color:var(--red);">6</div>
+            <div class="ed-widget-sub">Flagged for immediate attention</div>
+            <div class="ed-widget-badge" style="background:var(--red-pale);color:var(--red);">⚠️</div>
+            <div class="ed-hotspot" onclick="showTip('t3',this)">?</div>
+          </div>
+        </div>
+        <div id="tipBox" class="ed-tooltip"></div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;">Top Priority Leads — Einstein Scored</div>
+        <div class="ed-lead-list">
+          <div class="ed-lead-header"><div>Company</div><div>Value</div><div>Stage</div><div>AI Score</div></div>
+          <div class="ed-lead-row"><div>Acme Corp</div><div>$280K</div><div>Proposal</div><div><span class="ed-score high">94</span></div></div>
+          <div class="ed-lead-row"><div>TechStart Inc</div><div>$145K</div><div>Demo Booked</div><div><span class="ed-score high">88</span></div></div>
+          <div class="ed-lead-row"><div>GlobalTech</div><div>$320K</div><div>Negotiation</div><div><span class="ed-score med">71</span></div></div>
+          <div class="ed-lead-row"><div>MidWest Co</div><div>$95K</div><div>Prospecting</div><div><span class="ed-score med">62</span></div></div>
+          <div class="ed-lead-row"><div>StartupXYZ</div><div>$55K</div><div>Lead</div><div><span class="ed-score low">34</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Salesforce Einstein doesn't replace the sales rep. It makes every sales rep better — by giving them the intelligence of thousands of past deals applied to their specific situation in real time.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Bigger Picture: AI Embedded in Enterprise Software</h2>
+    <p>Salesforce Einstein is one example of a much broader trend. AI is being built directly into nearly every major business software category, transforming how organizations operate in ways that users often don't even notice as "AI."</p>
+    <div class="enterprise-cards">
+      <div class="ec"><span class="ec-icon">📊</span><div class="ec-name">Microsoft 365 Copilot</div><p class="ec-desc">AI built into Word, Excel, PowerPoint, Teams, and Outlook — drafts documents, summarizes meetings, analyzes spreadsheets, and surfaces relevant files automatically.</p></div>
+      <div class="ec"><span class="ec-icon">🎧</span><div class="ec-name">HubSpot AI</div><p class="ec-desc">AI tools for email personalization, lead scoring, and content generation built directly into HubSpot's CRM and marketing platform — similar to Einstein but for mid-market companies.</p></div>
+      <div class="ec"><span class="ec-icon">📦</span><div class="ec-name">SAP Business AI</div><p class="ec-desc">AI embedded in SAP's enterprise resource planning software — automating invoice processing, predicting supply chain disruptions, and optimizing procurement decisions.</p></div>
+      <div class="ec"><span class="ec-icon">🏥</span><div class="ec-name">Epic AI (Healthcare)</div><p class="ec-desc">AI within Epic's healthcare records system — surfacing patient risk scores, predicting readmission risk, and flagging potential drug interactions for clinical decision support.</p></div>
+    </div>
+    <p>The pattern across all of these is the same: AI doesn't replace the human using the software — it augments them by surfacing insights, predictions, and recommendations they couldn't generate manually at scale.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h3>Why This Matters for Your Career</h3>
+        <p>Within the next 3–5 years, virtually every enterprise software tool you use at work will have AI features built in. Understanding how AI embedded in business tools works — what it's doing, where it adds value, where human oversight is still essential — is becoming a core literacy for any professional role. Salesforce Einstein is a useful mental model because it shows the pattern clearly: AI handles the analytical layer, humans handle the relational and judgment layer.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">Salesforce Einstein scores a lead at 92/100 and flags it as "high priority." What should a sales rep do next?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Immediately close the deal — a 92 score means it's almost certain to convert</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. Prioritize this lead for outreach, review the underlying data behind the score, and apply their own judgment about the best next action — the score surfaces the opportunity, the rep still makes the approach decision</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. Ignore it — AI scores aren't accurate enough to change how reps prioritize their work</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Forward it to a manager — high-score leads should be handled by senior reps only</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Salesforce Einstein is an AI layer built into Salesforce's CRM that analyzes customer data to predict lead conversion, forecast revenue, identify churn risk, and recommend next best actions — all automatically.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The four key Einstein features: Lead Scoring (who to prioritize), Opportunity Forecasting (what will close), Churn Prediction (who might leave), and Next Best Action (what to do next). All follow the AI suggests, humans decide model.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Salesforce Einstein is one example of a broader trend: AI being embedded directly into enterprise software across every business function — Microsoft 365, HubSpot, SAP, Epic Health, and many more.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI in enterprise tools augments the human using the tool — handling analytical scale that humans can't match, while humans handle relationship, context, and judgment that AI can't replicate.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function switchFT(i){document.querySelectorAll('.ft-btn').forEach((b,j)=>b.classList.toggle('active',i===j));document.querySelectorAll('.ft-panel').forEach((p,j)=>p.classList.toggle('active',i===j));}
+
+  const tips={
+    t1:'📊 <strong>Pipeline Value:</strong> This is the total potential revenue across all open deals in the system — the gross number if every deal closed. Einstein uses historical win rates and current engagement signals to convert this raw number into a realistic close prediction.',
+    t2:'🔮 <strong>AI Win Prediction:</strong> Einstein\'s estimate of what will actually close this quarter, based on deal stage, engagement patterns, historical win rates for similar deals, and rep performance. Significantly more accurate than managers manually estimating each deal\'s probability.',
+    t3:'⚠️ <strong>At-Risk Flags:</strong> Einstein identifies deals that are stalling based on behavioral signals — declining engagement, no recent activity, missed follow-ups, pricing objections — even when the rep has them marked as "on track." This gives managers visibility before deals go cold.'
+  };
+  let openTip=null;
+  function showTip(id,btn){const box=document.getElementById('tipBox');if(openTip===id){box.classList.remove('show');openTip=null;return;}box.innerHTML=tips[id];box.classList.add('show');openTip=id;}
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> A score of 92 is a strong signal to prioritize this lead — not a guarantee of conversion. The rep should review what drove the score (what behaviors or attributes triggered a high rating), then apply their judgment about the right approach: what to say, which contact to reach, what timing makes sense. The AI handles the prioritization signal; the rep handles the human relationship strategy. This is the "AI suggests, humans decide" model in practice.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> A 92 score means this lead has characteristics similar to past leads that converted at high rates — not that it\'s certain to close. The rep still needs to build the relationship, understand the specific prospect\'s needs, and navigate the sales process. And AI scores are always useful signals, not directives — a rep who ignores high-scoring leads consistently is leaving money on the table.';}f.classList.add('show');}
+</script>
+</body>
+</html>

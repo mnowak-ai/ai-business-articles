@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pattern Recognition: How AI Spots What Humans Miss in Data — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Why humans miss patterns */
+  .human-limits{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.human-limits{grid-template-columns:1fr;}}
+  .hl-card{border:1.5px solid var(--purple-mid);border-radius:16px;padding:22px;background:var(--white);}
+  .hl-icon{font-size:28px;margin-bottom:8px;display:block;}
+  .hl-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .hl-desc{font-size:14px;line-height:1.65;color:var(--gray-text);}
+
+  /* Pattern examples explorer */
+  .pattern-explorer{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pe-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .pe-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pe-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .pe-categories{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .pe-cat{padding:9px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .pe-cat:hover,.pe-cat.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .pe-run-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+  .pe-run-btn:hover{background:var(--purple-dark);}
+  .pe-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .pe-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .pe-out-header{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--purple-mid);}
+  .pe-out-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .pe-out-sub{font-size:13px;color:var(--gray-muted);}
+  .pe-pattern{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--purple-mid);}
+  .pe-pattern:last-child{border-bottom:none;}
+  .pe-pattern-icon{font-size:22px;flex-shrink:0;}
+  .pe-pattern-text{font-size:15px;line-height:1.65;}
+  .pe-pattern-text strong{color:var(--purple-dark);}
+  .pe-insight{background:var(--green-pale);border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.6;margin-top:8px;color:var(--green);}
+
+  /* Scale visualization */
+  .scale-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.scale-compare{grid-template-columns:1fr;}}
+  .sc-card{border-radius:18px;padding:24px;text-align:center;border:1.5px solid;}
+  .sc-card.human{background:var(--purple-pale);border-color:var(--purple-mid);}
+  .sc-card.ai{background:var(--purple);border-color:var(--purple);}
+  .sc-label{font-size:13px;font-weight:700;margin-bottom:10px;}
+  .sc-card.human .sc-label{color:var(--purple-dark);}
+  .sc-card.ai .sc-label{color:rgba(255,255,255,0.7);}
+  .sc-num{font-family:'Fraunces',serif;font-size:44px;font-weight:900;line-height:1;margin-bottom:8px;}
+  .sc-card.human .sc-num{color:var(--purple-dark);}
+  .sc-card.ai .sc-num{color:white;}
+  .sc-desc{font-size:13px;line-height:1.5;}
+  .sc-card.human .sc-desc{color:var(--gray-muted);}
+  .sc-card.ai .sc-desc{color:rgba(255,255,255,0.8);}
+
+  /* Human advantage */
+  .human-wins{display:flex;flex-direction:column;gap:10px;margin:20px 0;}
+  .hw-item{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;background:var(--green-pale);border-radius:12px;border:1.5px solid #6EE7B7;}
+  .hw-icon{font-size:20px;flex-shrink:0;}
+  .hw-text{font-size:15px;line-height:1.6;}
+  .hw-text strong{display:block;margin-bottom:3px;color:var(--green);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.4 · Supporting Decisions</div>
+  <h1>Pattern Recognition: How AI Spots What Humans Miss in Data</h1>
+  <p class="hero-sub">One of AI's most powerful capabilities is finding meaningful patterns across millions of data points simultaneously — patterns that are completely invisible to human analysts working at human speed. Understanding this capability is key to using AI strategically.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>The Lesson 3.4 slide on AI-supported decisions showed three capabilities: identify patterns, compare options, and predict outcomes. Of these, pattern identification is arguably the most transformative — because it's the one where the gap between what AI can do and what humans can do is widest.</p>
+    <p><mark>AI can analyze millions of data points simultaneously, find non-obvious correlations, and surface patterns that no human analyst would have the time or bandwidth to discover manually.</mark> This doesn't make AI smarter than humans in any general sense — but in the specific task of finding patterns in large datasets, it operates at a fundamentally different scale.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Why Human Pattern Recognition Has Limits</h2>
+    <p>Human analysts are excellent at spotting patterns in small, clean, well-organized datasets. The problems start when datasets get large, complex, or multi-dimensional.</p>
+    <div class="human-limits">
+      <div class="hl-card"><span class="hl-icon">🔢</span><div class="hl-title">Volume Limits</div><p class="hl-desc">A human analyst can meaningfully review hundreds of data points before analysis quality degrades. AI can simultaneously process millions — finding patterns in datasets that would take a human team months to manually review.</p></div>
+      <div class="hl-card"><span class="hl-icon">🌐</span><div class="hl-title">Dimensionality Limits</div><p class="hl-desc">Humans think well in 2–3 dimensions. Real business data often has dozens of correlated variables. Patterns that require holding 15 variables in mind simultaneously are invisible to humans but routine for machine learning models.</p></div>
+      <div class="hl-card"><span class="hl-icon">😴</span><div class="hl-title">Fatigue and Bias</div><p class="hl-desc">Human analysts get tired, lose focus, and unconsciously look for patterns they expect to find (confirmation bias). AI applies the same analysis consistently across every row of data without fatigue or prior expectation.</p></div>
+      <div class="hl-card"><span class="hl-icon">⏱️</span><div class="hl-title">Time Constraints</div><p class="hl-desc">Manual pattern analysis takes days or weeks. By the time human analysts find a pattern in customer behavior, the behavior may have already changed. AI analysis is fast enough to inform decisions in near-real-time.</p></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Scale Difference</h2>
+    <div class="scale-compare">
+      <div class="sc-card human">
+        <div class="sc-label">👤 Human Analyst</div>
+        <div class="sc-num">~500</div>
+        <div class="sc-desc">Maximum data points meaningfully reviewed per day by a single analyst working at high quality</div>
+      </div>
+      <div class="sc-card ai">
+        <div class="sc-label">🤖 AI Pattern Recognition</div>
+        <div class="sc-num">500M+</div>
+        <div class="sc-desc">Data points analyzed per second by modern ML models — looking for correlations across all of them simultaneously</div>
+      </div>
+    </div>
+    <p>This isn't about intelligence — it's about scale. The human analyst might be more insightful about any individual data point. But for finding the pattern that lives across a million data points, scale wins.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI doesn't see patterns because it's smarter. It sees patterns because it can look at everything at once — at a speed and scale that makes the invisible visible.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Real Pattern Examples by Industry</h2>
+    <p>Select an industry to see examples of the types of patterns AI has discovered that drove real business decisions.</p>
+    <div class="pattern-explorer">
+      <div class="pe-label">🔍 Pattern Explorer</div>
+      <div class="pe-title">AI Discoveries by Industry</div>
+      <div class="pe-sub">Choose an industry to see patterns that would be impossible or impractical to find manually.</div>
+      <div class="pe-categories">
+        <button class="pe-cat active" onclick="selectCat(this,'retail')">🛒 Retail</button>
+        <button class="pe-cat" onclick="selectCat(this,'health')">🏥 Healthcare</button>
+        <button class="pe-cat" onclick="selectCat(this,'finance')">💳 Finance</button>
+        <button class="pe-cat" onclick="selectCat(this,'tech')">💻 Tech / SaaS</button>
+      </div>
+      <button class="pe-run-btn" onclick="runPatterns()"><span>▶</span> Show Patterns</button>
+      <div class="pe-output" id="peOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>But Humans Still Win at This</h2>
+    <p>Pattern recognition is AI's superpower — but humans retain critical advantages in interpreting what patterns mean and deciding what to do about them.</p>
+    <div class="human-wins">
+      <div class="hw-item"><div class="hw-icon">🧠</div><div class="hw-text"><strong>Causal Reasoning</strong>AI finds correlations. Humans ask "why." Understanding that two things correlate is very different from understanding why — and causation is what's needed to act on a pattern effectively.</div></div>
+      <div class="hw-item"><div class="hw-icon">🌐</div><div class="hw-text"><strong>Cross-Domain Intuition</strong>Humans connect patterns to knowledge from completely different domains. "This customer behavior pattern reminds me of what we saw in our physical retail stores 5 years ago" is a connection no AI trained only on CRM data would make.</div></div>
+      <div class="hw-item"><div class="hw-icon">❓</div><div class="hw-text"><strong>Knowing Which Patterns Matter</strong>AI finds patterns equally — it doesn't know which ones are strategically important for your business. Deciding which patterns are worth acting on requires business judgment and strategic context that humans provide.</div></div>
+      <div class="hw-item"><div class="hw-icon">🚨</div><div class="hw-text"><strong>Ethical Red Flags</strong>AI can find patterns that correlate with protected characteristics — which would make acting on them illegal or unethical. Humans must review AI-surfaced patterns for ethical and legal implications before acting on them.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤝</div>
+      <div>
+        <h3>The Human-AI Partnership in Pattern Recognition</h3>
+        <p>The most effective approach to AI-driven pattern recognition is collaborative: AI finds the patterns at scale, humans interpret their meaning and strategic importance, and humans also serve as the ethical and contextual filter before any pattern drives a decision. Neither alone produces optimal outcomes — AI without human interpretation generates insights nobody acts on or acts on wrongly; humans without AI miss patterns hiding in the data they'd never have the bandwidth to find.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">An AI system analyzing a bank's loan application data discovers a strong correlation: applicants who list "freelance" as their employment status default on loans at 3× the rate of salaried employees. Should the bank immediately use this pattern to automatically reject freelance applicants?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Yes — the data clearly shows the risk is 3× higher, so the decision is justified by evidence</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. No — a human review is needed first. The pattern may reflect systemic economic factors rather than actual creditworthiness. Using employment type as an automatic rejection criterion could constitute lending discrimination and requires legal and ethical review before being operationalized</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. Yes, but only for freelancers with less than 3 years of history</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. No — AI-discovered patterns should never be used in financial decisions</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI's pattern recognition advantage comes from scale, not intelligence — it can analyze hundreds of millions of data points simultaneously while humans can meaningfully review only hundreds per day.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Human limits in pattern recognition: volume constraints, inability to hold many variables simultaneously, cognitive bias, and time constraints — all areas where AI systematically outperforms.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Humans remain essential for: asking why (causal reasoning), connecting cross-domain insights, deciding which patterns are strategically important, and serving as the ethical filter before patterns drive decisions.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI finds the patterns at scale — humans interpret, prioritize, and ethically validate them before any pattern becomes a business decision. The partnership model is the only approach that captures AI's strengths while preventing its risks.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const patternData={
+    retail:{title:'Retail — AI Pattern Discoveries',sub:'Patterns from customer transaction and behavior data',patterns:[
+      {icon:'🛍️',text:'<strong>The "Bridge Product" Pattern:</strong> Customers who buy hiking boots are 4× more likely to purchase a rain jacket within 60 days. Manual analysis missed this because the items are in different departments with no obvious link.',insight:'💡 Action taken: Cross-merchandising in app and email sequences. 31% lift in jacket sales within 90 days.'},
+      {icon:'📅',text:'<strong>The Tuesday Abandonment Pattern:</strong> Shopping cart abandonment rates spike 40% on Tuesday afternoons specifically. No one had ever noticed because daily averages looked normal.',insight:'💡 Action taken: Tuesday afternoon cart recovery emails now sent within 2 hours. 18% improvement in Tuesday conversion rate.'},
+      {icon:'⭐',text:'<strong>The Review Timing Pattern:</strong> Customers who leave reviews within 3 days of purchase have an 89% higher LTV than those who review later. Predicted future value, not satisfaction, was the real signal.',insight:'💡 Action taken: Early reviewers get priority customer service status, significantly improving retention of highest-LTV segment.'}
+    ]},
+    health:{title:'Healthcare — AI Pattern Discoveries',sub:'Patterns from patient records and clinical data',patterns:[
+      {icon:'🫀',text:'<strong>The 30-Day Readmission Signal:</strong> AI identified a cluster of 11 subtle variables in discharge notes and vital signs that predicted 30-day hospital readmission with 78% accuracy — far beyond what clinicians identified manually.',insight:'💡 Action taken: High-risk patients receive intensified post-discharge follow-up protocol, reducing readmissions by 24%.'},
+      {icon:'💊',text:'<strong>The Prescription Refill Gap:</strong> Patients who skip a refill by more than 5 days (not the same as stopping medication) have dramatically higher ER visit rates 60–90 days later. No physician had connected these events across time.',insight:'💡 Action taken: Automated outreach at day 4 of refill gap reduced ER visits in this cohort by 31%.'},
+      {icon:'🔬',text:'<strong>The Diagnosis Clustering Pattern:</strong> Certain rare conditions cluster geographically in ways that matched previously unidentified environmental exposure patterns — only visible when patient addresses were correlated with outcomes at scale.',insight:'💡 Action taken: Led to environmental health investigation that identified a contamination source that would have otherwise gone undetected for years.'}
+    ]},
+    finance:{title:'Finance — AI Pattern Discoveries',sub:'Patterns from transaction and behavioral data',patterns:[
+      {icon:'🚨',text:'<strong>The Pre-Fraud Behavioral Signature:</strong> In the 48 hours before fraudulent transactions, AI detected a consistent behavioral fingerprint (specific sequence of small purchases across categories) that humans reviewing fraud cases hadn\'t noticed across thousands of cases.',insight:'💡 Action taken: Real-time monitoring for this behavioral sequence now prevents 34% of fraud cases before they complete.'},
+      {icon:'📉',text:'<strong>The Churn Precursor:</strong> Customers who stop using mobile banking and revert to branch visits are 8× more likely to close their account within 90 days — detected only by correlating app usage with branch visit data across millions of customers.',insight:'💡 Action taken: Personalized mobile re-engagement campaigns for this segment now convert 28% back to digital-primary before churn.'},
+      {icon:'💡',text:'<strong>The Savings Trigger Pattern:</strong> Customers who open a savings account within 30 days of a life event (change of address, new employer direct deposit, marriage) have 3× higher long-term retention than those who open at other times.',insight:'💡 Action taken: Life event-triggered savings account offers now drive the highest-performing customer acquisition segment.'}
+    ]},
+    tech:{title:'Tech / SaaS — AI Pattern Discoveries',sub:'Patterns from product usage and customer behavior data',patterns:[
+      {icon:'⚠️',text:'<strong>The Day-7 Churn Cliff:</strong> Users who don\'t complete 3 specific actions within 7 days of signup churn at 4× the rate of those who do — and those 3 actions weren\'t the ones product teams had assumed were the "aha moments."',insight:'💡 Action taken: Onboarding redesigned around the 3 AI-identified key actions. 30-day retention improved 22%.'},
+      {icon:'📊',text:'<strong>The Power User Precursor:</strong> Users who invite a colleague in weeks 1–2 are 11× more likely to become power users. But the direction matters — inviting a colleague in week 3+ shows the opposite pattern.',insight:'💡 Action taken: "Invite a teammate" prompt moved to onboarding week 1. Significant increase in power user conversion rate.'},
+      {icon:'🔗',text:'<strong>The Integration Stickiness Pattern:</strong> Users who connect 2+ integrations within 30 days have 94% 12-month retention vs. 61% for those with 1 integration and 34% for those with none — nonlinear relationship not visible until analyzed at scale.',insight:'💡 Action taken: Integration promotion prioritized for 30-day window. Second integration CTA added proactively after first integration detected.'}
+    ]}
+  };
+
+  let selCat='retail';
+  function selectCat(btn,cat){document.querySelectorAll('.pe-cat').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selCat=cat;document.getElementById('peOutput').classList.remove('show');}
+
+  function runPatterns(){
+    const d=patternData[selCat];
+    const out=document.getElementById('peOutput');
+    out.innerHTML=`<div class="pe-out-header"><div class="pe-out-title">${d.title}</div><div class="pe-out-sub">${d.sub}</div></div>${d.patterns.map(p=>`<div class="pe-pattern"><div class="pe-pattern-icon">${p.icon}</div><div><div class="pe-pattern-text">${p.text}</div><div class="pe-insight">${p.insight}</div></div></div>`).join('')}`;
+    out.className='pe-output show';
+  }
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> This scenario illustrates the critical human review requirement for AI-discovered patterns. A correlation between employment type and default rates could reflect many things: income volatility, lack of employer benefits during hardship, or simply that freelancers in this dataset were underserved by traditional credit scoring (which disadvantages non-traditional income). Using this correlation as an automatic rejection criterion could constitute illegal lending discrimination under the Equal Credit Opportunity Act. AI found the pattern — human legal and ethical judgment must determine if and how it can be used.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Statistical correlation alone is insufficient justification for automatic rejection in lending. The pattern requires human review for legal compliance (ECOA, fair lending regulations), causal analysis (what\'s actually driving default risk?), and ethical assessment (does this proxy for protected characteristics?). Option C (adding a time threshold) still doesn\'t address the fundamental legal/ethical issue. And Option D is too absolute — AI patterns absolutely can inform financial decisions when properly reviewed and validated.';}f.classList.add('show');}
+</script>
+</body>
+</html>

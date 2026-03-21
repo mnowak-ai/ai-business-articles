@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Present Data-Backed Insights to Your Boss or Team — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* The 3-part structure */
+  .three-parts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.three-parts{grid-template-columns:1fr;}}
+  .tp-card{border-radius:20px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+  .tp-header{background:var(--purple);padding:18px 20px;color:white;}
+  .tp-header-icon{font-size:28px;margin-bottom:6px;display:block;}
+  .tp-header-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;}
+  .tp-header-tag{font-size:13px;color:rgba(255,255,255,0.7);margin-top:3px;}
+  .tp-body{padding:18px 20px;background:var(--white);}
+  .tp-what{font-size:14.5px;line-height:1.65;margin-bottom:10px;}
+  .tp-example{background:var(--purple-pale);border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.6;color:var(--purple-dark);}
+
+  /* Presentation builder */
+  .pres-builder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pb-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .pb-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pb-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .pb-topics{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .pb-topic{padding:9px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .pb-topic:hover,.pb-topic.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .pb-build-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .pb-build-btn:hover{background:var(--purple-dark);}
+  .pb-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .pb-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .pb-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--purple-mid);}
+  .pb-section:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .pb-sec-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+  .pb-sec-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pb-sec-content{font-size:15px;line-height:1.75;}
+
+  /* Bad vs good examples */
+  .before-after{display:flex;flex-direction:column;gap:12px;margin:24px 0;}
+  .ba-item{border-radius:14px;padding:20px 22px;border:1.5px solid;}
+  .ba-item.bad{background:var(--red-pale);border-color:#FCA5A5;}
+  .ba-item.good{background:var(--green-pale);border-color:#6EE7B7;}
+  .ba-badge{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+  .ba-item.bad .ba-badge{color:var(--red);}
+  .ba-item.good .ba-badge{color:var(--green);}
+  .ba-text{font-size:15px;line-height:1.75;}
+  .ba-why{font-size:13.5px;color:var(--gray-muted);margin-top:8px;font-style:italic;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.4 · Supporting Decisions</div>
+  <h1>How to Present Data-Backed Insights to Your Boss or Team</h1>
+  <p class="hero-sub">Great research that isn't communicated well doesn't move decisions forward. The lesson video showed the formula: your recommendation, your reasoning, your next step. This article builds that skill in full.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>You've done the AI research. You've verified the key facts. You've added context and formed a recommendation. Now comes the moment that actually matters: communicating it to the people who need to act on it.</p>
+    <p>Here's what most people get wrong: they present the research instead of the insight. They walk through all the data they gathered — every finding, every source, every nuance — instead of leading with what it means and what should happen next. <mark>Decision-makers don't need to hear all your research. They need to hear what it adds up to.</mark></p>
+    <p>The Lesson 3.4 slide said it clearly: your recommendation + your reasoning + your next step. Three parts. In that order. Let's break each one down.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 3-Part Structure That Always Works</h2>
+    <div class="three-parts">
+      <div class="tp-card">
+        <div class="tp-header">
+          <span class="tp-header-icon">📊</span>
+          <div class="tp-header-name">Your Recommendation</div>
+          <div class="tp-header-tag">Lead with the answer</div>
+        </div>
+        <div class="tp-body">
+          <p class="tp-what">State your recommended direction first — not your research, not the background, not the problem. The answer. Decision-makers are time-constrained; give them the conclusion they can immediately evaluate.</p>
+          <div class="tp-example">✅ "I recommend we expand into the German market in Q3 with an initial budget of €400K."</div>
+        </div>
+      </div>
+      <div class="tp-card">
+        <div class="tp-header">
+          <span class="tp-header-icon">🔍</span>
+          <div class="tp-header-name">Your Reasoning</div>
+          <div class="tp-header-tag">Back it up with data + context</div>
+        </div>
+        <div class="tp-body">
+          <p class="tp-what">Give the 2–3 most compelling reasons from your research — supported by data — plus any relevant context that shaped your judgment. This is where the research appears, but selectively, not exhaustively.</p>
+          <div class="tp-example">✅ "Germany has the EU's highest addressable market ($3.1B), lowest competitive density of any target country, and we have an existing distribution partnership there."</div>
+        </div>
+      </div>
+      <div class="tp-card">
+        <div class="tp-header">
+          <span class="tp-header-icon">🚀</span>
+          <div class="tp-header-name">Your Next Step</div>
+          <div class="tp-header-tag">Propose a clear, actionable plan</div>
+        </div>
+        <div class="tp-body">
+          <p class="tp-what">Close with a specific, owned next action — not "we should explore this further" but exactly what should happen, who should do it, and by when. This turns the presentation into a decision trigger.</p>
+          <div class="tp-example">✅ "If approved, Marcus will contact our Munich distribution partner by Friday to confirm interest and timeline. We'll report back at the next leadership meeting."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Lead with the recommendation, not the journey. Your audience didn't ask to watch you do research — they asked for your conclusion. Give them that first, then support it.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Before & After: The Same Insight, Two Presentations</h2>
+    <div class="before-after">
+      <div class="ba-item bad">
+        <div class="ba-badge">❌ Data Dump — Avoid This</div>
+        <div class="ba-text">"So I spent the last week looking into our pricing strategy and found a lot of interesting things. The market data shows that our prices are about 15% above the category average, and when I looked at the competitive landscape, I found that three of our main competitors have been lowering prices over the last two quarters. I also looked at our customer survey data and it seems like price sensitivity is higher than we thought, especially in the 25–35 age bracket. There's also some correlation between price and churn rate that might be worth looking into further. I think this could potentially be something worth discussing, though obviously there are trade-offs to consider..."</div>
+        <div class="ba-why">Problems: Buries the insight under process narration. No clear recommendation. Ends with "worth discussing" — not actionable. Leadership leaves the meeting without a direction.</div>
+      </div>
+      <div class="ba-item good">
+        <div class="ba-badge">✅ Insight-First — Do This</div>
+        <div class="ba-text">"I recommend a targeted 12% price reduction in our core product tier for customers aged 25–35. Here's why: our prices are 15% above category average, three competitors have cut prices this quarter, and our survey data shows price sensitivity is highest in the 25–35 segment — which is also our highest churn group. A 12% reduction in this tier would put us at category parity where it matters most while protecting margins on higher-value segments. Next step: if the team agrees on direction, Finance runs the P&L impact model this week, and we bring a decision to leadership by Thursday."</div>
+        <div class="ba-why">What changed: Led with the recommendation. Three supporting reasons, not ten. Specific price point and segment. Clear next step with owner and deadline.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Build Your Own Insight Presentation</h2>
+    <p>Select a business scenario and see how the 3-part structure applies — with a complete example presentation you can model for your own work.</p>
+    <div class="pres-builder">
+      <div class="pb-label">🛠️ Presentation Builder</div>
+      <div class="pb-title">Generate a Model Presentation</div>
+      <div class="pb-sub">Select a scenario, then build the 3-part presentation structure.</div>
+      <div class="pb-topics">
+        <button class="pb-topic active" onclick="selectTopic(this,'market')">🌍 Market Expansion</button>
+        <button class="pb-topic" onclick="selectTopic(this,'product')">📦 Product Launch</button>
+        <button class="pb-topic" onclick="selectTopic(this,'talent')">👥 Hiring Decision</button>
+        <button class="pb-topic" onclick="selectTopic(this,'cost')">💰 Cost Reduction</button>
+      </div>
+      <button class="pb-build-btn" onclick="buildPres()">Build the Presentation →</button>
+      <div class="pb-output" id="pbOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h3>Acknowledge What You Don't Know</h3>
+        <p>Strong presentations include honest uncertainty. If your recommendation is based on data that might be incomplete, or if there's a scenario where your recommendation would change, say so. "This recommendation assumes our supply chain can support a 30% volume increase — if that's not confirmed, the timeline changes" is far stronger than presenting with false confidence. Decision-makers respect intellectual honesty and will trust your judgment more, not less, when you flag your own caveats proactively.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You're presenting AI-driven market research to your VP. You've been given 5 minutes. What should you cover in your first 60 seconds?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Explain how you used AI to conduct the research and which tools you used</button>
+        <button class="quiz-btn" onclick="answer(this,false)">B. Summarize all the key findings from the research so the VP has full context before you give your recommendation</button>
+        <button class="quiz-btn" onclick="answer(this,true)">C. State your recommendation clearly — the specific action you're proposing — so the VP immediately knows the direction you're advocating and can engage with the reasoning that follows</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Describe the market landscape so the VP understands the broader context</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The 3-part structure: recommendation first (the answer) → reasoning (2–3 data-supported reasons) → next step (specific owner and deadline). In that order, every time.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The most common mistake is presenting research instead of insight — walking through all the data rather than leading with what it adds up to. Decision-makers need the conclusion first, supported by selective evidence.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A strong next step includes a specific action, a named owner, and a deadline. "We should explore this" is not a next step — it's a deferral.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Acknowledging honest uncertainty in your presentation builds trust — proactively flagging caveats and conditions is a sign of intellectual rigor, not weakness.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const presData={
+    market:{rec:{t:'Recommendation',c:'We should launch in Brazil as our first Latin American market in Q2 next year, starting with São Paulo.'},rea:{t:'Reasoning — 3 Data-Backed Points',c:'(1) Brazil represents 38% of Latin America\'s total addressable market at $4.2B. (2) Our product has no direct local competitor — the closest alternative is a North American tool with no Portuguese localization. (3) Our customer data shows 12% of our current international signups come from Brazil organically, with no marketing spend.'},nxt:{t:'Next Step',c:'If leadership approves the direction, Priya [Head of International] engages a São Paulo-based channel partner we\'ve been in dialogue with. We bring a market entry plan to the Q4 planning meeting for budget approval.'}},
+    product:{rec:{t:'Recommendation',c:'We should greenlight the mobile-first redesign of our dashboard for a Q3 release, prioritizing the analytics view.'},rea:{t:'Reasoning — 3 Data-Backed Points',c:'(1) 61% of our user sessions in the last 90 days are on mobile, but mobile completion rates are 34% lower than desktop — indicating a UX gap. (2) In-app feedback and NPS surveys rank "mobile experience" as the #2 most-requested improvement for the 3rd consecutive quarter. (3) Our two fastest-growing competitors both released mobile-first updates in the last 6 months.'},nxt:{t:'Next Step',c:'If approved, Jordan [Product Lead] presents a scope and timeline to the engineering team by Friday. We aim for a scoped prototype in 3 weeks for a user test session with 15 existing customers.'}},
+    talent:{rec:{t:'Recommendation',c:'We should hire two senior engineers now rather than wait for Q1, focusing on backend infrastructure specialists.'},rea:{t:'Reasoning — 3 Data-Backed Points',c:'(1) Our current backend team\'s velocity has dropped 28% over the last quarter as technical debt has compounded — we\'re shipping features 60% slower than 12 months ago. (2) The market for senior backend engineers typically tightens in Q4 as companies finalize year-end budgets. (3) Our roadmap for H1 next year requires infrastructure work that our current team doesn\'t have bandwidth for without delays to customer-facing features.'},nxt:{t:'Next Step',c:'If approved, Alex [VP Engineering] opens two senior backend JDs this week. We target closing both roles within 8 weeks to have engineers onboarded before Q1 planning kicks off.'}},
+    cost:{rec:{t:'Recommendation',c:'We should consolidate our SaaS tool stack from 14 tools to 8, targeting $280K in annual savings.'},rea:{t:'Reasoning — 3 Data-Backed Points',c:'(1) Audit shows 6 tools with under 20% active user adoption across the team — we\'re paying full licenses for tools few people actually use. (2) Three tool pairs have direct functional overlap — we\'re paying for duplicate capabilities. (3) Our finance team benchmark shows we spend 2.8× the industry average on SaaS per employee for a company our size.'},nxt:{t:'Next Step',c:'If approved, Lin [Operations Lead] runs a 2-week team audit to confirm which tools have genuine workflows dependent on them before any cancellations. We bring a final cut list to leadership by end of month with zero-disruption transition plan.'}},
+  };
+
+  let selTopic='market';
+  function selectTopic(btn,t){document.querySelectorAll('.pb-topic').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selTopic=t;document.getElementById('pbOutput').classList.remove('show');}
+
+  function buildPres(){
+    const d=presData[selTopic];
+    const out=document.getElementById('pbOutput');
+    out.innerHTML=['rec','rea','nxt'].map((k,i)=>`<div class="pb-section"><div class="pb-sec-label">Part ${i+1}</div><div class="pb-sec-title">${d[k].t}</div><div class="pb-sec-content">${d[k].c}</div></div>`).join('');
+    out.className='pb-output show';
+  }
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> The most valuable thing you can do in your first 60 seconds with a time-constrained decision-maker is tell them the answer. "I recommend we enter Germany in Q3" immediately orients everything that follows. If the VP agrees with the direction, they listen to the reasoning as confirmation. If they push back, you\'re having the right conversation from the start. Explaining your tools or laying out background context first delays the moment when the VP can engage with what actually matters.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Which tools you used is interesting but not what the VP needs to know. Full context before recommendation delays the payoff and loses attention. And market landscape first puts everything in backward order — VP doesn\'t need landscape before they know what direction you\'re advocating. Lead with the recommendation: it\'s the only thing that lets the VP immediately orient to the conversation that actually matters.';}f.classList.add('show');}
+</script>
+</body>
+</html>

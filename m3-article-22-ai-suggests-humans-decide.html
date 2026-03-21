@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Suggests, Humans Decide — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Why humans stay in loop */
+  .reasons{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+  .reason{border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
+  .reason:hover,.reason.open{border-color:var(--purple);}
+  .reason-header{display:flex;align-items:center;gap:14px;padding:18px 22px;background:var(--white);transition:background 0.2s;}
+  .reason.open .reason-header{background:var(--purple-pale);}
+  .reason-icon{font-size:28px;flex-shrink:0;}
+  .reason-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);flex:1;}
+  .reason-toggle{font-size:20px;color:var(--purple);transition:transform 0.3s;}
+  .reason.open .reason-toggle{transform:rotate(45deg);}
+  .reason-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+  .reason.open .reason-body{max-height:400px;}
+  .reason-detail{padding:0 22px 22px;border-top:1px solid var(--purple-mid);}
+  .reason-text{font-size:15px;line-height:1.75;padding-top:14px;margin-bottom:14px;}
+  .reason-example{background:var(--gray-soft);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.7;border-left:3px solid var(--purple);}
+  .re-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+
+  /* Would you implement game */
+  .implement-game{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ig-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .ig-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ig-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .ig-scenario{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:22px;margin-bottom:14px;}
+  .ig-context{font-size:15px;line-height:1.7;margin-bottom:12px;}
+  .ig-ai-rec{background:var(--purple);border-radius:12px;padding:16px 18px;color:white;margin-bottom:16px;}
+  .ig-ai-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;}
+  .ig-ai-text{font-size:15px;line-height:1.7;}
+  .ig-buttons{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+  .ig-btn{padding:12px 24px;border-radius:100px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+  .ig-btn.yes{background:var(--green-pale);color:var(--green);border:2px solid #6EE7B7;}
+  .ig-btn.no{background:var(--red-pale);color:var(--red);border:2px solid #FCA5A5;}
+  .ig-btn.modify{background:#FFFBEB;color:#92400E;border:2px solid #FCD34D;}
+  .ig-btn:hover:not([disabled]){transform:scale(1.04);}
+  .ig-reveal{padding:14px 16px;border-radius:12px;font-size:14.5px;line-height:1.65;display:none;}
+  .ig-reveal.show{display:block;animation:fadeIn 0.3s ease;}
+  .ig-reveal.impl{background:var(--green-pale);border:1px solid #6EE7B7;color:var(--green);}
+  .ig-reveal.reject{background:var(--red-pale);border:1px solid #FCA5A5;color:var(--red);}
+  .ig-reveal.modify{background:#FFFBEB;border:1px solid #FCD34D;color:#92400E;}
+
+  /* AI vs human table */
+  .division-table{margin:24px 0;border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;}
+  .dt-header{display:grid;grid-template-columns:1fr 1fr;background:var(--purple);}
+  .dt-col-head{padding:14px 20px;color:white;font-weight:700;font-size:15px;}
+  .dt-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--purple-mid);}
+  .dt-row:nth-child(odd){background:var(--gray-soft);}
+  .dt-cell{padding:12px 20px;font-size:14.5px;line-height:1.55;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.4 · Supporting Decisions</div>
+  <h1>AI Suggests, Humans Decide: Why Humans Stay in the Loop</h1>
+  <p class="hero-sub">Every major AI deployment in business shares one design principle: humans review, approve, and own the final decision. This isn't caution — it's the right architecture. Here's why.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>The Lesson 3.4 video made this principle explicit: "AI provides insights — humans choose the action." And from Slide 39: "AI suggestions aren't instructions." These aren't just reassuring platitudes for people worried about AI replacing them. <mark>They reflect a genuine functional reality: there are things that humans can do in decision-making that AI currently cannot do at all.</mark></p>
+    <p>Understanding specifically why humans stay in the loop — what capabilities they're providing that AI lacks — is what turns this principle from a slogan into a practice.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>5 Reasons Why Human Judgment Is Irreplaceable in Decisions</h2>
+    <p>Click each reason to understand the specific capability gap that keeps humans essential to any AI-supported decision process.</p>
+    <div class="reasons">
+      <div class="reason" onclick="toggleReason(this)">
+        <div class="reason-header"><div class="reason-icon">🌐</div><div class="reason-title">Context AI Doesn't Have Access To</div><div class="reason-toggle">+</div></div>
+        <div class="reason-body"><div class="reason-detail">
+          <div class="reason-text">AI works with the information you give it and its training data. It has no access to the informal knowledge that lives in your organization: the team dynamic that makes Option B politically toxic, the client relationship that makes this timing wrong, the employee who resigned last week that makes the plan unexecutable. These context factors often outweigh quantitative evidence — and only a human inside the organization has them.</div>
+          <div class="reason-example"><div class="re-label">📋 Example</div>AI recommends hiring 5 engineers to meet product roadmap timelines. What AI doesn't know: the VP of Engineering just gave notice, the team is demoralized after a failed product launch, and the hiring market in your city is extremely tight. All three factors change the recommendation completely — and none are in any dataset.</div>
+        </div></div>
+      </div>
+      <div class="reason" onclick="toggleReason(this)">
+        <div class="reason-header"><div class="reason-icon">⚖️</div><div class="reason-title">Ethical and Values Judgment</div><div class="reason-toggle">+</div></div>
+        <div class="reason-body"><div class="reason-detail">
+          <div class="reason-text">Some decisions involve questions of values, ethics, and organizational identity that can't be resolved by data. Should we optimize for short-term profit or long-term brand trust? Is this pricing strategy fair to customers even if it's legal? Does this product decision align with who we want to be as a company? AI can surface the trade-offs but cannot answer value questions — those require human moral judgment.</div>
+          <div class="reason-example"><div class="re-label">📋 Example</div>AI analysis shows that reducing customer service staff by 40% would save $2M annually with minimal impact on CSAT scores. Whether this is the right decision involves values questions about how the company treats employees during a profitable period — which data cannot answer.</div>
+        </div></div>
+      </div>
+      <div class="reason" onclick="toggleReason(this)">
+        <div class="reason-header"><div class="reason-icon">🎯</div><div class="reason-title">Accountability and Ownership</div><div class="reason-toggle">+</div></div>
+        <div class="reason-body"><div class="reason-detail">
+          <div class="reason-text">When a decision goes wrong, someone needs to be accountable — to employees, customers, shareholders, or regulators. "The AI recommended it" is not an acceptable explanation in any professional context. Human decision-makers own the outcomes of their decisions. This accountability is not just procedural — it's what ensures decision-makers apply genuine care, not rubber-stamp automation.</div>
+          <div class="reason-example"><div class="re-label">📋 Example</div>A financial services firm uses AI to flag loan applications for rejection. When a regulatory audit finds bias in the outcomes, the firm cannot point to the algorithm as the responsible party. The human decision-makers who approved the AI system and its outputs are accountable — legally and professionally.</div>
+        </div></div>
+      </div>
+      <div class="reason" onclick="toggleReason(this)">
+        <div class="reason-header"><div class="reason-icon">🚨</div><div class="reason-title">Edge Cases and Novel Situations</div><div class="reason-toggle">+</div></div>
+        <div class="reason-body"><div class="reason-detail">
+          <div class="reason-text">AI excels at pattern recognition across large datasets. It struggles with genuinely novel situations that don't match historical patterns. The first time something happens — a market disruption, a new competitive threat, an unprecedented event — there's no training data to draw on. Human intuition and judgment, built from diverse experience, is specifically good at exactly these situations where data is sparse or irrelevant.</div>
+          <div class="reason-example"><div class="re-label">📋 Example</div>During the early weeks of COVID-19, no AI model trained on historical data could reliably recommend supply chain strategy — because nothing in the training data matched what was happening. The businesses that responded well did so through human judgment under genuine uncertainty.</div>
+        </div></div>
+      </div>
+      <div class="reason" onclick="toggleReason(this)">
+        <div class="reason-header"><div class="reason-icon">🤝</div><div class="reason-title">Stakeholder Trust and Relationships</div><div class="reason-toggle">+</div></div>
+        <div class="reason-body"><div class="reason-detail">
+          <div class="reason-text">Decisions don't just need to be analytically correct — they need to be accepted by the people affected. A decision delivered by "the AI said so" generates far less buy-in than one explained by a human who can articulate their reasoning, respond to concerns, and adapt to feedback. Human decision-making builds the relational trust that makes implementation possible.</div>
+          <div class="reason-example"><div class="re-label">📋 Example</div>AI recommends restructuring a department. Whether employees accept and adapt to the change depends almost entirely on how it's communicated by a human leader who can answer hard questions, acknowledge concerns, and build trust — not on how logically sound the AI analysis was.</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What AI Does vs. What Humans Do</h2>
+    <div class="division-table">
+      <div class="dt-header">
+        <div class="dt-col-head">🤖 What AI Contributes</div>
+        <div class="dt-col-head">👤 What Humans Contribute</div>
+      </div>
+      <div class="dt-row"><div class="dt-cell">Pattern recognition across large datasets</div><div class="dt-cell">Judgment about what patterns matter for this context</div></div>
+      <div class="dt-row"><div class="dt-cell">Speed — research in minutes, not days</div><div class="dt-cell">Context — knowing what the data doesn't capture</div></div>
+      <div class="dt-row"><div class="dt-cell">Consistent analysis without cognitive fatigue</div><div class="dt-cell">Ethical reasoning and values alignment</div></div>
+      <div class="dt-row"><div class="dt-cell">Identifying correlations and trends</div><div class="dt-cell">Understanding causation and organizational dynamics</div></div>
+      <div class="dt-row"><div class="dt-cell">Generating options and scenarios</div><div class="dt-cell">Choosing and committing to a direction</div></div>
+      <div class="dt-row"><div class="dt-cell">Surface signals and anomalies in data</div><div class="dt-cell">Accountability for outcomes and decisions</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The right question isn't "should AI or humans make this decision?" It's "what does AI contribute to this decision, and what does human judgment add on top?" Both are necessary. Neither alone is sufficient.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Activity: Would You Implement This?</h2>
+    <p>From the lesson video: review the AI recommendation, decide yes/no/modify, and justify your choice. For each scenario below, choose your decision and see the reasoning.</p>
+    <div class="implement-game">
+      <div class="ig-label">🎮 Would You Implement This?</div>
+      <div class="ig-title">Review → Decide → Justify</div>
+      <div class="ig-sub">Read the AI recommendation and context, then choose: implement, reject, or modify.</div>
+
+      <div class="ig-scenario" id="igs1">
+        <div class="ig-context">🏪 <strong>Context:</strong> You manage a regional retail chain. Q3 sales data shows your loyalty program members spend 2.3× more than non-members. Only 18% of your customers are currently enrolled.</div>
+        <div class="ig-ai-rec"><div class="ig-ai-label">🤖 AI Recommendation</div><div class="ig-ai-text">Based on the spend differential and low enrollment rate, I recommend an aggressive loyalty program enrollment campaign — targeting all in-store customers with a 15% discount offer for immediate signup, supported by a 3-month SMS and email drip sequence.</div></div>
+        <div class="ig-buttons">
+          <button class="ig-btn yes" onclick="igDecide(1,'impl')">👍 Implement It</button>
+          <button class="ig-btn no" onclick="igDecide(1,'reject')">👎 Reject It</button>
+          <button class="ig-btn modify" onclick="igDecide(1,'modify')">✏️ Modify It</button>
+        </div>
+        <div class="ig-reveal" id="igr1"></div>
+      </div>
+
+      <div class="ig-scenario" id="igs2">
+        <div class="ig-context">🏭 <strong>Context:</strong> You're a supply chain manager. AI analysis shows that switching your primary supplier from Supplier A to Supplier B would reduce material costs by 12% annually based on last year's pricing data.</div>
+        <div class="ig-ai-rec"><div class="ig-ai-label">🤖 AI Recommendation</div><div class="ig-ai-text">I recommend transitioning 100% of primary material sourcing to Supplier B. The 12% cost reduction equates to $2.1M annually. The transition should be completed within 90 days to capture maximum savings.</div></div>
+        <div class="ig-buttons">
+          <button class="ig-btn yes" onclick="igDecide(2,'impl')">👍 Implement It</button>
+          <button class="ig-btn no" onclick="igDecide(2,'reject')">👎 Reject It</button>
+          <button class="ig-btn modify" onclick="igDecide(2,'modify')">✏️ Modify It</button>
+        </div>
+        <div class="ig-reveal" id="igr2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h3>AI Suggestions Aren't Instructions</h3>
+        <p>The lesson video said it directly: "AI suggestions aren't instructions." The word "recommendation" from an AI tool is not an order. It's one informed input among several. Your job is to evaluate that input against context, values, relationships, and organizational reality — and then make the actual decision. That's not a limitation of AI; it's the correct division of labor between what machines are good at and what humans are good at.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A hospital is using an AI system to help prioritize patient triage in the emergency department. The AI flags certain patients as lower priority based on vital signs data. Why must a human clinician always review and approve these prioritization decisions rather than acting on them automatically?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Because hospital liability insurance requires human approval of all decisions</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. Because AI lacks the clinical context, ethical judgment, and accountability that patient care decisions require — a patient's vital signs don't capture their full clinical picture, and the consequences of errors are life-or-death, requiring human medical judgment and ownership of outcomes</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. Because AI systems in hospitals are still too new to be trusted</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Because doctors need to stay involved to maintain their skills</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Humans stay in the loop for five specific reasons: contextual knowledge AI can't access, ethical and values judgment, accountability for outcomes, handling novel situations with sparse data, and maintaining stakeholder trust.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI contributes speed, pattern recognition, and consistency. Humans contribute context, ethics, accountability, and judgment about what the patterns actually mean for this specific situation.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>"AI suggestions aren't instructions." Reviewing, questioning, modifying, and sometimes overriding AI recommendations is not a failure of the system — it's the system working as intended.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The right division of labor: AI handles information synthesis at scale; humans handle judgment, context, ethics, and accountability. Neither alone produces good outcomes.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleReason(r){const o=r.classList.contains('open');document.querySelectorAll('.reason').forEach(x=>x.classList.remove('open'));if(!o)r.classList.add('open');}
+
+  const igFb={
+    1:{impl:'👍 <strong>Implement — with a small modification.</strong> The data strongly supports this direction: 2.3× spend differential + 82% non-enrolled = massive untapped revenue. The core recommendation is sound. One refinement worth considering: test the 15% discount trigger on a subset before full rollout, to confirm the offer economics work (cost of discount vs. lifetime value gained). But the strategic direction — aggressive loyalty enrollment campaign — is clearly data-supported.',reject:'👎 <strong>Reconsidering...</strong> The data makes a strong case here. 2.3× spend differential with 82% not enrolled is a significant opportunity, and AI correctly identified it. Rejecting without a compelling counter-reason leaves significant revenue on the table. The more appropriate response might be to modify the execution details rather than reject the direction entirely.',modify:'✏️ <strong>Good instinct.</strong> Modify is probably the right call. The direction is correct (enrollment campaign is clearly justified by data), but "aggressive" 15% discount across all customers might be financially suboptimal. A smarter modification: A/B test discount levels (10% vs 15% vs points bonus), segment the campaign by customer lifetime value, and phase the SMS drip by response rather than running a uniform 3-month sequence. Same strategy, tighter execution.'},
+    2:{impl:'👍 <strong>Think again.</strong> "Implement immediately" on a 100% supplier switch is risky even with good data. The 12% figure is based on last year\'s pricing, which may not reflect current conditions. 100% concentration in one supplier creates fragility. And 90 days is aggressive for a full transition. The data supports exploring the switch — but not necessarily executing it at full scale immediately.',reject:'👎 <strong>Reconsidering...</strong> A 12% / $2.1M annual saving is significant and shouldn\'t be dismissed without reason. The question isn\'t whether to change — it\'s how. Pure rejection leaves real money on the table. A modify approach is probably more defensible.',modify:'✏️ <strong>Smart call.</strong> Modify is the right response here. The cost case is real, but the execution plan needs adjustment: (1) Run a pilot with 30–40% of volume first to validate Supplier B\'s quality and reliability at scale. (2) Negotiate updated pricing — last year\'s rates may have changed. (3) Maintain partial Supplier A relationship for redundancy. (4) Extend timeline to 6 months for a managed transition. Same outcome, much lower risk.'}
+  };
+  const igDone={};
+  function igDecide(i,choice){if(igDone[i])return;igDone[i]=true;document.querySelectorAll(`#igs${i} .ig-btn`).forEach(b=>b.disabled=true);const r=document.getElementById('igr'+i);r.innerHTML=igFb[i][choice];r.className='ig-reveal show '+choice;}
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> This is a textbook case for why human-in-the-loop is non-negotiable in high-stakes domains. AI triage tools work with the data they have — vital signs, chief complaint, lab values — but experienced clinicians also observe how a patient looks, what their history suggests, what a family member just said, and dozens of other signals that aren\'t in any dataset. In a life-or-death context, every one of these five reasons to keep humans in the loop applies simultaneously: context, ethics, accountability, edge cases, and trust.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite the core reason.</strong> Liability, technology maturity, and skill maintenance are all secondary. The fundamental reason is that AI lacks the full clinical context, ethical judgment (complex trade-offs in severe cases), and the accountability structure that life-critical decisions require. "The algorithm recommended it" has never and should never be sufficient justification for a medical decision.';}f.classList.add('show');}
+</script>
+</body>
+</html>

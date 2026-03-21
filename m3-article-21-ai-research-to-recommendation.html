@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Turn AI Research Into a Business Recommendation — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* 5-step framework */
+  .framework{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .fw-step{display:flex;gap:0;}
+  .fw-left{width:40px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;}
+  .fw-num{width:40px;height:40px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:white;flex-shrink:0;z-index:1;}
+  .fw-line{width:2px;background:var(--purple-mid);flex:1;margin:4px 0;}
+  .fw-step:last-child .fw-line{display:none;}
+  .fw-body{flex:1;padding:0 0 28px 20px;}
+  .fw-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .fw-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .fw-desc{font-size:15px;line-height:1.7;color:var(--gray-text);margin-bottom:10px;}
+  .fw-example{background:var(--purple-pale);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.6;color:var(--purple-dark);}
+
+  /* Nike scenario builder */
+  .nike-scenario{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ns-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .ns-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ns-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .ns-stages{display:flex;flex-direction:column;gap:12px;}
+  .ns-stage{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
+  .ns-stage:hover,.ns-stage.open{border-color:var(--purple);}
+  .ns-stage-header{display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--white);transition:background 0.2s;}
+  .ns-stage.open .ns-stage-header{background:var(--purple-pale);}
+  .ns-step-badge{background:var(--purple);color:white;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;flex-shrink:0;}
+  .ns-stage-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);flex:1;}
+  .ns-toggle{font-size:18px;color:var(--purple);transition:transform 0.3s;}
+  .ns-stage.open .ns-toggle{transform:rotate(45deg);}
+  .ns-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+  .ns-stage.open .ns-body{max-height:400px;}
+  .ns-detail{padding:0 20px 20px;border-top:1px solid var(--purple-mid);}
+  .ns-ai-block{background:var(--purple);border-radius:10px;padding:14px 16px;color:white;margin:14px 0;font-size:14.5px;line-height:1.7;}
+  .ns-ai-lbl{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:4px;}
+  .ns-human-block{background:var(--green-pale);border-radius:10px;padding:14px 16px;border-left:3px solid #6EE7B7;font-size:14.5px;line-height:1.7;color:var(--green);}
+  .ns-human-lbl{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:4px;}
+
+  /* Weak vs strong rec */
+  .rec-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.rec-compare{grid-template-columns:1fr;}}
+  .rc-box{border-radius:16px;padding:22px;border:1.5px solid;}
+  .rc-box.weak{background:var(--red-pale);border-color:#FCA5A5;}
+  .rc-box.strong{background:var(--green-pale);border-color:#6EE7B7;}
+  .rc-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;}
+  .rc-box.weak .rc-label{color:var(--red);}
+  .rc-box.strong .rc-label{color:var(--green);}
+  .rc-text{font-size:14.5px;line-height:1.75;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.4 · Supporting Decisions</div>
+  <h1>How to Turn AI Research Into a Business Recommendation</h1>
+  <p class="hero-sub">AI gives you data and insights. But data and insights aren't a recommendation. Transforming research into something a decision-maker can actually act on is a distinct skill — and one of the most valuable things you can bring to any organization.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>There's a gap that catches many people off guard when they start using AI for professional research. AI can produce an impressive research brief — market data, competitive landscape, trend analysis, risk factors. But when someone asks "so what should we do?", the research alone doesn't answer that question.</p>
+    <p><mark>A business recommendation is more than research — it's a specific, justified course of action that translates insights into something actionable.</mark> The lesson video showed this using Nike: AI can analyze shoe endorsement options and compare brands — but someone still has to say "based on this, here's what I recommend and why." That someone is you.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 5-Step Framework: Research to Recommendation</h2>
+    <p>This framework gives you a repeatable process for turning any AI research output into a well-structured business recommendation.</p>
+    <div class="framework">
+      <div class="fw-step">
+        <div class="fw-left"><div class="fw-num">1</div><div class="fw-line"></div></div>
+        <div class="fw-body">
+          <div class="fw-label">Step 1</div>
+          <div class="fw-title">Crystallize the Question</div>
+          <p class="fw-desc">Before anything else, make sure you're answering the right question. Many recommendations fail because they answer a slightly different question than the one the decision-maker actually needs answered. State the question clearly before you start.</p>
+          <div class="fw-example">📌 Not: "What does the market look like?" → But: "Should we enter the Southeast Asian market in Q1 next year, and if so, which country first?"</div>
+        </div>
+      </div>
+      <div class="fw-step">
+        <div class="fw-left"><div class="fw-num">2</div><div class="fw-line"></div></div>
+        <div class="fw-body">
+          <div class="fw-label">Step 2</div>
+          <div class="fw-title">Extract the 3 Most Relevant Findings</div>
+          <p class="fw-desc">From all your AI research, identify the three data points or insights that most directly answer the specific question. Don't include everything — include what's most relevant. A recommendation buried under 15 findings is harder to act on than one grounded in three sharp ones.</p>
+          <div class="fw-example">📌 From a 30-page AI market brief, pull: (1) market size/growth, (2) most relevant competitive gap, (3) single biggest risk or opportunity.</div>
+        </div>
+      </div>
+      <div class="fw-step">
+        <div class="fw-left"><div class="fw-num">3</div><div class="fw-line"></div></div>
+        <div class="fw-body">
+          <div class="fw-label">Step 3</div>
+          <div class="fw-title">Add Context AI Doesn't Have</div>
+          <p class="fw-desc">This is where human judgment earns its place. What does AI not know about your company, your team, your relationships, your timing, your budget, or your strategic priorities that would affect what this research means? Layer that context in before making the call.</p>
+          <div class="fw-example">📌 The data supports entering Vietnam. But: your team has no Southeast Asia experience, and your CEO has a strong relationship in Singapore. That context changes the recommendation.</div>
+        </div>
+      </div>
+      <div class="fw-step">
+        <div class="fw-left"><div class="fw-num">4</div><div class="fw-line"></div></div>
+        <div class="fw-body">
+          <div class="fw-label">Step 4</div>
+          <div class="fw-title">Make a Clear, Specific Recommendation</div>
+          <p class="fw-desc">State your recommendation as a specific, actionable direction — not a vague suggestion. "We should consider exploring this" is not a recommendation. "I recommend we launch in Singapore in Q2 with a $500K initial budget" is a recommendation.</p>
+          <div class="fw-example">📌 Weak: "The data suggests international expansion may be worth considering." Strong: "I recommend we prioritize Singapore for a Q2 pilot, leveraging our CEO's existing partnership contact."</div>
+        </div>
+      </div>
+      <div class="fw-step">
+        <div class="fw-left"><div class="fw-num">5</div><div class="fw-line"></div></div>
+        <div class="fw-body">
+          <div class="fw-label">Step 5</div>
+          <div class="fw-title">Define the Next Action</div>
+          <p class="fw-desc">A recommendation without a next step stays on a slide forever. Close the loop: what specifically should happen next, who should own it, and by when? This turns a recommendation into a decision trigger.</p>
+          <div class="fw-example">📌 "If leadership approves this direction, the next step is: [Person] schedules exploratory conversations with the Singapore partnership contact by [Date] and reports back to the team by [Date]."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The difference between someone who "found interesting research" and someone who "moved a decision forward" is the recommendation layer. Data without a recommendation is reading material. Data with a recommendation is a business contribution.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Nike Scenario: AI to Recommendation</h2>
+    <p>From the lesson video: Nike is analyzing shoe endorsement options. AI does the research. See how each step of the framework plays out in this real business scenario.</p>
+    <div class="nike-scenario">
+      <div class="ns-label">🎮 Nike Endorsement Scenario</div>
+      <div class="ns-title">From AI Research to Recommendation</div>
+      <div class="ns-sub">Click each stage to see what AI produces and what human judgment adds.</div>
+      <div class="ns-stages">
+        <div class="ns-stage" onclick="toggleNS(this)">
+          <div class="ns-stage-header"><div class="ns-step-badge">Step 1</div><div class="ns-stage-title">The Question: Which athlete to endorse?</div><div class="ns-toggle">+</div></div>
+          <div class="ns-body"><div class="ns-detail">
+            <div class="ns-ai-block"><div class="ns-ai-lbl">🤖 AI Input</div>Analyzing endorsement options requires comparing brand alignment, audience reach, performance metrics, market positioning, and contract risk factors across athlete candidates.</div>
+            <div class="ns-human-block"><div class="ns-human-lbl">✅ Human Clarification</div>The real question is more specific: "Given our goal to increase market share among 18–25 runners, which athlete endorsement will have the highest ROI over 3 years?" Clarifying this focuses everything that follows.</div>
+          </div></div>
+        </div>
+        <div class="ns-stage" onclick="toggleNS(this)">
+          <div class="ns-stage-header"><div class="ns-step-badge">Step 2</div><div class="ns-stage-title">AI Research: Comparing the candidates</div><div class="ns-toggle">+</div></div>
+          <div class="ns-body"><div class="ns-detail">
+            <div class="ns-ai-block"><div class="ns-ai-lbl">🤖 AI Findings</div>Athlete A: 2.8M Instagram followers, 73% 18–25 audience, 4 major brand partnerships, no controversy history, performance: ranked top 10 globally. Athlete B: 5.1M followers, 45% 18–25 audience, 2 partnerships, minor controversy 18 months ago, ranked top 5 globally. Athlete C: 900K followers, 81% 18–25 audience, no existing partnerships (clean slate), ranked top 20, rising trajectory.</div>
+            <div class="ns-human-block"><div class="ns-human-lbl">✅ Human Filtering</div>The 3 most relevant data points for the specific question: audience age match, controversy risk, and partnership exclusivity. AI found all three — but ranking their importance for Nike's specific situation requires human judgment about the brand's current risk appetite and goals.</div>
+          </div></div>
+        </div>
+        <div class="ns-stage" onclick="toggleNS(this)">
+          <div class="ns-stage-header"><div class="ns-step-badge">Step 3</div><div class="ns-stage-title">Adding context AI doesn't have</div><div class="ns-toggle">+</div></div>
+          <div class="ns-body"><div class="ns-detail">
+            <div class="ns-ai-block"><div class="ns-ai-lbl">🤖 AI Limitation</div>AI doesn't know: Nike's current internal controversy tolerance after recent PR situations; that Athlete B's "minor controversy" involved a topic highly sensitive to Nike's target demographic specifically; or that Nike's marketing team has a pre-existing relationship with Athlete C's management agency.</div>
+            <div class="ns-human-block"><div class="ns-human-lbl">✅ Human Context Added</div>This changes the picture significantly. Athlete B's controversy risk is higher than the data suggests given audience sensitivity. Athlete C's relationship advantage offsets the smaller follower count — and the "clean slate" makes the partnership story easier to tell.</div>
+          </div></div>
+        </div>
+        <div class="ns-stage" onclick="toggleNS(this)">
+          <div class="ns-stage-header"><div class="ns-step-badge">Step 4</div><div class="ns-stage-title">The Recommendation</div><div class="ns-toggle">+</div></div>
+          <div class="ns-body"><div class="ns-detail">
+            <div class="ns-ai-block"><div class="ns-ai-lbl">🤖 AI Suggestion</div>"Based on data, Athlete A presents the best balance of audience fit, performance credibility, and low risk. Athlete C is a high-upside alternative worth considering."</div>
+            <div class="ns-human-block"><div class="ns-human-lbl">✅ Human Recommendation</div>"I recommend Athlete C as the primary endorsement. The 81% target-audience match is the highest of the three. The existing agency relationship reduces negotiation time and cost. The rising trajectory creates a partnership narrative that grows with the athlete — more compelling than endorsing an already-established star. Secondary recommendation: explore a smaller co-partnership with Athlete A to hedge performance risk."</div>
+          </div></div>
+        </div>
+        <div class="ns-stage" onclick="toggleNS(this)">
+          <div class="ns-stage-header"><div class="ns-step-badge">Step 5</div><div class="ns-stage-title">Next Action</div><div class="ns-toggle">+</div></div>
+          <div class="ns-body"><div class="ns-detail">
+            <div class="ns-ai-block"><div class="ns-ai-lbl">🤖 AI Output</div>AI can generate a list of potential next steps but cannot determine which should be prioritized or who owns them.</div>
+            <div class="ns-human-block"><div class="ns-human-lbl">✅ Human Next Step</div>"If leadership approves this direction, the next step is: Sarah [Marketing VP] reaches out to Athlete C's agency contact within 5 business days to gauge contract appetite. If initial conversations are positive, present a formal proposal to the brand committee by [Date]."</div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Weak vs. Strong Recommendations: Side by Side</h2>
+    <div class="rec-compare">
+      <div class="rc-box weak">
+        <div class="rc-label">❌ Weak Recommendation</div>
+        <div class="rc-text">"The research suggests that entering the European market could be beneficial given current trends. There may be opportunities worth exploring, though more analysis might be needed before making a final decision."</div>
+      </div>
+      <div class="rc-box strong">
+        <div class="rc-label">✅ Strong Recommendation</div>
+        <div class="rc-text">"I recommend entering Germany as our first European market in Q3. The data shows the highest addressable market ($2.1B) and lowest competitive density of any EU country. The next step is engaging a local distribution partner — I've identified three candidates to evaluate."</div>
+      </div>
+    </div>
+    <p>Notice the difference: the weak version hedges, generalizes, and defers. The strong version commits to a specific direction, cites the evidence, and closes with an action. Both could come from the same AI research — the difference is entirely in what the human author adds.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h3>The Recommendation Is Where Your Value Lies</h3>
+        <p>AI can produce the research brief. Anyone with access to the same tools can produce the same brief. What differentiates you is what you add on top: the right question, the most relevant findings selected from the noise, the context from knowing your organization, the specific recommendation, and the actionable next step. That layer is irreducibly human — and it's what organizations actually need from people who use AI well.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">Your AI research clearly shows that Product A has a higher market share, lower price point, and better customer ratings than Product B in your category. You write: "Based on the data, we may want to consider positioning more like Product A going forward." What is the main weakness of this recommendation?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. The research doesn't support the recommendation — Product A's advantages are clear</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. It's too vague and non-committal — a strong recommendation states a specific action, not a hedge like "may want to consider." What specific positioning change? By when? Who owns it?</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. It doesn't include enough data — more research is needed before making any recommendation</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Recommendations should never come from competitive analysis</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The 5-step framework: crystallize the question → extract 3 key findings → add context AI doesn't have → make a specific recommendation → define the next action.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The human value-add lives at Steps 3 and 4: adding organizational context AI can't access, and making a specific, committed recommendation rather than hedging with "we may want to consider."</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A strong recommendation is specific, justified by evidence, aware of context, and closes with a clear next action and owner. A weak recommendation hedges and defers — leaving the decision-maker with more reading but no clearer direction.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The recommendation layer is where you differentiate yourself from someone who just ran the same AI prompts. It's the irreducibly human contribution that turns research into organizational value.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleNS(el){const o=el.classList.contains('open');document.querySelectorAll('.ns-stage').forEach(x=>x.classList.remove('open'));if(!o)el.classList.add('open');}
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> "May want to consider positioning more like Product A" is the classic weak recommendation pattern — it hedges instead of committing. A strong recommendation from the same research would say: "I recommend we redesign our pricing structure to close the $X gap with Product A by Q2, and commission a UX audit to address the 3 most-cited customer experience gaps in reviews. [Person] to own this, with a plan back to the team by [Date]." Same data, completely different value.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The data does support the recommendation direction — that\'s not the problem. More research isn\'t needed. And competitive analysis absolutely is a valid basis for recommendations. The issue is specificity and commitment: "may want to consider" is not a recommendation — it\'s a deferral wrapped in research language. A recommendation takes a position.';}f.classList.add('show');}
+</script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Businesses Actually Make Decisions — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Decision dial */
+  .decision-spectrum{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ds-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .ds-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ds-sub{font-size:15px;color:var(--gray-muted);margin-bottom:24px;}
+  .ds-track{position:relative;margin:20px 0 10px;}
+  .ds-bar{height:14px;border-radius:100px;background:linear-gradient(to right,var(--purple),#C084FC,#F9A8D4);margin-bottom:6px;}
+  .ds-labels{display:flex;justify-content:space-between;}
+  .ds-lab{font-size:12px;font-weight:600;color:var(--gray-muted);}
+  input[type=range]{width:100%;accent-color:var(--purple);cursor:pointer;margin:4px 0 16px;}
+  .ds-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px 20px;min-height:90px;}
+  .ds-out-type{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ds-out-text{font-size:15px;line-height:1.7;color:var(--gray-text);}
+  .ds-out-example{font-size:13.5px;color:var(--gray-muted);margin-top:8px;font-style:italic;}
+
+  /* Decision factors grid */
+  .factors-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:600px){.factors-grid{grid-template-columns:1fr;}}
+  .factor-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;background:var(--white);}
+  .fc-icon{font-size:32px;margin-bottom:10px;display:block;}
+  .fc-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .fc-desc{font-size:14px;line-height:1.65;color:var(--gray-text);}
+  .fc-ai{font-size:12.5px;color:var(--purple);margin-top:8px;font-weight:600;}
+
+  /* Real decision scenario */
+  .scenario-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ss-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .ss-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ss-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .ss-scenario{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:22px;margin-bottom:16px;}
+  .ss-context{font-size:15.5px;line-height:1.75;margin-bottom:16px;}
+  .ss-ai-rec{background:var(--purple);border-radius:12px;padding:16px 18px;color:white;margin-bottom:16px;}
+  .ss-ai-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;}
+  .ss-ai-text{font-size:15px;line-height:1.7;}
+  .ss-q{font-weight:700;color:var(--purple-dark);font-size:15.5px;margin-bottom:12px;}
+  .ss-opts{display:flex;flex-direction:column;gap:8px;}
+  .ss-opt{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:10px;padding:13px 16px;font-size:14.5px;cursor:pointer;transition:all 0.2s;text-align:left;font-family:'DM Sans',sans-serif;}
+  .ss-opt:hover:not([disabled]){border-color:var(--purple);background:var(--purple-pale);}
+  .ss-opt.correct{background:var(--green-pale);border-color:#6EE7B7;color:var(--green);}
+  .ss-opt.wrong{background:var(--red-pale);border-color:#FCA5A5;color:var(--red);}
+  .ss-fb{margin-top:12px;padding:14px 16px;border-radius:10px;font-size:14.5px;line-height:1.65;display:none;}
+  .ss-fb.show{display:block;animation:fadeIn 0.3s ease;}
+  .ss-fb.good{background:var(--green-pale);color:var(--green);}
+  .ss-fb.bad{background:var(--red-pale);color:var(--red);}
+
+  /* Transform visual */
+  .transform-row{display:grid;grid-template-columns:1fr 48px 1fr;gap:12px;align-items:center;margin:24px 0;}
+  @media(max-width:520px){.transform-row{grid-template-columns:1fr;}.transform-arrow{transform:rotate(90deg);}}
+  .tr-box{border-radius:16px;padding:20px 22px;}
+  .tr-box.before{background:var(--red-pale);border:1.5px solid #FCA5A5;}
+  .tr-box.after{background:var(--green-pale);border:1.5px solid #6EE7B7;}
+  .tr-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+  .tr-box.before .tr-label{color:var(--red);}
+  .tr-box.after .tr-label{color:var(--green);}
+  .tr-text{font-size:15px;line-height:1.7;}
+  .transform-arrow{text-align:center;font-size:28px;color:var(--purple);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.4 · Supporting Decisions</div>
+  <h1>How Businesses Actually Make Decisions: Data, Gut Instinct, and Everything in Between</h1>
+  <p class="hero-sub">Business decisions are almost never purely data-driven — and they're almost never purely gut-driven either. Understanding the real decision process is what lets you use AI research to maximum effect.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>If you ask most business leaders how they make decisions, they'll say "data-driven." If you watch them make decisions, you'll see something more complicated: a blend of research, experience, intuition, organizational politics, time pressure, and personal judgment. <mark>Real decisions live on a spectrum from purely analytical to purely intuitive — and most live somewhere in the middle.</mark></p>
+    <p>Understanding where your decision falls on that spectrum is the first step to figuring out what kind of AI research will actually help, and what the human judgment layer needs to add before anyone acts on the insight.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Decision Spectrum</h2>
+    <p>Drag the slider to explore different types of business decisions and see how the role of data vs. judgment shifts across the spectrum.</p>
+    <div class="decision-spectrum">
+      <div class="ds-label">🎚️ Decision Type Explorer</div>
+      <div class="ds-title">From Pure Data to Pure Instinct</div>
+      <div class="ds-sub">Drag to explore how different decisions rely on data vs. human judgment.</div>
+      <div class="ds-track">
+        <div class="ds-bar"></div>
+        <input type="range" min="0" max="4" step="1" value="0" id="dsSlider" oninput="updateDS(this.value)">
+        <div class="ds-labels"><span class="ds-lab">Pure Data</span><span class="ds-lab">Pure Instinct</span></div>
+      </div>
+      <div class="ds-output" id="dsOutput">
+        <div class="ds-out-type" id="dsType">📊 Fully Data-Driven</div>
+        <div class="ds-out-text" id="dsText">The decision is entirely determined by a number. If the threshold is met, action A. If not, action B. Human judgment is minimal.</div>
+        <div class="ds-out-example" id="dsExample">Example: Reorder inventory when stock drops below 50 units. No interpretation needed — it's a rule triggered by data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 3 Factors Every Business Decision Weighs</h2>
+    <p>Even highly "data-driven" decisions in practice involve three distinct inputs. AI can help meaningfully with the first. The second and third are irreducibly human.</p>
+    <div class="factors-grid">
+      <div class="factor-card">
+        <span class="fc-icon">📊</span>
+        <div class="fc-name">Quantitative Evidence</div>
+        <p class="fc-desc">Numbers, trends, statistics, financial projections. What the data actually shows about past performance and future likelihood.</p>
+        <div class="fc-ai">🤖 AI contribution: High — AI excels at finding, summarizing, and analyzing data at scale</div>
+      </div>
+      <div class="factor-card">
+        <span class="fc-icon">🧠</span>
+        <div class="fc-name">Qualitative Context</div>
+        <p class="fc-desc">The nuances data can't capture: relationship dynamics, cultural factors, employee morale, timing, political will. The "why behind the what."</p>
+        <div class="fc-ai">🤖 AI contribution: Limited — AI can surface some qualitative signals but misses the lived context of an organization</div>
+      </div>
+      <div class="factor-card">
+        <span class="fc-icon">🎯</span>
+        <div class="fc-name">Strategic Judgment</div>
+        <p class="fc-desc">Experience-based intuition about what this data means for this company at this moment — the synthesis that turns information into wisdom.</p>
+        <div class="fc-ai">🤖 AI contribution: None — this is the irreducibly human part. AI can support it; it cannot provide it.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Data tells you what happened and what's likely to happen. It cannot tell you what matters, what your organization can actually execute, or whether this moment is the right moment. That's what judgment is for.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>AI Changes the Speed of Step 1 — Not the Process</h2>
+    <p>Here's what AI actually changes in business decision-making: it dramatically accelerates the evidence-gathering phase. What used to take an analyst days now takes minutes. But the decision-making process itself — weighing evidence against context against judgment — remains entirely human.</p>
+    <div class="transform-row">
+      <div class="tr-box before">
+        <div class="tr-label">⏰ Before AI</div>
+        <div class="tr-text">A team spends 2 weeks gathering market data, competitive intelligence, and financial analysis before a strategy meeting. By the time they present, some data is already stale. Decisions are deferred because "we need more research."</div>
+      </div>
+      <div class="transform-arrow">→</div>
+      <div class="tr-box after">
+        <div class="tr-label">⚡ With AI</div>
+        <div class="tr-text">The same research takes 2 hours. The team arrives at the strategy meeting with current, comprehensive evidence. More time is spent on actual decision-making — weighing options, discussing context, applying judgment — rather than waiting for data.</div>
+      </div>
+    </div>
+    <p>The decision is still human. The evidence is just ready faster.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Practice: Data Meets Reality</h2>
+    <p>AI has done the research. Now you have to make the actual call — which requires applying context and judgment that AI doesn't have.</p>
+    <div class="scenario-sim">
+      <div class="ss-label">🎮 Decision Scenario</div>
+      <div class="ss-title">Your Turn to Decide</div>
+      <div class="ss-sub">Read the AI research and context, then make the call.</div>
+      <div class="ss-scenario">
+        <div class="ss-context">📋 <strong>Situation:</strong> You're the marketing director at a mid-size e-commerce company. You're deciding whether to double your paid advertising budget for Q4. AI has done the research and generated a recommendation.</div>
+        <div class="ss-ai-rec">
+          <div class="ss-ai-label">🤖 AI Research Summary</div>
+          <div class="ss-ai-text">Data shows your Q4 paid ads ROI has averaged 4.2x over the last 3 years. Industry benchmarks suggest Q4 is historically the highest-ROI period for e-commerce advertising. Competitors increased paid budgets by an average of 32% last Q4. Doubling the budget based on historical performance trends appears financially justified.</div>
+        </div>
+        <div class="ss-context" style="margin-top:10px;">⚠️ <strong>Context AI doesn't know:</strong> Your fulfillment team just told you they're already at 85% capacity going into Q4. A supply chain disruption means your top 3 products have 6-week lead times. Your customer service team is understaffed.</div>
+        <div class="ss-q">Given both the AI research AND the operational context, what's the right decision?</div>
+        <div class="ss-opts">
+          <button class="ss-opt" onclick="ssAnswer(this,'wrong')">A. Follow the AI recommendation — the data clearly supports doubling the budget</button>
+          <button class="ss-opt" onclick="ssAnswer(this,'correct')">B. Override the AI recommendation — even though the data supports more spending, operational constraints mean more demand would create customer service failures that would hurt the brand more than the revenue gain helps</button>
+          <button class="ss-opt" onclick="ssAnswer(this,'wrong')">C. Ask AI to factor in the operational constraints and let it re-decide</button>
+        </div>
+        <div class="ss-fb" id="ssfb"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>AI Sees Patterns — Not Your Whole Situation</h3>
+        <p>AI research is excellent at surface patterns in data — trends, correlations, benchmarks. What it can't see is the full context of your specific organization: the team that's already stretched, the client relationship that's fragile, the political dynamic that makes Option B toxic regardless of the data. When AI gives you a recommendation, ask yourself: "What does AI not know about my situation that would change this answer?" The answer to that question is where your judgment adds the most value.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A CEO says "we're completely data-driven — we let the numbers make every decision." Why is this statement likely to be an oversimplification of how decisions actually get made?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. It's accurate — fully data-driven decision-making is the goal all businesses should aim for</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. Even data-rich decisions require human judgment to interpret what the data means for this specific context, what to prioritize, and what factors the data doesn't capture — data informs decisions, but humans make them</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. It's an overstatement because most companies don't have enough data to make decisions</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. It's an overstatement because data is always unreliable</button>
+      </div>
+      <div class="quiz-feedback" id="qf"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Business decisions exist on a spectrum from fully data-driven to fully intuitive — most real decisions live in the middle, blending evidence with qualitative context and strategic judgment.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Every business decision involves three factors: quantitative evidence (where AI helps a lot), qualitative context (where AI helps a little), and strategic judgment (where AI cannot help at all).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI changes the speed of evidence-gathering dramatically — but not the decision-making process itself. Weighing evidence against context against judgment remains irreducibly human.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>When AI gives a research-based recommendation, always ask: "What does AI not know about my specific situation that would change this answer?" That's where your judgment adds irreplaceable value.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const dsStates=[
+    {type:'📊 Fully Data-Driven',text:'The decision is entirely determined by a number. If the threshold is met, action A. If not, action B. Human judgment is minimal.',example:'Example: Reorder inventory when stock drops below 50 units. No interpretation needed — it\'s a rule triggered by data.'},
+    {type:'📊🧠 Data-Primary',text:'Data is the dominant input, but a human reviews and approves. The data gives a strong signal; judgment confirms whether the context is consistent with acting on it.',example:'Example: AI flags a customer as high churn risk (87% probability). A customer success manager reviews and decides whether to intervene — and how.'},
+    {type:'⚖️ Balanced',text:'Data and judgment have roughly equal weight. Research provides important context, but experience, relationships, and strategic priorities shape the final call as much as the numbers.',example:'Example: Choosing between two product launch strategies. Data supports both; the choice depends on competitive timing, team capability, and strategic priority.'},
+    {type:'🧠📊 Judgment-Primary',text:'Judgment is the dominant input, with data as supporting evidence rather than the primary driver. Often applies to novel situations where historical data has limited relevance.',example:'Example: Deciding whether to enter a brand-new market category. Data can inform, but no historical data fully predicts success in something genuinely new.'},
+    {type:'🧠 Fully Intuitive',text:'The decision relies almost entirely on experience, vision, and judgment. Data may be unavailable, irrelevant, or deliberately set aside in favor of a conviction-based call.',example:'Example: A founder\'s decision to pivot the entire company direction based on a pattern they\'ve spotted that data hasn\'t yet captured.'}
+  ];
+  function updateDS(v){const d=dsStates[v];document.getElementById('dsType').textContent=d.type;document.getElementById('dsText').textContent=d.text;document.getElementById('dsExample').textContent=d.example;}
+
+  let ssDone=false;
+  function ssAnswer(btn,type){if(ssDone)return;ssDone=true;document.querySelectorAll('.ss-opt').forEach(b=>b.disabled=true);const fb=document.getElementById('ssfb');if(type==='correct'){btn.classList.add('correct');fb.className='ss-fb good show';fb.innerHTML='✅ <strong>Right decision.</strong> This is exactly why "AI suggests, humans decide" isn\'t just a slogan — it\'s operationally necessary. The AI\'s recommendation was logically correct based on the data it had. But the data it had was incomplete. Your judgment added the critical context: more demand + capacity constraints + supply chain delays = customer service disaster that erases the revenue gain. Overriding the AI recommendation was the smarter call precisely because you had context the AI didn\'t.';}else if(type==='wrong'){btn.classList.add('wrong');document.querySelectorAll('.ss-opt')[1].classList.add('correct');fb.className='ss-fb bad show';fb.innerHTML='❌ <strong>Not quite.</strong> Following the data blindly ignores critical operational context. Even re-asking AI to factor in the constraints is a mistake — it assumes AI can fully model your fulfillment situation, team capacity, and customer relationship risks, which it can\'t. This scenario is precisely designed to illustrate that AI research gives you one important input, not the complete picture. Human judgment that adds operational context is what prevents the data-logical but operationally disastrous choice.';}fb.style.display='block';}
+
+  let done=false;
+  function answer(btn,correct){if(done)return;done=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('qf');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> "Data-driven" is a useful aspiration but a misleading description of how decisions actually work. Data tells you what happened and what\'s statistically likely. It doesn\'t tell you what matters most to your company, what your organization can actually execute, whether this moment is the right one, or how to weigh competing priorities. Those are judgment calls — and they\'re made by humans, not datasets. AI research makes the data input better and faster; it doesn\'t change the fact that interpretation and choice are human acts.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> The goal isn\'t more data — it\'s better judgment informed by better data. Even if you had perfect data on every variable, you\'d still need a human to decide what to prioritize, how much risk to accept, and which direction aligns with the company\'s strategy and values. Data reliability isn\'t the core issue here — interpretation and context are.';}f.classList.add('show');}
+</script>
+</body>
+</html>
