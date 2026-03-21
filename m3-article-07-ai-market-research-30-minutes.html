@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Use AI to Research a Market in Under 30 Minutes — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Timer hero bar */
+  .timer-bar{background:var(--purple);border-radius:20px;padding:28px 32px;margin:24px 0;display:flex;align-items:center;gap:24px;color:white;}
+  .tb-clock{font-family:'Fraunces',serif;font-size:48px;font-weight:900;line-height:1;flex-shrink:0;}
+  .tb-content h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:4px;}
+  .tb-content p{font-size:14.5px;color:rgba(255,255,255,0.8);margin:0;line-height:1.5;}
+  @media(max-width:560px){.timer-bar{flex-direction:column;gap:12px;text-align:center;}.tb-clock{font-size:36px;}}
+
+  /* Step timeline with live timer labels */
+  .workflow{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .wf-step{display:flex;gap:0;position:relative;}
+  .wf-step:not(:last-child) .wf-line{flex-shrink:0;width:40px;display:flex;flex-direction:column;align-items:center;}
+  .wf-step:last-child .wf-line{width:40px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;}
+  .wf-dot{width:40px;height:40px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;z-index:1;}
+  .wf-connector{width:2px;background:var(--purple-mid);flex:1;margin:0 auto;min-height:20px;}
+  .wf-body{flex:1;padding:0 0 32px 20px;}
+  .wf-time{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .wf-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .wf-desc{font-size:15px;line-height:1.7;color:var(--gray-text);margin-bottom:10px;}
+
+  /* Prompt card with copy */
+  .prompt-card{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:16px;overflow:hidden;margin:10px 0;}
+  .pc-header{background:var(--purple-dark);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+  .pc-label{font-size:11px;color:rgba(255,255,255,0.7);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;}
+  .pc-copy{background:rgba(255,255,255,0.15);border:none;color:white;border-radius:6px;padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:background 0.2s;}
+  .pc-copy:hover{background:rgba(255,255,255,0.25);}
+  .pc-body{padding:16px 18px;font-family:monospace;font-size:14px;line-height:1.7;color:var(--gray-text);}
+  .pc-highlight{color:var(--purple);font-weight:600;}
+
+  /* Live market research simulator */
+  .research-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .rs-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .rs-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .rs-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:24px;}
+  .rs-market-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+  .rs-market-btn{padding:10px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-text);cursor:pointer;transition:all 0.2s;}
+  .rs-market-btn:hover,.rs-market-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .rs-run-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+  .rs-run-btn:hover{background:var(--purple-dark);}
+  .rs-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .rs-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .rs-out-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--purple-mid);}
+  .rs-out-icon{font-size:28px;}
+  .rs-out-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);}
+  .rs-out-sub{font-size:13px;color:var(--gray-muted);}
+  .rs-finding{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--purple-mid);}
+  .rs-finding:last-child{border-bottom:none;}
+  .rs-finding-num{width:28px;height:28px;background:var(--purple-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--purple);flex-shrink:0;}
+  .rs-finding-text{font-size:15px;line-height:1.65;}
+  .rs-finding-text strong{color:var(--purple-dark);}
+
+  /* Before/after comparison */
+  .ba-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+  @media(max-width:560px){.ba-compare{grid-template-columns:1fr;}}
+  .ba-card{border-radius:18px;padding:24px;border:1.5px solid;}
+  .ba-card.before{background:var(--red-pale);border-color:#FCA5A5;}
+  .ba-card.after{background:var(--green-pale);border-color:#6EE7B7;}
+  .ba-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+  .ba-card.before .ba-label{color:var(--red);}
+  .ba-card.after .ba-label{color:var(--green);}
+  .ba-time{font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-bottom:6px;}
+  .ba-card.before .ba-time{color:var(--red);}
+  .ba-card.after .ba-time{color:var(--green);}
+  .ba-desc{font-size:14.5px;line-height:1.65;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.2 · Using AI for Research</div>
+  <h1>How to Use AI to Research a Market in Under 30 Minutes</h1>
+  <p class="hero-sub">Market research used to take weeks, cost thousands of dollars, and require a dedicated analyst. With AI, you can produce a solid market overview in a single focused session — if you know the right sequence of questions to ask.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Before AI, building a market research brief meant hiring a research firm, waiting weeks for results, and paying anywhere from $5,000 to $50,000 for a report. That reality locked good research behind big budgets. Small companies, early-stage teams, and individual contributors couldn't afford it.</p>
+    <p>That has changed dramatically. <mark>A well-structured AI research session can produce a market overview that would have taken a junior analyst two weeks</mark> — in about 30 minutes. Not because AI knows everything (it doesn't), but because it can rapidly synthesize publicly available knowledge and surface the patterns and benchmarks you need to move forward.</p>
+    <p>The key word is "structured." Typing "tell me about the coffee market" into an AI tool will produce something generic and shallow. Following the 5-phase framework below will produce something genuinely useful.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="timer-bar">
+      <div class="tb-clock">30'</div>
+      <div class="tb-content">
+        <h3>The 5-Phase AI Market Research Framework</h3>
+        <p>5 targeted prompt phases. Each one builds on the last. Follow the sequence and you'll have a research brief ready to present.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Full Walkthrough</h2>
+    <p>Here's each phase in detail — what to ask, why it matters, and what a good AI response looks like. We'll use a real example throughout: <strong>researching the online fitness app market</strong> for a startup deciding whether to build a new product.</p>
+
+    <div class="workflow">
+      <div class="wf-step">
+        <div class="wf-line"><div class="wf-dot">🗺️</div><div class="wf-connector"></div></div>
+        <div class="wf-body">
+          <div class="wf-time">Phase 1 · Minutes 0–6</div>
+          <div class="wf-title">Market Size & Growth</div>
+          <p class="wf-desc">Start with the big picture. You need to know the market's total size (usually measured in dollars per year) and whether it's growing, shrinking, or flat. This tells you if there's a viable opportunity before anything else.</p>
+          <div class="prompt-card">
+            <div class="pc-header"><div class="pc-label">📋 Prompt to use</div><button class="pc-copy" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pc-body">"Give me an overview of the <span class="pc-highlight">[online fitness app market]</span>. Include: current market size in USD, annual growth rate, projected size in 5 years, and the 2–3 biggest factors driving that growth. Keep it concise and cite approximate figures."</div>
+          </div>
+          <p style="font-size:14.5px;color:var(--gray-muted);margin-top:8px;line-height:1.6;">✅ What good looks like: AI returns specific numbers ($X billion market, X% CAGR), clear growth drivers (like "rising demand for home workouts post-pandemic"), and a projection. Red flag: vague language like "the market is large and growing" with no figures.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-line"><div class="wf-dot">🏆</div><div class="wf-connector"></div></div>
+        <div class="wf-body">
+          <div class="wf-time">Phase 2 · Minutes 6–12</div>
+          <div class="wf-title">Competitive Landscape</div>
+          <p class="wf-desc">Now zoom in on who the main players are. You want to understand the competitive structure — is this market dominated by one giant, or fragmented across many players? Who has the most market share and why?</p>
+          <div class="prompt-card">
+            <div class="pc-header"><div class="pc-label">📋 Prompt to use</div><button class="pc-copy" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pc-body">"Who are the top 5 competitors in the <span class="pc-highlight">[online fitness app market]</span>? For each one, tell me: their approximate market position, what they do best, and one major weakness or gap in their offering."</div>
+          </div>
+          <p style="font-size:14.5px;color:var(--gray-muted);margin-top:8px;line-height:1.6;">✅ What good looks like: A structured list of real companies (Peloton, Noom, MyFitnessPal, etc.) with differentiated strengths and honest weaknesses. Red flag: generic descriptions that could apply to any company in any industry.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-line"><div class="wf-dot">👥</div><div class="wf-connector"></div></div>
+        <div class="wf-body">
+          <div class="wf-time">Phase 3 · Minutes 12–18</div>
+          <div class="wf-title">Customer Segments</div>
+          <p class="wf-desc">Understanding who buys in this market is essential. Different customer segments often have completely different needs — and the most profitable segment isn't always the most obvious one.</p>
+          <div class="prompt-card">
+            <div class="pc-header"><div class="pc-label">📋 Prompt to use</div><button class="pc-copy" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pc-body">"Describe the main customer segments in the <span class="pc-highlight">[online fitness app market]</span>. For each segment, describe: their demographics, primary motivation for using an app, and what they're most willing to pay for."</div>
+          </div>
+          <p style="font-size:14.5px;color:var(--gray-muted);margin-top:8px;line-height:1.6;">✅ What good looks like: 3–5 distinct segments (e.g., casual exercisers, serious athletes, seniors, weight loss seekers) with specific motivational differences. Red flag: one vague "health-conscious consumer" description that covers everyone.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-line"><div class="wf-dot">🌊</div><div class="wf-connector"></div></div>
+        <div class="wf-body">
+          <div class="wf-time">Phase 4 · Minutes 18–24</div>
+          <div class="wf-title">Key Trends & Opportunities</div>
+          <p class="wf-desc">This is where you look forward — what's changing in the market right now, and where are the gaps that a new entrant or product could fill?</p>
+          <div class="prompt-card">
+            <div class="pc-header"><div class="pc-label">📋 Prompt to use</div><button class="pc-copy" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pc-body">"What are the 3 most important trends currently shaping the <span class="pc-highlight">[online fitness app market]</span>? For each trend, explain what's driving it and what opportunity it creates for a new entrant."</div>
+          </div>
+          <p style="font-size:14.5px;color:var(--gray-muted);margin-top:8px;line-height:1.6;">✅ What good looks like: Specific, named trends (e.g., AI-personalized training, wearable integration, social accountability features) with a clear "so what for a new business" statement for each. Red flag: trends so broad they apply to every market (e.g., "digital transformation").</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-line"><div class="wf-dot">📋</div></div>
+        <div class="wf-body">
+          <div class="wf-time">Phase 5 · Minutes 24–30</div>
+          <div class="wf-title">Summary Brief</div>
+          <p class="wf-desc">The final phase turns everything into a single, presenter-ready brief. This is what you'd share with a manager, investor, or teammate who needs the essential picture without reading the full research session.</p>
+          <div class="prompt-card">
+            <div class="pc-header"><div class="pc-label">📋 Prompt to use</div><button class="pc-copy" onclick="copyPrompt(this)">Copy</button></div>
+            <div class="pc-body">"Based on everything we've discussed about the <span class="pc-highlight">[online fitness app market]</span>, write a 1-page market brief I could present to a leadership team. Include: market size and growth, top 3 competitors, key customer segment, biggest opportunity, and top risk."</div>
+          </div>
+          <p style="font-size:14.5px;color:var(--gray-muted);margin-top:8px;line-height:1.6;">✅ What good looks like: A structured, skimmable brief that a non-expert can read in 2 minutes and understand the market opportunity. This is your deliverable — the thing you verify, refine, and present.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Try It: Market Research Simulator</h2>
+    <p>Select a market below and click "Run AI Research" to see what Phase 1 and Phase 2 results look like for that industry — with realistic AI-style output for each.</p>
+    <div class="research-sim">
+      <div class="rs-label">🎮 Market Research Simulator</div>
+      <div class="rs-title">See AI Research in Action</div>
+      <div class="rs-subtitle">Pick a market, run the simulation, and see what Phase 1–2 output looks like.</div>
+      <div class="rs-market-select">
+        <button class="rs-market-btn active" onclick="selectMarket(this,'fitness')">🏋️ Fitness Apps</button>
+        <button class="rs-market-btn" onclick="selectMarket(this,'ev')">🚗 Electric Vehicles</button>
+        <button class="rs-market-btn" onclick="selectMarket(this,'food')">🥡 Meal Delivery</button>
+        <button class="rs-market-btn" onclick="selectMarket(this,'edtech')">📚 EdTech</button>
+      </div>
+      <button class="rs-run-btn" onclick="runSim()"><span>▶</span> Run AI Research</button>
+      <div class="rs-output" id="rsOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How Long This Used to Take vs. Now</h2>
+    <div class="ba-compare">
+      <div class="ba-card before">
+        <div class="ba-label">⏰ Before AI</div>
+        <div class="ba-time">2–3 Weeks</div>
+        <p class="ba-desc">A junior analyst manually reading industry reports, building spreadsheets, and writing a market brief from scratch. Cost: $3,000–$15,000 in analyst time or research subscriptions.</p>
+      </div>
+      <div class="ba-card after">
+        <div class="ba-label">⚡ With AI</div>
+        <div class="ba-time">25–30 Min</div>
+        <p class="ba-desc">One person, one AI tool, five focused prompts. Cost: $0–$20/month for a pro subscription. The output still needs verification — but the starting point is dramatically faster.</p>
+      </div>
+    </div>
+    <p>This doesn't mean AI replaces analysts. It means analysts — and anyone who learns this framework — can do in 30 minutes what previously required days. <mark>The person who knows how to use AI for research has a genuine productivity advantage over the person who doesn't.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h3>Always Verify Before You Present</h3>
+        <p>AI market research is an excellent starting point — not a final answer. AI can produce outdated figures, confuse similar companies, or state things with confidence that aren't quite accurate. Before presenting any AI-generated market data, verify at least the key numbers against a second source (a company's own reports, a news article, or a credible industry publication). This takes 5 minutes and protects your credibility completely.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You're using the 5-phase framework to research the cloud storage market. After Phase 1 (market size), you ask AI "tell me everything about this market" instead of following the structured Phase 2 prompt. What's the most likely result?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The response will be better — a broader question lets AI include everything important</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. The response will be generic and unfocused — broad questions produce broad answers, and you'll likely get a surface-level overview rather than the specific competitive analysis you need</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. The response will be the same — AI always produces the same quality output regardless of how the question is framed</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. The response will be shorter — AI doesn't respond well to open-ended questions</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The 5-phase AI market research framework covers market size, competitive landscape, customer segments, key trends, and a summary brief — in about 30 minutes.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Structured, specific prompts always outperform vague, broad questions. Each phase builds on the previous one — sequence matters.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI has compressed market research from weeks of analyst time into a single focused session — but always verify key numbers before presenting to others.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The final Phase 5 brief is your deliverable — a 1-page summary ready to share with any stakeholder who needs the essential market picture without the full research session.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  function copyPrompt(btn){const text=btn.closest('.prompt-card').querySelector('.pc-body').innerText;navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);});}
+
+  let selectedMarket='fitness';
+  function selectMarket(btn,market){document.querySelectorAll('.rs-market-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedMarket=market;document.getElementById('rsOutput').classList.remove('show');}
+
+  const marketData={
+    fitness:{icon:'🏋️',name:'Online Fitness App Market',findings:[
+      {label:'Market Size & Growth',text:'<strong>$15.2 billion (2023)</strong>, projected to reach <strong>$35.7 billion by 2028</strong> — a CAGR of 18.5%. Growth is driven by increased smartphone penetration, rising health awareness post-pandemic, and the shift away from gym memberships toward flexible home workout options.'},
+      {label:'Top Competitor: Peloton',text:'<strong>Strength:</strong> Premium hardware + content ecosystem creates strong lock-in. <strong>Weakness:</strong> High price point ($1,495+ for hardware) excludes budget-conscious users; struggling with post-pandemic subscriber churn.'},
+      {label:'Top Competitor: Noom',text:'<strong>Strength:</strong> Behavioral psychology approach to weight loss differentiates from pure workout apps. <strong>Weakness:</strong> High monthly cost ($59–70/month) with mixed user reviews on long-term results and customer support.'},
+      {label:'Top Competitor: MyFitnessPal',text:'<strong>Strength:</strong> Largest food and exercise database; strong network effects and integrations. <strong>Weakness:</strong> Aging interface; premium features ($20/month) increasingly challenged by free alternatives with similar functionality.'},
+      {label:'Key Opportunity',text:'AI-personalized workout programs remain underdeveloped across all major players. Users want plans that adapt to their schedule, energy levels, and progress in real time — only 2 of the top 10 apps offer any meaningful real-time adaptation.'}
+    ]},
+    ev:{icon:'🚗',name:'Electric Vehicle Market',findings:[
+      {label:'Market Size & Growth',text:'<strong>$388 billion (2023)</strong>, projected to reach <strong>$1.1 trillion by 2030</strong> — a CAGR of 15.8%. Primary drivers: government EV incentives (U.S. IRA tax credits), falling battery costs (down 89% since 2010), and expanding charging infrastructure.'},
+      {label:'Top Competitor: Tesla',text:'<strong>Strength:</strong> Market leader with ~18% global share; superior software/OTA updates and Supercharger network. <strong>Weakness:</strong> Narrowing price premium advantage as competitors close technology gaps; brand polarization affecting consideration.'},
+      {label:'Top Competitor: BYD',text:'<strong>Strength:</strong> Largest EV manufacturer by volume globally; vertically integrated battery production gives significant cost advantage. <strong>Weakness:</strong> Limited brand recognition and dealership network outside Asia; regulatory barriers in U.S./EU markets.'},
+      {label:'Top Competitor: GM/Ford',text:'<strong>Strength:</strong> Established dealer networks, brand trust, and manufacturing scale. <strong>Weakness:</strong> Late EV transition; legacy ICE infrastructure creates organizational drag; Bolt and F-150 Lightning facing production scaling challenges.'},
+      {label:'Key Opportunity',text:'Fleet electrification (delivery vehicles, corporate fleets) remains significantly underpenetrated at only ~3% EV adoption vs. 7% for consumer vehicles. Fleet buyers prioritize TCO over purchase price — an economic case where EVs already win decisively.'}
+    ]},
+    food:{icon:'🥡',name:'Meal Delivery & Meal Kit Market',findings:[
+      {label:'Market Size & Growth',text:'<strong>$196 billion (2023)</strong>, projected to reach <strong>$320 billion by 2028</strong> — a CAGR of 10.2%. Growth driven by time-poor urban households, expansion into grocery delivery (Amazon Fresh, Instacart), and post-pandemic normalization of delivery as a standard behavior.'},
+      {label:'Top Competitor: DoorDash',text:'<strong>Strength:</strong> 67% U.S. market share in food delivery; DashPass loyalty program with 15M+ subscribers creates strong retention. <strong>Weakness:</strong> Driver classification lawsuits create ongoing cost/regulatory risk; profitability remains thin in non-urban markets.'},
+      {label:'Top Competitor: HelloFresh',text:'<strong>Strength:</strong> #1 global meal kit brand; strong supply chain efficiencies and brand recognition. <strong>Weakness:</strong> High customer acquisition costs; ~50% churn within first 3 months is a persistent retention problem.'},
+      {label:'Top Competitor: Uber Eats',text:'<strong>Strength:</strong> International presence across 45+ countries; integration with Uber ride-share creates cross-promotional advantage. <strong>Weakness:</strong> No flagship loyalty program comparable to DoorDash; perceived as secondary choice in most U.S. markets.'},
+      {label:'Key Opportunity',text:'Corporate meal programs for remote/hybrid workers are dramatically underserved. With 30M+ remote workers in the U.S., B2B meal delivery for distributed teams represents a largely untapped vertical with higher order values and lower churn than consumer delivery.'}
+    ]},
+    edtech:{icon:'📚',name:'EdTech & Online Learning Market',findings:[
+      {label:'Market Size & Growth',text:'<strong>$142 billion (2023)</strong>, projected to reach <strong>$348 billion by 2030</strong> — a CAGR of 13.6%. Key drivers: employer upskilling mandates, AI integration into learning platforms, and growing acceptance of online credentials by hiring managers (now at 71% acceptance rate vs. 45% in 2019).'},
+      {label:'Top Competitor: Coursera',text:'<strong>Strength:</strong> University-branded certificates from 300+ institutions create credential legitimacy. <strong>Weakness:</strong> Course completion rates below 10%; content quality highly variable across partner institutions.'},
+      {label:'Top Competitor: LinkedIn Learning',text:'<strong>Strength:</strong> Direct integration with job search creates clear "learn → apply" pathway; enterprise contracts provide stable revenue base. <strong>Weakness:</strong> Breadth over depth; courses rarely go beyond introductory level; no recognized certification framework.'},
+      {label:'Top Competitor: Duolingo',text:'<strong>Strength:</strong> Best-in-class gamification and engagement mechanics; 74M DAUs; strong brand recognition with younger learners. <strong>Weakness:</strong> Limited to language learning; premium conversion rate below 8% of user base.'},
+      {label:'Key Opportunity',text:'AI-powered personalized learning paths — adapting content difficulty, format, and pacing to individual learners in real time — are mentioned as desired by 78% of corporate L&D buyers but offered effectively by fewer than 5% of platforms at scale.'}
+    ]}
+  };
+
+  function runSim(){
+    const d=marketData[selectedMarket];
+    const out=document.getElementById('rsOutput');
+    out.innerHTML=`<div class="rs-out-header"><div class="rs-out-icon">${d.icon}</div><div><div class="rs-out-title">${d.name}</div><div class="rs-out-sub">AI Research Output · Phase 1–2 Results · Verify before presenting</div></div></div>${d.findings.map((f,i)=>`<div class="rs-finding"><div class="rs-finding-num">${i+1}</div><div class="rs-finding-text"><strong>${f.label}:</strong> ${f.text}</div></div>`).join('')}`;
+    out.className='rs-output show';
+  }
+
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Broad questions produce broad answers. "Tell me everything about the cloud storage market" will generate a long, surface-level overview that covers everything equally — market history, company names, features — without the structured competitive breakdown the Phase 2 prompt is designed to extract. The 5-phase framework works because each prompt is engineered to extract a specific type of information precisely.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> AI doesn\'t produce the same quality regardless of how questions are framed — prompt quality is one of the biggest determinants of output quality. And broader questions don\'t give you more — they typically give you shallower, more generic responses because there\'s no constraint guiding the AI toward the specific information you actually need.';}f.classList.add('show');}
+</script>
+</body>
+</html>

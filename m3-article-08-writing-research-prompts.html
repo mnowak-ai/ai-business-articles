@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing Research Prompts That Actually Get Results — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Prompt anatomy labels */
+  .prompt-anatomy{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pa-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .pa-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pa-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:24px;}
+  .pa-prompt-box{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px 22px;font-size:16px;line-height:2;position:relative;margin-bottom:20px;}
+  .pa-chip{display:inline;border-radius:6px;padding:2px 8px;font-weight:600;cursor:pointer;transition:all 0.2s;position:relative;}
+  .pa-chip.role{background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;}
+  .pa-chip.topic{background:var(--purple-pale);color:var(--purple-dark);border:1px solid var(--purple-mid);}
+  .pa-chip.context{background:#DCFCE7;color:#166534;border:1px solid #86EFAC;}
+  .pa-chip.format{background:#FCE7F3;color:#9D174D;border:1px solid #F9A8D4;}
+  .pa-chip.constraint{background:#FEF9C3;color:#713F12;border:1px solid #FDE047;}
+  .pa-chip:hover{transform:scale(1.05);}
+  .pa-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .pa-legend-item{display:flex;align-items:center;gap:6px;font-size:13px;}
+  .pa-legend-dot{width:12px;height:12px;border-radius:3px;}
+  .pa-explain{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:16px 18px;font-size:15px;line-height:1.65;display:none;}
+  .pa-explain.show{display:block;animation:fadeIn 0.2s ease;}
+
+  /* Prompt upgrade game */
+  .upgrade-game{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ug-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .ug-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ug-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:24px;}
+  .ug-pair{margin-bottom:24px;border:1.5px solid var(--purple-mid);border-radius:16px;overflow:hidden;}
+  .ug-pair-header{background:var(--purple-dark);padding:12px 18px;color:white;font-size:13px;font-weight:600;}
+  .ug-body{padding:20px 22px;background:var(--white);}
+  .ug-weak{background:var(--red-pale);border-radius:10px;padding:14px 16px;margin-bottom:10px;font-family:monospace;font-size:14px;line-height:1.6;color:var(--red);}
+  .ug-strong{background:var(--green-pale);border-radius:10px;padding:14px 16px;margin-bottom:10px;font-family:monospace;font-size:14px;line-height:1.6;color:var(--green);}
+  .ug-why{font-size:14px;line-height:1.65;color:var(--gray-muted);}
+  .ug-why strong{color:var(--purple-dark);}
+
+  /* Prompt builder */
+  .prompt-builder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pb-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .pb-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pb-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:24px;}
+  .pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+  @media(max-width:540px){.pb-grid{grid-template-columns:1fr;}}
+  .pb-field label{display:block;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+  .pb-field select,.pb-field input{width:100%;padding:10px 14px;border:1.5px solid var(--purple-mid);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-text);background:var(--white);}
+  .pb-build-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;width:100%;margin-top:4px;}
+  .pb-build-btn:hover{background:var(--purple-dark);}
+  .pb-output{background:var(--white);border:1.5px solid var(--purple);border-radius:14px;padding:20px 22px;margin-top:16px;display:none;}
+  .pb-output.show{display:block;animation:fadeIn 0.3s ease;}
+  .pb-out-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+  .pb-out-text{font-family:monospace;font-size:14.5px;line-height:1.8;color:var(--gray-text);}
+  .pb-copy-btn{background:var(--purple-pale);border:1px solid var(--purple-mid);color:var(--purple);border-radius:8px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;margin-top:12px;transition:all 0.2s;}
+  .pb-copy-btn:hover{background:var(--purple);color:white;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.2 · Using AI for Research</div>
+  <h1>Writing Research Prompts That Actually Get Results</h1>
+  <p class="hero-sub">The quality of what AI gives you is almost entirely determined by the quality of what you ask. Learning to write strong research prompts is the single highest-leverage AI skill you can develop.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Here's the uncomfortable truth most people discover after their first few AI interactions: the tool is only as good as the person using it. Give AI a vague, low-effort question and you get a vague, low-effort answer. Give it a precisely engineered prompt and you get research-quality output that would take a junior analyst hours to produce.</p>
+    <p><mark>Prompt engineering — the skill of crafting specific, structured instructions for AI — is what separates mediocre AI users from people who actually get value out of the technology.</mark> And for business research specifically, there are five components that every strong prompt should include.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 5 Components of a Strong Research Prompt</h2>
+    <p>Click on any highlighted element in the prompt below to learn what each component does and why it matters.</p>
+    <div class="prompt-anatomy">
+      <div class="pa-label">🔬 Prompt Anatomy</div>
+      <div class="pa-title">Dissect a High-Quality Research Prompt</div>
+      <div class="pa-subtitle">Each color represents a different prompt component. Click to learn more.</div>
+      <div class="pa-legend">
+        <div class="pa-legend-item"><div class="pa-legend-dot" style="background:#FCD34D"></div>Role / Persona</div>
+        <div class="pa-legend-item"><div class="pa-legend-dot" style="background:var(--purple-mid)"></div>Topic / Scope</div>
+        <div class="pa-legend-item"><div class="pa-legend-dot" style="background:#86EFAC"></div>Context / Purpose</div>
+        <div class="pa-legend-item"><div class="pa-legend-dot" style="background:#F9A8D4"></div>Format / Output</div>
+        <div class="pa-legend-item"><div class="pa-legend-dot" style="background:#FDE047"></div>Constraints</div>
+      </div>
+      <div class="pa-prompt-box">
+        <span class="pa-chip role" onclick="showExplain('role')">Act as a market research analyst</span> and give me a breakdown of <span class="pa-chip topic" onclick="showExplain('topic')">the U.S. electric vehicle charging infrastructure market</span>. <span class="pa-chip context" onclick="showExplain('context')">I'm a product manager at a startup evaluating whether to build a B2B fleet charging solution</span>. <span class="pa-chip format" onclick="showExplain('format')">Structure your response with: market size, top 3 competitors with their pricing models, the most underserved customer segment, and 2 key risks</span>. <span class="pa-chip constraint" onclick="showExplain('constraint')">Keep the total response under 400 words and use specific dollar figures where available</span>.
+      </div>
+      <div class="pa-explain" id="explainBox"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>A well-built research prompt is like a good job description: the more specific and complete it is, the better the output you'll get from whoever — or whatever — is executing it.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Weak Prompts vs. Strong Prompts: Side by Side</h2>
+    <p>The fastest way to internalize good prompt writing is to see the difference directly. Each pair below shows the same research need written as a weak prompt and a strong one.</p>
+    <div class="upgrade-game">
+      <div class="ug-label">📊 Prompt Upgrade Gallery</div>
+      <div class="ug-title">Weak vs. Strong</div>
+      <div class="ug-subtitle">See exactly what changes between a bad prompt and a great one — and why it matters.</div>
+
+      <div class="ug-pair">
+        <div class="ug-pair-header">Research Need: Understand the streaming music market</div>
+        <div class="ug-body">
+          <div class="ug-weak">❌ WEAK: "Tell me about the music streaming market."</div>
+          <div class="ug-strong">✅ STRONG: "Give me a research brief on the U.S. music streaming market. I work in business development at an independent record label evaluating distribution strategy. Include: total market size in 2024, the top 4 platforms with their royalty rate structures, which artist tier (independent vs. major label) each platform favors, and what the biggest shifts in the market have been in the last 2 years. Use bullet points and keep it under 500 words."</div>
+          <div class="ug-why"><strong>Why the strong version works:</strong> It defines the audience (independent record label), specifies exactly what information is needed (royalty rates, platform preferences), adds a time constraint (last 2 years), requests a format (bullet points), and sets a length limit. The weak version gives AI no direction — it could write anything from a Wikipedia summary to a 5,000 word essay.</div>
+        </div>
+      </div>
+
+      <div class="ug-pair">
+        <div class="ug-pair-header">Research Need: Understand competitors in the project management software space</div>
+        <div class="ug-body">
+          <div class="ug-weak">❌ WEAK: "Who are the competitors in project management software?"</div>
+          <div class="ug-strong">✅ STRONG: "I'm evaluating whether to build a project management tool specifically for marketing agencies. Compare the top 5 existing tools (Asana, Monday.com, Notion, ClickUp, Basecamp) on: pricing per user per month, standout feature for creative teams, most common user complaint from reviews, and whether they have an agency-specific plan. Format as a comparison table."</div>
+          <div class="ug-why"><strong>Why the strong version works:</strong> It names the specific competitors to compare (no ambiguity), specifies the exact data points to extract for each, anchors the analysis to a specific use case (marketing agencies), and requests a structured output format (comparison table). The weak version will produce a list of company names and vague descriptions that you'd still have to research further yourself.</div>
+        </div>
+      </div>
+
+      <div class="ug-pair">
+        <div class="ug-pair-header">Research Need: Understand customer behavior in e-commerce</div>
+        <div class="ug-body">
+          <div class="ug-weak">❌ WEAK: "What do customers want when shopping online?"</div>
+          <div class="ug-strong">✅ STRONG: "I manage a DTC skincare brand targeting women aged 28–40. Based on current consumer behavior research, identify the top 5 factors that influence whether a first-time visitor converts to a buyer on a skincare e-commerce site. For each factor, give one specific action I could take to improve it. Include any relevant statistics from the last 3 years."</div>
+          <div class="ug-why"><strong>Why the strong version works:</strong> It specifies the industry (skincare), the customer (women 28–40), the exact question (conversion factors), the actionable output format (one specific action per factor), and a recency constraint (last 3 years). The weak version will produce generic e-commerce advice that could apply to any industry and gives you nothing actionable.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Build Your Own Research Prompt</h2>
+    <p>Use the builder below to generate a well-structured research prompt for any business situation. Fill in the fields and click build.</p>
+    <div class="prompt-builder">
+      <div class="pb-label">🛠️ Research Prompt Builder</div>
+      <div class="pb-title">Build a Strong Prompt</div>
+      <div class="pb-subtitle">Fill in each component and get a properly structured research prompt ready to use.</div>
+      <div class="pb-grid">
+        <div class="pb-field"><label>Your Role</label><input type="text" id="pbRole" placeholder="e.g. Marketing manager at a startup" /></div>
+        <div class="pb-field"><label>Research Topic</label><input type="text" id="pbTopic" placeholder="e.g. the U.S. pet food industry" /></div>
+        <div class="pb-field"><label>Why You Need It</label><input type="text" id="pbWhy" placeholder="e.g. evaluating a product launch" /></div>
+        <div class="pb-field"><label>Output Format</label>
+          <select id="pbFormat">
+            <option value="structured overview with clear sections">Structured overview with sections</option>
+            <option value="comparison table">Comparison table</option>
+            <option value="bulleted brief under 400 words">Bulleted brief (under 400 words)</option>
+            <option value="numbered list of key findings">Numbered list of key findings</option>
+            <option value="executive summary format">Executive summary format</option>
+          </select>
+        </div>
+      </div>
+      <button class="pb-build-btn" onclick="buildPrompt()">Build My Research Prompt →</button>
+      <div class="pb-output" id="pbOutput">
+        <div class="pb-out-label">📋 Your Research Prompt</div>
+        <div class="pb-out-text" id="pbOutText"></div>
+        <button class="pb-copy-btn" onclick="copyBuiltPrompt()">Copy to Clipboard</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🔄</div>
+      <div>
+        <h3>Prompts Are Conversations, Not One-Shots</h3>
+        <p>One of the biggest mistakes new AI users make is treating each prompt as a single transaction. In reality, the best research sessions are iterative — you start with a broad framework prompt, evaluate the output, then follow up with more targeted questions. "Go deeper on the third competitor" or "reformat this as a table" or "what did you leave out?" are all valid follow-ups that progressively sharpen the research. Think of it less like a search engine and more like working with a research assistant you can direct in real time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">Which of the following research prompts will produce the most useful output for someone trying to understand whether a new B2B SaaS product has a viable market?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. "Tell me about the SaaS market."</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">B. "What are the biggest SaaS companies and how much revenue do they make?"</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">C. "I'm evaluating market viability for a B2B SaaS tool that helps HR teams automate onboarding paperwork. Give me: total addressable market size, top 3 existing competitors with their pricing, the most common complaint HR managers have about current tools, and 2 signals that would indicate strong product-market fit. Keep it under 500 words."</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. "Is B2B SaaS a good industry to enter in 2024?"</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A strong research prompt has 5 components: role/persona, topic/scope, context/purpose, output format, and constraints. Missing any one of these degrades the output quality.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The difference between a weak and strong prompt isn't just quality — it's whether the output is actually usable for a business decision. Weak prompts generate content. Strong prompts generate insights.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Specifying format (table, bullets, sections), length, and recency constraints dramatically improves the usability of AI research responses.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Treat AI research as a conversation — follow up, refine, and redirect. The best research sessions are iterative, not one-shot queries.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const explains={
+    role:{color:'#FEF3C7',text:'<strong>🎭 Role / Persona:</strong> Telling AI to "act as" a specific expert role dramatically improves the depth and perspective of the response. A market research analyst thinks and organizes differently than a general assistant. This one addition can upgrade surface-level summaries into professional-grade analysis.'},
+    topic:{color:'var(--purple-pale)',text:'<strong>🎯 Topic / Scope:</strong> This is your specific research subject — and specificity matters enormously. "Music market" vs "U.S. electric vehicle charging infrastructure market" produce completely different quality responses. The more precisely you define the scope, the more focused and useful the answer.'},
+    context:{color:'#DCFCE7',text:'<strong>📋 Context / Purpose:</strong> Telling AI why you need this information changes what it emphasizes. An investor needs different information than a product manager. A startup needs different framing than a Fortune 500. Context lets AI calibrate the response to be actually useful for your specific situation.'},
+    format:{color:'#FCE7F3',text:'<strong>📊 Format / Output:</strong> Explicitly specifying what structure you want — sections, table, bullets, numbered list — ensures the response is immediately usable rather than requiring you to reformat it. If you need a comparison table, say so. If you need sections with headers, say so. AI will match your format precisely.'},
+    constraint:{color:'#FEF9C3',text:'<strong>⚙️ Constraints:</strong> Length limits, recency requirements ("last 3 years"), specificity requirements ("use dollar figures"), and audience level ("explain as if I\'m new to this industry") all tighten the focus and prevent AI from producing bloated, unfocused responses. Constraints are guardrails that keep the output professional and useful.'}
+  };
+
+  function showExplain(type){const box=document.getElementById('explainBox');const e=explains[type];box.innerHTML=`<div style="padding:14px 18px;background:${e.color};border-radius:10px;font-size:15px;line-height:1.7;">${e.text}</div>`;box.className='pa-explain show';}
+
+  function buildPrompt(){
+    const role=document.getElementById('pbRole').value||'a business analyst';
+    const topic=document.getElementById('pbTopic').value||'the target market';
+    const why=document.getElementById('pbWhy').value||'making a strategic decision';
+    const format=document.getElementById('pbFormat').value;
+    const prompt=`Act as a senior market research analyst. I'm ${role}, and I'm ${why}.\n\nResearch topic: ${topic}.\n\nPlease provide:\n1. Market size (current and projected 3–5 years)\n2. Top 3–5 competitors with their key differentiators and one major weakness each\n3. Primary customer segment with their main motivations\n4. 2–3 most important current trends shaping this space\n5. The single biggest opportunity for a new entrant\n\nFormat: ${format}. Use specific figures and data points wherever available. Flag anything that may need independent verification.`;
+    document.getElementById('pbOutText').textContent=prompt;
+    document.getElementById('pbOutput').className='pb-output show';
+  }
+
+  function copyBuiltPrompt(){const text=document.getElementById('pbOutText').textContent;navigator.clipboard.writeText(text).then(()=>{const btn=document.querySelector('.pb-copy-btn');btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy to Clipboard',2000);});}
+
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Option C contains all 5 prompt components: it specifies the context (evaluating market viability for a specific product), defines the exact information needed (TAM, competitors with pricing, customer complaints, PMF signals), sets a length constraint (under 500 words), and is specific about the use case (HR onboarding automation). Every other option is either too broad, too vague, or answers a different question than "is there a viable market for this specific product."';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Options A, B, and D all share the same problem: they\'re too broad and too vague to produce actionable research output. "Tell me about the SaaS market" could generate a 5,000-word essay about nothing useful. "Is B2B SaaS a good industry?" will get you a generic yes/no with caveats. Option C is the only prompt that would produce specific, structured, decision-ready information about market viability for this exact product.';}f.classList.add('show');}
+</script>
+</body>
+</html>

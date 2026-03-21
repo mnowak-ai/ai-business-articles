@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Do a Competitor Analysis Using AI — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Interactive competitor matrix */
+  .comp-matrix{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;overflow-x:auto;}
+  .cm-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cm-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cm-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .cm-table{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  .cm-table th{background:var(--purple);color:white;padding:12px 14px;text-align:left;font-weight:600;font-size:13px;}
+  .cm-table th:first-child{border-radius:8px 0 0 0;}
+  .cm-table th:last-child{border-radius:0 8px 0 0;}
+  .cm-table td{padding:12px 14px;border-bottom:1px solid var(--purple-mid);vertical-align:top;font-size:13.5px;line-height:1.5;}
+  .cm-table tr:last-child td{border-bottom:none;}
+  .cm-table tr:nth-child(even) td{background:var(--purple-pale);}
+  .cm-table tr:hover td{background:var(--purple-mid);}
+  .cm-score{display:inline-flex;gap:2px;}
+  .cm-dot{width:8px;height:8px;border-radius:50%;background:var(--purple);}
+  .cm-dot.empty{background:var(--purple-mid);}
+  .cm-gap{background:#FEF9C3;color:#713F12;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:600;display:inline-block;}
+
+  /* 4-step process */
+  .process-steps{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.process-steps{grid-template-columns:1fr;}}
+  .ps-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:24px;background:var(--white);}
+  .ps-num{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--purple-mid);line-height:1;margin-bottom:8px;}
+  .ps-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .ps-desc{font-size:14.5px;line-height:1.65;color:var(--gray-text);margin-bottom:10px;}
+  .ps-prompt{background:var(--gray-soft);border-radius:10px;padding:12px 14px;font-family:monospace;font-size:13px;line-height:1.6;color:var(--purple-dark);}
+
+  /* Gap finder game */
+  .gap-finder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .gf-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .gf-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .gf-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .gf-scenario{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;}
+  .gf-scenario-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:14px;}
+  .gf-mini-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:14px;}
+  .gf-mini-table th{background:var(--purple-pale);color:var(--purple-dark);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;}
+  .gf-mini-table td{padding:8px 12px;border-bottom:1px solid var(--purple-mid);font-size:13.5px;}
+  .gf-check{color:var(--green);font-size:16px;}
+  .gf-x{color:var(--red);font-size:16px;}
+  .gf-question{font-size:15.5px;font-weight:600;color:var(--purple-dark);margin-bottom:12px;}
+  .gf-options{display:flex;flex-direction:column;gap:8px;}
+  .gf-opt{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:10px;padding:12px 16px;font-size:14.5px;cursor:pointer;transition:all 0.2s;text-align:left;font-family:'DM Sans',sans-serif;}
+  .gf-opt:hover:not([disabled]){border-color:var(--purple);background:var(--purple-pale);}
+  .gf-opt.correct{background:var(--green-pale);border-color:#6EE7B7;color:var(--green);}
+  .gf-opt.wrong{background:var(--red-pale);border-color:#FCA5A5;color:var(--red);}
+  .gf-feedback{margin-top:12px;padding:14px 16px;border-radius:10px;font-size:14.5px;line-height:1.65;display:none;}
+  .gf-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .gf-feedback.good{background:var(--green-pale);color:var(--green);}
+  .gf-feedback.bad{background:var(--red-pale);color:var(--red);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.2 · Using AI for Research</div>
+  <h1>How to Do a Competitor Analysis Using AI</h1>
+  <p class="hero-sub">A competitor analysis isn't just a list of other companies. Done right, it reveals the gaps in the market — the things nobody else is doing well that your product could own. AI makes this process faster and more thorough than ever before.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Remember the Nike/Adidas/Under Armour scenario from the video? That activity — comparing competitors to find positioning advantages — is one of the most common business research tasks in the real world. Every product launch, partnership pitch, and strategic plan involves some version of it.</p>
+    <p>A competitor analysis answers two essential questions: <mark>What are competitors doing well enough that you need to match it?</mark> And more importantly: <mark>What gaps are they leaving open that you could fill?</mark> Those gaps are where competitive advantage lives.</p>
+    <p>AI can help you build this analysis in a structured, repeatable way. Here's the four-step process.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 4-Step AI Competitor Analysis Process</h2>
+    <div class="process-steps">
+      <div class="ps-card">
+        <div class="ps-num">01</div>
+        <div class="ps-title">Map the Competitive Landscape</div>
+        <p class="ps-desc">Start by identifying who all the relevant competitors are — direct competitors (same product, same customer) and indirect competitors (different product, same need).</p>
+        <div class="ps-prompt">"Who are the top direct and indirect competitors for [product/service] targeting [customer type]? Group them by competitive tier: major players, mid-tier, and emerging challengers."</div>
+      </div>
+      <div class="ps-card">
+        <div class="ps-num">02</div>
+        <div class="ps-title">Build a Feature & Positioning Matrix</div>
+        <p class="ps-desc">Compare competitors across the dimensions that matter most to customers: features, pricing, target customer, key message, and known weaknesses.</p>
+        <div class="ps-prompt">"Create a comparison table for [Competitor A, B, C] across: pricing tier, top 3 features, target customer, brand positioning statement, and most common customer complaint."</div>
+      </div>
+      <div class="ps-card">
+        <div class="ps-num">03</div>
+        <div class="ps-title">Identify Gaps & Whitespace</div>
+        <p class="ps-desc">This is the most valuable step. Based on the matrix, what customer needs are underserved? What feature combinations don't exist? What customer segments are being ignored?</p>
+        <div class="ps-prompt">"Based on the competitor analysis above, identify 3 specific gaps in the market — customer needs or segments that none of the current competitors are fully serving. For each gap, explain why it represents an opportunity."</div>
+      </div>
+      <div class="ps-card">
+        <div class="ps-num">04</div>
+        <div class="ps-title">Develop a Positioning Statement</div>
+        <p class="ps-desc">Use the gaps you found to define how a new product could differentiate. A positioning statement tells the market exactly why you're different — and for whom.</p>
+        <div class="ps-prompt">"Based on the gap [specific gap identified in Step 3], write a positioning statement for a new product that owns that space. Format: 'For [target customer] who [need], [product] is the [category] that [differentiator] unlike [competitor]'."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Live Example: Athletic Shoe Market Analysis</h2>
+    <p>Here's what Step 2 output looks like for a real competitor analysis in the athletic footwear space — the kind you'd use to make a real positioning decision. The gap column is what AI helps identify most powerfully.</p>
+    <div class="comp-matrix">
+      <div class="cm-label">📊 AI-Generated Competitor Matrix</div>
+      <div class="cm-title">Athletic Footwear — Competitive Landscape</div>
+      <div class="cm-subtitle">Hover over rows to highlight. Gap column shows where competitors underserve customers.</div>
+      <table class="cm-table">
+        <thead><tr><th>Company</th><th>Price Range</th><th>Target Customer</th><th>Key Strength</th><th>Key Weakness</th><th>Gap Left Open</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Nike</strong></td><td>$80–$250+</td><td>Aspirational athletes, fashion-forward</td><td>Unmatched brand power + athlete endorsements</td><td>Premium pricing excludes budget market; limited sustainable materials</td><td><span class="cm-gap">Eco-conscious performance</span></td></tr>
+          <tr><td><strong>Adidas</strong></td><td>$70–$220+</td><td>Style-focused athletes, streetwear fans</td><td>Strongest fashion credibility of performance brands</td><td>Seen as "style over performance" by serious athletes; Yeezy dependency</td><td><span class="cm-gap">Serious athlete credibility</span></td></tr>
+          <tr><td><strong>Under Armour</strong></td><td>$60–$180</td><td>Serious performance athletes</td><td>Performance technology focus; strong in fitness/training</td><td>Weak brand story; declining market share; no lifestyle credibility</td><td><span class="cm-gap">Lifestyle crossover appeal</span></td></tr>
+          <tr><td><strong>New Balance</strong></td><td>$75–$200</td><td>Runners, comfort-focused buyers</td><td>Made-in-USA premium positioning; strong runner loyalty</td><td>Limited youth appeal; seen as "dad shoes" outside running community</td><td><span class="cm-gap">Youth performance market</span></td></tr>
+          <tr><td><strong>Allbirds</strong></td><td>$110–$165</td><td>Sustainability-focused casual wearers</td><td>Category-defining sustainable materials story</td><td>Poor performance credibility; not taken seriously by athletes</td><td><span class="cm-gap">Sustainable athletic performance</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Notice what the Gap column reveals: there's no competitor that successfully owns <em>both</em> sustainability <em>and</em> serious athletic performance. Nike and Adidas have the performance brand — but minimal sustainability credibility. Allbirds has the sustainability story — but no performance credibility. <mark>That gap is a viable market positioning for a new entrant.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The goal of competitor analysis isn't to understand what to copy. It's to find the space between competitors that's underserved — and build something that lives exactly there.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Gap Finder Challenge</h2>
+    <p>Practice identifying competitive gaps using the mini-competitor tables below. Each scenario shows partial competitor data — your job is to identify what the biggest market gap is.</p>
+    <div class="gap-finder">
+      <div class="gf-label">🎮 Gap Finder Challenge</div>
+      <div class="gf-title">Spot the Opportunity</div>
+      <div class="gf-subtitle">Review each competitor table and identify the gap that represents the biggest opportunity.</div>
+      <div class="gf-scenario">
+        <div class="gf-scenario-title">🎧 Scenario: Podcast App Market</div>
+        <table class="gf-mini-table">
+          <thead><tr><th>App</th><th>Free Tier</th><th>Creator Tools</th><th>Social Features</th><th>Video Podcasts</th><th>Offline Listen</th></tr></thead>
+          <tbody>
+            <tr><td>Spotify</td><td><span class="gf-check">✓</span></td><td><span class="gf-check">✓</span></td><td><span class="gf-x">✗</span></td><td><span class="gf-check">✓</span></td><td><span class="gf-x">✗ (free)</span></td></tr>
+            <tr><td>Apple Podcasts</td><td><span class="gf-check">✓</span></td><td><span class="gf-x">✗</span></td><td><span class="gf-x">✗</span></td><td><span class="gf-x">✗</span></td><td><span class="gf-check">✓</span></td></tr>
+            <tr><td>Pocket Casts</td><td><span class="gf-x">✗</span></td><td><span class="gf-x">✗</span></td><td><span class="gf-x">✗</span></td><td><span class="gf-x">✗</span></td><td><span class="gf-check">✓</span></td></tr>
+          </tbody>
+        </table>
+        <div class="gf-question">What is the biggest gap in the podcast app market based on this data?</div>
+        <div class="gf-options">
+          <button class="gf-opt" onclick="gfAnswer(this,'wrong')">A. No app offers a free tier — that's a major barrier to entry for listeners</button>
+          <button class="gf-opt" onclick="gfAnswer(this,'correct')">B. No app combines strong social features with creator tools — a community-focused podcast app that helps listeners discover shows through friends and helps creators grow their audience is entirely missing from the market</button>
+          <button class="gf-opt" onclick="gfAnswer(this,'wrong')">C. The market is too competitive to enter — the top three apps cover everything a listener needs</button>
+          <button class="gf-opt" onclick="gfAnswer(this,'wrong')">D. Offline listening is the biggest gap — only two of three apps offer it</button>
+        </div>
+        <div class="gf-feedback" id="gfFeedback"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>AI Is Excellent at Pattern Recognition — But You Find the Strategy</h3>
+        <p>AI can build a competitor matrix, summarize strengths and weaknesses, and even surface potential gaps — all faster than any human researcher. But the strategic question — "Is this gap worth pursuing? Do we have the capability to fill it? Does it align with our vision?" — is a judgment call only humans can make. AI gives you the landscape. You decide where to build.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">After completing a competitor analysis, your AI research shows that all three main competitors in your market charge $50–80/month and target enterprise customers. You're considering building a product for small businesses at $15/month. What does this competitive analysis tell you?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. The market is too dominated by established players — you shouldn't enter at a lower price point</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. There's a potential gap in the small business / budget segment — no current competitor is serving it, which could be a positioning opportunity worth validating with customer research</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. Lower pricing always wins — you should definitely build the $15/month product immediately</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Enterprise pricing means enterprise features — you'd need to build the same product at a lower price to compete</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A competitor analysis isn't about copying what others do — it's about finding the gaps they leave open and building something that lives in that underserved space.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The 4-step AI process: map the landscape, build a feature matrix, identify gaps, develop a positioning statement. Each step builds directly on the last.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The Gap column of a competitor matrix is where competitive strategy is born — it shows where customer needs exist that nobody is fully meeting.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI maps the landscape — but you decide the strategy. Whether a gap is worth pursuing requires human judgment about capability, timing, and vision that AI can't provide.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  let gfDone=false;
+  function gfAnswer(btn,type){if(gfDone)return;gfDone=true;document.querySelectorAll('.gf-opt').forEach(b=>b.disabled=true);const f=document.getElementById('gfFeedback');if(type==='correct'){btn.classList.add('correct');f.className='gf-feedback good show';f.innerHTML='✅ <strong>Exactly right!</strong> The data clearly shows that social features and creator growth tools are both missing from all three major apps. A new entrant that built a podcast app centered on social listening — see what your friends are following, share clip reactions, discover shows through your network — combined with tools to help podcast creators grow their audience would occupy a completely uncontested position in the market. That\'s the kind of gap analysis that leads to a real business strategy.';}else{btn.classList.add('wrong');document.querySelectorAll('.gf-opt')[1].classList.add('correct');f.className='gf-feedback bad show';f.innerHTML='❌ <strong>Look again at the table.</strong> Spotify and Apple Podcasts both offer free tiers (Option A is wrong). Offline listening is available on 2 of 3 apps (Option D is not a gap). And the market being competitive doesn\'t mean it\'s closed to entry — it means you need a differentiated position, which is exactly what the gap analysis is for. The real gap is social + creator tools, which zero competitors currently offer in combination.';}}
+
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Right — but notice the nuance.</strong> The analysis reveals a potential gap, which is valuable. But "potential gap" isn\'t the same as "proven opportunity." The next step is customer research: Are small businesses actually looking for this product? Would they pay $15/month? What features matter most to them? The competitor analysis tells you the competitive landscape is open at this price/segment — customer research confirms whether real demand exists to fill it.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Option A is overly pessimistic — gaps in competitive coverage are opportunities, not roadblocks. Option C is dangerously optimistic — lower price doesn\'t always win, especially if the product doesn\'t meet the needs of the target segment. Option D misunderstands the opportunity — serving small businesses would require building for their specific needs, not just discounting an enterprise product. The competitor analysis is just the starting point for a conversation that customer research completes.';}f.classList.add('show');}
+</script>
+</body>
+</html>

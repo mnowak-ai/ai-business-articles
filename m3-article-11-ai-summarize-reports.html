@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Ask AI to Summarize Research Reports — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Prompt templates */
+  .prompt-lib{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pl-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .pl-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pl-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .pl-tabs{display:flex;gap:8px;margin-bottom:0;flex-wrap:wrap;}
+  .pl-tab{padding:10px 18px;border-radius:10px 10px 0 0;border:1.5px solid var(--purple-mid);border-bottom:none;background:var(--white);color:var(--gray-muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .pl-tab.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .pl-panels{border:1.5px solid var(--purple-mid);border-radius:0 12px 12px 12px;background:var(--white);}
+  .pl-panel{display:none;padding:24px;}
+  .pl-panel.active{display:block;animation:fadeIn 0.3s ease;}
+  .pl-prompt-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .pl-prompt-use{font-size:13.5px;color:var(--gray-muted);margin-bottom:14px;}
+  .pl-prompt-box{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:12px;overflow:hidden;}
+  .pl-prompt-header{background:var(--purple-dark);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;}
+  .pl-prompt-label{font-size:11px;color:rgba(255,255,255,0.7);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;}
+  .pl-copy-btn{background:rgba(255,255,255,0.15);border:none;color:white;border-radius:6px;padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;}
+  .pl-copy-btn:hover{background:rgba(255,255,255,0.25);}
+  .pl-prompt-text{padding:14px 16px;font-family:monospace;font-size:13.5px;line-height:1.75;color:var(--gray-text);}
+  .pl-tip{margin-top:12px;padding:12px 14px;background:var(--purple-pale);border-radius:10px;font-size:14px;line-height:1.65;color:var(--purple-dark);}
+
+  /* Live summarizer demo */
+  .summarizer-demo{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sd-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sd-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sd-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .sd-doc-select{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .sd-doc-btn{padding:9px 16px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .sd-doc-btn:hover,.sd-doc-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .sd-prompt-select{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .sd-p-label{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sd-mode-btn{padding:8px 14px;border:1.5px solid var(--purple-mid);border-radius:8px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .sd-mode-btn:hover,.sd-mode-btn.active{background:var(--purple-pale);border-color:var(--purple);}
+  .sd-run-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .sd-run-btn:hover{background:var(--purple-dark);}
+  .sd-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:22px;margin-top:16px;display:none;}
+  .sd-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .sd-out-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+  .sd-out-content{font-size:15px;line-height:1.8;color:var(--gray-text);}
+  .sd-out-content strong{color:var(--purple-dark);}
+
+  /* Before/after prompt quality */
+  .pq-compare{display:flex;flex-direction:column;gap:16px;margin:24px 0;}
+  .pq-item{border-radius:18px;padding:22px 24px;border:1.5px solid;}
+  .pq-item.weak{background:var(--red-pale);border-color:#FCA5A5;}
+  .pq-item.strong{background:var(--green-pale);border-color:#6EE7B7;}
+  .pq-badge{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;display:block;}
+  .pq-item.weak .pq-badge{color:var(--red);}
+  .pq-item.strong .pq-badge{color:var(--green);}
+  .pq-prompt{font-family:monospace;font-size:13.5px;line-height:1.6;margin-bottom:10px;}
+  .pq-why{font-size:14px;line-height:1.65;color:var(--gray-text);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}.pl-tab{font-size:12px;padding:8px 12px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.2 · Using AI for Research</div>
+  <h1>How to Ask AI to Summarize Research Reports</h1>
+  <p class="hero-sub">You have a 60-page Gartner report and 20 minutes before a meeting. AI can turn that into an actionable brief — but only if you ask it the right way. The difference between a useful summary and a useless one is entirely in how you frame the request.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>The Gartner slide in the lesson video made a clear point: AI accelerates research by rapidly summarizing large amounts of market and competitor information. This is one of the highest-value AI use cases in business — and one of the most commonly done poorly.</p>
+    <p>The problem most people run into is asking AI to "summarize this" without any further instruction. That produces a generic, comprehensive summary of everything — which is usually not what you need. <mark>A useful research summary is targeted, structured, and calibrated to a specific audience and decision.</mark> The prompts below will get you there every time.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>5 Summarization Prompts for Different Situations</h2>
+    <p>Different research situations call for different summarization approaches. Explore each prompt template below — each is designed for a specific use case.</p>
+    <div class="prompt-lib">
+      <div class="pl-label">📚 Prompt Library</div>
+      <div class="pl-title">Summarization Prompt Templates</div>
+      <div class="pl-subtitle">Click each tab to see the right prompt for your situation.</div>
+      <div class="pl-tabs">
+        <button class="pl-tab active" onclick="switchPL(0)">Executive Brief</button>
+        <button class="pl-tab" onclick="switchPL(1)">Key Findings</button>
+        <button class="pl-tab" onclick="switchPL(2)">Decision Focus</button>
+        <button class="pl-tab" onclick="switchPL(3)">Competitor Intel</button>
+        <button class="pl-tab" onclick="switchPL(4)">Risk Extraction</button>
+      </div>
+      <div class="pl-panels">
+        <div class="pl-panel active" id="plp0">
+          <div class="pl-prompt-title">The Executive Brief</div>
+          <div class="pl-prompt-use">Use when: A busy manager or executive needs the essential story in under 2 minutes.</div>
+          <div class="pl-prompt-box">
+            <div class="pl-prompt-header"><div class="pl-prompt-label">📋 Prompt</div><button class="pl-copy-btn" onclick="copyPL(this)">Copy</button></div>
+            <div class="pl-prompt-text">"I'm going to paste a research report. Summarize it as a 1-page executive brief for a [VP of Marketing / CEO / board member]. Include only: the single most important finding, what it means for our business, and one recommended action. Maximum 200 words. Do not include background context — assume the reader knows the industry."</div>
+          </div>
+          <div class="pl-tip">💡 The "do not include background context" instruction is critical — it prevents AI from wasting your executive's time with industry definitions they already know.</div>
+        </div>
+        <div class="pl-panel" id="plp1">
+          <div class="pl-prompt-title">The Key Findings Extractor</div>
+          <div class="pl-prompt-use">Use when: You need to pull the specific data points and statistics out of a long report quickly.</div>
+          <div class="pl-prompt-box">
+            <div class="pl-prompt-header"><div class="pl-prompt-label">📋 Prompt</div><button class="pl-copy-btn" onclick="copyPL(this)">Copy</button></div>
+            <div class="pl-prompt-text">"Extract exactly 5 key findings from this research report. For each finding: state it in one sentence, include the specific number or statistic that supports it, and note the page or section it came from. Format as a numbered list. Do not include analysis or interpretation — just the facts as stated in the document."</div>
+          </div>
+          <div class="pl-tip">💡 Separating findings from interpretation is important — it lets you verify the raw facts independently before deciding what they mean for your business.</div>
+        </div>
+        <div class="pl-panel" id="plp2">
+          <div class="pl-prompt-title">The Decision-Focused Summary</div>
+          <div class="pl-prompt-use">Use when: You're using this report to make a specific business decision and need the report to speak to that question.</div>
+          <div class="pl-prompt-box">
+            <div class="pl-prompt-header"><div class="pl-prompt-label">📋 Prompt</div><button class="pl-copy-btn" onclick="copyPL(this)">Copy</button></div>
+            <div class="pl-prompt-text">"Summarize this report specifically through the lens of this question: [Should we expand into the Southeast Asian market in 2025?]. Pull only the sections, data points, and findings that are directly relevant to answering this question. Ignore everything else. End with a one-sentence summary of what the report's data suggests about this decision."</div>
+          </div>
+          <div class="pl-tip">💡 This prompt filters the entire report down to only what's relevant to your specific decision — saving you from reading sections that have nothing to do with your question.</div>
+        </div>
+        <div class="pl-panel" id="plp3">
+          <div class="pl-prompt-title">The Competitor Intelligence Summary</div>
+          <div class="pl-prompt-use">Use when: You're summarizing a competitor's annual report, press release, or industry analysis that mentions competitors.</div>
+          <div class="pl-prompt-box">
+            <div class="pl-prompt-header"><div class="pl-prompt-label">📋 Prompt</div><button class="pl-copy-btn" onclick="copyPL(this)">Copy</button></div>
+            <div class="pl-prompt-text">"From this document, extract all information about [Competitor Name]. Organize it into four categories: (1) what they say their strengths are, (2) what problems or challenges they acknowledge, (3) what their stated priorities or plans are for the next 12 months, and (4) any numbers (revenue, market share, growth rates) mentioned. Flag anything that seems like marketing spin rather than factual disclosure."</div>
+          </div>
+          <div class="pl-tip">💡 The "flag marketing spin" instruction helps distinguish between factual disclosures (which you can rely on) and aspirational claims (which you should verify independently).</div>
+        </div>
+        <div class="pl-panel" id="plp4">
+          <div class="pl-prompt-title">The Risk Extractor</div>
+          <div class="pl-prompt-use">Use when: You need to identify all the risk factors, warnings, or caveats mentioned in a research report before making a recommendation.</div>
+          <div class="pl-prompt-box">
+            <div class="pl-prompt-header"><div class="pl-prompt-label">📋 Prompt</div><button class="pl-copy-btn" onclick="copyPL(this)">Copy</button></div>
+            <div class="pl-prompt-text">"Read this report and extract every risk, uncertainty, caveat, or 'however' statement mentioned by the authors. Group them into: (1) market risks, (2) competitive risks, (3) execution risks, and (4) data limitations or methodological caveats. This is for a risk assessment — include everything, even if it seems minor."</div>
+          </div>
+          <div class="pl-tip">💡 Reports often bury risk disclosures in footnotes and appendices. This prompt makes sure you find them all — which protects you from presenting overconfident conclusions to leadership.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>See It in Action: AI Summarization Simulator</h2>
+    <p>Pick a research document type and a summarization mode to see what good AI summary output looks like for each combination.</p>
+    <div class="summarizer-demo">
+      <div class="sd-label">🎮 Summarization Simulator</div>
+      <div class="sd-title">Summary Output Preview</div>
+      <div class="sd-subtitle">Select document type and summarization mode, then generate.</div>
+      <div class="sd-p-label">Document Type</div>
+      <div class="sd-doc-select">
+        <button class="sd-doc-btn active" onclick="selectDoc(this,'gartner')">📊 Gartner Market Report</button>
+        <button class="sd-doc-btn" onclick="selectDoc(this,'competitor')">🏢 Competitor Annual Report</button>
+        <button class="sd-doc-btn" onclick="selectDoc(this,'industry')">📰 Industry Survey (62 pages)</button>
+      </div>
+      <div class="sd-p-label">Summarization Mode</div>
+      <div class="sd-prompt-select">
+        <button class="sd-mode-btn active" onclick="selectMode(this,'exec')">Executive Brief</button>
+        <button class="sd-mode-btn" onclick="selectMode(this,'findings')">Key Findings</button>
+        <button class="sd-mode-btn" onclick="selectMode(this,'decision')">Decision Focus</button>
+        <button class="sd-mode-btn" onclick="selectMode(this,'risk')">Risk Extraction</button>
+      </div>
+      <button class="sd-run-btn" onclick="runSD()">Generate Summary →</button>
+      <div class="sd-output" id="sdOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The value of AI summarization isn't just speed — it's focus. A well-prompted AI summary extracts exactly what you need from a document while filtering out everything you don't. That's a skill multiplier for anyone who works with information.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h3>Never Present an AI Summary Without Spot-Checking It</h3>
+        <p>AI can misread numbers, confuse similar company names, or occasionally attribute a finding to the wrong section of a report. Before sharing any AI-generated summary with a manager, client, or team, spot-check the 2–3 most important facts against the original document. This takes 3–5 minutes and is the difference between being reliable and being embarrassed. Verify once, present with confidence.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">You need to present findings from a 45-page consumer behavior report to your CMO in 5 minutes. You ask AI: "Summarize this report." The AI produces a 600-word comprehensive overview covering market background, methodology, findings, analysis, and recommendations equally. What went wrong and what should you have done instead?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. Nothing went wrong — a 600-word summary of 45 pages is appropriately concise</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. The prompt was too vague — "summarize this" gives AI no direction on audience, length, or focus. The Executive Brief prompt would have produced a targeted 200-word brief calibrated specifically for the CMO</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. The report was too long for AI to summarize accurately — you needed a shorter document</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. AI summaries are never suitable for executive presentations — you should always write these manually</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>"Summarize this" is one of the weakest research prompts you can write. Always specify: who is the audience, what specific information do you need, how long should the output be, and what should be excluded.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The five summarization modes — executive brief, key findings, decision focus, competitor intel, and risk extraction — are each optimized for a different use case. Matching the right prompt to the right situation is the skill.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Always spot-check the 2–3 most important facts in any AI summary before presenting it. This takes 5 minutes and protects your credibility completely.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The best summarization prompts tell AI what to exclude, not just what to include — filtering out methodology, background context, or irrelevant sections makes the output dramatically more useful.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  function switchPL(i){document.querySelectorAll('.pl-tab').forEach((t,j)=>t.classList.toggle('active',i===j));document.querySelectorAll('.pl-panel').forEach((p,j)=>p.classList.toggle('active',i===j));}
+  function copyPL(btn){const text=btn.closest('.pl-prompt-box').querySelector('.pl-prompt-text').innerText;navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);});}
+
+  let selDoc='gartner',selMode='exec';
+  function selectDoc(btn,doc){document.querySelectorAll('.sd-doc-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selDoc=doc;document.getElementById('sdOutput').classList.remove('show');}
+  function selectMode(btn,mode){document.querySelectorAll('.sd-mode-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selMode=mode;document.getElementById('sdOutput').classList.remove('show');}
+
+  const sdData={
+    gartner:{
+      exec:'<strong>Executive Brief — AI & Automation Market (Gartner, 2024)</strong><br><br><strong>Key Finding:</strong> Enterprise AI adoption has reached 55% of organizations in 2024, up from 37% in 2022 — crossing the majority threshold for the first time. The primary driver is not cost reduction but competitive pressure: 68% of adopters cite "falling behind competitors" as their primary motivation.<br><br><strong>Business Implication:</strong> Companies not yet in an active AI implementation phase are now in the minority — which changes the risk calculus from "risk of adopting too early" to "risk of adopting too late."<br><br><strong>Recommended Action:</strong> Prioritize an AI readiness audit in Q1 to identify 2–3 highest-ROI use cases for immediate piloting.',
+      findings:'<strong>Key Findings — AI & Automation Market (Gartner, 2024)</strong><br><br>1. Enterprise AI adoption reached <strong>55%</strong> in 2024, crossing majority adoption for the first time (p. 4)<br>2. <strong>68%</strong> of organizations cite competitive pressure as the primary adoption driver, vs. 22% citing cost savings (p. 7)<br>3. Average time from AI pilot to production deployment is <strong>14 months</strong>, down from 22 months in 2021 (p. 12)<br>4. Organizations with a dedicated AI Center of Excellence see <strong>2.3× faster ROI</strong> than those without (p. 18)<br>5. The top barrier to AI adoption is <strong>data quality issues</strong>, cited by 71% of non-adopters (p. 24)',
+      decision:'<strong>Decision-Focused Summary: "Should we launch an AI product feature in 2025?"</strong><br><br>Relevant findings from the Gartner report:<br><br>→ 78% of enterprise software buyers now expect AI features as a standard component of new tools (p. 9) — suggesting demand is real and growing<br>→ First-mover AI features capture <strong>31% premium pricing</strong> vs. non-AI equivalents in comparable product categories (p. 15)<br>→ However: 44% of AI product features are abandoned within 18 months due to poor integration with existing workflows (p. 21)<br><br><strong>What the data suggests:</strong> Market demand justifies an AI feature launch, but workflow integration quality is a higher predictor of success than speed to market.',
+      risk:'<strong>Risk Extraction — AI & Automation Market (Gartner, 2024)</strong><br><br><strong>Market Risks:</strong> AI adoption growth projected to slow post-2025 as early-majority organizations complete initial implementations (p. 31)<br><br><strong>Competitive Risks:</strong> Hyperscaler commoditization (AWS, Azure, GCP) is compressing AI infrastructure margins significantly (p. 28)<br><br><strong>Execution Risks:</strong> 44% of AI pilots fail to reach production due to data quality issues; 61% of organizations underestimate implementation complexity (p. 22)<br><br><strong>Methodological Caveats:</strong> Survey sample skewed toward large enterprises (500+ employees); findings may overstate adoption rates for SMB market (p. 3 footnote)'
+    },
+    competitor:{
+      exec:'<strong>Executive Brief — Competitor Annual Report Summary</strong><br><br><strong>Key Finding:</strong> Acme Corp grew revenue 23% YoY to $4.2B, beating analyst estimates by 8%. The growth was driven entirely by their enterprise segment (+41%) — their SMB segment actually contracted 6%.<br><br><strong>Business Implication:</strong> Their strategic focus is clearly moving upmarket. This creates an opportunity in the SMB segment they are intentionally deprioritizing.<br><br><strong>Recommended Action:</strong> Evaluate whether an SMB-focused product tier could capture the customers Acme is walking away from.',
+      findings:'<strong>Key Findings — Competitor Annual Report</strong><br><br>1. Total revenue: <strong>$4.2B</strong> (+23% YoY) — enterprise drove 78% of growth<br>2. SMB revenue declined <strong>6%</strong>, with no new SMB product investments announced<br>3. R&D spend increased <strong>34%</strong>, concentrated in AI automation and enterprise integrations<br>4. International expansion into Southeast Asia announced; initial investment of <strong>$180M</strong><br>5. Customer churn rate in enterprise segment improved to <strong>4.2%</strong> (from 6.8% prior year)',
+      decision:'<strong>Decision-Focused: "Should we expand into Southeast Asia in 2025?"</strong><br><br>From the competitor annual report:<br><br>→ Competitor committed $180M to Southeast Asian expansion, targeting Singapore, Indonesia, and Vietnam as priority markets<br>→ They project the region will represent 15% of their revenue within 36 months<br>→ Their entry strategy relies on partnerships with local distributors rather than direct-to-market<br><br><strong>Implication for your decision:</strong> A major competitor is entering the same markets you\'re evaluating. Their partnership-first approach suggests distribution is a key success factor — and the window to establish local partnerships may be narrowing.',
+      risk:'<strong>Risk Extraction — Competitor Annual Report</strong><br><br><strong>Market Risks Acknowledged:</strong> "Macroeconomic uncertainty may impact enterprise software spending in H2 2025" (p. 8)<br><br><strong>Competitive Risks Acknowledged:</strong> "Intensifying competition in the AI-assisted workflow segment from both established players and well-funded startups" (p. 12)<br><br><strong>Execution Risks Acknowledged:</strong> Southeast Asian expansion carries "significant regulatory and cultural localization challenges" (p. 19)<br><br><strong>Marketing Spin (flagged):</strong> Claims of "industry-leading customer satisfaction" are not supported by third-party data in this document'
+    },
+    industry:{
+      exec:'<strong>Executive Brief — Consumer Trust in AI Survey (N=4,800)</strong><br><br><strong>Key Finding:</strong> Consumer trust in AI-generated content has declined 18 percentage points since 2022, with the sharpest drop among 35–54 year olds (-28 pts). Only 31% of consumers now say they trust AI-generated product recommendations "most of the time."<br><br><strong>Business Implication:</strong> The trust gap is becoming a real conversion barrier for AI-powered personalization features — especially in the 35–54 demographic that represents the highest LTV customer tier for most B2C businesses.<br><br><strong>Recommended Action:</strong> Add human-reviewed disclosure labels to AI-generated recommendations; test whether transparent AI labeling improves or reduces conversion rates.',
+      findings:'<strong>Key Findings — Consumer Trust in AI (2024)</strong><br><br>1. Consumer trust in AI-generated content: <strong>31%</strong> "trust most of the time" (down from 49% in 2022)<br>2. Largest trust decline by age: 35–54 cohort lost <strong>28 percentage points</strong> in 2 years<br>3. <strong>64%</strong> of consumers want to know when they\'re interacting with AI — but only 28% of companies currently disclose this<br>4. Trust recovery mechanism: <strong>Human oversight disclosure</strong> recovers 19 pts of lost trust vs. unlabeled AI<br>5. Industry with highest AI trust: Healthcare (<strong>52%</strong> trust). Lowest: Social media (<strong>11%</strong>)',
+      decision:'<strong>Decision-Focused: "Should we use AI personalization on our checkout page?"</strong><br><br>→ 54% of consumers report they would abandon a purchase if they discovered AI was influencing their product recommendations without disclosure (p. 34)<br>→ However, transparent AI recommendations with "reviewed by our team" labels saw only 12% abandonment vs. 54% for undisclosed (p. 36)<br>→ The 18–34 demographic shows significantly higher acceptance: only 22% abandon for undisclosed AI recommendations (p. 29)<br><br><strong>Summary:</strong> AI personalization on checkout is viable but requires transparency labeling — especially if your customer base skews 35+ where trust concerns are highest.',
+      risk:'<strong>Risk Extraction — Consumer Trust in AI Survey</strong><br><br><strong>Market Risks:</strong> Trust decline trajectory shows no signs of reversal; if trend continues, AI personalization effectiveness may continue declining regardless of quality<br><br><strong>Execution Risks:</strong> Companies that deploy AI features without disclosure face an emerging "trust backlash" risk that could trigger negative earned media (3 case studies cited, pp. 41–44)<br><br><strong>Competitive Risks:</strong> 23% of survey respondents say they actively prefer brands that explicitly state "human involvement" in recommendations<br><br><strong>Methodological Caveats:</strong> Survey conducted online — may underrepresent lower-digital-literacy consumers who may have even lower AI trust. Results should not be generalized to populations 65+.'
+    }
+  };
+
+  function runSD(){
+    const d=sdData[selDoc][selMode];
+    const out=document.getElementById('sdOutput');
+    out.innerHTML=`<div class="sd-out-label">🤖 AI Summary Output</div><div class="sd-out-content">${d}</div>`;
+    out.className='sd-output show';
+  }
+
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> "Summarize this" is the most common — and weakest — summarization prompt. It gives AI no direction on audience (CMO vs. junior analyst need different things), length (200 words vs. 600 is a huge difference in a 5-minute meeting), or focus (the CMO probably only cares about 2–3 of the 45 pages). The Executive Brief prompt template would have produced something CMO-ready in under 200 words, with only the finding, implication, and action — nothing else.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> 600 words is too long for a 5-minute CMO briefing. Document length doesn\'t limit AI\'s summarization ability (with the right tool). And AI summaries are absolutely suitable for executive presentations — when prompted correctly. The entire issue here was the vague "summarize this" prompt. With a specific Executive Brief prompt, the output would have been calibrated, concise, and presentation-ready.';}f.classList.add('show');}
+</script>
+</body>
+</html>

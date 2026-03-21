@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Crunchbase? A Beginner's Guide to Business Intelligence Tools — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;letter-spacing:-0.01em;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Mock Crunchbase card */
+  .mock-cb{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .mcb-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .mcb-profile{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;}
+  .mcb-header{background:var(--purple-dark);padding:20px 24px;display:flex;align-items:center;gap:16px;}
+  .mcb-logo{width:52px;height:52px;background:var(--purple);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+  .mcb-co-name{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:white;}
+  .mcb-co-tag{font-size:13px;color:rgba(255,255,255,0.7);margin-top:2px;}
+  .mcb-body{padding:24px;}
+  .mcb-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+  @media(max-width:560px){.mcb-stats{grid-template-columns:1fr 1fr;}}
+  .mcb-stat{background:var(--gray-soft);border-radius:12px;padding:14px 16px;text-align:center;}
+  .mcb-stat-num{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);line-height:1;}
+  .mcb-stat-label{font-size:12px;color:var(--gray-muted);margin-top:4px;}
+  .mcb-section-title{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+  .mcb-investors{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .mcb-investor-tag{background:var(--purple-pale);color:var(--purple-dark);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:500;}
+  .mcb-news{display:flex;flex-direction:column;gap:8px;}
+  .mcb-news-item{padding:10px 14px;background:var(--gray-soft);border-radius:10px;font-size:13.5px;line-height:1.5;}
+  .mcb-news-date{font-size:11px;color:var(--gray-muted);margin-bottom:2px;}
+  .mcb-hotspot{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--purple);color:white;border-radius:50%;font-size:10px;font-weight:700;cursor:pointer;margin-left:4px;vertical-align:middle;transition:all 0.2s;}
+  .mcb-hotspot:hover{background:var(--purple-dark);transform:scale(1.1);}
+  .mcb-tip{margin-top:10px;padding:12px 16px;background:var(--purple-pale);border-radius:10px;font-size:14px;line-height:1.65;display:none;color:var(--purple-dark);}
+  .mcb-tip.show{display:block;animation:fadeIn 0.2s ease;}
+
+  /* BI tools ecosystem */
+  .tools-ecosystem{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.tools-ecosystem{grid-template-columns:1fr;}}
+  .te-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;background:var(--white);}
+  .te-icon{font-size:28px;margin-bottom:8px;display:block;}
+  .te-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .te-type{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .te-desc{font-size:14px;line-height:1.6;color:var(--gray-text);}
+  .te-use{font-size:13px;color:var(--gray-muted);margin-top:8px;font-style:italic;}
+
+  /* Use case quiz */
+  .use-quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .uq-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .uq-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .uq-subtitle{font-size:15px;color:var(--gray-muted);margin-bottom:24px;}
+  .uq-cases{display:flex;flex-direction:column;gap:12px;}
+  .uq-case{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px 20px;}
+  .uq-case-q{font-size:15.5px;font-weight:600;color:var(--purple-dark);margin-bottom:12px;}
+  .uq-opts{display:flex;gap:8px;flex-wrap:wrap;}
+  .uq-opt{padding:8px 16px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .uq-opt:hover:not([disabled]){border-color:var(--purple);background:var(--purple-pale);}
+  .uq-opt.correct{background:var(--green-pale);border-color:#6EE7B7;color:var(--green);}
+  .uq-opt.wrong{background:var(--red-pale);border-color:#FCA5A5;color:var(--red);}
+  .uq-result{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:14px;line-height:1.6;display:none;}
+  .uq-result.show{display:block;animation:fadeIn 0.2s ease;}
+  .uq-result.good{background:var(--green-pale);color:var(--green);}
+  .uq-result.bad{background:var(--red-pale);color:var(--red);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s ease;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);transform:translateX(4px);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 3.2 · Using AI for Research</div>
+  <h1>What Is Crunchbase? A Beginner's Guide to Business Intelligence Tools</h1>
+  <p class="hero-sub">The lesson video mentioned Crunchbase as an example of AI-powered business research. But Crunchbase is just one tool in a larger ecosystem of business intelligence platforms — and knowing what these tools are and when to use them is a real professional advantage.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>When the Crunchbase slide appeared in the lesson, it illustrated a key point: AI isn't just about chatbots and text generation. It's increasingly built into the specialized tools that business professionals use every day — research platforms, CRM systems, analytics dashboards, and market intelligence databases.</p>
+    <p><mark>Business intelligence (BI) tools are platforms that aggregate, organize, and surface data about companies, markets, and competitors</mark> — so that instead of piecing together research from a dozen different sources, professionals can get structured, verified information in one place. Crunchbase is one of the most well-known examples. But there's a whole ecosystem of these tools, each optimized for different research needs.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>A Tour of a Real Crunchbase Profile</h2>
+    <p>Click the purple hotspot buttons to learn what each section of a Crunchbase company profile tells you — and how you'd use that information for business research.</p>
+    <div class="mock-cb">
+      <div class="mcb-label">🔍 Example Crunchbase Company Profile</div>
+      <div class="mcb-profile">
+        <div class="mcb-header">
+          <div class="mcb-logo">⚡</div>
+          <div>
+            <div class="mcb-co-name">VoltGrid Technologies</div>
+            <div class="mcb-co-tag">Series B · EV Charging Infrastructure · San Francisco, CA</div>
+          </div>
+        </div>
+        <div class="mcb-body">
+          <div class="mcb-stats">
+            <div class="mcb-stat"><div class="mcb-stat-num">$47M<span class="mcb-hotspot" onclick="showCBTip('funding')">?</span></div><div class="mcb-stat-label">Total Funding</div></div>
+            <div class="mcb-stat"><div class="mcb-stat-num">2019<span class="mcb-hotspot" onclick="showCBTip('founded')">?</span></div><div class="mcb-stat-label">Founded</div></div>
+            <div class="mcb-stat"><div class="mcb-stat-num">180<span class="mcb-hotspot" onclick="showCBTip('employees')">?</span></div><div class="mcb-stat-label">Employees</div></div>
+            <div class="mcb-stat"><div class="mcb-stat-num">4<span class="mcb-hotspot" onclick="showCBTip('rounds')">?</span></div><div class="mcb-stat-label">Funding Rounds</div></div>
+          </div>
+          <div class="mcb-section-title">Investors <span class="mcb-hotspot" onclick="showCBTip('investors')">?</span></div>
+          <div class="mcb-investors">
+            <div class="mcb-investor-tag">Andreessen Horowitz</div>
+            <div class="mcb-investor-tag">Breakthrough Energy Ventures</div>
+            <div class="mcb-investor-tag">Tiger Global</div>
+            <div class="mcb-investor-tag">Sequoia Capital</div>
+          </div>
+          <div class="mcb-section-title">Recent Activity <span class="mcb-hotspot" onclick="showCBTip('news')">?</span></div>
+          <div class="mcb-news">
+            <div class="mcb-news-item"><div class="mcb-news-date">March 2024</div>Raised $28M Series B led by a16z to expand B2B fleet charging division</div>
+            <div class="mcb-news-item"><div class="mcb-news-date">January 2024</div>Appointed new Chief Revenue Officer from Rivian</div>
+            <div class="mcb-news-item"><div class="mcb-news-date">October 2023</div>Signed partnership agreement with 3 national logistics companies</div>
+          </div>
+          <div class="mcb-tip" id="cbTip"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Business Intelligence Tool Ecosystem</h2>
+    <p>Crunchbase is one of several BI tools professionals use. Each is built for a different type of business research. Here's the landscape you'll encounter in a real business environment:</p>
+    <div class="tools-ecosystem">
+      <div class="te-card">
+        <span class="te-icon">🔍</span>
+        <div class="te-type">Company & Market Intelligence</div>
+        <div class="te-name">Crunchbase</div>
+        <p class="te-desc">Tracks company funding rounds, investor relationships, executive moves, and market activity. AI-powered insights surface trends and growth signals across thousands of companies simultaneously.</p>
+        <div class="te-use">Best for: Competitor research, identifying who's getting funding in your space, tracking market activity</div>
+      </div>
+      <div class="te-card">
+        <span class="te-icon">📊</span>
+        <div class="te-type">Market Size & Industry Data</div>
+        <div class="te-name">Statista</div>
+        <p class="te-desc">Aggregates market data, consumer surveys, and industry statistics from thousands of sources into one searchable database. Provides charts and exportable datasets on virtually any market.</p>
+        <div class="te-use">Best for: Market sizing, consumer behavior statistics, industry trend data with clear sourcing</div>
+      </div>
+      <div class="te-card">
+        <span class="te-icon">🏢</span>
+        <div class="te-type">Enterprise Research & Advisory</div>
+        <div class="te-name">Gartner</div>
+        <p class="te-desc">Analyst-written research reports covering technology markets, enterprise software, and IT trends. Reports include market forecasts, vendor comparisons, and strategic recommendations. AI now helps surface relevant insights from its massive report library.</p>
+        <div class="te-use">Best for: Technology market research, enterprise software comparisons, C-suite decision support</div>
+      </div>
+      <div class="te-card">
+        <span class="te-icon">📈</span>
+        <div class="te-type">Consumer & Social Intelligence</div>
+        <div class="te-name">Brandwatch / Sprinklr</div>
+        <p class="te-desc">Tracks what consumers are saying about brands, products, and competitors across social media, reviews, and online forums. AI identifies sentiment trends and emerging issues in real time.</p>
+        <div class="te-use">Best for: Brand health tracking, competitor sentiment analysis, emerging customer complaint patterns</div>
+      </div>
+      <div class="te-card">
+        <span class="te-icon">🌐</span>
+        <div class="te-type">Website & Digital Intelligence</div>
+        <div class="te-name">SimilarWeb</div>
+        <p class="te-desc">Provides website traffic estimates, audience demographics, traffic sources, and competitor digital benchmarks. Shows which channels drive the most traffic to any website.</p>
+        <div class="te-use">Best for: Competitor digital strategy analysis, market share estimation, traffic source benchmarking</div>
+      </div>
+      <div class="te-card">
+        <span class="te-icon">🤝</span>
+        <div class="te-type">Professional Network Intelligence</div>
+        <div class="te-name">LinkedIn Sales Navigator</div>
+        <p class="te-desc">Advanced LinkedIn search with AI-powered lead recommendations, company tracking, and executive movement alerts. Used for B2B prospecting and tracking personnel changes at target companies.</p>
+        <div class="te-use">Best for: B2B sales research, tracking competitor executive hires, identifying decision-makers at target companies</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI isn't just the chatbot you type questions into. It's increasingly the intelligence layer built into the tools businesses already use every day — making those tools smarter, faster, and more proactive about surfacing what you need.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Which Tool for Which Research Task?</h2>
+    <p>Test your knowledge of when to use each BI tool for different research situations.</p>
+    <div class="use-quiz">
+      <div class="uq-label">🎮 Tool Match Challenge</div>
+      <div class="uq-title">Pick the Right BI Tool</div>
+      <div class="uq-subtitle">For each research task, select the most appropriate business intelligence tool.</div>
+      <div class="uq-cases" id="uqCases"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>AI + BI Tools = Research Superpower</h3>
+        <p>The real power comes when you combine AI language tools with specialized BI platforms. Use Crunchbase to find recent funding activity in your competitive space, then paste those findings into ChatGPT to synthesize them into a strategic brief. Use Statista to pull market size data, then use Claude to interpret what it means for your product roadmap. These tools weren't designed to work together — but professionals who connect them get research quality that neither can produce alone.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">Your startup is preparing to pitch investors. You want to show that there's strong investor interest in your market space — that venture capital firms are actively funding companies in your category. Which tool gives you the best data for this?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">A. Statista — it has comprehensive market size and trend data</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,true)">B. Crunchbase — it specifically tracks funding rounds, investor names, and investment trends by industry category, making it the best source for proving investor activity in your space</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">C. SimilarWeb — it shows digital traffic trends which indicate market interest</button>
+        <button class="quiz-btn" onclick="checkAnswer(this,false)">D. Gartner — its analyst reports cover which sectors are receiving investment interest</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 Article Summary</div>
+      <h2>What You Just Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Business intelligence tools aggregate structured data about companies, markets, and competitors — giving professionals a faster starting point than manually piecing together research from separate sources.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Crunchbase specializes in funding activity, investor relationships, and company growth signals — making it the go-to tool for tracking what's happening in a startup or venture-backed market.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Different BI tools serve different research needs: Statista for market data, Gartner for enterprise research, SimilarWeb for digital competitive intelligence, LinkedIn Navigator for B2B targeting.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The real power is in combining BI tools with AI language tools — using each for what it does best and synthesizing the results into strategic insights that neither produces alone.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const cbTips={
+    funding:'💰 <strong>Total Funding</strong> tells you how much capital the company has raised in total across all rounds. This signals how well-resourced a competitor is, how much runway they likely have, and how seriously the investor community views their potential. A company that has raised $47M has significant resources to invest in product, sales, and growth.',
+    founded:'📅 <strong>Founded year</strong> tells you how old the company is — which helps you understand where they are in their lifecycle. A 5-year-old company in their Series B is moving at a very different pace than a 10-year-old company still at Series A. This context shapes how you assess their competitive threat.',
+    employees:'👥 <strong>Employee count</strong> is a proxy for company scale and growth rate. Tracking this over time on Crunchbase reveals whether a company is rapidly hiring (aggressive growth) or flat (consolidation). A 180-person company with $47M raised is lean — likely moving fast with limited redundancy.',
+    rounds:'🔄 <strong>Number of funding rounds</strong> shows how many times they\'ve raised money, which signals investor confidence over time. 4 rounds means at least 4 separate groups of investors validated the business enough to put in money. It also indicates the company has survived multiple fundraising cycles — which many startups don\'t.',
+    investors:'🤝 <strong>Investor names</strong> are extremely valuable competitive intelligence. Who is backing a company signals both financial resources and strategic credibility. A16z and Sequoia backing means tier-1 VC support — which typically comes with recruiting networks, customer introductions, and press attention that less-funded competitors can\'t access.',
+    news:'📰 <strong>Recent activity</strong> is often the most actionable intelligence on Crunchbase. A new CRO hire signals a sales motion shift. A Series B specifically for B2B fleet charging tells you their strategic priority. A partnership announcement is a competitive move you need to understand. This section tells you what\'s happening right now, not just who the company is.'
+  };
+
+  function showCBTip(id){const t=document.getElementById('cbTip');t.innerHTML=cbTips[id];t.className='mcb-tip show';}
+
+  const uqData=[
+    {q:'📊 You need to find out how many people in the U.S. owned a smartwatch in 2023, with a citable source.',correct:'Statista',tools:['Crunchbase','Statista','SimilarWeb','Gartner'],tip:'Statista aggregates consumer and market survey data from thousands of research organizations into one searchable database — exactly the right tool for a specific consumer adoption statistic with a clear source.'},
+    {q:'🔍 You want to know which venture capital firms have invested in AI healthcare startups in the last 2 years.',correct:'Crunchbase',tools:['Crunchbase','Statista','LinkedIn Navigator','Brandwatch'],tip:'Crunchbase specifically tracks funding rounds by industry and date — it will show you every AI healthcare funding round in the last 2 years, the investor names, and the amounts raised. No other tool in this list tracks venture activity this specifically.'},
+    {q:'💬 You want to understand what customers are saying about a competitor\'s product on social media right now.',correct:'Brandwatch',tools:['Gartner','Crunchbase','Brandwatch','Statista'],tip:'Brandwatch (and similar tools like Sprinklr) specifically tracks brand and product mentions across social media, reviews, and forums in real time. This is customer sentiment intelligence — something BI tools like Crunchbase and Statista don\'t cover.'},
+    {q:'🌐 You want to estimate how much website traffic your main competitor gets per month and which channels drive it.',correct:'SimilarWeb',tools:['Crunchbase','SimilarWeb','Gartner','LinkedIn Navigator'],tip:'SimilarWeb is specifically built for digital competitive intelligence — it estimates website traffic volumes, traffic sources (organic search, social, paid, direct), and audience demographics for any website. No other tool in this list provides this type of data.'}
+  ];
+
+  const uqDone={};
+
+  function renderUQ(){
+    const c=document.getElementById('uqCases');
+    c.innerHTML=uqData.map((item,i)=>`<div class="uq-case"><div class="uq-case-q">${item.q}</div><div class="uq-opts">${item.tools.map(t=>`<button class="uq-opt" data-i="${i}" data-t="${t}" onclick="uqAnswer(this,${i},'${t}')">${t}</button>`).join('')}</div><div class="uq-result" id="uqr${i}"></div></div>`).join('');
+  }
+
+  function uqAnswer(btn,i,tool){if(uqDone[i])return;uqDone[i]=true;const item=uqData[i];document.querySelectorAll(`[data-i="${i}"]`).forEach(b=>b.disabled=true);const r=document.getElementById('uqr'+i);if(tool===item.correct){btn.classList.add('correct');r.className='uq-result good show';r.innerHTML=`✅ <strong>${item.correct} is right.</strong> ${item.tip}`;}else{btn.classList.add('wrong');const cb=document.querySelector(`[data-i="${i}"][data-t="${item.correct}"]`);if(cb)cb.classList.add('correct');r.className='uq-result bad show';r.innerHTML=`❌ <strong>${item.correct} is the better choice.</strong> ${item.tip}`;}}
+
+  renderUQ();
+
+  let answered=false;
+  function checkAnswer(btn,correct){if(answered)return;answered=true;document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');const f=document.getElementById('quizFeedback');if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Crunchbase is purpose-built for this question. You can search by industry category, filter by funding date, and see every round with investor names, amounts, and company details. This is exactly the kind of investor activity data that impresses pitch meetings — because it shows you know the market and who\'s backing it. Statista, SimilarWeb, and even Gartner reports don\'t track individual funding rounds the way Crunchbase does.';}else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ <strong>Not quite.</strong> Statista has market size data but not funding activity. SimilarWeb tracks digital traffic, not investment. Gartner covers enterprise research but not venture deals. Crunchbase is the only tool in this list specifically designed to track who is investing in what, when, and for how much — making it the unambiguous right answer for proving investor activity in your space.';}f.classList.add('show');}
+</script>
+</body>
+</html>
