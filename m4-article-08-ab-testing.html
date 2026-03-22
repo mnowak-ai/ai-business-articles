@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A/B Testing: How Marketers Know What Actually Works — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* A vs B display */
+  .ab-showdown{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:24px 0;border-radius:20px;overflow:hidden;border:2px solid var(--purple-mid);}
+  @media(max-width:540px){.ab-showdown{grid-template-columns:1fr;}}
+  .ab-side{padding:28px;position:relative;}
+  .ab-side.a-side{background:var(--purple-pale);}
+  .ab-side.b-side{background:var(--purple);color:white;}
+  .ab-version-badge{font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;}
+  .a-side .ab-version-badge{color:var(--purple);}
+  .b-side .ab-version-badge{color:var(--accent);}
+  .ab-content-box{background:white;border-radius:12px;padding:18px;margin:12px 0;}
+  .ab-side.b-side .ab-content-box{background:rgba(255,255,255,0.12);}
+  .ab-label{font-size:11px;color:var(--gray-muted);margin-bottom:6px;}
+  .ab-side.b-side .ab-label{color:rgba(255,255,255,0.6);}
+  .ab-text{font-size:16px;font-weight:600;color:var(--purple-dark);line-height:1.4;}
+  .ab-side.b-side .ab-text{color:white;}
+  .ab-result{display:flex;align-items:center;gap:8px;margin-top:14px;}
+  .ab-metric{font-size:13px;color:var(--gray-muted);}
+  .b-side .ab-metric{color:rgba(255,255,255,0.7);}
+  .ab-pct{font-family:'Fraunces',serif;font-size:32px;font-weight:900;}
+  .a-side .ab-pct{color:var(--purple);}
+  .b-side .ab-pct{color:white;}
+  .ab-winner-badge{background:#4ade80;color:#166534;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:100px;align-self:flex-start;}
+  .ab-vs{display:flex;align-items:center;justify-content:center;background:var(--purple-mid);color:var(--purple-dark);font-family:'Fraunces',serif;font-size:22px;font-weight:900;padding:0 12px;writing-mode:vertical-lr;}
+  @media(max-width:540px){.ab-vs{writing-mode:horizontal-tb;padding:12px;justify-content:center;}}
+
+  /* A/B test simulator */
+  .ab-simulator{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .abs-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .abs-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .abs-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .abs-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  @media(max-width:560px){.abs-choices{grid-template-columns:1fr;}}
+  .abs-choice{border:2px solid var(--purple-mid);border-radius:14px;padding:18px;cursor:pointer;transition:all 0.2s;background:var(--white);}
+  .abs-choice:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .abs-choice.selected-a{border-color:var(--purple);background:var(--purple-pale);}
+  .abs-choice.selected-b{border-color:var(--purple-dark);background:var(--purple);}
+  .abs-choice.selected-b .abs-choice-title{color:white;}
+  .abs-choice.selected-b .abs-choice-desc{color:rgba(255,255,255,0.75);}
+  .abs-choice-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+  .abs-choice.selected-b .abs-choice-label{color:var(--accent);}
+  .abs-choice-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .abs-choice-desc{font-size:13px;color:var(--gray-muted);line-height:1.55;}
+  .abs-run-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .abs-run-btn:hover{background:var(--purple-dark);}
+  .abs-result{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .abs-result.show{display:block;animation:fadeIn 0.4s ease;}
+  .abs-winner{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:12px;}
+  .abs-bar-row{margin:10px 0;}
+  .abs-bar-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;}
+  .abs-bar-track{height:12px;background:var(--purple-mid);border-radius:100px;overflow:hidden;}
+  .abs-bar-fill{height:100%;border-radius:100px;transition:width 0.8s ease;}
+  .abs-bar-fill.bar-a{background:var(--purple-mid);}
+  .abs-bar-fill.bar-b{background:var(--purple);}
+  .abs-insight{background:var(--green-pale);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--green);margin-top:12px;line-height:1.6;}
+
+  /* How AI improves A/B */
+  .ai-upgrade{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .au-item{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;}
+  .au-icon{font-size:24px;flex-shrink:0;}
+  .au-text h3{font-size:16px;font-weight:600;color:var(--purple-dark);margin-bottom:4px;}
+  .au-text p{font-size:14px;line-height:1.65;color:var(--gray-text);margin:0;}
+
+  /* What NOT to A/B test quiz */
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.1 · Introduction to AI in Marketing</div>
+  <h1>A/B Testing: How Marketers Know What Actually Works</h1>
+  <p class="hero-sub">Opinions about what makes great marketing are everywhere. Data about what actually works is rarer — and far more valuable. A/B testing is how marketers replace guessing with knowing.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Imagine you're launching an email campaign and you have two subject line ideas. Your manager thinks Option A is better. Your colleague thinks Option B will perform. Who's right? Without data, it's just debate. <mark>A/B testing is the method that settles these debates with actual evidence — by showing each version to a real audience and measuring which one performs better.</mark></p>
+    <p>It sounds simple, and the core idea is — but A/B testing is one of the most powerful tools in marketing because it applies scientific thinking to creative decisions. And when AI gets involved, the scale and speed of testing becomes dramatically more powerful.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What A/B Testing Actually Looks Like</h2>
+    <p>Here's a real example: Spotify tested two email subject lines for a playlist promotion. Half their users got Version A, half got Version B. Here's what happened.</p>
+    <div class="ab-showdown">
+      <div class="ab-side a-side">
+        <div class="ab-version-badge">VERSION A — Control</div>
+        <div class="ab-content-box">
+          <div class="ab-label">Subject Line</div>
+          <div class="ab-text">"Your weekly playlist is ready 🎵"</div>
+        </div>
+        <div class="ab-content-box">
+          <div class="ab-label">Button Color</div>
+          <div class="ab-text">White button on dark background</div>
+        </div>
+        <div class="ab-result">
+          <div>
+            <div class="ab-pct">24.1%</div>
+            <div class="ab-metric">Open rate</div>
+          </div>
+        </div>
+      </div>
+      <div class="ab-vs">VS</div>
+      <div class="ab-side b-side">
+        <div class="ab-version-badge">VERSION B — Challenger</div>
+        <div class="ab-content-box">
+          <div class="ab-label">Subject Line</div>
+          <div class="ab-text">"We made something just for you 🎶"</div>
+        </div>
+        <div class="ab-content-box">
+          <div class="ab-label">Button Color</div>
+          <div class="ab-text">Green button on dark background</div>
+        </div>
+        <div class="ab-result">
+          <div>
+            <div class="ab-pct">31.7%</div>
+            <div class="ab-metric">Open rate</div>
+          </div>
+          <div class="ab-winner-badge">WINNER +31%</div>
+        </div>
+      </div>
+    </div>
+    <p>Version B got 31% more opens — just from changing the subject line to feel more personal. No designer needed. No big budget. Just a test, a measurement, and a clear winner. That's A/B testing.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>In marketing, the most dangerous phrase is "I think this will work." A/B testing replaces thinking with knowing — and in high-stakes campaigns, knowing is worth everything.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Run Your Own A/B Test</h2>
+    <p>Pick the two versions you'd test for a campaign, then see the simulated results — and what they mean for your marketing decision.</p>
+    <div class="ab-simulator">
+      <div class="abs-label">🧪 A/B Test Simulator</div>
+      <div class="abs-title">Design Your Test</div>
+      <div class="abs-sub">Select Version A (your current approach) and Version B (your challenger).</div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:13px;font-weight:600;color:var(--purple-dark);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">Choose your test scenario:</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="scenario-btns">
+          <button class="abs-run-btn" style="background:var(--white);color:var(--purple);border:1.5px solid var(--purple);font-size:13px;padding:8px 16px;" onclick="setScenario('email',this)">📧 Email</button>
+          <button class="abs-run-btn" style="background:var(--white);color:var(--purple);border:1.5px solid var(--purple);font-size:13px;padding:8px 16px;" onclick="setScenario('button',this)">🖱️ Button</button>
+          <button class="abs-run-btn" style="background:var(--white);color:var(--purple);border:1.5px solid var(--purple);font-size:13px;padding:8px 16px;" onclick="setScenario('headline',this)">📰 Headline</button>
+        </div>
+      </div>
+
+      <div class="abs-choices" id="abs-options"></div>
+      <button class="abs-run-btn" onclick="runABTest()">▶ Run Test (1,000 users)</button>
+      <div class="abs-result" id="absResult"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Rules of Valid A/B Testing</h2>
+    <p>A/B tests can give you wrong answers if done incorrectly. These rules ensure your results are actually trustworthy.</p>
+    <div class="ai-upgrade">
+      <div class="au-item"><div class="au-icon">1️⃣</div><div class="au-text"><h3>Test ONE thing at a time</h3><p>If you change both the subject line AND the button color, you won't know which change caused the difference. Change exactly one variable between A and B — everything else stays identical.</p></div></div>
+      <div class="au-item"><div class="au-icon">👥</div><div class="au-text"><h3>Split your audience randomly</h3><p>Both groups must be randomly selected from the same audience. If Group A is mostly loyal customers and Group B is mostly new visitors, your results reflect the audience difference, not your test.</p></div></div>
+      <div class="au-item"><div class="au-icon">📏</div><div class="au-text"><h3>Use a large enough sample</h3><p>Small samples produce unreliable results. If you only show each version to 20 people, random variation can easily make a bad option look like a winner. Most A/B tests need hundreds or thousands of participants to be statistically meaningful.</p></div></div>
+      <div class="au-item"><div class="au-icon">⏳</div><div class="au-text"><h3>Run it long enough</h3><p>Stopping a test the moment one version is "winning" is a common mistake — early results fluctuate wildly. Run tests for a full business cycle (usually 1–2 weeks for most campaigns) to get stable, reliable results.</p></div></div>
+      <div class="au-item"><div class="au-icon">🎯</div><div class="au-text"><h3>Define your metric before you start</h3><p>Decide what "winning" means before you run the test — open rate, click rate, purchases, sign-ups. Changing your success metric after seeing results (called "p-hacking") produces misleading conclusions.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How AI Supercharges A/B Testing</h2>
+    <p>Traditional A/B testing is powerful but slow — you can only test one thing at a time and wait for results. AI changes the game in three major ways.</p>
+    <div class="ai-upgrade">
+      <div class="au-item"><div class="au-icon">⚡</div><div class="au-text"><h3>Multivariate Testing at Scale</h3><p>AI can run hundreds of variations simultaneously and identify the winning combination — not just which subject line beats another, but which combination of subject line, send time, personalization, and button color works best together. Impossible to do manually.</p></div></div>
+      <div class="au-item"><div class="au-icon">🎯</div><div class="au-text"><h3>Personalized Winning Variants</h3><p>AI discovers that Version B is the winner for 25–34 year olds in cities, but Version A is the winner for 55+ in suburban areas. It then serves each person the version that's predicted to work best for them — personalized optimization, not one-size-fits-all.</p></div></div>
+      <div class="au-item"><div class="au-icon">🔄</div><div class="au-text"><h3>Continuous Optimization (Bandit Testing)</h3><p>Traditional A/B testing shows 50/50 splits even when one version is clearly losing. AI "multi-armed bandit" testing automatically shifts more traffic to the winning version in real time — reducing wasted impressions on the loser while still gathering data.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A marketer runs an A/B test on a landing page. After just 2 days and 40 total visitors (20 each), Version B has a 15% conversion rate vs. Version A's 10%. The marketer declares Version B the winner and rolls it out to all traffic. What went wrong?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Nothing — a 50% improvement (10% to 15%) is significant and should be acted on immediately</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. The sample size is way too small — with only 20 people per group, random variation can easily create a 5% difference that has nothing to do with which version is actually better</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. The test ran too long — 2 days is more than enough for any A/B test</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. The test is fine, but the marketer should have tested a third version too</button>
+      </div>
+      <div class="quiz-feedback" id="qfeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">📊</div>
+      <div>
+        <h3>A/B Testing Is a Mindset, Not Just a Tool</h3>
+        <p>The most data-driven marketing teams treat every campaign launch as a learning opportunity. They're not just trying to win the current campaign — they're building a knowledge base about what works for their specific audience. Over time, this compound knowledge becomes a massive competitive advantage. Companies like Amazon, Google, and Netflix run thousands of A/B tests simultaneously. This culture of testing is one of the key reasons these companies have such strong product and marketing performance.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A/B testing is the practice of showing two versions of something to different audience segments and measuring which performs better — replacing opinion with evidence.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Valid A/B tests require: testing one variable at a time, random audience splits, large enough sample sizes, sufficient run time, and pre-defined success metrics.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI supercharges A/B testing through multivariate testing (hundreds of variations at once), personalized winners (different versions for different segments), and bandit testing (real-time traffic shifting to the winner).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A culture of continuous testing — running many experiments simultaneously and building on learnings — is one of the key competitive advantages of the most successful marketing organizations.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const scenarios={
+    email:{
+      a:{label:'Version A',title:'"Check out our new arrivals"',desc:'Standard product announcement subject line'},
+      b:{label:'Version B',title:'"We picked these just for you 👀"',desc:'Personalized, curiosity-driven subject line'},
+      metric:'Open Rate',
+      a_rate:21,b_rate:34,
+      insight:'Version B wins by +62%. Personalized language that implies curation dramatically outperforms generic product announcements — the word "you" does heavy lifting in subject lines.'
+    },
+    button:{
+      a:{label:'Version A',title:'Gray "Learn More" button',desc:'Subtle, non-committal call to action'},
+      b:{label:'Version B',title:'Purple "Get Started Free" button',desc:'Bold CTA with clear value and low-risk framing'},
+      metric:'Click Rate',
+      a_rate:3.2,b_rate:8.7,
+      insight:'Version B wins by +172%. High-contrast color and removing ambiguity ("free" + "get started" vs "learn more") dramatically increase click intent. Button copy and color are high-leverage A/B variables.'
+    },
+    headline:{
+      a:{label:'Version A',title:'"Advanced Analytics Software for Enterprise"',desc:'Feature-focused, formal headline'},
+      b:{label:'Version B',title:'"See exactly what\'s working in your marketing — in minutes"',desc:'Outcome-focused, benefit-driven headline'},
+      metric:'Time on Page',
+      a_rate:42,b_rate:71,
+      insight:'Version B wins by +69%. Benefit-focused headlines ("what you get") outperform feature-focused headlines ("what it is") consistently. Visitors respond to outcomes, not specifications.'
+    }
+  };
+
+  let currentScenario='email';
+  let choiceA=false,choiceB=false;
+
+  function setScenario(key,btn){
+    currentScenario=key;
+    document.querySelectorAll('#scenario-btns button').forEach(b=>{b.style.background='var(--white)';b.style.color='var(--purple)';});
+    btn.style.background='var(--purple)';btn.style.color='white';
+    renderOptions();
+    document.getElementById('absResult').classList.remove('show');
+  }
+
+  function renderOptions(){
+    const s=scenarios[currentScenario];
+    document.getElementById('abs-options').innerHTML=`
+      <div class="abs-choice" id="choiceA" onclick="selectChoice('A')">
+        <div class="abs-choice-label">Version A</div>
+        <div class="abs-choice-title">${s.a.title}</div>
+        <div class="abs-choice-desc">${s.a.desc}</div>
+      </div>
+      <div class="abs-choice" id="choiceB" onclick="selectChoice('B')">
+        <div class="abs-choice-label">Version B</div>
+        <div class="abs-choice-title">${s.b.title}</div>
+        <div class="abs-choice-desc">${s.b.desc}</div>
+      </div>`;
+  }
+
+  function selectChoice(v){
+    document.getElementById('choiceA').classList.remove('selected-a','selected-b');
+    document.getElementById('choiceB').classList.remove('selected-a','selected-b');
+    if(v==='A')document.getElementById('choiceA').classList.add('selected-a');
+    if(v==='B')document.getElementById('choiceB').classList.add('selected-b');
+  }
+
+  function runABTest(){
+    const s=scenarios[currentScenario];
+    const maxR=Math.max(s.a_rate,s.b_rate);
+    const winner=s.b_rate>s.a_rate?'B':'A';
+    const lift=Math.round((Math.max(s.a_rate,s.b_rate)/Math.min(s.a_rate,s.b_rate)-1)*100);
+    const r=document.getElementById('absResult');
+    r.innerHTML=`
+      <div class="abs-winner">🏆 Winner: Version ${winner} — +${lift}% better ${s.metric}</div>
+      <div class="abs-bar-row">
+        <div class="abs-bar-label"><span>Version A: ${s.a.title.substring(0,30)}...</span><span>${s.a_rate}%</span></div>
+        <div class="abs-bar-track"><div class="abs-bar-fill bar-a" style="width:${(s.a_rate/maxR*100)}%"></div></div>
+      </div>
+      <div class="abs-bar-row">
+        <div class="abs-bar-label"><span>Version B: ${s.b.title.substring(0,30)}...</span><span>${s.b_rate}%</span></div>
+        <div class="abs-bar-track"><div class="abs-bar-fill bar-b" style="width:${(s.b_rate/maxR*100)}%"></div></div>
+      </div>
+      <div class="abs-insight">💡 <strong>What this means:</strong> ${s.insight}</div>`;
+    r.className='abs-result show';
+  }
+
+  // Init
+  setScenario('email',document.querySelector('#scenario-btns button'));
+
+  let done=false;
+  function answer(btn,correct){
+    if(done)return;done=true;
+    document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');
+    const f=document.getElementById('qfeedback');
+    if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> With only 20 people per version, the difference between 2 conversions and 3 conversions is what separates a 10% rate from a 15% rate. That\'s one person — not statistically meaningful at all. For a landing page A/B test to be reliable, most statisticians recommend at least 100 conversions per variant, and ideally 300–500. The marketer stopped the test far too early and with far too little data to draw any reliable conclusions.';}
+    else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ Not quite. The issue is sample size. A 15% vs 10% rate sounds significant, but with only 20 people per group, that\'s the difference between 3 conversions and 2 conversions — one single person changing their behavior would flip the result. Valid A/B tests require hundreds of conversions per variant to filter out random variation. Running longer also matters, but the primary problem here is the tiny sample.';}
+    f.classList.add('show');
+  }
+</script>
+</body>
+</html>
