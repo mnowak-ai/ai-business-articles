@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethical Decision-Making in Business — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Three lenses */
+.lenses{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+.lens{border-radius:20px;padding:22px;}
+.lens.consequentialist{background:var(--purple-pale);border:2px solid var(--purple-mid);}
+.lens.deontological{background:var(--green-pale);border:2px solid #86EFAC;}
+.lens.virtue{background:var(--orange-pale);border:2px solid #FDE68A;}
+.lens-icon{font-size:28px;margin-bottom:8px;}
+.lens-name{font-size:14px;font-weight:700;margin-bottom:4px;}
+.lens.consequentialist .lens-name{color:var(--purple);}
+.lens.deontological .lens-name{color:var(--green);}
+.lens.virtue .lens-name{color:var(--orange);}
+.lens-question{font-size:15px;font-weight:600;font-style:italic;margin-bottom:8px;color:var(--gray-text);}
+.lens-desc{font-size:13px;line-height:1.55;color:var(--gray-text);}
+
+/* Ethical dilemma explorer */
+.dilemma{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.dil-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.dil-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.dil-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.dil-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.dil-tab{padding:8px 14px;border-radius:10px;border:1.5px solid var(--purple-mid);background:var(--white);color:var(--gray-muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.dil-tab.active{background:var(--purple);border-color:var(--purple);color:white;}
+.dil-panel{display:none;animation:fadeIn .3s ease;}
+.dil-panel.active{display:block;}
+.dil-scenario{background:var(--white);border-left:4px solid var(--orange);padding:14px 18px;border-radius:0 12px 12px 0;font-size:15px;line-height:1.7;margin-bottom:14px;}
+.dil-lenses{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.dil-lens{border-radius:12px;padding:14px;}
+.dil-lens.c{background:var(--purple-pale);}
+.dil-lens.d{background:var(--green-pale);}
+.dil-lens.v{background:var(--orange-pale);}
+.dil-lens-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.dil-lens.c .dil-lens-name{color:var(--purple);}
+.dil-lens.d .dil-lens-name{color:var(--green);}
+.dil-lens.v .dil-lens-name{color:var(--orange);}
+.dil-lens-view{font-size:13px;line-height:1.55;color:var(--gray-text);}
+.dil-tension{background:#FFF7ED;border:1.5px solid #FDE68A;border-radius:10px;padding:12px 16px;font-size:14px;color:#92400E;}
+
+/* The newspaper tests */
+.tests{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+.test-card{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px;}
+.test-icon{font-size:28px;margin-bottom:8px;}
+.test-name{font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.test-question{font-size:15px;font-style:italic;color:var(--gray-text);margin-bottom:8px;border-left:3px solid var(--purple);padding-left:10px;}
+.test-desc{font-size:13px;line-height:1.6;color:var(--gray-muted);}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.lenses{grid-template-columns:1fr;}.dil-lenses{grid-template-columns:1fr;}.tests{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.4 · Professional Judgment</div>
+  <h1>Ethical Decision-Making in Business</h1>
+  <p class="hero-sub">Legal and profitable don't always mean right. The most respected professionals aren't just competent — they're trustworthy. Understanding how to reason through ethical complexity is a skill, and like every skill, it can be developed with the right tools.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Ethics Isn't a Feeling — It's a Process</h2>
+    <p>When people say something "feels wrong," they're often sensing an ethical problem they haven't yet articulated. The goal of ethical reasoning is to take that feeling and make it precise — to <mark>identify exactly which values or principles are in tension</mark>, what the trade-offs are, and how to make a decision you can genuinely stand behind.</p>
+    <p>Business ethics isn't about finding the "perfect" answer. Most meaningful ethical situations involve competing goods or unavoidable trade-offs. The goal is to reason through them thoughtfully rather than defaulting to what's convenient, expedient, or what everyone else is doing.</p>
+    <div class="pull-quote"><p>The most dangerous ethical failures in business don't happen when people consciously choose to do wrong. They happen when people fail to notice that an ethical question was present at all.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Three Lenses for Ethical Reasoning</h2>
+    <p>Philosophers and ethicists have developed multiple frameworks for thinking about right and wrong. You don't need to pick one — using all three as lenses on the same situation is more powerful than any single approach:</p>
+    <div class="lenses">
+      <div class="lens consequentialist"><div class="lens-icon">📊</div><div class="lens-name">Consequentialist</div><div class="lens-question">"What produces the best outcomes for everyone affected?"</div><div class="lens-desc">Focuses on results. The right action is the one that produces the greatest good for the greatest number. Useful for analyzing impact — but can justify harmful means if the outcome seems good enough.</div></div>
+      <div class="lens deontological"><div class="lens-icon">📜</div><div class="lens-name">Deontological</div><div class="lens-question">"What duties or rules apply here, regardless of outcome?"</div><div class="lens-desc">Focuses on rules and rights. Some things are simply wrong — lying, breaking trust, exploiting people — regardless of the outcome they produce. Useful for protecting against rationalizing bad behavior.</div></div>
+      <div class="lens virtue"><div class="lens-icon">🪞</div><div class="lens-name">Virtue Ethics</div><div class="lens-question">"What would a person of good character do?"</div><div class="lens-desc">Focuses on who you're becoming through your decisions. Asks: is this the kind of action a person with integrity, courage, and fairness would take? Useful when rules and outcomes both feel insufficient.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Apply All Three Lenses: Ethical Dilemmas</h2>
+    <p>Click each dilemma to see how the three ethical lenses produce different — and sometimes conflicting — perspectives:</p>
+    <div class="dilemma">
+      <div class="dil-label">⚖️ Ethical Lens Explorer</div>
+      <div class="dil-title">See How Different Frameworks See the Same Situation</div>
+      <div class="dil-sub">Each ethical dilemma looks different depending on which lens you use. That's not a bug — it's the information.</div>
+      <div class="dil-tabs">
+        <button class="dil-tab active" onclick="showDil(0)">Dilemma 1</button>
+        <button class="dil-tab" onclick="showDil(1)">Dilemma 2</button>
+        <button class="dil-tab" onclick="showDil(2)">Dilemma 3</button>
+      </div>
+      <div id="dilContainer"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Two Quick Tests to Check Your Ethical Reasoning</h2>
+    <p>When you're unsure whether a decision is ethically sound, these two tests cut through the noise quickly:</p>
+    <div class="tests">
+      <div class="test-card"><div class="test-icon">📰</div><div class="test-name">The Front Page Test</div><div class="test-question">"Would I be comfortable if this decision were reported on the front page of a major newspaper?"</div><div class="test-desc">If the honest answer is no — or even "I'd want to explain it carefully" — that's important information. This test catches decisions where the optics suggest something the reasoning is trying to justify away.</div></div>
+      <div class="test-card"><div class="test-icon">🪟</div><div class="test-name">The Transparency Test</div><div class="test-question">"Would I be comfortable if everyone affected by this decision could see exactly how I made it?"</div><div class="test-desc">This is especially relevant in AI contexts: if the process of using AI to make a decision would concern the people affected by it, that concern is worth taking seriously before proceeding.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">A manager uses an AI tool to rank employees for performance reviews. The AI consistently gives lower scores to employees who take parental leave, because their output metrics dip during leave periods. The rankings are technically accurate to the data. What is the ethical problem?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">There is no ethical problem — the AI is just reflecting objective performance data</button>
+        <button class="qopt" onclick="cq(this,false)">The AI tool should be replaced with a better one that handles this case</button>
+        <button class="qopt" onclick="cq(this,true)">The AI is using a metric that structurally penalizes protected leave — which is both ethically wrong and likely legally problematic — and the manager is responsible for catching this before acting on it</button>
+        <button class="qopt" onclick="cq(this,false)">It's the AI's fault, not the manager's</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Ethical reasoning is a process, not a feeling. Three lenses: Consequentialist (best outcomes), Deontological (rules and duties), Virtue ethics (character). Using all three is more powerful than any one alone.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI can't perform ethical reasoning — it applies patterns, not principles. When AI tools produce outputs with ethical implications (hiring, performance, targeting), humans must apply ethical judgment before acting.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Two quick tests: Front Page ("would I want this reported?") and Transparency ("would I be comfortable if affected people saw my process?"). Both help surface ethical concerns that rationalization tends to suppress.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const dilemmas=[
+  {
+    title:'The Targeted Advertising Dilemma',
+    scenario:'A marketing team discovers that targeting ads to people in financial distress (identified by AI analysis of browsing behavior) produces the highest conversion rates for their payday loan product. The targeting is legal. The conversions are real. But these customers often struggle to repay.',
+    c:{view:'The outcome for the company is profitable. But the net outcome for customers is often harm — high-interest debt they can\'t escape. Consequentialist lens says: if we count all affected parties, this likely produces net harm.'},
+    d:{view:'There\'s a duty not to exploit vulnerability. Using someone\'s financial distress as a targeting signal — precisely because they\'re less able to make clear-headed decisions — violates a basic principle of respecting people\'s autonomy.'},
+    v:{view:'A person of integrity wouldn\'t build a business model on targeting the vulnerable. The Virtue lens asks: what kind of company — and what kind of professional — do we want to be?'},
+    tension:'All three lenses point in the same direction here: this is ethically problematic even though it\'s legal. When all three frameworks align, the ethical signal is strong. The fact that it\'s profitable doesn\'t change the analysis.'
+  },
+  {
+    title:'The Transparency Dilemma',
+    scenario:'A consulting firm uses AI to help write client recommendations. The AI-generated analysis is excellent — better than what the junior consultants would produce alone. But clients believe they\'re getting expert human analysis. The firm hasn\'t disclosed AI involvement.',
+    c:{view:'Outcomes: clients get better work, the firm is more efficient, everyone benefits on the surface. But if clients would make different choices knowing AI was involved, the outcome picture changes — trust is part of the value they\'re paying for.'},
+    d:{view:'There\'s a duty to disclose material information that affects how clients engage with a service. If clients assumed their analysis was purely human-generated, that assumption wasn\'t corrected — a form of misleading by omission.'},
+    v:{view:'A trustworthy professional is transparent about their methods. Using AI as a silent partner while presenting work as fully human is an integrity question, regardless of whether the output is good.'},
+    tension:'This dilemma splits depending on how you weight client trust vs. outcome quality. Consequentialist might say "outcomes justify it." Deontological and Virtue both say disclosure is required. Many firms are now moving toward AI disclosure policies — partly for this reason.'
+  },
+  {
+    title:'The Data Collection Dilemma',
+    scenario:'An app collects detailed behavioral data from its 50 million users to train an AI model that will generate significant revenue. The data collection is buried in Terms of Service. Users technically "consented" but almost none read it. The app is genuinely improving their lives.',
+    c:{view:'The AI creates real value. But 50 million people gave consent they didn\'t meaningfully understand. At scale, the data is being used in ways that weren\'t actually communicated — even if the app is helpful.'},
+    d:{view:'Informed consent is a duty, not a technicality. "Buried in ToS" doesn\'t constitute genuine consent. There\'s a principle that people should actually understand what they\'re agreeing to — especially regarding sensitive behavioral data.'},
+    v:{view:'What does it say about the organization\'s character that it chose to make consent technically valid but practically invisible? Integrity requires making the choice real, not just legal.'},
+    tension:'This is one of the defining ethical tensions of the AI era. The consequentialist and deontological lenses pull in different directions. The Virtue lens asks: why is consent being obscured rather than made genuine?'
+  }
+];
+let dilIdx=0;
+function showDil(i){
+  dilIdx=i;
+  document.querySelectorAll('.dil-tab').forEach((t,ti)=>t.classList.toggle('active',ti===i));
+  renderDil();
+}
+function renderDil(){
+  const d=dilemmas[dilIdx];
+  document.getElementById('dilContainer').innerHTML=`
+    <div class="dil-scenario"><strong>Situation:</strong> ${d.scenario}</div>
+    <div class="dil-lenses">
+      <div class="dil-lens c"><div class="dil-lens-name">📊 Consequentialist</div><div class="dil-lens-view">${d.c.view}</div></div>
+      <div class="dil-lens d"><div class="dil-lens-name">📜 Deontological</div><div class="dil-lens-view">${d.d.view}</div></div>
+      <div class="dil-lens v"><div class="dil-lens-name">🪞 Virtue</div><div class="dil-lens-view">${d.v.view}</div></div>
+    </div>
+    <div class="dil-tension"><strong>⚖️ The tension:</strong> ${d.tension}</div>`;
+}
+renderDil();
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! The metric (output during leave) is technically accurate but systematically biased against protected leave. This is a classic case of AI producing "correct" outputs that embed ethically and legally problematic patterns. Importantly: the manager who uses these rankings without reviewing this bias is responsible. "The AI did it" is not an ethical defense — humans are accountable for acting on AI outputs.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('structurally penalizes'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ Replacing the tool doesn\'t address the manager\'s responsibility. "The AI is just reflecting data" is false — the AI is reflecting a metric that was never appropriate for evaluating people who take protected leave. This is the human judgment layer: identifying when AI outputs embed biases that make their use ethically or legally problematic. The tool is one problem; the manager acting on it without review is another.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

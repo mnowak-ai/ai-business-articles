@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bias in AI Recommendations — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Bias types accordion */
+.bias-list{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+.bias{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;overflow:hidden;}
+.bias-header{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;transition:background .2s;}
+.bias-header:hover{background:var(--gray-soft);}
+.bias-icon{font-size:20px;flex-shrink:0;}
+.bias-name{font-size:15px;font-weight:700;color:var(--purple-dark);flex:1;}
+.bias-tag{font-size:11px;background:var(--orange-pale);color:var(--orange);font-weight:700;padding:3px 10px;border-radius:6px;}
+.bias-chev{color:var(--gray-muted);font-size:16px;transition:transform .3s;}
+.bias-body{display:none;padding:0 18px 16px;border-top:1px solid var(--purple-mid);}
+.bias-body.open{display:block;animation:fadeIn .3s ease;}
+.bias-example{background:var(--orange-pale);border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.7;color:#92400E;margin:10px 0;border-left:3px solid var(--orange);}
+.bias-detect{background:var(--purple-pale);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--purple-dark);border-left:3px solid var(--purple);}
+
+/* Spot-the-bias sim */
+.bias-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.bs-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.bs-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.bs-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.bs-scenario{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px;margin-bottom:12px;}
+.bs-scenario-label{font-size:12px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.bs-ai-output{background:var(--gray-soft);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.7;margin-bottom:12px;}
+.bs-question{font-size:14px;font-weight:600;color:var(--purple-dark);margin-bottom:10px;}
+.bs-opts{display:flex;flex-direction:column;gap:8px;}
+.bs-opt{background:var(--white);border:2px solid var(--purple-mid);border-radius:10px;padding:10px 14px;cursor:pointer;font-size:13px;transition:all .2s;text-align:left;}
+.bs-opt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.bs-opt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.bs-opt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.bs-fb{font-size:13px;padding:10px 14px;border-radius:8px;margin-top:8px;display:none;}
+.bs-fb.show{display:block;animation:fadeIn .3s ease;}
+.bs-fb.cfb{background:var(--green-pale);color:var(--green);}
+.bs-fb.wfb{background:#FFF1F1;color:#DC2626;}
+.bs-next{background:var(--purple);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;display:none;}
+.bs-next.show{display:inline-block;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.4 · Professional Judgment</div>
+  <h1>Bias in AI Recommendations</h1>
+  <p class="hero-sub">AI systems learn from human-generated data — which means they learn human biases too. Understanding where AI bias comes from, what it looks like in practice, and how to catch it before it causes harm is one of the most important professional skills in an AI-augmented workplace.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Where AI Bias Comes From</h2>
+    <p>AI bias isn't random — it has predictable sources. <mark>AI learns patterns from historical data</mark>, which reflects the world as it was — including its inequities, its underrepresented groups, and its historical decisions (many of which were themselves biased). When AI is trained on this data, it learns to replicate those patterns. This isn't a programming error. It's a structural property of how machine learning works.</p>
+    <p>The second major source is objective function: what the AI was told to optimize for. An AI optimizing for "highest sales conversion" might learn to target people in financial vulnerability — not because it's malicious, but because the data showed that's effective. The optimization metric was never checked against ethical constraints. This is a human design failure, not an AI one — but it's a human's job to catch it.</p>
+    <div class="pull-quote"><p>AI doesn't create bias. It amplifies and systematizes the bias that was already in the world — at a scale that makes it impossible to ignore.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Five Types of AI Bias — Click Each to Explore</h2>
+    <div class="bias-list" id="biasList"></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Spot the Bias: Practice Scenarios</h2>
+    <div class="bias-sim">
+      <div class="bs-label">🔍 Bias Detection Practice</div>
+      <div class="bs-title">Identify the Bias Type</div>
+      <div class="bs-sub">Each scenario shows an AI recommendation with a potential bias. Identify the type and explain it.</div>
+      <div id="bsContainer"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">An AI loan approval model was trained on 10 years of historical approval data. The model now rejects applications from certain zip codes at a much higher rate. Investigation reveals those zip codes have historically lower approval rates — not because of creditworthiness, but because a previous policy explicitly restricted lending there. What type of bias is this, and who is responsible for fixing it?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Confirmation bias — the model confirmed what the old data expected</button>
+        <button class="qopt" onclick="cq(this,false)">This is not bias — the model is accurately reflecting historical data</button>
+        <button class="qopt" onclick="cq(this,true)">Historical/training data bias — the model learned from discriminatory past decisions. The humans deploying this model are responsible for auditing it and correcting the bias before it perpetuates historical discrimination at scale</button>
+        <button class="qopt" onclick="cq(this,false)">Automation bias — humans are relying too much on AI for lending decisions</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI bias comes from two primary sources: historical training data that reflects past inequities, and optimization objectives that weren't checked against ethical constraints. Both are human design decisions.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Five bias types to recognize: training data bias, automation bias, confirmation bias, selection bias, and metric bias. Each appears differently in practice — knowing the type helps you address the root cause.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Humans are responsible for AI outputs they act on. "The AI decided it" is not a defense. Professionals who deploy or use AI recommendations have a responsibility to audit for bias — especially when decisions affect people's opportunities, finances, or rights.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const biasTypes=[
+  {icon:'📚',name:'Training Data Bias',tag:'Most Common',
+   desc:'When the data used to train AI reflects historical inequities, the AI learns to replicate them. This is the most pervasive type of AI bias — and the hardest to detect because the model "correctly" reflects its training.',
+   example:'⚠️ Example: An AI hiring tool trained on 10 years of past hiring decisions learns that engineering candidates from certain universities are "more successful" — because those are the candidates who were historically hired and given opportunities to succeed. The AI penalizes equally qualified candidates from other institutions.',
+   detect:'🔍 How to detect: Ask "does the training data reflect the world as it was or as it should be?" Look for demographic disparities in AI recommendations. Check whether protected characteristics correlate with outputs.'},
+  {icon:'🤖',name:'Automation Bias',tag:'Psychologically tricky',
+   desc:'The tendency for humans to over-trust AI recommendations and reduce their critical thinking when AI is involved. This is a human cognitive bias triggered by AI — not an AI bias in the model itself.',
+   example:'⚠️ Example: A radiologist reviews AI-flagged scans much more carefully than non-flagged scans — assuming the AI correctly identified all concerning cases. Scans the AI didn\'t flag are reviewed more quickly, even when they warrant equal attention.',
+   detect:'🔍 How to detect: Notice when you\'re reviewing AI output less critically than you would review human work. Ask yourself: "Would I catch an error here if the AI had made one?"'},
+  {icon:'✅',name:'Confirmation Bias',tag:'Subtle',
+   desc:'AI can be used to find evidence that supports a decision already made. When you ask AI to justify a position, it tends to generate supporting arguments — reinforcing the bias rather than challenging it.',
+   example:'⚠️ Example: A manager asks AI to "find evidence that our current product strategy is working." The AI surfaces supporting data and downplays contradictory signals. This confirms the manager\'s view rather than giving an honest picture.',
+   detect:'🔍 How to detect: Ask AI for counterarguments explicitly. If you\'re using AI to support a decision already made, ask it to "steelman the opposite case" before proceeding.'},
+  {icon:'📊',name:'Selection Bias',tag:'Data design issue',
+   desc:'When the data used for training or analysis doesn\'t represent the full population the AI is supposed to serve — leading to recommendations that work well for some groups and poorly for others.',
+   example:'⚠️ Example: A healthcare AI trained primarily on clinical data from male patients gives less accurate diagnoses for female patients — because women\'s symptoms for certain conditions present differently, and that data was underrepresented in training.',
+   detect:'🔍 How to detect: Ask "who is in the training data and who is missing?" Evaluate AI performance across different demographic groups, not just overall accuracy.'},
+  {icon:'🎯',name:'Metric Bias',tag:'Optimization flaw',
+   desc:'When AI optimizes for a measurable proxy metric that doesn\'t fully capture the real goal — and in doing so, systematically disadvantages certain groups or produces unintended harms.',
+   example:'⚠️ Example: A credit scoring AI optimizes for "payment history" as a proxy for creditworthiness. People who have never had credit (recent immigrants, young adults) score poorly — not because they\'re risky borrowers, but because they lack credit history to measure.',
+   detect:'🔍 How to detect: Ask "what is this AI actually optimizing for?" and "is that metric a perfect stand-in for what we actually care about?" Look for groups that systematically score poorly for structural rather than merit-based reasons.'},
+];
+const bl=document.getElementById('biasList');
+biasTypes.forEach((b,i)=>{
+  const el=document.createElement('div');el.className='bias';
+  el.innerHTML=`<div class="bias-header" onclick="toggleBias(${i})">
+    <div class="bias-icon">${b.icon}</div><div class="bias-name">${b.name}</div>
+    <div class="bias-tag">${b.tag}</div>
+    <div class="bias-chev" id="bchev${i}">▼</div>
+  </div>
+  <div class="bias-body" id="bb${i}">
+    <p style="font-size:14px;line-height:1.7;color:var(--gray-text);margin:10px 0;">${b.desc}</p>
+    <div class="bias-example">${b.example}</div>
+    <div class="bias-detect">${b.detect}</div>
+  </div>`;
+  bl.appendChild(el);
+});
+function toggleBias(i){
+  const b=document.getElementById('bb'+i);const c=document.getElementById('bchev'+i);
+  const open=b.classList.contains('open');
+  b.classList.toggle('open',!open);c.style.transform=open?'':'rotate(180deg)';
+}
+
+const bsScenarios=[
+  {
+    label:'Scenario 1: Performance Management',
+    output:'AI performance review tool ranks employees. All five employees identified as "high flight risk" are women who returned from maternity leave in the past year. The model flagged them based on reduced output metrics during their leave periods.',
+    question:'What type of bias is this?',
+    opts:[
+      {text:'Automation bias — the manager is trusting the AI too much',correct:false,fb:'Automation bias involves humans over-trusting AI output. The deeper problem here is in the model itself.'},
+      {text:'Metric bias — the model uses output metrics that structurally penalize protected leave, producing discriminatory recommendations regardless of actual performance',correct:true,fb:'✅ Correct. The metric (output volume) doesn\'t account for protected leave periods. The model is optimizing for a number that systematically disadvantages employees who took legally protected leave. This is both metric bias and likely illegal discrimination.'},
+      {text:'Confirmation bias — the manager expected women to be flight risks',correct:false,fb:'There\'s no evidence of confirmation bias here. The issue is structural: the metric itself penalizes maternity leave.'},
+    ]
+  },
+  {
+    label:'Scenario 2: Content Recommendations',
+    output:'An AI content recommendation engine for a news platform shows users significantly more articles confirming their existing political views than challenging them. Engagement metrics are excellent — users spend 40% more time on the platform than average.',
+    question:'What is the bias concern even though engagement metrics are high?',
+    opts:[
+      {text:'No bias concern — high engagement means the AI is doing its job correctly',correct:false,fb:'Engagement is the metric being optimized, not accurate information or balanced perspective. High engagement achieved by showing people only what they already believe creates filter bubbles and may harm civic discourse — even if it\'s commercially successful.'},
+      {text:'Metric bias — the AI optimizes for engagement, which is achieved by reinforcing existing beliefs rather than providing balanced information, systematically distorting users\' information environment',correct:true,fb:'✅ Correct. The metric (engagement) is being hit — but the optimization creates real-world harm (filter bubbles, polarization). This is a classic case where the AI is doing exactly what it was designed to do, and that design is the problem.'},
+      {text:'Selection bias — the training data only includes certain types of articles',correct:false,fb:'The issue isn\'t data selection — it\'s what\'s being optimized for. An AI optimizing for engagement will learn that confirmation produces engagement, and optimize accordingly.'},
+    ]
+  }
+];
+let bsIdx=0,bsScore=0;
+function renderBS(){
+  const c=document.getElementById('bsContainer');
+  if(bsIdx>=bsScenarios.length){
+    c.innerHTML=`<div style="background:var(--purple-pale);border-radius:14px;padding:20px;text-align:center"><div style="font-family:Fraunces,serif;font-size:36px;font-weight:900;color:var(--purple)">${bsScore}/${bsScenarios.length}</div><div style="font-size:14px;color:var(--gray-muted);margin-top:6px">${bsScore===bsScenarios.length?'You have sharp bias detection instincts — this skill matters enormously in an AI-augmented workplace.':'Review the bias types above and practice asking: what is this AI actually optimizing for?'}</div></div>`;
+    return;
+  }
+  const s=bsScenarios[bsIdx];
+  c.innerHTML=`<div class="bs-scenario">
+    <div class="bs-scenario-label">${s.label}</div>
+    <div class="bs-ai-output"><strong>🤖 AI Output:</strong> ${s.output}</div>
+    <div class="bs-question">${s.question}</div>
+    <div class="bs-opts">${s.opts.map((o,i)=>`<button class="bs-opt" onclick="checkBS(${i})">${o.text}</button>`).join('')}</div>
+    <div class="bs-fb" id="bsFb"></div>
+    <button class="bs-next" id="bsNext" onclick="nextBS()">Next Scenario →</button>
+  </div>`;
+}
+function checkBS(i){
+  if(document.querySelector('.bs-opt.correct')||document.querySelector('.bs-opt.wrong'))return;
+  const s=bsScenarios[bsIdx];
+  document.querySelectorAll('.bs-opt')[i].classList.add(s.opts[i].correct?'correct':'wrong');
+  if(!s.opts[i].correct)document.querySelectorAll('.bs-opt').forEach((o,oi)=>{if(s.opts[oi].correct)o.classList.add('correct');});
+  if(s.opts[i].correct)bsScore++;
+  const fb=document.getElementById('bsFb');
+  fb.className='bs-fb show '+(s.opts[i].correct?'cfb':'wfb');
+  fb.textContent=s.opts[i].fb;
+  document.getElementById('bsNext').classList.add('show');
+}
+function nextBS(){bsIdx++;renderBS();}
+renderBS();
+
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! The AI "correctly" learned from historical data — but that data reflected discriminatory past decisions. The model then systematizes and perpetuates that discrimination at scale. The humans who deployed this model are responsible for auditing it. Using the outputs without bias review perpetuates historical discrimination — and creates real legal exposure under fair lending laws.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('Training data bias'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ This is training data bias — the model correctly reflects its historical inputs, but those inputs themselves reflected discriminatory policies. Accurate modeling of biased historical data produces biased outputs. "The AI is just reflecting data" doesn\'t excuse the harm — it just locates the problem (the data) and the responsibility (the humans who should have audited before deploying).';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-World Spotlight: PwC, Deloitte & McKinsey — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Firm cards */
+.firm-tabs{margin:24px 0;}
+.ft-nav{display:flex;gap:8px;border-bottom:2px solid var(--purple-mid);margin-bottom:0;}
+.ft-tab{padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--gray-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.ft-tab.active{color:var(--purple);border-bottom-color:var(--purple);}
+.ft-panel{display:none;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:0 16px 16px 16px;padding:28px;animation:fadeIn .3s ease;}
+.ft-panel.active{display:block;}
+.firm-name{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+.firm-type{font-size:14px;color:var(--gray-muted);margin-bottom:16px;}
+.firm-ai-use{background:var(--purple-pale);border-radius:12px;padding:16px 18px;margin-bottom:14px;}
+.firm-ai-use-label{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--purple);letter-spacing:.1em;margin-bottom:8px;}
+.firm-ai-use-text{font-size:14px;line-height:1.7;color:var(--gray-text);}
+.firm-skills{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.firm-skill{background:var(--gray-soft);border-radius:10px;padding:12px 14px;}
+.firm-skill-label{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--purple);letter-spacing:.08em;margin-bottom:6px;}
+.firm-skill-item{font-size:13px;line-height:1.5;margin-bottom:4px;display:flex;gap:6px;}
+.firm-insight{background:var(--green-pale);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.65;color:var(--green);}
+
+/* Key skill matrix */
+.skill-matrix{width:100%;border-collapse:collapse;margin:24px 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+.skill-matrix th{background:var(--purple);color:white;padding:11px 14px;font-size:12px;font-weight:600;text-align:left;}
+.skill-matrix td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--purple-mid);vertical-align:top;line-height:1.5;}
+.skill-matrix tr:last-child td{border-bottom:none;}
+.skill-matrix tr:nth-child(even) td{background:var(--gray-soft);}
+.spill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;}
+.spill.ai{background:var(--purple-pale);color:var(--purple);}
+.spill.human{background:var(--orange-pale);color:var(--orange);}
+.spill.both{background:var(--green-pale);color:var(--green);}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.firm-skills{grid-template-columns:1fr;}.ft-tab{padding:8px 10px;font-size:12px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.4 · Professional Judgment</div>
+  <h1>Real-World Spotlight: PwC, Deloitte, and McKinsey on AI and Human Judgment</h1>
+  <p class="hero-sub">The world's most prestigious professional services firms are at the center of the AI-in-business conversation. Understanding how they're using AI — and what they say about the irreplaceable role of human judgment — gives you a direct window into where the professional world is heading.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Why These Three Firms?</h2>
+    <p>PwC, Deloitte, and McKinsey collectively employ hundreds of thousands of professionals, advise the majority of the world's largest companies, and influence how business practices spread globally. Their approaches to AI adoption don't just affect their own work — <mark>they set the template that client organizations follow</mark>. What these firms say about the relationship between AI and human judgment matters far beyond their own walls.</p>
+    <p>All three have made major AI investments, published extensive thinking on AI's role in professional work, and built AI tools for internal use and client deployment. All three have also been explicit that AI amplifies human judgment rather than replacing it — not as a marketing message, but as a practical operating philosophy.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How Each Firm Approaches AI — Explore Each</h2>
+    <div class="firm-tabs">
+      <div class="ft-nav">
+        <button class="ft-tab active" onclick="showFirm(0)">PwC</button>
+        <button class="ft-tab" onclick="showFirm(1)">Deloitte</button>
+        <button class="ft-tab" onclick="showFirm(2)">McKinsey</button>
+      </div>
+      <div class="ft-panel active" id="fp0">
+        <div class="firm-name">PwC</div>
+        <div class="firm-type">Big Four Accounting & Professional Services · ~370,000 employees globally</div>
+        <div class="firm-ai-use">
+          <div class="firm-ai-use-label">🤖 How they use AI</div>
+          <div class="firm-ai-use-text">PwC has invested over $1 billion in AI capabilities and built an internal generative AI tool called "ChatPwC" available to all its professionals. Their AI applications span tax compliance analysis, audit sampling and anomaly detection, contract review, financial forecasting, and client report generation. PwC uses AI to accelerate the data-intensive, pattern-recognition parts of professional services work — while keeping human judgment at the center of all client recommendations.</div>
+        </div>
+        <div class="firm-skills">
+          <div class="firm-skill"><div class="firm-skill-label">Skills AI handles</div><div class="firm-skill-item">→ <span>Tax code analysis across multiple jurisdictions</span></div><div class="firm-skill-item">→ <span>Audit data sampling and anomaly detection</span></div><div class="firm-skill-item">→ <span>Contract clause review and comparison</span></div><div class="firm-skill-item">→ <span>Report drafting and formatting</span></div></div>
+          <div class="firm-skill"><div class="firm-skill-label">Skills humans retain</div><div class="firm-skill-item">→ <span>Client relationship and trust management</span></div><div class="firm-skill-item">→ <span>Final professional sign-off on all outputs</span></div><div class="firm-skill-item">→ <span>Ethical and regulatory judgment calls</span></div><div class="firm-skill-item">→ <span>Contextualizing findings for specific clients</span></div></div>
+        </div>
+        <div class="firm-insight">💡 PwC's public position: AI makes their people faster and more thorough — but every recommendation still requires a human professional's judgment and accountability. Their AI tools are designed to augment, not replace, that judgment layer.</div>
+      </div>
+      <div class="ft-panel" id="fp1">
+        <div class="firm-name">Deloitte</div>
+        <div class="firm-type">Big Four Professional Services · ~460,000 employees globally</div>
+        <div class="firm-ai-use">
+          <div class="firm-ai-use-label">🤖 How they use AI</div>
+          <div class="firm-ai-use-text">Deloitte has built an internal AI platform called "PairD" and has embedded AI into its audit, consulting, and tax practices. They've published extensive research on AI's impact on the workforce through the Deloitte Insights research arm. Their approach focuses on "human + machine" teaming — designing workflows where AI handles information processing and humans handle judgment, values, and accountability. Deloitte explicitly trains professionals in what they call "AI fluency" — understanding how to work with AI effectively without outsourcing human responsibility to it.</div>
+        </div>
+        <div class="firm-skills">
+          <div class="firm-skill"><div class="firm-skill-label">Skills AI handles</div><div class="firm-skill-item">→ <span>Processing large financial datasets</span></div><div class="firm-skill-item">→ <span>Regulatory change monitoring across jurisdictions</span></div><div class="firm-skill-item">→ <span>Risk pattern detection in audit data</span></div><div class="firm-skill-item">→ <span>Research synthesis and summarization</span></div></div>
+          <div class="firm-skill"><div class="firm-skill-label">Skills humans retain</div><div class="firm-skill-item">→ <span>Strategic judgment and recommendations</span></div><div class="firm-skill-item">→ <span>Navigating politically sensitive client situations</span></div><div class="firm-skill-item">→ <span>Industry expertise and pattern recognition</span></div><div class="firm-skill-item">→ <span>All final deliverable ownership</span></div></div>
+        </div>
+        <div class="firm-insight">💡 Deloitte's position: "AI fluency" is now a baseline professional skill — not optional. But fluency means knowing how to work effectively with AI, not letting it replace critical thinking. Professionals who outsource judgment to AI tools are not more valuable — they're less reliable.</div>
+      </div>
+      <div class="ft-panel" id="fp2">
+        <div class="firm-name">McKinsey</div>
+        <div class="firm-type">Global Management Consulting · ~45,000 professionals globally</div>
+        <div class="firm-ai-use">
+          <div class="firm-ai-use-label">🤖 How they use AI</div>
+          <div class="firm-ai-use-text">McKinsey has invested heavily in AI through their QuantumBlack AI subsidiary and internal tool "Lilli" — an AI platform that gives consultants access to McKinsey's entire knowledge base, research archive, and client work (appropriately anonymized). Lilli can answer research questions, surface relevant case studies, and help structure analyses in a fraction of the time it previously took. McKinsey's Global Institute produces extensive research on AI's economic and workforce impact. Their consistent message: AI dramatically accelerates the information-gathering phase of consulting, which frees human professionals for the higher-value judgment and relationship work.</div>
+        </div>
+        <div class="firm-skills">
+          <div class="firm-skill"><div class="firm-skill-label">Skills AI handles</div><div class="firm-skill-item">→ <span>Knowledge base search across all past work</span></div><div class="firm-skill-item">→ <span>Industry data synthesis and benchmarking</span></div><div class="firm-skill-item">→ <span>Initial hypothesis generation</span></div><div class="firm-skill-item">→ <span>Financial model building and scenario analysis</span></div></div>
+          <div class="firm-skill"><div class="firm-skill-label">Skills humans retain</div><div class="firm-skill-item">→ <span>C-suite relationship management</span></div><div class="firm-skill-item">→ <span>Reading organizational dynamics</span></div><div class="firm-skill-item">→ <span>Crafting the narrative that changes minds</span></div><div class="firm-skill-item">→ <span>All strategic judgment and accountability</span></div></div>
+        </div>
+        <div class="firm-insight">💡 McKinsey's position: AI compresses the research and analysis phase from weeks to days. But the reason clients pay McKinsey fees isn't for research — it's for judgment about what the research means and how to act on it. That judgment cannot be automated and becomes more valuable as AI handles more of the underlying work.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What These Firms Agree On: The Emerging Professional Skill Set</h2>
+    <div style="overflow-x:auto;">
+      <table class="skill-matrix">
+        <thead><tr><th>Skill</th><th>Who handles it</th><th>Why it matters more with AI</th></tr></thead>
+        <tbody>
+          <tr><td>Prompt engineering & AI direction</td><td><span class="spill ai">AI-assisted</span></td><td>The quality of AI output depends entirely on how well you direct it. This is now a core professional skill.</td></tr>
+          <tr><td>Critical evaluation of AI output</td><td><span class="spill human">Human-essential</span></td><td>AI can be wrong confidently. Professionals who can't spot errors become a liability.</td></tr>
+          <tr><td>Stakeholder communication</td><td><span class="spill human">Human-essential</span></td><td>The ability to explain, persuade, and build trust with clients and leadership is more valuable as AI does more technical work.</td></tr>
+          <tr><td>Research synthesis</td><td><span class="spill both">Both</span></td><td>AI accelerates gathering; human judgment determines what matters and what it means.</td></tr>
+          <tr><td>Ethical and values judgment</td><td><span class="spill human">Human-essential</span></td><td>Every firm explicitly keeps this human. AI cannot make or own ethical calls.</td></tr>
+          <tr><td>Domain expertise</td><td><span class="spill human">Human-essential</span></td><td>Without domain knowledge, you can't evaluate AI output in your field. Expertise becomes the prerequisite for effective AI use.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The firms that pay the highest salaries in the world are unanimous: AI makes information cheap and judgment more valuable. Invest in judgment.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">McKinsey's AI tool "Lilli" can search all of McKinsey's past client work and research in seconds. This means junior consultants at McKinsey now need:</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Less domain knowledge — the AI can surface what they need</button>
+        <button class="qopt" onclick="cq(this,false)">The same skills as before — Lilli just makes them faster</button>
+        <button class="qopt" onclick="cq(this,true)">Stronger judgment skills — because AI handles more of the information-gathering, the human value-add shifts entirely to interpretation, insight, and recommendations</button>
+        <button class="qopt" onclick="cq(this,false)">Technical AI skills primarily — they need to know how to use Lilli effectively</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>PwC, Deloitte, and McKinsey all use AI extensively for information processing, research, and drafting — and all explicitly keep human judgment at the center of every final recommendation and client relationship.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The consistent message from the most prestigious professional firms: AI makes information cheap and abundant. That makes judgment — the ability to evaluate, synthesize, and act wisely on that information — more valuable, not less.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The emerging professional skill set: AI direction, critical evaluation of AI output, stakeholder communication, ethical judgment, and domain expertise. These are the skills that survive and grow in value as AI handles more technical work.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+function showFirm(i){
+  document.querySelectorAll('.ft-tab').forEach((t,ti)=>t.classList.toggle('active',ti===i));
+  document.querySelectorAll('.ft-panel').forEach((p,pi)=>p.classList.toggle('active',pi===i));
+}
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! When AI handles information gathering, the human contribution shifts upstream to the higher-value work: what does this information mean? What should the client do with it? What trade-offs matter? These are judgment questions that Lilli can\'t answer. Junior consultants who develop strong judgment alongside AI fluency become more valuable, not less.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('interpretation'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ When AI handles research efficiently, it doesn\'t make domain knowledge less necessary — it makes judgment more necessary. You need expertise to evaluate what Lilli surfaces and to determine what it means for a specific client. And "same skills as before" misses the point: the balance of skills shifts. Information skills matter less; interpretation, insight, and recommendation quality matter more.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

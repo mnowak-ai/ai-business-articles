@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Professional Judgment? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Judgment vs knowledge spectrum */
+.spectrum{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.spec-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.spec-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:16px;}
+.spec-bar{display:flex;height:10px;border-radius:10px;overflow:hidden;margin-bottom:12px;}
+.spec-bar-ai{background:var(--purple);flex:7;}
+.spec-bar-human{background:var(--orange);flex:3;}
+.spec-ends{display:flex;justify-content:space-between;margin-bottom:20px;}
+.spec-end{font-size:12px;font-weight:700;}
+.spec-end.ai{color:var(--purple);}
+.spec-end.human{color:var(--orange);}
+.spec-examples{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.spec-ex{border-radius:14px;padding:16px;}
+.spec-ex.ai{background:var(--purple-pale);border:1.5px solid var(--purple-mid);}
+.spec-ex.human{background:var(--orange-pale);border:1.5px solid #FDE68A;}
+.spec-ex-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.spec-ex.ai .spec-ex-label{color:var(--purple);}
+.spec-ex.human .spec-ex-label{color:var(--orange);}
+.spec-ex-item{font-size:13px;line-height:1.5;margin-bottom:6px;display:flex;gap:6px;}
+
+/* Judgment components */
+.components{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+.comp-card{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:18px;padding:20px;}
+.comp-icon{font-size:26px;margin-bottom:8px;}
+.comp-name{font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.comp-desc{font-size:13px;line-height:1.6;color:var(--gray-text);margin-bottom:8px;}
+.comp-example{font-size:12px;font-style:italic;color:var(--gray-muted);background:var(--gray-soft);padding:6px 10px;border-radius:6px;}
+
+/* Scenario switcher */
+.scenario-sw{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.sw-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.sw-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.sw-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.sw-btns{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.sw-btn{padding:8px 16px;border-radius:10px;border:1.5px solid var(--purple-mid);background:var(--white);color:var(--gray-muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.sw-btn.active{background:var(--purple);border-color:var(--purple);color:white;}
+.sw-panel{display:none;animation:fadeIn .3s ease;}
+.sw-panel.active{display:block;}
+.sw-situation{background:var(--white);border-left:4px solid var(--purple);padding:14px 18px;border-radius:0 12px 12px 0;font-size:15px;line-height:1.7;margin-bottom:14px;}
+.sw-question{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:10px;}
+.sw-options{display:flex;flex-direction:column;gap:8px;}
+.sw-opt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:12px 16px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;}
+.sw-opt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.sw-opt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.sw-opt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.sw-fb{font-size:14px;padding:12px 16px;border-radius:10px;margin-top:8px;display:none;}
+.sw-fb.show{display:block;animation:fadeIn .3s ease;}
+.sw-fb.cfb{background:var(--green-pale);color:var(--green);}
+.sw-fb.wfb{background:#FFF1F1;color:#DC2626;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.components{grid-template-columns:1fr;}.spec-examples{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.4 · Professional Judgment</div>
+  <h1>What Is Professional Judgment?</h1>
+  <p class="hero-sub">AI can process information faster than any human. What it cannot do is exercise judgment — the distinctly human capacity to weigh competing values, apply experience, and make decisions in situations that data alone can't resolve. Understanding what judgment actually is, and where it comes from, is what this lesson is all about.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>The Skill That Never Gets Automated</h2>
+    <p>Every wave of workplace technology automates some tasks and leaves others untouched. Calculators automated arithmetic. Spreadsheets automated financial modeling. AI is now automating research, writing, analysis, scheduling, and summarization at scale. But across all of these waves, one capability has remained stubbornly human: <mark>judgment</mark>.</p>
+    <p>Judgment is what you use when the answer isn't in the data. It's how you navigate a situation where two reasonable people disagree and both have good arguments. It's the ability to weigh short-term costs against long-term trust, or efficiency against fairness, or what's technically optimal against what's actually right given everything you know about the people involved. No AI model does this. They process patterns. Judgment is something different.</p>
+    <div class="pull-quote"><p>AI systems are extraordinarily good at finding the best answer within the rules. Professional judgment is what you need when the rules aren't enough.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Where AI Ends and Judgment Begins</h2>
+    <div class="spectrum">
+      <div class="spec-label">⚖️ The Capability Spectrum</div>
+      <div class="spec-title">What AI handles vs. where human judgment is essential</div>
+      <div class="spec-bar"><div class="spec-bar-ai"></div><div class="spec-bar-human"></div></div>
+      <div class="spec-ends"><span class="spec-end ai">◀ AI-Dominant</span><span class="spec-end human">Human-Essential ▶</span></div>
+      <div class="spec-examples">
+        <div class="spec-ex ai">
+          <div class="spec-ex-label">🤖 AI handles well</div>
+          <div class="spec-ex-item">→ <span>Analyzing large datasets for patterns</span></div>
+          <div class="spec-ex-item">→ <span>Generating multiple options for consideration</span></div>
+          <div class="spec-ex-item">→ <span>Checking documents for consistency</span></div>
+          <div class="spec-ex-item">→ <span>Forecasting based on historical data</span></div>
+          <div class="spec-ex-item">→ <span>Answering well-defined factual questions</span></div>
+          <div class="spec-ex-item">→ <span>Automating repetitive rule-based tasks</span></div>
+        </div>
+        <div class="spec-ex human">
+          <div class="spec-ex-label">🧠 Judgment required</div>
+          <div class="spec-ex-item">→ <span>Deciding between options with real trade-offs</span></div>
+          <div class="spec-ex-item">→ <span>Navigating relationships and trust dynamics</span></div>
+          <div class="spec-ex-item">→ <span>Making calls that involve ethics or values</span></div>
+          <div class="spec-ex-item">→ <span>Acting in ambiguous or novel situations</span></div>
+          <div class="spec-ex-item">→ <span>Taking accountability for outcomes</span></div>
+          <div class="spec-ex-item">→ <span>Knowing when a rule doesn't apply</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Four Components of Professional Judgment</h2>
+    <p>Judgment isn't a single thing — it's built from four distinct capabilities that develop over time through experience, reflection, and feedback:</p>
+    <div class="components">
+      <div class="comp-card">
+        <div class="comp-icon">📚</div>
+        <div class="comp-name">Domain Knowledge</div>
+        <div class="comp-desc">You can't make good judgments about things you don't understand. Deep knowledge of your field gives you the context to evaluate options, spot what's missing, and know which questions to ask.</div>
+        <div class="comp-example">Example: A financial analyst who understands market cycles can judge whether an AI-generated forecast is missing an important contextual factor.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-icon">🔗</div>
+        <div class="comp-name">Contextual Awareness</div>
+        <div class="comp-desc">Understanding the specific situation — the people involved, the history, the unstated pressures, the political dynamics. This context shapes what the "right" answer actually is in practice.</div>
+        <div class="comp-example">Example: Knowing that a client is going through a leadership transition changes how you deliver a difficult recommendation — even if the data is the same.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-icon">⚖️</div>
+        <div class="comp-name">Values Clarity</div>
+        <div class="comp-desc">Knowing what you and your organization stand for. When two options both have merit, your values determine which trade-off is worth making. Without clear values, judgment defaults to expedience.</div>
+        <div class="comp-example">Example: Choosing transparency with a client over protecting a short-term relationship — because long-term trust matters more than short-term comfort.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-icon">🎯</div>
+        <div class="comp-name">Pattern Recognition from Experience</div>
+        <div class="comp-desc">Having seen similar situations before, you can recognize what looks like success or warning signs before the data confirms it. Experience builds a library of patterns AI cannot access.</div>
+        <div class="comp-example">Example: A senior manager who's seen three projects fail the same way recognizes the early warning signs — even when the metrics still look fine.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Judgment in Action: Three Scenarios</h2>
+    <p>Click each scenario and choose what professional judgment calls for:</p>
+    <div class="scenario-sw">
+      <div class="sw-label">🧭 Judgment Practice</div>
+      <div class="sw-title">What Would Good Judgment Look Like Here?</div>
+      <div class="sw-sub">Three real-world situations. Choose the response that demonstrates genuine professional judgment.</div>
+      <div class="sw-btns">
+        <button class="sw-btn active" onclick="showSW(0)">Scenario 1</button>
+        <button class="sw-btn" onclick="showSW(1)">Scenario 2</button>
+        <button class="sw-btn" onclick="showSW(2)">Scenario 3</button>
+      </div>
+      <div id="swContainer"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">A junior analyst at a consulting firm uses AI to generate a 40-page market analysis. The AI produces clear, well-structured output. Before presenting to the client, the analyst should:</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Present it as-is — AI-generated analysis is objective and unbiased</button>
+        <button class="qopt" onclick="cq(this,false)">Add a disclaimer that the analysis was AI-generated</button>
+        <button class="qopt" onclick="cq(this,true)">Review every finding against their domain knowledge, verify data sources, check for missing context about this specific client, and take professional ownership of the conclusions before presenting</button>
+        <button class="qopt" onclick="cq(this,false)">Have a more senior colleague review it since AI can't be trusted</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Professional judgment is the distinctly human capacity to weigh competing values, apply experience, and make decisions that data alone can't resolve. It's what AI cannot automate.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Judgment is built from four components: domain knowledge, contextual awareness, values clarity, and pattern recognition from experience. All four develop over time — they can't be shortcut.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI is exceptional at the information layer. Judgment is what you bring to the decision layer — knowing what the information means, which trade-offs matter, and what the right call is given the full picture.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const scenarios=[
+  {
+    situation:'You\'re a marketing manager. AI analysis of your campaign data shows that ads targeting users aged 55+ have a 40% higher conversion rate than ads targeting 18–25 year olds. The AI recommends shifting 80% of the budget to the older demographic.',
+    question:'What does professional judgment require before making this change?',
+    options:[
+      {text:'Follow the AI recommendation immediately — the data is clear',correct:false,fb:'The data shows a pattern — but it doesn\'t show why. Judgment means asking: Is this a stable pattern or a one-time event? Are the 18–25 conversions lower-value or higher-value in the long run? Is the brand trying to build market share with younger audiences for strategic reasons that aren\'t captured in conversion rate data?'},
+      {text:'Question the AI — 55+ can\'t be the right audience for a modern brand',correct:false,fb:'This is judgment distorted by assumption. The data might be right. The question isn\'t whether to believe the AI — it\'s whether the optimization metric (conversion rate) captures the full strategic picture.'},
+      {text:'Ask what\'s driving the gap, whether short-term conversion rate is the right optimization metric, and whether the brand\'s strategic goals include building with younger audiences before making any budget shift',correct:true,fb:'✅ Correct. Good judgment means interrogating what the AI optimized for before acting on it. Conversion rate might not capture lifetime value, brand awareness building, or long-term market positioning. These are judgment calls that require human strategic thinking.'},
+    ]
+  },
+  {
+    situation:'A project manager\'s AI workflow tool flags that Marcus is at 115% capacity this week. It recommends reassigning 3 of his tasks to Priya, who is at 60% capacity. The numbers support the recommendation.',
+    question:'What does professional judgment require the PM to do?',
+    options:[
+      {text:'Reassign the tasks — Priya has the capacity and the project needs to move forward',correct:false,fb:'Capacity data tells you who has hours available. It doesn\'t tell you whether Priya has the skills for these specific tasks, whether Marcus has client relationships that make reassignment complicated, or whether Priya is at 60% for a reason (a big deliverable due Friday that isn\'t yet in the system).'},
+      {text:'Talk to both Marcus and Priya before making any changes — verify the context behind the numbers',correct:true,fb:'✅ Correct. AI sees workload data. Humans know the context behind the data. The right call is to check with both people: Is Priya actually available? Does she have the background to own these tasks? Is Marcus in a situation where the overload is temporary and manageable?'},
+      {text:'Trust the AI but document the decision in case it goes wrong',correct:false,fb:'Documentation doesn\'t substitute for judgment. The right first step is verification, not protection. Acting on numbers without context and then documenting it is just deferred responsibility.'},
+    ]
+  },
+  {
+    situation:'AI-generated customer feedback analysis shows that 73% of complaints mention "slow response times." The analysis recommends investing in automated response systems to reduce average response time from 6 hours to 30 minutes.',
+    question:'What is the professional judgment question hiding beneath the data?',
+    options:[
+      {text:'Whether the AI correctly analyzed the feedback',correct:false,fb:'The analysis is probably accurate. The deeper question isn\'t about the AI\'s math — it\'s about whether speed is actually what customers want, or whether "slow response times" is a proxy complaint for something else, like responses that don\'t actually solve the problem.'},
+      {text:'Whether fast automated responses actually solve the complaint, or whether customers want quality responses — and whether automation might make that worse',correct:true,fb:'✅ Correct. This is classic judgment: the metric is clear (response time), but the underlying need (satisfied customer) might not be served by optimizing the metric. A fast automated response that doesn\'t help might score better on time while making the actual customer experience worse.'},
+      {text:'Whether to implement the automation immediately or wait for more data',correct:false,fb:'Timing is a secondary question. The primary judgment question is whether the recommendation would actually solve the problem — or whether it would optimize a proxy metric while the real issue (response quality) remains unaddressed.'},
+    ]
+  }
+];
+let swIdx=0;
+function showSW(i){
+  swIdx=i;
+  document.querySelectorAll('.sw-btn').forEach((b,bi)=>b.classList.toggle('active',bi===i));
+  renderSW();
+}
+function renderSW(){
+  const s=scenarios[swIdx];
+  document.getElementById('swContainer').innerHTML=`
+    <div class="sw-situation"><strong>Situation:</strong> ${s.situation}</div>
+    <div class="sw-question">${s.question}</div>
+    <div class="sw-options" id="swOpts">${s.options.map((o,i)=>`<button class="sw-opt" onclick="checkSW(${i})">${o.text}</button>`).join('')}</div>
+    <div class="sw-fb" id="swFb"></div>`;
+}
+function checkSW(i){
+  if(document.querySelector('.sw-opt.correct')||document.querySelector('.sw-opt.wrong'))return;
+  const s=scenarios[swIdx];
+  document.querySelectorAll('.sw-opt')[i].classList.add(s.options[i].correct?'correct':'wrong');
+  if(!s.options[i].correct)document.querySelectorAll('.sw-opt').forEach((o,oi)=>{if(s.options[oi].correct)o.classList.add('correct');});
+  const fb=document.getElementById('swFb');
+  fb.className='sw-fb show '+(s.options[i].correct?'cfb':'wfb');
+  fb.textContent=s.options[i].fb;
+}
+renderSW();
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! Presenting AI output as your professional work means owning it — which means verifying it. Domain knowledge lets you catch errors AI can\'t flag. Contextual awareness means checking whether the analysis fits this specific client\'s situation. Professional ownership means you\'re accountable for what\'s in the deck — not the AI.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('Review every finding'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ AI-generated analysis is not inherently unbiased — it reflects the data it was given and can miss context. A disclaimer doesn\'t make you less responsible for what you present. Senior review helps but doesn\'t replace your own judgment. The right answer is to apply your domain knowledge to verify the output before your name goes on it.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
