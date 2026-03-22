@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Does a Recommendation Algorithm Actually Work? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Signal explorer — interactive build-your-profile */
+  .signal-builder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sb-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sb-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sb-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .sb-signals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+  @media(max-width:560px){.sb-signals{grid-template-columns:1fr;}}
+  .sb-signal{border:2px solid var(--purple-mid);border-radius:12px;padding:14px 16px;background:var(--white);cursor:pointer;transition:all 0.2s;display:flex;gap:10px;align-items:center;}
+  .sb-signal:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .sb-signal.selected{border-color:var(--purple);background:var(--purple);color:white;}
+  .sb-signal.selected .sig-desc{color:rgba(255,255,255,0.8);}
+  .sig-icon{font-size:22px;flex-shrink:0;}
+  .sig-name{font-weight:600;font-size:14px;color:var(--purple-dark);margin-bottom:2px;}
+  .sb-signal.selected .sig-name{color:white;}
+  .sig-desc{font-size:12px;color:var(--gray-muted);}
+  .sb-predict-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .sb-predict-btn:hover{background:var(--purple-dark);}
+  .sb-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .sb-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .sb-out-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:14px;}
+  .reco-item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--purple-mid);}
+  .reco-item:last-child{border-bottom:none;}
+  .reco-score{background:var(--purple);color:white;font-family:'Fraunces',serif;font-size:13px;font-weight:700;padding:4px 10px;border-radius:100px;min-width:60px;text-align:center;flex-shrink:0;}
+  .reco-name{font-size:14px;font-weight:500;color:var(--purple-dark);}
+  .reco-reason{font-size:12px;color:var(--gray-muted);}
+
+  /* How it works steps */
+  .steps{display:flex;flex-direction:column;gap:16px;margin:24px 0;}
+  .step{display:flex;gap:20px;align-items:flex-start;}
+  .step-num{width:40px;height:40px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:white;flex-shrink:0;}
+  .step-content h3{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .step-content p{font-size:15px;line-height:1.7;color:var(--gray-text);margin:0;}
+
+  /* Types of filtering */
+  .filter-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.filter-cards{grid-template-columns:1fr;}}
+  .fc{border:1.5px solid var(--purple-mid);border-radius:18px;padding:24px;}
+  .fc-icon{font-size:32px;margin-bottom:10px;}
+  .fc-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .fc-desc{font-size:14px;line-height:1.65;color:var(--gray-text);margin-bottom:10px;}
+  .fc-example{background:var(--purple-pale);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--purple-dark);}
+
+  /* Impact stats */
+  .impact-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+  @media(max-width:600px){.impact-row{grid-template-columns:1fr;}}
+  .impact-box{background:var(--purple);border-radius:18px;padding:24px;text-align:center;}
+  .impact-num{font-family:'Fraunces',serif;font-size:40px;font-weight:900;color:white;line-height:1;margin-bottom:8px;}
+  .impact-co{font-size:13px;color:var(--accent);font-weight:600;margin-bottom:4px;}
+  .impact-label{font-size:12px;color:rgba(255,255,255,0.75);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.1 · Introduction to AI in Marketing</div>
+  <h1>How Does a Recommendation Algorithm Actually Work?</h1>
+  <p class="hero-sub">Every time Netflix suggests a show or Amazon says "you might also like," an algorithm is running in the background. Understanding how it works is key to understanding AI's most powerful marketing application.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Recommendation algorithms are everywhere. They decide what shows up in your YouTube feed, what products Amazon highlights, what songs Spotify adds to your playlist, and what posts appear first in your Instagram feed. <mark>They're the most visible — and most financially significant — application of AI in marketing today.</mark></p>
+    <p>Amazon's recommendation engine is estimated to drive about 35% of total revenue. Netflix says 80% of what people watch comes from recommendations. These aren't small improvements — they're fundamental to how these businesses operate.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Data Does an Algorithm Use?</h2>
+    <p>Recommendation algorithms learn about you by collecting and analyzing signals — pieces of data that reveal something about your preferences. Select some signals below and see how a fictional algorithm would use them to build recommendations.</p>
+    <div class="signal-builder">
+      <div class="sb-label">🔬 Algorithm Simulator</div>
+      <div class="sb-title">Build Your Signal Profile</div>
+      <div class="sb-sub">Select the signals you'd generate as a user, then see what the algorithm recommends.</div>
+      <div class="sb-signals">
+        <div class="sb-signal" onclick="toggleSignal(this,'watched_action')"><div class="sig-icon">🎬</div><div><div class="sig-name">Watched 12 action movies</div><div class="sig-desc">Full watches, not just clips</div></div></div>
+        <div class="sb-signal" onclick="toggleSignal(this,'paused_drama')"><div class="sig-icon">⏸️</div><div><div class="sig-name">Paused 3 dramas mid-way</div><div class="sig-desc">Didn't finish — weaker signal</div></div></div>
+        <div class="sb-signal" onclick="toggleSignal(this,'rated_comedy')"><div class="sig-icon">⭐</div><div><div class="sig-name">5-starred 8 comedies</div><div class="sig-desc">Explicit positive rating</div></div></div>
+        <div class="sb-signal" onclick="toggleSignal(this,'search_sci')"><div class="sig-icon">🔍</div><div><div class="sig-name">Searched "sci-fi 2024"</div><div class="sig-desc">Intent signal from search</div></div></div>
+        <div class="sb-signal" onclick="toggleSignal(this,'friends_horror')"><div class="sig-icon">👥</div><div><div class="sig-name">10 friends watched horror</div><div class="sig-desc">Social/collaborative signal</div></div></div>
+        <div class="sb-signal" onclick="toggleSignal(this,'browse_thriller')"><div class="sig-icon">👀</div><div><div class="sig-name">Browsed thriller section</div><div class="sig-desc">Browse without clicking through</div></div></div>
+      </div>
+      <button class="sb-predict-btn" onclick="generateRecos()">▶ Generate Recommendations</button>
+      <div class="sb-output" id="sbOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How the Algorithm Actually Works</h2>
+    <p>Under the hood, recommendation algorithms follow a series of steps to turn raw data into a ranked list of things you're likely to enjoy.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h3>Collect Signals</h3><p>Every action you take — clicking, watching, buying, rating, pausing, searching — is recorded. Even what you don't click is data. The algorithm logs how long you hover over something before moving on.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h3>Weight the Signals</h3><p>Not all signals are equal. Finishing a movie is a stronger signal than starting one. A 5-star rating is stronger than a browse. The algorithm learns which signals are the best predictors of what you'll actually enjoy.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h3>Find Your "Taste Cluster"</h3><p>The algorithm compares your behavior to millions of other users. It finds people whose past behavior closely matches yours — your "taste cluster" — and assumes that what they liked, you'll probably like too. This is called collaborative filtering.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h3>Analyze Content Features</h3><p>The algorithm also analyzes the items themselves — genres, directors, actors, themes, style. If you loved three movies with similar visual styles, it will surface more movies with that style even if nobody told it to. This is content-based filtering.</p></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><h3>Score and Rank</h3><p>Every item gets a predicted "enjoyment score" for you specifically — a probability that you'll like it. The algorithm ranks everything and surfaces the top items, adjusting in real time as your behavior continues to update the model.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Two Main Types of Filtering</h2>
+    <div class="filter-cards">
+      <div class="fc">
+        <div class="fc-icon">👥</div>
+        <div class="fc-name">Collaborative Filtering</div>
+        <div class="fc-desc">Based on the behavior of users similar to you. "People who liked what you liked also liked this." It works across categories — even if you've never shown interest in something directly.</div>
+        <div class="fc-example">💡 Amazon: "Customers who bought this also bought..." — finding patterns across millions of similar shoppers to predict what you'll want next.</div>
+      </div>
+      <div class="fc">
+        <div class="fc-icon">🎭</div>
+        <div class="fc-name">Content-Based Filtering</div>
+        <div class="fc-desc">Based on the features of items you've liked. "You liked items with these characteristics, so here are more items with similar characteristics." Doesn't require other users.</div>
+        <div class="fc-example">💡 Spotify: After you listen to songs with similar BPM, key, and instrumentation, it recommends tracks with matching audio features — even ones no one has told you about.</div>
+      </div>
+    </div>
+    <p>Most modern recommendation systems use both — combining collaborative and content signals to produce better recommendations than either approach alone.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>A recommendation algorithm isn't trying to read your mind. It's doing something more interesting: it's finding patterns in what millions of people with similar tastes have done — and using that collective intelligence to predict your next move.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Business Impact Is Massive</h2>
+    <div class="impact-row">
+      <div class="impact-box">
+        <div class="impact-co">Amazon</div>
+        <div class="impact-num">35%</div>
+        <div class="impact-label">of total revenue driven by recommendation engine</div>
+      </div>
+      <div class="impact-box">
+        <div class="impact-co">Netflix</div>
+        <div class="impact-num">80%</div>
+        <div class="impact-label">of content watched comes from recommendations (not search)</div>
+      </div>
+      <div class="impact-box">
+        <div class="impact-co">Spotify</div>
+        <div class="impact-num">31%</div>
+        <div class="impact-label">of listening time on personalized discovery playlists</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h3>Why This Matters for Marketers</h3>
+        <p>As a marketer, understanding recommendation algorithms means understanding how to get your products or content surfaced by them. Quality signals (high ratings, long watch/read times, high completion rates) tell algorithms your content is worth recommending. Bad signals (high skip rates, quick exits) suppress you. Modern marketing isn't just about reaching customers — it's about earning algorithmic distribution.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Recommendation algorithms collect signals from everything you do — clicks, watches, ratings, searches, and even what you don't click — then weight those signals to understand your preferences.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Collaborative filtering finds users similar to you and recommends what they liked. Content-based filtering recommends items with features similar to ones you've enjoyed. Most systems combine both.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The business impact is enormous: Amazon's recommendation engine drives ~35% of revenue, Netflix recommendations drive 80% of viewing — these algorithms are not features, they're core business infrastructure.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>For marketers, earning algorithmic distribution — creating content that generates strong signals — is now as important as traditional advertising in reaching customers.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const selectedSignals=new Set();
+  function toggleSignal(el,sig){
+    el.classList.toggle('selected');
+    if(selectedSignals.has(sig))selectedSignals.delete(sig);else selectedSignals.add(sig);
+    document.getElementById('sbOutput').classList.remove('show');
+  }
+
+  const recoSets={
+    action_comedy:{items:[{score:'97%',name:'Guardians of the Galaxy Vol. 3',reason:'Action + comedy blend matches your highest-signal views'},
+      {score:'94%',name:'The Nice Guys',reason:'Action-comedy loved by users with identical viewing history'},
+      {score:'91%',name:'Free Guy',reason:'High completion rate among users in your taste cluster'}]},
+    action:{items:[{score:'96%',name:'Top Gun: Maverick',reason:'Action genre match + strong completion signals from similar users'},
+      {score:'92%',name:'Mission: Impossible — Dead Reckoning',reason:'Action series — users who watched what you watched loved this'},
+      {score:'88%',name:'John Wick 4',reason:'High action density, matches your full-watch pattern'}]},
+    comedy:{items:[{score:'95%',name:'The Bear (Season 1)',reason:'Loved by 5-star comedy raters with similar profiles'},
+      {score:'93%',name:'Abbott Elementary',reason:'Comedy ratings pattern closely matches your 8 ratings'},
+      {score:'89%',name:'What We Do in the Shadows',reason:'Trending in your taste cluster this week'}]},
+    scifi:{items:[{score:'98%',name:'Severance (Season 2)',reason:'Sci-fi search intent + your taste cluster is currently obsessed with this'},
+      {score:'94%',name:'Andor',reason:'Sci-fi — high critical and audience scores in your profile group'},
+      {score:'90%',name:'Dark (Netflix)',reason:'Your search pattern matches users who rate Dark 5 stars'}]},
+    default:{items:[{score:'72%',name:'Popular This Week',reason:'Insufficient personal signals — using trending data as fallback'},
+      {score:'68%',name:'New Releases',reason:'No strong preference signals yet detected'},
+      {score:'61%',name:'Highly Rated Globally',reason:'Add more signals by watching more content for better recommendations'}]}
+  };
+
+  function generateRecos(){
+    const out=document.getElementById('sbOutput');
+    let set='default';
+    if(selectedSignals.size===0){set='default';}
+    else if(selectedSignals.has('watched_action')&&selectedSignals.has('rated_comedy')){set='action_comedy';}
+    else if(selectedSignals.has('search_sci')){set='scifi';}
+    else if(selectedSignals.has('watched_action')){set='action';}
+    else if(selectedSignals.has('rated_comedy')){set='comedy';}
+    const d=recoSets[set];
+    const signalCount=selectedSignals.size;
+    out.innerHTML=`<div class="sb-out-title">🎬 Your Top Recommendations (based on ${signalCount} signal${signalCount!==1?'s':''})</div>${d.items.map(r=>`<div class="reco-item"><div class="reco-score">${r.score}</div><div><div class="reco-name">${r.name}</div><div class="reco-reason">${r.reason}</div></div></div>`).join('')}`;
+    out.className='sb-output show';
+  }
+</script>
+</body>
+</html>

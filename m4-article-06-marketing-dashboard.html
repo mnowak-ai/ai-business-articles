@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading a Marketing Dashboard: What Do All These Numbers Mean? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--green:#276749;--green-pale:#F0FFF4;--red:#E53E3E;--red-pale:#FFF1F1;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+
+  /* Interactive dashboard */
+  .dashboard{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:28px;margin:24px 0;}
+  .dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+  .dash-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);}
+  .dash-label{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple);background:var(--purple-pale);padding:5px 12px;border-radius:100px;}
+  .dash-sub{font-size:14px;color:var(--gray-muted);margin-bottom:20px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+  @media(max-width:600px){.kpi-grid{grid-template-columns:1fr 1fr;}}
+  .kpi-card{background:var(--white);border-radius:14px;padding:18px;border:1.5px solid var(--purple-mid);cursor:pointer;transition:all 0.2s;}
+  .kpi-card:hover,.kpi-card.selected{border-color:var(--purple);background:var(--purple-pale);}
+  .kpi-name{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-muted);margin-bottom:6px;}
+  .kpi-val{font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:var(--purple-dark);line-height:1;margin-bottom:6px;}
+  .kpi-change{font-size:12px;font-weight:600;}
+  .kpi-change.up{color:var(--green);}
+  .kpi-change.down{color:var(--red);}
+  .kpi-explainer{display:none;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px 24px;}
+  .kpi-explainer.show{display:block;animation:fadeIn 0.3s ease;}
+  .exp-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .exp-formula{background:var(--purple-mid);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--purple-dark);margin-bottom:12px;font-family:monospace;}
+  .exp-body{font-size:15px;line-height:1.7;color:var(--gray-text);margin-bottom:10px;}
+  .exp-good{background:var(--green-pale);border-radius:10px;padding:10px 14px;font-size:14px;color:var(--green);margin-bottom:6px;}
+  .exp-bad{background:var(--red-pale);border-radius:10px;padding:10px 14px;font-size:14px;color:var(--red);}
+
+  /* Scenario challenge */
+  .scenario{background:var(--purple);border-radius:20px;padding:32px;margin:24px 0;color:white;}
+  .sc-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+  .sc-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;margin-bottom:12px;}
+  .sc-numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+  @media(max-width:580px){.sc-numbers{grid-template-columns:1fr 1fr;}}
+  .sc-num-card{background:rgba(255,255,255,0.12);border-radius:12px;padding:14px;text-align:center;}
+  .sc-num-label{font-size:11px;font-weight:600;color:rgba(255,255,255,0.65);margin-bottom:4px;}
+  .sc-num-val{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:white;}
+  .sc-question{font-size:16px;line-height:1.65;color:rgba(255,255,255,0.85);margin-bottom:18px;}
+  .sc-options{display:flex;flex-direction:column;gap:10px;}
+  .sc-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:14px 18px;color:white;font-family:'DM Sans',sans-serif;font-size:14px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .sc-btn:hover{background:rgba(255,255,255,0.2);}
+  .sc-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;}
+  .sc-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;}
+  .sc-feedback{margin-top:14px;padding:14px 18px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:14px;line-height:1.6;display:none;}
+  .sc-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.1 · Introduction to AI in Marketing</div>
+  <h1>Reading a Marketing Dashboard: What Do All These Numbers Mean?</h1>
+  <p class="hero-sub">Clicks, impressions, CTR, ROAS, conversion rate — marketing is full of acronyms that sound complicated but actually tell a clear story once you know how to read them. Let's decode the dashboard.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Why Metrics Matter</h2>
+    <p>Marketing used to be nearly impossible to measure. If you ran a TV commercial, you had no idea how many people actually watched it — let alone whether it made them buy anything. Digital marketing changed everything. <mark>Today, every click, view, open, and purchase can be tracked, measured, and analyzed.</mark></p>
+    <p>This data is what AI uses to optimize campaigns, personalize content, and predict what customers will do next. But to understand AI's marketing decisions, you need to understand what it's actually measuring.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Marketing Dashboard: Click Any Metric to Learn It</h2>
+    <p>This is a simplified version of what a real marketing dashboard looks like. Click each metric card to see what it means, how it's calculated, and what good vs. bad looks like.</p>
+    <div class="dashboard">
+      <div class="dash-header">
+        <div class="dash-title">Campaign Performance — Last 30 Days</div>
+        <div class="dash-label">Interactive</div>
+      </div>
+      <div class="dash-sub">Click any metric below to see what it means.</div>
+      <div class="kpi-grid">
+        <div class="kpi-card" onclick="showMetric('impressions')">
+          <div class="kpi-name">Impressions</div>
+          <div class="kpi-val">847K</div>
+          <div class="kpi-change up">↑ 12% vs last month</div>
+        </div>
+        <div class="kpi-card" onclick="showMetric('ctr')">
+          <div class="kpi-name">CTR</div>
+          <div class="kpi-val">3.2%</div>
+          <div class="kpi-change up">↑ 0.8pts vs last month</div>
+        </div>
+        <div class="kpi-card" onclick="showMetric('conversion')">
+          <div class="kpi-name">Conversion Rate</div>
+          <div class="kpi-val">4.7%</div>
+          <div class="kpi-change down">↓ 0.3pts vs last month</div>
+        </div>
+        <div class="kpi-card" onclick="showMetric('cpc')">
+          <div class="kpi-name">CPC</div>
+          <div class="kpi-val">$1.84</div>
+          <div class="kpi-change up">↓ $0.22 vs last month</div>
+        </div>
+        <div class="kpi-card" onclick="showMetric('roas')">
+          <div class="kpi-name">ROAS</div>
+          <div class="kpi-val">4.2x</div>
+          <div class="kpi-change up">↑ 0.6x vs last month</div>
+        </div>
+        <div class="kpi-card" onclick="showMetric('cpa')">
+          <div class="kpi-name">CPA</div>
+          <div class="kpi-val">$39.10</div>
+          <div class="kpi-change down">↑ $4.20 vs last month</div>
+        </div>
+      </div>
+      <div class="kpi-explainer" id="metricExplainer"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Most Important Metric: ROAS</h2>
+    <p>If you could only know one marketing metric, ROAS (Return on Ad Spend) would be it. It answers the most fundamental question in marketing: <mark>for every dollar we spend on ads, how many dollars do we get back?</mark></p>
+    <p>A ROAS of 1.0x means you broke even — you got back exactly what you spent. A ROAS of 4.2x (like in our dashboard) means for every $1 spent, you earned $4.20 back. Most businesses need a ROAS of at least 3–4x to be profitable after accounting for product costs and overhead.</p>
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>How AI Uses These Numbers</h3>
+        <p>AI marketing systems constantly monitor all these metrics simultaneously. If CTR drops, the AI tests new ad creative. If conversion rate falls, it investigates landing page performance. If ROAS dips below a threshold, the AI automatically reduces spending on underperforming audiences and shifts budget to what's working — all without a human having to spot the problem first.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Read the Dashboard: What's the Problem?</h2>
+    <div class="scenario">
+      <div class="sc-label">Scenario Challenge</div>
+      <div class="sc-title">Diagnose This Campaign</div>
+      <div class="sc-numbers">
+        <div class="sc-num-card"><div class="sc-num-label">Impressions</div><div class="sc-num-val">1.2M</div></div>
+        <div class="sc-num-card"><div class="sc-num-label">CTR</div><div class="sc-num-val">0.4%</div></div>
+        <div class="sc-num-card"><div class="sc-num-label">Conv. Rate</div><div class="sc-num-val">12%</div></div>
+        <div class="sc-num-card"><div class="sc-num-label">ROAS</div><div class="sc-num-val">1.1x</div></div>
+      </div>
+      <div class="sc-question">This campaign is reaching 1.2 million people, has a great conversion rate (when people click, they buy), but the ROAS is terrible. Where is the problem most likely to be?</div>
+      <div class="sc-options">
+        <button class="sc-btn" onclick="scAnswer(this,false)">The landing page — it's not converting visitors effectively</button>
+        <button class="sc-btn" onclick="scAnswer(this,true)">The ad creative — the CTR is extremely low, so the ad isn't compelling people to click</button>
+        <button class="sc-btn" onclick="scAnswer(this,false)">The targeting — we're reaching the wrong audience entirely</button>
+        <button class="sc-btn" onclick="scAnswer(this,false)">The budget — we need to spend more to get better results</button>
+      </div>
+      <div class="sc-feedback" id="scFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">Article Summary</div>
+      <h2>What You Learned</h2>
+      <div class="summary-points">
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p><strong>Impressions</strong> = times seen, <strong>CTR</strong> = % who clicked, <strong>Conversion Rate</strong> = % who bought, <strong>ROAS</strong> = revenue per ad dollar.</p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>ROAS is the most important single metric — it tells you whether your marketing is actually <strong>making more than it costs.</strong></p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Each metric tells a different piece of the story — reading a dashboard means <strong>connecting the metrics to find where the real problem is.</strong></p>
+        </div>
+        <div class="summary-point">
+          <div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>AI systems monitor all these metrics simultaneously and <strong>automatically adjust campaigns</strong> when performance drops — no human needed to catch the problem.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{
+    const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
+    document.getElementById('progressBar').style.width=(s/h*100)+'%';
+  });
+  const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const metrics={
+    impressions:{name:'Impressions',formula:'Total times your ad or content was displayed',body:'An impression counts every time your ad appears on someone\'s screen — whether they notice it or not. It\'s the top of the funnel: reach. High impressions mean you\'re getting visibility. Low impressions mean your budget is too small or your targeting is too narrow.',good:'✅ High impressions with increasing trend = your reach is growing.',bad:'⚠️ High impressions but low CTR = your ad is being seen but ignored.'},
+    ctr:{name:'CTR — Click-Through Rate',formula:'(Clicks ÷ Impressions) × 100 = CTR %',body:'CTR measures how compelling your ad actually is. If 1,000 people see your ad and 32 click on it, your CTR is 3.2%. Industry average is around 2–4% for most digital ads. A low CTR usually means the ad creative, headline, or targeting needs to be improved.',good:'✅ Above 2%: Your ad is resonating and worth driving traffic.',bad:'⚠️ Below 1%: Your message or creative isn\'t compelling people to act.'},
+    conversion:{name:'Conversion Rate',formula:'(Conversions ÷ Clicks) × 100 = Conv. Rate %',body:'Once someone clicks, conversion rate measures how many of them actually complete the desired action — a purchase, sign-up, or download. This metric lives on your landing page or website. Low conversion rate usually means a problem AFTER the click: confusing page, slow load, price concern, or weak offer.',good:'✅ Above 3–5%: Your landing page and offer are doing their job.',bad:'⚠️ Below 1%: People are clicking but not converting — investigate the landing page.'},
+    cpc:{name:'CPC — Cost Per Click',formula:'Total Ad Spend ÷ Total Clicks = CPC',body:'CPC tells you how much you\'re paying every time someone clicks your ad. Lower is generally better — if you can get more clicks for the same spend, your budget goes further. AI bidding systems are constantly optimizing to lower your CPC while maintaining quality clicks.',good:'✅ Declining CPC = your ads are becoming more competitive and efficient.',bad:'⚠️ Rising CPC = competition is increasing or your quality score is dropping.'},
+    roas:{name:'ROAS — Return on Ad Spend',formula:'Revenue from Ads ÷ Ad Spend = ROAS',body:'ROAS is the king of marketing metrics. It answers the fundamental question: is our advertising actually profitable? A ROAS of 4.2x means for every $1 spent on ads, you earned $4.20 back. Most businesses need 3–5x ROAS to be profitable after costs. AI optimizes everything to improve this number.',good:'✅ Above 3x: Generally profitable for most business types.',bad:'⚠️ Below 2x: You\'re likely losing money once product costs are factored in.'},
+    cpa:{name:'CPA — Cost Per Acquisition',formula:'Total Ad Spend ÷ Number of Conversions = CPA',body:'CPA tells you how much it costs to acquire one customer (or lead, or sign-up, depending on your goal). This is crucial for knowing whether a customer is worth acquiring. If a customer\'s lifetime value is $200, a CPA of $39 is excellent. If it\'s $30, you\'re losing money on every customer.',good:'✅ CPA significantly below customer lifetime value = profitable acquisition.',bad:'⚠️ CPA close to or above lifetime value = acquiring customers at a loss.'}
+  };
+
+  function showMetric(key){
+    const m=metrics[key];
+    document.querySelectorAll('.kpi-card').forEach(c=>c.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    const el=document.getElementById('metricExplainer');
+    el.innerHTML=`<div class="exp-name">${m.name}</div><div class="exp-formula">${m.formula}</div><div class="exp-body">${m.body}</div><div class="exp-good">${m.good}</div><div class="exp-bad">${m.bad}</div>`;
+    el.className='kpi-explainer show';
+  }
+  function scAnswer(btn,correct){
+    document.querySelectorAll('.sc-btn').forEach(b=>b.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    const fb=document.getElementById('scFeedback');
+    fb.className='sc-feedback show';
+    fb.textContent=correct
+      ?'✅ Correct! A 0.4% CTR is very low — only 4 out of every 1,000 people who see the ad click on it. The ad creative or headline isn\'t compelling. Since conversion rate is 12%, the landing page is actually great. Fix the ad, not the page.'
+      :'❌ Not quite. Look at the pattern: conversion rate is a strong 12% (when people click, they buy). The problem is the CTR of 0.4% — almost nobody is clicking the ad in the first place. The creative needs to be fixed, not the page.';
+  }
+</script>
+</body>
+</html>

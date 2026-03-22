@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The History of Marketing: From Billboards to Algorithms — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Timeline */
+  .timeline{position:relative;margin:24px 0;padding-left:32px;}
+  .timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--purple-mid);}
+  .era{position:relative;margin-bottom:0;cursor:pointer;}
+  .era-header{display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;margin-bottom:4px;transition:all 0.2s;}
+  .era-header:hover,.era.open .era-header{background:var(--purple-pale);border-color:var(--purple);}
+  .era-dot{position:absolute;left:-38px;top:50%;transform:translateY(-50%);width:16px;height:16px;background:var(--purple-mid);border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 2px var(--purple-mid);transition:all 0.2s;}
+  .era.open .era-dot{background:var(--purple);box-shadow:0 0 0 2px var(--purple);}
+  .era-year{font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:var(--purple);min-width:100px;}
+  .era-name{font-size:16px;font-weight:600;color:var(--purple-dark);flex:1;}
+  .era-arrow{font-size:12px;color:var(--gray-muted);transition:transform 0.2s;}
+  .era.open .era-arrow{transform:rotate(180deg);}
+  .era-body{display:none;background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:0 0 14px 14px;padding:20px 24px;margin-bottom:16px;margin-top:-4px;}
+  .era.open .era-body{display:block;animation:fadeIn 0.3s ease;}
+  .era-body p{font-size:15px;line-height:1.7;margin-bottom:10px;}
+  .era-body p:last-child{margin-bottom:0;}
+  .era-example{background:var(--purple-pale);border-radius:10px;padding:10px 14px;font-size:14px;color:var(--purple-dark);margin-top:10px;line-height:1.55;}
+
+  /* Comparison table */
+  .compare-table{width:100%;border-collapse:collapse;margin:24px 0;border-radius:16px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+  .compare-table th{background:var(--purple);color:white;padding:14px 18px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;text-align:left;}
+  .compare-table td{padding:14px 18px;font-size:14px;border-bottom:1px solid var(--purple-mid);line-height:1.55;vertical-align:top;}
+  .compare-table tr:last-child td{border-bottom:none;}
+  .compare-table tr:nth-child(even) td{background:var(--purple-pale);}
+  .td-era{font-weight:600;color:var(--purple-dark);}
+
+  /* Shift cards */
+  .shift-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:24px 0;}
+  @media(max-width:680px){.shift-cards{grid-template-columns:1fr;}}
+  .shift-card{border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px;}
+  .shift-icon{font-size:28px;margin-bottom:10px;}
+  .shift-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .shift-desc{font-size:13.5px;line-height:1.65;color:var(--gray-text);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.1 · Introduction to AI in Marketing</div>
+  <h1>The History of Marketing: From Billboards to Algorithms</h1>
+  <p class="hero-sub">Marketing has gone through several massive transformations over the past 200 years. Understanding that history makes it clear why AI isn't just another tool — it's the biggest shift yet.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Every generation has experienced a marketing revolution. Mass printing made it possible to reach thousands. Radio and TV made it possible to reach millions. The internet made it possible to track and target individuals. Now AI is making it possible to personalize at scale — serving billions of people uniquely tailored messages simultaneously.</p>
+    <p><mark>Each shift in marketing history followed the same pattern: a new technology emerged, smart marketers found ways to use it, and the businesses that adapted fastest gained massive competitive advantages.</mark> AI is the latest — and most powerful — of these shifts.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Marketing Timeline</h2>
+    <p>Click each era to explore what made it transformative — and what its limits were.</p>
+    <div class="timeline">
+
+      <div class="era" id="era1" onclick="toggleEra('era1')">
+        <div class="era-dot"></div>
+        <div class="era-header">
+          <span class="era-year">1800s–1900s</span>
+          <span class="era-name">Print & Mass Marketing</span>
+          <span class="era-arrow">▼</span>
+        </div>
+        <div class="era-body">
+          <p>The invention of the printing press made mass communication possible. Newspapers, posters, and flyers allowed businesses to reach hundreds or thousands of people simultaneously for the first time. By the late 1800s, brands like Coca-Cola were using consistent visual identity and slogans to build brand recognition at scale.</p>
+          <p><strong>The big innovation:</strong> Reaching many people with one message. <strong>The big limitation:</strong> Everyone got the same message — no personalization, no targeting.</p>
+          <div class="era-example">📰 Example: In 1886, Coca-Cola placed its first newspaper ad. By 1900, they were printing slogans on calendars, posters, and serving trays. Consistent messaging everywhere was revolutionary.</div>
+        </div>
+      </div>
+
+      <div class="era" id="era2" onclick="toggleEra('era2')">
+        <div class="era-dot"></div>
+        <div class="era-header">
+          <span class="era-year">1920s–1950s</span>
+          <span class="era-name">Radio & Brand Building</span>
+          <span class="era-arrow">▼</span>
+        </div>
+        <div class="era-body">
+          <p>Radio brought voice and personality to marketing for the first time. Brands could sponsor shows, use jingles, and build emotional connections through sound. This era created some of the first "brand personalities" — the idea that a company could have a voice and character, not just a product.</p>
+          <p><strong>The big innovation:</strong> Emotional connection through audio storytelling. <strong>The big limitation:</strong> Still mass broadcast — no way to know who was listening or if the message was working.</p>
+          <div class="era-example">📻 Example: In 1926, NBC launched the first radio network. Brands like Jell-O sponsored entire shows to reach housewives during afternoon programming — early audience targeting by media selection.</div>
+        </div>
+      </div>
+
+      <div class="era" id="era3" onclick="toggleEra('era3')">
+        <div class="era-dot"></div>
+        <div class="era-header">
+          <span class="era-year">1950s–1990s</span>
+          <span class="era-name">Television & The Golden Age of Advertising</span>
+          <span class="era-arrow">▼</span>
+        </div>
+        <div class="era-body">
+          <p>Television combined sound with visuals and reached into virtually every American home by the 1960s. This era produced iconic advertising — the "Mad Men" era of clever copywriting, emotional storytelling, and brand differentiation. The Super Bowl ad became the pinnacle of mass marketing.</p>
+          <p><strong>The big innovation:</strong> Visual storytelling at massive scale. <strong>The big limitation:</strong> Enormously expensive, impossible to measure effectiveness, and completely one-directional.</p>
+          <div class="era-example">📺 Example: Apple's "1984" Super Bowl ad cost $900,000 to air once — and it's still discussed today. One ad. One broadcast. No way to know who saw it or what they did next.</div>
+        </div>
+      </div>
+
+      <div class="era" id="era4" onclick="toggleEra('era4')">
+        <div class="era-dot"></div>
+        <div class="era-header">
+          <span class="era-year">1990s–2010s</span>
+          <span class="era-name">The Internet Revolution</span>
+          <span class="era-arrow">▼</span>
+        </div>
+        <div class="era-body">
+          <p>The internet changed everything. For the first time, marketers could see who clicked, when, from where, and what they did next. Search engines allowed customers to find businesses. Email made direct communication cheap and trackable. Banner ads, then Google AdWords, then Facebook Ads introduced precision targeting by demographics, interests, and behavior.</p>
+          <p><strong>The big innovation:</strong> Measurement and targeting. For the first time, marketers could prove what was working. <strong>The big limitation:</strong> Humans were still doing the optimization manually — time-consuming and still limited in personalization depth.</p>
+          <div class="era-example">🖥️ Example: Google launched AdWords in 2000, letting businesses pay only when someone clicked their ad. This "pay per click" model was revolutionary — suddenly you could measure ROI with actual numbers.</div>
+        </div>
+      </div>
+
+      <div class="era" id="era5" onclick="toggleEra('era5')">
+        <div class="era-dot"></div>
+        <div class="era-header">
+          <span class="era-year">2010s–Present</span>
+          <span class="era-name">Social Media & Mobile</span>
+          <span class="era-arrow">▼</span>
+        </div>
+        <div class="era-body">
+          <p>Smartphones put the internet in everyone's pocket 24/7. Social media platforms became the primary marketing channels for reaching younger audiences. Influencer marketing emerged as a new form of word-of-mouth at scale. Retargeting ads followed users across the web. Platforms like Facebook could target ads by age, location, interests, behavior, and even life events.</p>
+          <p><strong>The big innovation:</strong> Two-way communication and hyper-targeting. Customers could respond, share, and create content too. <strong>The big limitation:</strong> Data was siloed by platform, and personalization was still relatively blunt.</p>
+          <div class="era-example">📱 Example: Facebook's "Custom Audiences" allowed businesses to upload their customer email list and find those exact people on Facebook to show ads to — a level of targeting that was impossible to imagine in the TV era.</div>
+        </div>
+      </div>
+
+      <div class="era" id="era6" onclick="toggleEra('era6')">
+        <div class="era-dot"></div>
+        <div class="era-header">
+          <span class="era-year">Now</span>
+          <span class="era-name">AI-Powered Marketing</span>
+          <span class="era-arrow">▼</span>
+        </div>
+        <div class="era-body">
+          <p>AI has introduced the ability to personalize every touchpoint for every customer simultaneously. Recommendation engines serve different content to each of millions of users. Generative AI can create personalized ad copy at scale. Machine learning optimizes ad spend in real time. Predictive analytics anticipate customer behavior before it happens.</p>
+          <p><strong>The big innovation:</strong> True 1:1 personalization at unlimited scale. What used to require a team of analysts and copywriters can now happen automatically for every single customer simultaneously. <strong>The opportunity ahead:</strong> Still early — the full implications of AI in marketing are still being discovered.</p>
+          <div class="era-example">🤖 Example: Amazon's recommendation engine generates an estimated 35% of total revenue by showing each shopper items specifically predicted to appeal to them based on their behavior — not a mass message, but a unique storefront for each of 300M+ customers.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Every marketing revolution was powered by a new technology that let businesses reach the right people more efficiently. AI is the latest — and the most powerful — because it doesn't just reach people more efficiently. It reaches each person differently.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How Each Era Changed the Rules</h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Era</th>
+          <th>Who You Could Reach</th>
+          <th>What You Could Measure</th>
+          <th>Level of Personalization</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-era">Print (1800s)</td><td>Local/regional readers</td><td>Almost nothing</td><td>None — same ad for everyone</td></tr>
+        <tr><td class="td-era">Radio (1920s–50s)</td><td>National audiences</td><td>Estimated listener counts</td><td>None — same message to all</td></tr>
+        <tr><td class="td-era">TV (1950s–90s)</td><td>Massive national audiences</td><td>Nielsen ratings (estimates)</td><td>Demographics by show genre</td></tr>
+        <tr><td class="td-era">Internet (1990s–2010s)</td><td>Anyone online</td><td>Clicks, conversions, ROI</td><td>Segment-level targeting</td></tr>
+        <tr><td class="td-era">Social/Mobile (2010s)</td><td>Individuals by behavior</td><td>Engagement, attribution</td><td>Interest & behavior targeting</td></tr>
+        <tr><td class="td-era">AI (Now)</td><td>Every individual uniquely</td><td>Everything, in real time</td><td>True 1:1 at unlimited scale</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Three Fundamental Shifts That AI Completes</h2>
+    <div class="shift-cards">
+      <div class="shift-card">
+        <div class="shift-icon">📢→🎯</div>
+        <div class="shift-title">Broadcast to Targeted</div>
+        <div class="shift-desc">Marketing went from "send the same message to everyone" to "send the right message to the right person." AI is the final step: personalizing the message for each individual automatically.</div>
+      </div>
+      <div class="shift-card">
+        <div class="shift-icon">🤔→📊</div>
+        <div class="shift-title">Guessing to Knowing</div>
+        <div class="shift-desc">Old marketers guessed what worked. Digital gave us data. AI gives us prediction — knowing what a customer is likely to do before they do it.</div>
+      </div>
+      <div class="shift-card">
+        <div class="shift-icon">🐢→⚡</div>
+        <div class="shift-title">Slow to Real-Time</div>
+        <div class="shift-desc">Campaigns used to take weeks to design and couldn't be changed once launched. AI optimizes campaigns continuously in real time — adjusting bids, creatives, and audiences automatically.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h3>Why This History Matters</h3>
+        <p>Understanding this evolution explains why AI is so significant. It's not a new ad format or a new platform — it's a fundamental change in how marketing works. Just as TV marketers who ignored the internet fell behind, marketers who ignore AI today are taking the same risk. The question isn't whether AI will change marketing — it already has. The question is whether you'll be ready to use it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Marketing has evolved through six major eras — each powered by a new technology that changed who you could reach, what you could measure, and how personally you could communicate.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The pattern is consistent: businesses that adapted fastest to each new technology gained massive competitive advantages over those who were slow to change.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI completes three fundamental shifts: broadcast to targeted, guessing to knowing, and slow to real-time — making true 1:1 personalization at unlimited scale possible for the first time.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI isn't just a new marketing tool — it's the biggest structural shift in how marketing works since the internet, and understanding this history is key to understanding why it matters so much.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleEra(id){const el=document.getElementById(id);el.classList.toggle('open');}
+</script>
+</body>
+</html>

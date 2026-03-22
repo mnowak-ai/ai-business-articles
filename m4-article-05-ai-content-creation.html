@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Content Creation: Writing, Images & Video — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Content type cards */
+  .content-types{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:680px){.content-types{grid-template-columns:1fr;}}
+  .ct-card{border:1.5px solid var(--purple-mid);border-radius:20px;padding:24px;transition:all 0.25s;cursor:pointer;}
+  .ct-card:hover{border-color:var(--purple);transform:translateY(-4px);box-shadow:0 12px 32px rgba(123,47,190,0.12);}
+  .ct-icon{font-size:36px;margin-bottom:12px;}
+  .ct-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .ct-tools{font-size:12px;font-weight:600;color:var(--purple);margin-bottom:8px;}
+  .ct-desc{font-size:13.5px;line-height:1.65;color:var(--gray-text);}
+
+  /* Prompt simulator */
+  .prompt-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ps-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .ps-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ps-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .ps-selectors{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+  .ps-select{padding:10px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;}
+  .ps-select:hover,.ps-select.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .ps-select-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+  .ps-select-label{font-size:12px;font-weight:600;color:var(--gray-muted);letter-spacing:0.08em;text-transform:uppercase;}
+  .ps-selects{display:flex;gap:8px;flex-wrap:wrap;}
+  .ps-generate{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;margin-top:8px;}
+  .ps-generate:hover{background:var(--purple-dark);}
+  .ps-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .ps-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .ps-out-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+  .ps-out-content{font-size:15px;line-height:1.75;color:var(--gray-text);background:var(--gray-soft);padding:18px 20px;border-radius:12px;margin-bottom:12px;}
+  .ps-note{font-size:13px;color:var(--gray-muted);font-style:italic;}
+
+  /* What AI still needs */
+  .human-needed{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .hn-item{display:flex;gap:16px;align-items:flex-start;padding:16px 20px;background:var(--green-pale);border-radius:14px;border:1.5px solid #6EE7B7;}
+  .hn-icon{font-size:24px;flex-shrink:0;}
+  .hn-text{font-size:15px;line-height:1.6;}
+  .hn-text strong{display:block;color:var(--green);font-size:16px;margin-bottom:3px;}
+
+  /* Workflow visual */
+  .workflow{display:flex;align-items:center;gap:8px;margin:24px 0;flex-wrap:wrap;}
+  .wf-step{background:var(--purple-pale);border:1.5px solid var(--purple-mid);border-radius:14px;padding:14px 18px;flex:1;min-width:120px;}
+  .wf-step-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;}
+  .wf-step-name{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .wf-step-who{font-size:12px;color:var(--gray-muted);}
+  .wf-arrow{font-size:20px;color:var(--purple);flex-shrink:0;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;gap:12px;padding:24px;}.summary{padding:28px 24px;}.workflow{flex-direction:column;}.wf-arrow{transform:rotate(90deg);}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.1 · Introduction to AI in Marketing</div>
+  <h1>AI for Content Creation: Writing, Images & Video</h1>
+  <p class="hero-sub">AI can generate marketing content — written, visual, and video — faster than any human team. But the best results happen when humans and AI work together. Here's how that partnership actually works.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Content creation is one of the most time-consuming parts of marketing. Writing blog posts, social captions, email campaigns, ad copy, product descriptions, video scripts — it never ends. <mark>AI tools can produce high-quality first drafts in seconds, generate dozens of variations instantly, and create visual content that would have required a full production team just a few years ago.</mark></p>
+    <p>This doesn't mean AI replaces marketers. It means marketers can do far more than before — testing more ideas, serving more audiences, moving faster — when they use AI as a creative partner rather than a replacement.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Three Categories of AI Content Tools</h2>
+    <div class="content-types">
+      <div class="ct-card">
+        <div class="ct-icon">✍️</div>
+        <div class="ct-name">Written Content</div>
+        <div class="ct-tools">ChatGPT · Claude · Jasper · Copy.ai</div>
+        <div class="ct-desc">Blog posts, ad copy, email campaigns, social captions, product descriptions, scripts, SEO content. AI generates first drafts that humans refine and brand.</div>
+      </div>
+      <div class="ct-card">
+        <div class="ct-icon">🖼️</div>
+        <div class="ct-name">Visual Content</div>
+        <div class="ct-tools">Midjourney · DALL·E · Adobe Firefly</div>
+        <div class="ct-desc">Social media graphics, ad images, product mock-ups, brand illustrations. AI generates visuals from text descriptions, dramatically reducing production time.</div>
+      </div>
+      <div class="ct-card">
+        <div class="ct-icon">🎬</div>
+        <div class="ct-name">Video Content</div>
+        <div class="ct-tools">Runway · Sora · HeyGen · Synthesia</div>
+        <div class="ct-desc">Short-form ad videos, talking-head presenter videos with AI avatars, video editing, auto-captions, and video variations for different platforms.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>See AI Content Generation in Action</h2>
+    <p>Choose a content type and tone, and see a simulated example of what AI might produce as a starting draft.</p>
+    <div class="prompt-sim">
+      <div class="ps-label">⚡ Content Generator</div>
+      <div class="ps-title">AI Marketing Copy Simulator</div>
+      <div class="ps-sub">Configure your content parameters and generate a sample draft.</div>
+      <div class="ps-select-group">
+        <div class="ps-select-label">Content Type</div>
+        <div class="ps-selects" id="type-select">
+          <button class="ps-select active" onclick="setParam('type',this,'email')">Email Subject</button>
+          <button class="ps-select" onclick="setParam('type',this,'social')">Social Caption</button>
+          <button class="ps-select" onclick="setParam('type',this,'ad')">Ad Headline</button>
+          <button class="ps-select" onclick="setParam('type',this,'product')">Product Description</button>
+        </div>
+      </div>
+      <div class="ps-select-group">
+        <div class="ps-select-label">Tone</div>
+        <div class="ps-selects" id="tone-select">
+          <button class="ps-select active" onclick="setParam('tone',this,'friendly')">Friendly</button>
+          <button class="ps-select" onclick="setParam('tone',this,'professional')">Professional</button>
+          <button class="ps-select" onclick="setParam('tone',this,'urgent')">Urgent</button>
+          <button class="ps-select" onclick="setParam('tone',this,'playful')">Playful</button>
+        </div>
+      </div>
+      <div class="ps-select-group">
+        <div class="ps-select-label">Product</div>
+        <div class="ps-selects" id="product-select">
+          <button class="ps-select active" onclick="setParam('product',this,'sneakers')">👟 Sneakers</button>
+          <button class="ps-select" onclick="setParam('product',this,'coffee')">☕ Coffee</button>
+          <button class="ps-select" onclick="setParam('product',this,'app')">📱 Mobile App</button>
+        </div>
+      </div>
+      <button class="ps-generate" onclick="generateContent()">✨ Generate Content</button>
+      <div class="ps-output" id="psOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Human-AI Content Workflow</h2>
+    <p>The most effective marketing teams don't just hand everything to AI — they have a clear workflow where each step is done by whoever does it best.</p>
+    <div class="workflow">
+      <div class="wf-step">
+        <div class="wf-step-label">Step 1</div>
+        <div class="wf-step-name">Strategy</div>
+        <div class="wf-step-who">👤 Human — goals, audience, message</div>
+      </div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-step">
+        <div class="wf-step-label">Step 2</div>
+        <div class="wf-step-name">First Draft</div>
+        <div class="wf-step-who">🤖 AI — fast generation of raw material</div>
+      </div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-step">
+        <div class="wf-step-label">Step 3</div>
+        <div class="wf-step-name">Edit & Brand</div>
+        <div class="wf-step-who">👤 Human — add voice, fix errors, humanize</div>
+      </div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-step">
+        <div class="wf-step-label">Step 4</div>
+        <div class="wf-step-name">Test & Optimize</div>
+        <div class="wf-step-who">🤖 AI — A/B test, analyze performance</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI is the world's fastest first-draft engine. It removes the blank page problem entirely. But a first draft isn't a finished product — human judgment, brand voice, and creative direction are what turn AI output into great marketing.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Humans Must Still Provide</h2>
+    <p>AI is powerful — but there are critical parts of content creation where human judgment is still essential.</p>
+    <div class="human-needed">
+      <div class="hn-item"><div class="hn-icon">🎭</div><div class="hn-text"><strong>Brand Voice and Authenticity</strong>AI generates generic-sounding content by default. It takes a human to know the brand's personality deeply enough to edit AI output into something that sounds genuinely like the brand.</div></div>
+      <div class="hn-item"><div class="hn-icon">🌍</div><div class="hn-text"><strong>Cultural Context and Sensitivity</strong>AI can miss cultural nuances, regional references, and language sensitivities. A human needs to review content for appropriateness across different audiences.</div></div>
+      <div class="hn-item"><div class="hn-icon">✅</div><div class="hn-text"><strong>Fact-Checking and Accuracy</strong>AI can confidently generate inaccurate claims. Every piece of AI-generated content needs human verification before publishing — especially claims about products, pricing, or competitors.</div></div>
+      <div class="hn-item"><div class="hn-icon">💡</div><div class="hn-text"><strong>Creative Direction and Vision</strong>AI remixes what already exists. The truly original ideas, campaign concepts, and creative breakthroughs still require human imagination and insight.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🚀</div>
+      <div>
+        <h3>The Real Advantage of AI Content Tools</h3>
+        <p>The biggest win isn't that AI writes better than humans — it doesn't, on its own. The biggest win is speed and scale. With AI, a solo marketer can test 20 ad headlines instead of 2. A small team can produce content for 5 audience segments instead of 1. A campaign that used to take two weeks to build can go live in two days. AI removes the production bottleneck — and that frees humans to be more strategic and more creative.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI content tools fall into three categories: written content (copy, emails, captions), visual content (images, graphics), and video content (short ads, avatar presenters) — and there are powerful tools for each.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The best workflow is human-AI partnership: humans set strategy and brand direction, AI generates first drafts at speed, humans edit and refine, AI tests and optimizes performance.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Humans must still provide brand voice, cultural sensitivity, fact-checking, and creative direction — these are not things AI handles reliably on its own.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The biggest advantage of AI content tools is speed and scale — removing the production bottleneck so small teams can do what used to require much larger ones.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const params={type:'email',tone:'friendly',product:'sneakers'};
+  function setParam(key,btn,val){
+    params[key]=val;
+    btn.closest('.ps-selects').querySelectorAll('.ps-select').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('psOutput').classList.remove('show');
+  }
+
+  const contentMap={
+    email:{
+      sneakers:{friendly:"Subject: Your next favorite pair just dropped 👟",professional:"Subject: New Arrival: Spring 2025 Running Collection",urgent:"Subject: ⏰ Last chance — your size is almost gone",playful:"Subject: OK but have you SEEN these yet 👀"},
+      coffee:{friendly:"Subject: Morning made better — your blend is here ☕",professional:"Subject: New Single-Origin Roast | Limited Availability",urgent:"Subject: 24 hours left on your favorite blend 🔥",playful:"Subject: We put the 'coffee' in 'coffee o'clock' ☕"},
+      app:{friendly:"Subject: You're going to love what we added 🎉",professional:"Subject: Version 3.0 — Productivity Features Now Live",urgent:"Subject: Your trial ends in 48 hours — here's what you'd lose",playful:"Subject: New features dropped and they're kind of a big deal 🚀"}
+    },
+    social:{
+      sneakers:{friendly:"Comfort meets style — these are the kicks you've been waiting for. Drop now. Link in bio. 👟✨",professional:"Engineered for performance, designed for everyday life. Our latest collection is now available.",urgent:"SELLING OUT FAST 🔥 Only a few sizes left. Grab yours before they're gone. Link in bio.",playful:"Your feet called. They said they want these. We're just the messenger. 👟😂"},
+      coffee:{friendly:"There's a reason mornings feel better with a great cup. Find your perfect blend in our new collection ☕",professional:"Sourced from single-origin farms. Roasted to order. Delivered to your door.",urgent:"Flash sale ends at midnight ⏰ — 30% off our top-rated blends. Code: MORNING",playful:"Warning: This coffee may cause excessive happiness and suspicious productivity. ☕✨"},
+      app:{friendly:"Your workflow just got a major upgrade 🚀 Check out what we've been building — link in bio.",professional:"Version 3.0 is live. New analytics dashboard, team collaboration features, and 40% faster performance.",urgent:"Free trial ending soon 👀 Here's what you'll miss if you don't upgrade today.",playful:"We added so many features we had to stop ourselves. You're welcome 😅 Link in bio."}
+    },
+    ad:{
+      sneakers:{friendly:"Step into something better. Shop the new collection →",professional:"Premium performance footwear. Engineered for the way you move.",urgent:"Only 12 pairs left in your size. Order now.",playful:"Your old sneakers are literally begging you to upgrade."},
+      coffee:{friendly:"Morning, meet your new favorite thing. Try it today →",professional:"Specialty coffee, delivered. From farm to cup.",urgent:"Today only: 20% off your first order. Code: FIRSTCUP",playful:"Life's too short for bad coffee. Seriously."},
+      app:{friendly:"Everything you need to stay organized — in one place.",professional:"The workflow platform trusted by 50,000+ teams.",urgent:"Start free — your productivity upgrade is 3 minutes away.",playful:"The app your to-do list has been waiting for."}
+    },
+    product:{
+      sneakers:{friendly:"These aren't just sneakers — they're the last pair you'll want. Built with responsive foam, breathable mesh, and a silhouette that goes from gym to street without missing a beat.",professional:"Engineered with dual-density foam midsole, knit upper construction, and carbon-fiber plate technology. CE certified. Available in 8 colorways.",urgent:"LOW STOCK — Only 34 units remaining. These sold out in 48 hours at our last launch. Secure yours now.",playful:"Okay, we know everyone says 'most comfortable shoe ever' but... most comfortable shoe ever. We warned you."},
+      coffee:{friendly:"One sip and you'll understand why this is our most-loved blend. Notes of chocolate, toasted caramel, and just a hint of brightness to start your morning right.",professional:"Single-origin Ethiopian Yirgacheffe. Light roast. Tasting notes: jasmine, bergamot, stonefruit. Altitude: 1,900–2,200m. Harvest: 2024.",urgent:"FINAL BAGS — We roasted 200 bags and this is the last drop until next harvest. Subscribe or miss out.",playful:"We hired a professional coffee person to describe this and they used the word 'transcendent.' We just think it's really, really good."},
+      app:{friendly:"Stop juggling tabs and start actually finishing things. Our app brings your tasks, calendar, and team in one clean place — so you can focus on the work that matters.",professional:"Enterprise workflow management platform. SOC 2 Type II certified. SAML SSO. 99.9% uptime SLA. API-first architecture.",urgent:"Free plan disappearing April 30 — upgrade now and lock in founding member pricing forever.",playful:"Designed for people who have 47 browser tabs open and a guilty conscience about it. (We see you.)"}
+    }
+  };
+
+  function generateContent(){
+    const {type,tone,product}=params;
+    const content=contentMap[type]?.[product]?.[tone]||'Configure your options above and generate content.';
+    const out=document.getElementById('psOutput');
+    out.innerHTML=`<div class="ps-out-label">🤖 AI-Generated ${type==='email'?'Email Subject':type==='social'?'Social Caption':type==='ad'?'Ad Headline':'Product Description'} (${tone} tone, ${product})</div><div class="ps-out-content">${content}</div><div class="ps-note">⚠️ This is a simulated first draft. In real use, a human would edit this to match brand voice, verify accuracy, and refine the copy before publishing.</div>`;
+    out.className='ps-output show';
+  }
+</script>
+</body>
+</html>
