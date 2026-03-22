@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When AI Scheduling Goes Wrong — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Failure mode cards */
+.failure-cards{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+.fc{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;}
+.fc-header{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer;transition:background .2s;}
+.fc-header:hover{background:var(--gray-soft);}
+.fc-num{width:36px;height:36px;background:#FEE2E2;color:#DC2626;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:17px;font-weight:900;flex-shrink:0;}
+.fc-name{font-size:15px;font-weight:700;color:var(--purple-dark);flex:1;}
+.fc-chevron{color:var(--gray-muted);font-size:18px;transition:transform .3s;}
+.fc-body{display:none;padding:0 20px 18px;border-top:1px solid var(--purple-mid);}
+.fc-body.open{display:block;animation:fadeIn .3s ease;}
+.fc-scenario{background:var(--orange-pale);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.7;color:#92400E;margin:12px 0;border-left:3px solid var(--orange);}
+.fc-fix{background:var(--green-pale);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.7;color:var(--green);border-left:3px solid var(--green);}
+.fc-fix-label{font-weight:700;margin-bottom:4px;}
+
+/* Override checklist — interactive */
+.override-check{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.oc-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.oc-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.oc-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.oc-item{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:var(--white);border:2px solid var(--purple-mid);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:all .2s;user-select:none;}
+.oc-item:hover{border-color:var(--purple);}
+.oc-item.checked{background:var(--green-pale);border-color:var(--green);}
+.oc-checkbox{width:24px;height:24px;border-radius:6px;border:2px solid var(--purple-mid);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.oc-item.checked .oc-checkbox{background:var(--green);border-color:var(--green);}
+.oc-text h3{font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:3px;}
+.oc-text p{font-size:13px;color:var(--gray-muted);margin:0;line-height:1.5;}
+.oc-item.checked .oc-text h3,.oc-item.checked .oc-text p{color:var(--green);}
+.oc-progress{margin-top:16px;}
+.oc-progress-label{font-size:13px;color:var(--gray-muted);margin-bottom:6px;}
+.oc-bar-bg{background:#E5E7EB;border-radius:100px;height:10px;overflow:hidden;}
+.oc-bar-fill{height:100%;border-radius:100px;background:var(--purple);transition:width .4s ease;}
+.oc-verdict{font-size:14px;font-weight:600;margin-top:10px;min-height:20px;}
+
+/* Scenario */
+.scenario-box{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:20px;padding:24px;margin:24px 0;}
+.sb-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+.sb-setup{font-size:15px;line-height:1.7;background:var(--gray-soft);border-radius:12px;padding:14px 16px;margin-bottom:16px;border-left:4px solid var(--orange);}
+.sb-q{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:12px;}
+.sb-opts{display:flex;flex-direction:column;gap:8px;}
+.sb-opt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:12px 16px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;}
+.sb-opt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.sb-opt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.sb-opt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.sb-fb{font-size:14px;line-height:1.65;padding:12px 16px;border-radius:10px;margin-top:10px;display:none;}
+.sb-fb.show{display:block;animation:fadeIn .35s ease;}
+.sb-fb.cfb{background:var(--green-pale);color:var(--green);}
+.sb-fb.wfb{background:#FFF1F1;color:#DC2626;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.1 · Time Management with AI</div>
+  <h1>When AI Scheduling Goes Wrong: Staying in Control</h1>
+  <p class="hero-sub">AI scheduling tools can make your day dramatically better — or quietly worse, if you're not thoughtful about how you use them. This article covers the real failure modes and how to stay firmly in control of your own time.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>The Risks Nobody Puts in the Marketing Materials</h2>
+    <p>Every article about AI scheduling tools focuses on the upside. But understanding where these tools go wrong is just as important as understanding where they shine. AI scheduling has consistent, predictable failure modes — and knowing them in advance is the difference between a tool that works for you and one that quietly creates new problems.</p>
+    <p>This isn't an argument against AI scheduling. It's an argument for <mark>intelligent adoption</mark>: using these tools with clear eyes, keeping your human judgment active, and knowing exactly when to override.</p>
+    <div class="pull-quote"><p>The most dangerous version of an AI tool is one you trust completely. The most useful version is one you trust thoughtfully — and verify regularly.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Five Failure Modes — Click Each to Explore</h2>
+    <div class="failure-cards" id="failureCards"></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Real Scenario: What Would You Do?</h2>
+    <div class="scenario-box">
+      <div class="sb-label">📋 Scenario</div>
+      <div class="sb-setup">
+        Maya has been using an AI task scheduler for two weeks. It fills every 30-minute gap in her day with tasks from her list. By Thursday, she's completed more tasks than ever — but she hasn't talked to her team in days, missed a teammate's urgent question buried in Slack, and feels oddly disconnected from what everyone else is working on. The AI gave her a "productivity score" of 94%.
+      </div>
+      <div class="sb-q">What is the core problem with how Maya is using the tool?</div>
+      <div class="sb-opts">
+        <button class="sb-opt" onclick="checkScenario(this,false)">The AI tool isn't accurate enough — 94% productivity means 6% is missed tasks</button>
+        <button class="sb-opt" onclick="checkScenario(this,false)">Maya should switch to a different AI scheduling app</button>
+        <button class="sb-opt" onclick="checkScenario(this,true)">The AI is optimizing for task completion but can't measure relationship health, team alignment, or communication quality — which are also core to her job</button>
+        <button class="sb-opt" onclick="checkScenario(this,false)">Maya is simply too busy and needs to reduce her workload</button>
+      </div>
+      <div class="sb-fb" id="sbFb"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Your Human Override Checklist</h2>
+    <p>Before accepting any AI scheduling recommendation, run through these five checks. Click each one to mark it complete:</p>
+    <div class="override-check">
+      <div class="oc-label">✅ Override Checklist</div>
+      <div class="oc-title">Before You Accept Any AI Schedule Change</div>
+      <div class="oc-sub">Click each item as you mentally verify it. Aim for all 5 before committing.</div>
+      <div id="ocItems"></div>
+      <div class="oc-progress">
+        <div class="oc-progress-label">Checks completed: <span id="ocCount">0</span>/5</div>
+        <div class="oc-bar-bg"><div class="oc-bar-fill" id="ocBar" style="width:0%"></div></div>
+        <div class="oc-verdict" id="ocVerdict"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">An AI task scheduler fills Marcus's calendar solid from 8AM to 6PM with no breaks. He accepts the plan and starts working. By 2PM he's exhausted, making errors, and misses an urgent message from a client. What is the primary failure mode at play?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Wrong metric optimization — the AI prioritized the wrong tasks</button>
+        <button class="qopt" onclick="cq(this,true)">Overscheduling — no buffer was built in for the unexpected, recovery, or human limits</button>
+        <button class="qopt" onclick="cq(this,false)">Data privacy issue — the AI accessed too much personal information</button>
+        <button class="qopt" onclick="cq(this,false)">The AI tool is simply low quality</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI scheduling tools have five predictable failure modes: wrong metric optimization, overscheduling, ignoring human context, over-reliance, and data privacy risks.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Always maintain 20–25% buffer capacity. A fully-booked schedule has no room for the unexpected — and the unexpected is guaranteed in any real workday.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Run the five-point Human Override Checklist before accepting any AI schedule change: people context, buffer, energy alignment, data privacy, and explainability.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Use AI as an accelerator of your judgment — not a replacement for it. The goal is your best thinking, faster. Not the AI's thinking instead of yours.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const failures=[
+  {num:1,name:'Optimizing for the Wrong Metric',scenario:'⚠️ Example: An AI optimizes your calendar for "focus time" — but your actual job depends heavily on staying connected with your team. After two weeks of perfectly optimized focus blocks, you realize you\'ve drifted out of the loop on three major decisions.',fix:'Fix: Define what "productive" actually means for your role before adopting any tool. Focus time is one metric. Relationship maintenance, team alignment, and responsiveness are others. Make sure the tool you choose measures what actually matters for your work.'},
+  {num:2,name:'Overscheduling',scenario:'⚠️ Example: A task scheduler fills every available 30-minute window with work. When a client emergency hits at 2PM, you have no room to handle it without blowing up the rest of the day.',fix:'Fix: Always maintain 20–25% buffer capacity. Block "flex time" as explicitly as you block meetings — and protect it. If your calendar is 100% booked, you\'re one unexpected event away from a missed commitment.'},
+  {num:3,name:'Ignoring Human Context',scenario:'⚠️ Example: Clockwise moves a meeting with a senior stakeholder to protect your focus block. Technically the meeting time is "flexible" — but the stakeholder expected that slot and sees the reschedule as disrespectful.',fix:'Fix: Mark relationships and high-stakes meetings as effectively fixed, even if they\'re technically moveable. AI sees availability; you see relationships. Apply that human layer before accepting changes.'},
+  {num:4,name:'Over-Reliance and Skill Atrophy',scenario:'⚠️ Example: After 6 months of AI scheduling, Marcus realizes he can\'t prioritize his own week without the tool. When the software has an outage, he feels paralyzed and defaults to checking email all day.',fix:'Fix: Regularly plan one week without AI assistance — even if you use it the rest of the time. Keep your prioritization instincts sharp. AI should accelerate your judgment, not replace it.'},
+  {num:5,name:'Data Privacy Risks',scenario:'⚠️ Example: An employee connects an AI scheduling tool to their work calendar without checking the privacy policy. The tool\'s terms allow it to use calendar data to train its AI models — including confidential meeting titles and attendee information.',fix:'Fix: Before connecting any AI tool to a work account, read the privacy policy\'s data retention and sharing sections. Check whether your company has an approved software list. Treat work calendar data as confidential — because it often is.'},
+];
+const fc=document.getElementById('failureCards');
+failures.forEach((f,i)=>{
+  const d=document.createElement('div');d.className='fc';
+  d.innerHTML=`<div class="fc-header" onclick="toggleFc(${i})">
+    <div class="fc-num">${f.num}</div>
+    <div class="fc-name">${f.name}</div>
+    <div class="fc-chevron" id="chev${i}">▼</div>
+  </div>
+  <div class="fc-body" id="fcBody${i}">
+    <div class="fc-scenario">${f.scenario}</div>
+    <div class="fc-fix"><div class="fc-fix-label">✅ The fix:</div>${f.fix}</div>
+  </div>`;
+  fc.appendChild(d);
+});
+function toggleFc(i){
+  const body=document.getElementById('fcBody'+i);
+  const chev=document.getElementById('chev'+i);
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  chev.style.transform=isOpen?'':'rotate(180deg)';
+}
+
+const ocData=[
+  {title:'Does this respect the people involved?',desc:'Not just their availability — their preferences, workload, and the relationship dynamics you know about that AI doesn\'t.'},
+  {title:'Have I kept enough buffer?',desc:'Is there margin for the unexpected? A plan without slack will fail every week. Protect at least 20% of your day as flex time.'},
+  {title:'Does this fit my actual energy?',desc:'Not just my scheduled availability — does the hardest work land when I\'m genuinely at my sharpest today?'},
+  {title:'Am I comfortable with this tool\'s data access?',desc:'Do I know what this tool stores and shares? Are there confidential meetings or topics it shouldn\'t be processing?'},
+  {title:'Can I explain why this schedule makes sense?',desc:'If you can articulate why the plan is good, you own it. If you\'re just trusting the AI, you\'ve given away professional responsibility.'},
+];
+let ocChecked=new Set();
+const ocContainer=document.getElementById('ocItems');
+ocData.forEach((item,i)=>{
+  const el=document.createElement('div');el.className='oc-item';
+  el.innerHTML=`<div class="oc-checkbox" id="ocBox${i}">✓</div><div class="oc-text"><h3>${item.title}</h3><p>${item.desc}</p></div>`;
+  el.onclick=()=>{
+    el.classList.toggle('checked');
+    if(el.classList.contains('checked'))ocChecked.add(i); else ocChecked.delete(i);
+    const n=ocChecked.size;
+    document.getElementById('ocCount').textContent=n;
+    document.getElementById('ocBar').style.width=(n/5*100)+'%';
+    const verdicts=['','Getting started — keep going.','Good — halfway there.','Almost ready.','Almost ready — one more check.','✅ All 5 checks complete. This schedule is yours, not just the AI\'s.'];
+    document.getElementById('ocVerdict').textContent=verdicts[n];
+    document.getElementById('ocBar').style.background=n===5?'var(--green)':'var(--purple)';
+  };
+  ocContainer.appendChild(el);
+});
+
+function checkScenario(btn,correct){
+  if(document.querySelector('.sb-opt.correct')||document.querySelector('.sb-opt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('sbFb');
+  if(correct){fb.className='sb-fb show cfb';fb.textContent='✅ Exactly right. The AI is measuring task completion — but Maya\'s job also requires team connection, awareness of what others are working on, and responsiveness to colleagues. These aren\'t on any task list, so the AI scores them as zero. A 94% productivity score from a tool that doesn\'t measure half of your job is misleading at best.';}
+  else{document.querySelectorAll('.sb-opt').forEach(o=>{if(o.textContent.includes('relationship health'))o.classList.add('correct');});fb.className='sb-fb show wfb';fb.textContent='❌ The core problem is metric selection. The AI optimized for the metric it can measure (tasks completed) but Maya\'s role depends on things that don\'t show up on task lists: team alignment, responsiveness, and relationship maintenance. This is the "wrong metric" failure mode.';}
+}
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! Overscheduling is the most common failure mode with AI task schedulers. They fill available time without accounting for human energy limits, recovery needs, or the buffer required for unexpected events. A 100% booked calendar is a brittle system — one surprise breaks everything else.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('Overscheduling'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ The clearest sign here is the fully-packed calendar with no buffer. Overscheduling means filling every minute of time, leaving no room for unexpected events, recovery, or the natural inefficiency of human work. Energy depletion and missed messages are both symptoms of a schedule that left no margin.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
