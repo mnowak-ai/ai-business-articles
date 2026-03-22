@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Student to Professional — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Flip comparison cards */
+  .flip-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+  .flip-card{height:180px;perspective:1000px;cursor:pointer;}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform 0.6s ease;transform-style:preserve-3d;}
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:18px;padding:20px;display:flex;flex-direction:column;justify-content:center;}
+  .flip-front{background:var(--gray-soft);border:1.5px solid var(--purple-mid);}
+  .flip-back{background:var(--purple);border:1.5px solid var(--purple);transform:rotateY(180deg);}
+  .flip-front-icon{font-size:28px;margin-bottom:10px;}
+  .flip-front-title{font-size:15px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .flip-front-hint{font-size:12px;color:var(--gray-muted);}
+  .flip-back p{font-size:13px;line-height:1.6;color:white;margin:0;}
+  .flip-back strong{color:var(--purple-mid);}
+
+  /* Day-in-the-life timeline */
+  .timeline{margin:24px 0;}
+  .timeline-item{display:flex;gap:16px;margin-bottom:6px;position:relative;}
+  .timeline-item::before{content:'';position:absolute;left:19px;top:40px;bottom:-6px;width:2px;background:var(--purple-mid);}
+  .timeline-item:last-child::before{display:none;}
+  .tl-time{width:60px;text-align:right;font-size:12px;font-weight:600;color:var(--gray-muted);padding-top:10px;flex-shrink:0;}
+  .tl-dot{width:20px;height:20px;border-radius:50%;background:var(--purple);flex-shrink:0;margin-top:8px;border:3px solid var(--purple-pale);}
+  .tl-content{flex:1;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:14px 18px;margin-bottom:0;}
+  .tl-content h3{font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .tl-content p{font-size:13px;line-height:1.55;color:var(--gray-muted);margin:0;}
+  .tl-ai-tag{display:inline-block;background:var(--purple-pale);color:var(--purple);font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;margin-top:6px;}
+
+  /* Accountability matrix */
+  .acc-table{width:100%;border-collapse:collapse;margin:20px 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+  .acc-table th{background:var(--purple);color:white;padding:12px 16px;font-size:13px;font-weight:600;text-align:left;}
+  .acc-table td{padding:12px 16px;font-size:14px;border-bottom:1px solid var(--purple-mid);vertical-align:top;}
+  .acc-table tr:last-child td{border-bottom:none;}
+  .acc-table tr:nth-child(even) td{background:var(--gray-soft);}
+  .acc-pill{display:inline-block;padding:3px 10px;border-radius:8px;font-size:12px;font-weight:600;}
+  .acc-pill.school{background:var(--orange-pale);color:var(--orange);}
+  .acc-pill.work{background:var(--purple-pale);color:var(--purple);}
+
+  /* Scenario quiz */
+  .scenario{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .scenario-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .scenario-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .scenario-setup{font-size:15px;line-height:1.7;color:var(--gray-text);margin-bottom:20px;background:var(--white);border-radius:12px;padding:16px 20px;border-left:4px solid var(--purple);}
+  .scenario-q{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:14px;}
+  .s-opts{display:flex;flex-direction:column;gap:10px;}
+  .s-opt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:12px 16px;cursor:pointer;font-size:14px;transition:all 0.2s;text-align:left;}
+  .s-opt:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .s-opt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+  .s-opt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+  .s-feedback{font-size:14px;line-height:1.65;padding:14px 18px;border-radius:12px;margin-top:12px;display:none;}
+  .s-feedback.show{display:block;animation:fadeIn 0.35s ease;}
+  .s-feedback.cfb{background:var(--green-pale);color:var(--green);}
+  .s-feedback.wfb{background:#FFF1F1;color:#DC2626;}
+
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.flip-row{grid-template-columns:1fr;}.flip-card{height:auto;}.flip-inner{transform:none !important;}.flip-back{position:relative;transform:none;backface-visibility:visible;margin-top:8px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Module 5 · Foundation — AI for Productivity & Business Operations</div>
+  <h1>From Student to Professional</h1>
+  <p class="hero-sub">The rules of "getting things done" change completely when you enter a professional workplace. This article maps out exactly what's different — so the AI productivity tools in this module make real sense.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>School Prepared You For School</h2>
+    <p>School has a very specific structure: clear assignments, defined deadlines, one teacher who grades your work, and a syllabus that tells you exactly what's coming. The system is designed to be legible. You always know what you're supposed to do.</p>
+    <p>The professional workplace is almost the opposite. <mark>Nobody gives you a syllabus.</mark> Priorities shift without warning. You're often responsible for figuring out what needs to be done before anyone tells you to do it. And your "grade" comes in the form of your reputation, your results, and whether you get promoted — months or years after the work was done.</p>
+    <div class="pull-quote"><p>In school, you manage assignments. At work, you manage relationships, expectations, time, information, and outcomes — often all at once.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Big Differences — Click to Explore</h2>
+    <p>Click each card to flip it and see how work differs from school in that area:</p>
+    <div class="flip-row" id="flipRow"></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>A Day in a Professional's Life</h2>
+    <p>Here's what a fairly typical day looks like for someone in a business role — and where AI is already making it more manageable. Notice how much of the day involves communication, coordination, and decision-making rather than pure "work."</p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-time">8:30</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content"><h3>Morning review</h3><p>Check emails, Slack messages, and calendar. Decide what's urgent vs. what can wait. This alone can take 30–45 minutes if unmanaged.</p><span class="tl-ai-tag">🤖 AI can: summarize overnight messages & flag urgent items</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">9:15</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content"><h3>Team standup meeting</h3><p>15 minutes. Everyone shares what they're working on, what's blocked, what's done. Notes need to be captured and shared with people who couldn't attend.</p><span class="tl-ai-tag">🤖 AI can: auto-transcribe and extract action items</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">9:30</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content"><h3>Deep work block</h3><p>The most important 2–3 hours of the day. Focused work on the highest-priority project. Easily destroyed by notifications and unscheduled interruptions.</p><span class="tl-ai-tag">🤖 AI can: block calendar, silence low-priority notifications</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">12:00</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content"><h3>Lunch + async catch-up</h3><p>Respond to messages, review project updates, handle quick tasks that don't require deep focus. Good time for administrative work.</p><span class="tl-ai-tag">🤖 AI can: draft routine reply emails, update task statuses</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">1:30</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content"><h3>Client or cross-team meeting</h3><p>45–60 minutes. Discuss project status, make decisions, set next steps. Someone needs to own the notes and follow-through or this meeting is wasted.</p><span class="tl-ai-tag">🤖 AI can: generate structured summary with decisions + tasks</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">3:00</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content"><h3>Project work + reviews</h3><p>Execute on the day's priorities, review teammates' work, give feedback. Requires context-switching between projects.</p><span class="tl-ai-tag">🤖 AI can: help prioritize tasks by deadline and impact</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">5:00</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content"><h3>End-of-day wrap</h3><p>Update task lists, note what's unfinished, plan tomorrow's priorities. Most people skip this — and then wonder why mornings feel chaotic.</p><span class="tl-ai-tag">🤖 AI can: generate tomorrow's priority list from open tasks</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Accountability Shift</h2>
+    <p>One of the biggest adjustments from school to work is the nature of accountability. In school, accountability is mostly <mark>individual and grade-based</mark>. In work, it's collective and consequence-based — your mistakes affect real customers, colleagues, and revenue.</p>
+
+    <table class="acc-table">
+      <tr><th>Situation</th><th><span class="acc-pill school">School</span> What happens</th><th><span class="acc-pill work">Work</span> What happens</th></tr>
+      <tr><td>You miss a deadline</td><td>Grade penalty, possible late submission accepted</td><td>A client is disappointed, a colleague is blocked, your reputation takes a hit</td></tr>
+      <tr><td>You make a factual error</td><td>Points deducted, can be corrected in next assignment</td><td>Incorrect info may go to a client or decision-maker before it's caught</td></tr>
+      <tr><td>You don't understand the task</td><td>Ask teacher, check syllabus, office hours available</td><td>You need to proactively clarify with your manager before starting — ambiguity is your responsibility to resolve</td></tr>
+      <tr><td>You do great work</td><td>Good grade, maybe a compliment</td><td>Visible to leadership, considered for promotion, opens new opportunities</td></tr>
+      <tr><td>You're disorganized</td><td>Your grades suffer but nobody else is affected</td><td>Your team's work is blocked, projects are delayed, trust erodes</td></tr>
+    </table>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Real-World Scenario</h2>
+    <div class="scenario">
+      <div class="scenario-label">📋 Scenario</div>
+      <div class="scenario-title">First Week on the Job</div>
+      <div class="scenario-setup">
+        Jordan just started a new job at a marketing agency. It's Wednesday of the first week. Their manager mentioned a client presentation "at the end of the week" but never gave a specific deadline or detailed brief. Jordan has been waiting to be told exactly what to do. It's now Thursday afternoon.
+      </div>
+      <div class="scenario-q">What should Jordan do?</div>
+      <div class="s-opts">
+        <button class="s-opt" onclick="checkS(this,false)">Wait — the manager said end of week and Friday hasn't happened yet</button>
+        <button class="s-opt" onclick="checkS(this,false)">Send a message apologizing for not starting yet</button>
+        <button class="s-opt" onclick="checkS(this,true)">Proactively message the manager to clarify the deadline, expected format, and any content already available</button>
+        <button class="s-opt" onclick="checkS(this,false)">Start working on something and hope it's right</button>
+      </div>
+      <div class="s-feedback" id="sFeedback"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="summary-points">
+      <div class="summary-point">
+        <div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>Work doesn't come with a syllabus. You're often responsible for figuring out what needs to happen before anyone tells you to do it.</p>
+      </div>
+      <div class="summary-point">
+        <div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>A professional workday is mostly communication, coordination, and decision-making — not just task execution. Managing that well is a skill in itself.</p>
+      </div>
+      <div class="summary-point">
+        <div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>At work, mistakes have real consequences for real people. Accountability isn't individual — it's collective.</p>
+      </div>
+      <div class="summary-point">
+        <div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>AI tools in the workplace are designed to help with exactly the things that make work hard: keeping track of time, organizing information, and reducing coordination overhead.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+const flipData=[
+  {icon:"⏰",title:"Deadlines",front:"How are deadlines handled?",back:"<strong>At school:</strong> Deadlines are set by someone else and usually flexible. <strong>At work:</strong> Deadlines often affect clients, revenue, or colleagues. Missing them has real consequences — and you're often expected to set your own deadlines proactively."},
+  {icon:"📊",title:"Performance",front:"How is your performance measured?",back:"<strong>At school:</strong> A grade that's clear and immediate. <strong>At work:</strong> Your reputation, built over months. You might not know if you're doing well until a review — or until a manager stops giving you important projects."},
+  {icon:"🎯",title:"Direction",front:"Who tells you what to do?",back:"<strong>At school:</strong> The syllabus and teacher give you a clear roadmap. <strong>At work:</strong> Direction is often ambiguous. Clarifying what's needed, by when, and why is your responsibility — not your manager's."},
+  {icon:"👥",title:"Collaboration",front:"How does teamwork work?",back:"<strong>At school:</strong> Group projects are temporary, stakes are low. <strong>At work:</strong> You depend on colleagues daily. Your delays block theirs. Communication, reliability, and trust are the foundation of everything."},
+  {icon:"🔁",title:"Feedback",front:"When do you get feedback?",back:"<strong>At school:</strong> After every assignment, sometimes the same day. <strong>At work:</strong> Feedback can be rare, indirect, or delayed. You often need to proactively ask for it — and learn to read non-verbal signals too."},
+  {icon:"📈",title:"Growth",front:"How do you move forward?",back:"<strong>At school:</strong> Pass the class, advance to the next grade. Linear and clear. <strong>At work:</strong> Growth is nonlinear. You have to advocate for opportunities, take on stretch assignments, and build a reputation over time."}
+];
+const row=document.getElementById('flipRow');
+flipData.forEach((d,i)=>{
+  const card=document.createElement('div');
+  card.className='flip-card';
+  card.innerHTML=`<div class="flip-inner"><div class="flip-front"><div class="flip-front-icon">${d.icon}</div><div class="flip-front-title">${d.title}</div><div class="flip-front-hint">${d.front}<br><small style="color:var(--purple);margin-top:6px;display:block;">↩ Click to flip</small></div></div><div class="flip-back"><p>${d.back}</p></div></div>`;
+  card.onclick=()=>card.classList.toggle('flipped');
+  row.appendChild(card);
+});
+
+function checkS(btn,correct){
+  if(document.querySelector('.s-opt.correct')||document.querySelector('.s-opt.wrong')) return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('sFeedback');
+  if(correct){
+    fb.className='s-feedback show cfb';
+    fb.textContent='✅ Exactly right. In a professional setting, proactively clarifying ambiguity is a core skill. Waiting to be told what to do, or apologizing without acting, both miss the mark. A good question like "Can we confirm the deadline and format?" takes 30 seconds and prevents hours of wasted work.';
+  } else {
+    document.querySelectorAll('.s-opt').forEach(o=>{if(o.textContent.includes('Proactively'))o.classList.add('correct');});
+    fb.className='s-feedback show wfb';
+    fb.textContent='❌ Close, but the right professional move is proactive clarification. Waiting, apologizing without action, or guessing all carry risk. In a workplace, ambiguity is your responsibility to resolve — not your manager\'s responsibility to prevent.';
+  }
+}
+
+window.addEventListener('scroll',()=>{
+  const el=document.documentElement;
+  document.getElementById('progressBar').style.width=((el.scrollTop/(el.scrollHeight-el.clientHeight))*100)+'%';
+});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar Management 101 — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Interactive Calendar Drag Builder */
+  .cal-builder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cal-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cal-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cal-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .cal-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:4px;background:var(--purple-mid);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+  .cal-cell{background:var(--white);padding:6px;min-height:48px;position:relative;font-size:12px;}
+  .cal-cell.header{background:var(--purple);color:white;font-weight:700;font-size:11px;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center;}
+  .cal-cell.time{background:var(--gray-soft);color:var(--gray-muted);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+  .cal-event{border-radius:6px;padding:3px 6px;font-size:11px;font-weight:600;cursor:pointer;margin:1px;line-height:1.3;}
+  .cal-event.focus{background:#EDE9FE;color:#5B21B6;border-left:3px solid #7C3AED;}
+  .cal-event.meeting{background:#FEE2E2;color:#991B1B;border-left:3px solid #DC2626;}
+  .cal-event.admin{background:var(--orange-pale);color:#92400E;border-left:3px solid var(--orange);}
+  .cal-event.buffer{background:var(--green-pale);color:#065F46;border-left:3px solid var(--green);}
+  .cal-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;}
+  .legend-dot{width:10px;height:10px;border-radius:3px;}
+  .cal-score{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:16px;margin-top:12px;font-size:14px;}
+  .cal-score-title{font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .score-bars{display:flex;flex-direction:column;gap:6px;}
+  .score-bar-row{display:flex;align-items:center;gap:10px;font-size:13px;}
+  .score-bar-label{width:80px;color:var(--gray-muted);}
+  .score-bar-bg{flex:1;background:#E5E7EB;border-radius:100px;height:8px;overflow:hidden;}
+  .score-bar-fill{height:100%;border-radius:100px;transition:width 0.5s;}
+  .score-bar-val{width:30px;text-align:right;font-weight:600;}
+
+  /* Eisenhower Matrix */
+  .matrix{margin:24px 0;}
+  .matrix-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  .matrix-cell{border-radius:18px;padding:20px;}
+  .matrix-cell.q1{background:#FEE2E2;border:2px solid #FECACA;}
+  .matrix-cell.q2{background:var(--green-pale);border:2px solid #86EFAC;}
+  .matrix-cell.q3{background:var(--orange-pale);border:2px solid #FDE68A;}
+  .matrix-cell.q4{background:var(--gray-soft);border:2px solid var(--purple-mid);}
+  .matrix-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+  .matrix-cell.q1 .matrix-title{color:#991B1B;}
+  .matrix-cell.q2 .matrix-title{color:var(--green);}
+  .matrix-cell.q3 .matrix-title{color:#92400E;}
+  .matrix-cell.q4 .matrix-title{color:var(--gray-muted);}
+  .matrix-sub{font-size:12px;line-height:1.5;margin-bottom:10px;color:var(--gray-text);}
+  .matrix-examples{font-size:12px;color:var(--gray-muted);font-style:italic;}
+  .matrix-axis{display:flex;justify-content:space-between;font-size:11px;color:var(--gray-muted);margin-top:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;}
+
+  .quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+  .quiz-options{display:flex;flex-direction:column;gap:10px;}
+  .quiz-opt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all 0.2s;text-align:left;}
+  .quiz-opt:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .quiz-opt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+  .quiz-opt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+  .quiz-feedback{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.35s ease;}
+  .quiz-feedback.cfb{background:var(--green-pale);color:var(--green);}
+  .quiz-feedback.wfb{background:#FFF1F1;color:#DC2626;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.matrix-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.1 · Time Management with AI</div>
+  <h1>Calendar Management 101: How Professionals Organize Their Day</h1>
+  <p class="hero-sub">Most people treat their calendar as a passive record of where they have to be. High-performers treat it as a strategic tool they actively design. Here's the difference — and how AI makes the second approach dramatically easier.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Reactive vs. Proactive Scheduling</h2>
+    <p>There are two ways to manage a calendar. The first is <mark>reactive</mark>: you accept meeting invites as they come in, squeeze work around the gaps, and hope for the best. Most people do this. The result is a fragmented day with no sustained focus time and a feeling that you were busy all day but didn't get much done.</p>
+    <p>The second is <mark>proactive</mark>: you start each week by intentionally placing your most important work first, protecting it from interruption, then fitting meetings and admin around it. This is how the most productive professionals operate — and it's the philosophy behind every AI scheduling tool you'll learn about.</p>
+    <div class="pull-quote"><p>Your calendar is either an intentional design or an accidental one. The difference between the two is who's making the decisions.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Four Types of Calendar Blocks</h2>
+    <p>A well-managed professional calendar uses four types of blocks. Click the calendar below to see examples of each — and see the weekly breakdown they produce:</p>
+    <div class="cal-builder">
+      <div class="cal-label">📅 Interactive Calendar</div>
+      <div class="cal-title">A Well-Structured Professional Week</div>
+      <div class="cal-sub">Click any event to learn why it's placed where it is.</div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#EDE9FE;border:2px solid #7C3AED;"></div><span>Deep Work / Focus</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#FEE2E2;border:2px solid #DC2626;"></div><span>Meetings</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--orange-pale);border:2px solid var(--orange);"></div><span>Admin & Email</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green-pale);border:2px solid var(--green);"></div><span>Buffer / Planning</span></div>
+      </div>
+      <div class="cal-score">
+        <div class="cal-score-title">Weekly time distribution:</div>
+        <div class="score-bars">
+          <div class="score-bar-row"><span class="score-bar-label">Deep Work</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:#7C3AED;"></div></div><span class="score-bar-val" style="color:#7C3AED;">45%</span></div>
+          <div class="score-bar-row"><span class="score-bar-label">Meetings</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:#DC2626;"></div></div><span class="score-bar-val" style="color:#DC2626;">30%</span></div>
+          <div class="score-bar-row"><span class="score-bar-label">Admin</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:15%;background:var(--orange);"></div></div><span class="score-bar-val" style="color:var(--orange);">15%</span></div>
+          <div class="score-bar-row"><span class="score-bar-label">Buffer</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:10%;background:var(--green);"></div></div><span class="score-bar-val" style="color:var(--green);">10%</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="eventDetail" style="display:none;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px;margin-top:-8px;animation:fadeIn 0.3s ease;">
+      <h3 id="eventDetailTitle" style="font-family:'Fraunces',serif;color:var(--purple-dark);margin-bottom:8px;"></h3>
+      <p id="eventDetailText" style="font-size:14px;line-height:1.65;margin:0;"></p>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Eisenhower Matrix: Prioritizing What Goes on Your Calendar</h2>
+    <p>Before anything goes on your calendar, it needs to be categorized. The Eisenhower Matrix — named after President Dwight Eisenhower — is one of the most widely used prioritization frameworks in business. It sorts tasks into four quadrants based on urgency and importance:</p>
+    <div class="matrix">
+      <div class="matrix-grid">
+        <div class="matrix-cell q1">
+          <div class="matrix-title">Q1: Do First 🔥</div>
+          <div class="matrix-sub">Urgent + Important. These need your attention today — they have real consequences if delayed.</div>
+          <div class="matrix-examples">Examples: Client emergency, deadline today, critical bug fix</div>
+        </div>
+        <div class="matrix-cell q2">
+          <div class="matrix-title">Q2: Schedule ✅</div>
+          <div class="matrix-sub">Not Urgent + Important. This is where your highest-value work lives. Protect this time — it's easy to neglect.</div>
+          <div class="matrix-examples">Examples: Strategic planning, skill development, relationship building</div>
+        </div>
+        <div class="matrix-cell q3">
+          <div class="matrix-title">Q3: Delegate ↗️</div>
+          <div class="matrix-sub">Urgent + Not Important. These feel urgent but don't move your goals forward. Delegate when possible.</div>
+          <div class="matrix-examples">Examples: Most interruptions, some email, certain meetings</div>
+        </div>
+        <div class="matrix-cell q4">
+          <div class="matrix-title">Q4: Eliminate 🗑️</div>
+          <div class="matrix-sub">Not Urgent + Not Important. These drain your time with no return. Cut them ruthlessly.</div>
+          <div class="matrix-examples">Examples: Mindless browsing, unnecessary reports, low-value tasks</div>
+        </div>
+      </div>
+      <div class="matrix-axis"><span>← Less Urgent</span><span>More Urgent →</span></div>
+    </div>
+    <p>Most people spend too much time in Q1 (firefighting) and Q3 (busy work), and not enough time in Q2 (the strategic zone). AI scheduling tools are designed to protect Q2 time by blocking it before Q1 and Q3 tasks can consume it.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Time Blocking: The Core Technique</h2>
+    <p>Time blocking means <mark>assigning specific tasks to specific time slots on your calendar</mark>, rather than keeping a free-floating to-do list. Instead of "write the report" sitting on a list, it becomes a 90-minute block from 9–10:30 AM on Tuesday. This technique has three key benefits:</p>
+    <p><strong>It creates commitment.</strong> A calendar block is harder to skip than a to-do item. When you see it on your calendar, you've made a concrete appointment with yourself.</p>
+    <p><strong>It reveals reality.</strong> When you try to block out everything you need to do, you quickly discover there isn't enough time. This forces better prioritization before the week starts rather than mid-crisis.</p>
+    <p><strong>It's what AI can automate.</strong> Tools like Clockwise automatically time-block your calendar based on your priorities and availability — doing in seconds what would take you 20 minutes of manual shuffling.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">Marcus has these tasks today: (1) a client presentation in 2 hours, (2) a long-term strategic plan due next month, (3) a teammate asking for his opinion on an email, (4) reviewing his own LinkedIn feed. Using the Eisenhower Matrix, which task is most important to schedule dedicated time for — even though it feels less urgent?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="checkQ(this,false)">The client presentation</button>
+        <button class="quiz-opt" onclick="checkQ(this,true)">The long-term strategic plan</button>
+        <button class="quiz-opt" onclick="checkQ(this,false)">The teammate's email review</button>
+        <button class="quiz-opt" onclick="checkQ(this,false)">LinkedIn</button>
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="summary-points">
+      <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Reactive scheduling fills your day with what others want. Proactive scheduling starts with what matters most and protects that time first.</p></div>
+      <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A well-managed calendar has four types of blocks: deep work, meetings, admin, and buffer. Most people over-index on meetings and under-protect deep work.</p></div>
+      <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The Eisenhower Matrix (Urgent/Important quadrants) is the standard tool for prioritizing what deserves calendar time.</p></div>
+      <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Time blocking converts a vague to-do list into concrete commitments — and is exactly the technique AI scheduling tools automate at scale.</p></div>
+    </div>
+  </div>
+
+</div>
+<script>
+const days=['Mon','Tue','Wed','Thu','Fri'];
+const times=['9AM','10AM','11AM','12PM','1PM','2PM','3PM','4PM'];
+const events={
+  'Mon-9AM':{type:'focus',text:'Deep Work: Strategy doc',detail:'Morning energy is highest. High-priority deep work goes here — before email, before meetings.'},
+  'Mon-10AM':{type:'focus',text:'Deep Work: Strategy doc',detail:'Continuing the focus block. Two consecutive hours produces far more than two separate one-hour blocks.'},
+  'Mon-11AM':{type:'meeting',text:'Team standup (15 min)',detail:'Short status meeting clustered with other meetings to protect the morning focus block.'},
+  'Mon-12PM':{type:'admin',text:'Email & Slack batch',detail:'Admin work after the focus block. Answering email takes less cognitive power and fits naturally before lunch.'},
+  'Tue-9AM':{type:'focus',text:'Deep Work: Project A',detail:'Tuesday morning: another protected deep work block. Notice meetings are clustered in the afternoon.'},
+  'Tue-10AM':{type:'focus',text:'Deep Work: Project A',detail:'Second hour of focus. No meetings scheduled before 11AM on any day — a deliberate choice.'},
+  'Tue-11AM':{type:'meeting',text:'Client call',detail:'External meetings clustered mid-morning. Still after the deep work block is complete.'},
+  'Tue-2PM':{type:'meeting',text:'Project review',detail:'Internal review in the afternoon — when deep work capacity is lower anyway.'},
+  'Tue-3PM':{type:'meeting',text:'1:1 with manager',detail:'Recurring 1:1 clustered with other PM work in the afternoon.'},
+  'Wed-9AM':{type:'focus',text:'Deep Work: Research',detail:'Mid-week focus block. "Hump day" meetings can pile up — protecting morning time is especially important.'},
+  'Wed-11AM':{type:'meeting',text:'Cross-team sync',detail:'All-hands or cross-functional meetings on Wednesdays keep other days cleaner.'},
+  'Wed-12PM':{type:'admin',text:'Admin catch-up',detail:'Weekly admin batch: review project statuses, respond to async threads, update task lists.'},
+  'Wed-2PM':{type:'buffer',text:'Buffer / Planning',detail:'Buffer time is not free time — it\'s scheduled space to handle the unexpected. Every week has surprises.'},
+  'Thu-9AM':{type:'focus',text:'Deep Work: Writing',detail:'Thursday is often a good second deep work day. Put your second-highest priority here.'},
+  'Thu-10AM':{type:'focus',text:'Deep Work: Writing',detail:'Protected writing time. Notice: no Slack, no email, no meetings until 11AM.'},
+  'Thu-2PM':{type:'meeting',text:'Dept. meeting',detail:'Larger team meeting clustered in the afternoon. Keeps the morning free for deep work.'},
+  'Thu-4PM':{type:'buffer',text:'Weekly wrap-up',detail:'End-of-week planning: review what\'s done, update priorities for Friday and next week.'},
+  'Fri-9AM':{type:'admin',text:'Email & messages',detail:'Friday mornings work well for communication catch-up before the weekend.'},
+  'Fri-10AM':{type:'focus',text:'Deep Work: Prep',detail:'Preparing for next week\'s priorities while the week is still fresh.'},
+  'Fri-2PM':{type:'buffer',text:'Flex / overflow',detail:'Friday afternoon is intentionally light — for overflow from the week and team connection time.'},
+};
+
+const grid=document.getElementById('calGrid');
+// Header row
+const corner=document.createElement('div');corner.className='cal-cell header';grid.appendChild(corner);
+days.forEach(d=>{const c=document.createElement('div');c.className='cal-cell header';c.textContent=d;grid.appendChild(c);});
+times.forEach(t=>{
+  const tc=document.createElement('div');tc.className='cal-cell time';tc.textContent=t;grid.appendChild(tc);
+  days.forEach(d=>{
+    const c=document.createElement('div');c.className='cal-cell';
+    const key=`${d}-${t}`;
+    if(events[key]){
+      const ev=document.createElement('div');
+      ev.className=`cal-event ${events[key].type}`;
+      ev.textContent=events[key].text;
+      ev.onclick=()=>{
+        document.getElementById('eventDetailTitle').textContent=events[key].text;
+        document.getElementById('eventDetailText').textContent=events[key].detail;
+        document.getElementById('eventDetail').style.display='block';
+      };
+      c.appendChild(ev);
+    }
+    grid.appendChild(c);
+  });
+});
+
+function checkQ(btn,correct){
+  if(document.querySelector('.quiz-opt.correct')||document.querySelector('.quiz-opt.wrong')) return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('quizFeedback');
+  if(correct){fb.className='quiz-feedback show cfb';fb.textContent='✅ Correct! The strategic plan is Q2 — Important but not Urgent. This is the quadrant most neglected because it never screams for attention. If Marcus doesn\'t proactively block time for it, the week will fill with Q1 and Q3 tasks and it\'ll never get done.';}
+  else{document.querySelectorAll('.quiz-opt').forEach(o=>{if(o.textContent.includes('strategic'))o.classList.add('correct');});fb.className='quiz-feedback show wfb';fb.textContent='❌ The presentation is already happening — it\'s in Q1 (urgent and important) and doesn\'t need extra scheduling. The strategic plan is Q2: not urgent today, but critically important for the future. If it\'s never scheduled, it never gets done.';}
+}
+window.addEventListener('scroll',()=>{const el=document.documentElement;document.getElementById('progressBar').style.width=((el.scrollTop/(el.scrollHeight-el.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
