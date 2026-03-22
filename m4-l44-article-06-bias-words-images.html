@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Bias Shows Up in the Words and Images AI Chooses — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  /* Language bias examples */
+  .lang-examples{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .le-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .le-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .le-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .le-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .le-btn{padding:10px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
+  .le-btn:hover,.le-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .le-panel{display:none;}
+  .le-panel.active{display:block;animation:fadeIn .3s ease;}
+  .le-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  @media(max-width:540px){.le-compare{grid-template-columns:1fr;}}
+  .le-box{border-radius:14px;padding:18px;border:1.5px solid;}
+  .le-box.biased{background:var(--red-pale);border-color:#FCA5A5;}
+  .le-box.improved{background:var(--green-pale);border-color:#6EE7B7;}
+  .le-box-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+  .le-box.biased .le-box-label{color:var(--red);}
+  .le-box.improved .le-box-label{color:var(--green);}
+  .le-box-text{font-size:14px;line-height:1.65;color:var(--gray-text);}
+  .le-explanation{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 18px;font-size:14px;line-height:1.65;color:var(--gray-text);}
+  /* Image bias types */
+  .img-bias{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.img-bias{grid-template-columns:1fr;}}
+  .ib-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;}
+  .ib-icon{font-size:28px;margin-bottom:10px;}
+  .ib-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .ib-desc{font-size:14px;line-height:1.65;color:var(--gray-text);margin-bottom:10px;}
+  .ib-example{background:var(--red-pale);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--red);font-style:italic;}
+  .ib-fix{background:var(--green-pale);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--green);margin-top:6px;}
+  /* Spot the bias quiz */
+  .spot-bias{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .sb3-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .sb3 h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:20px;}
+  .sb3-scenarios{display:flex;flex-direction:column;gap:14px;}
+  .sb3-s{background:rgba(255,255,255,.1);border-radius:14px;padding:20px;}
+  .sb3-q{font-size:15px;color:rgba(255,255,255,.9);line-height:1.6;margin-bottom:14px;}
+  .sb3-opts{display:flex;flex-direction:column;gap:8px;}
+  .sb3-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;padding:12px 16px;color:white;font-family:'DM Sans',sans-serif;font-size:14px;text-align:left;cursor:pointer;transition:all .2s;}
+  .sb3-btn:hover{background:rgba(255,255,255,.2);}
+  .sb3-btn.c{background:rgba(74,222,128,.25);border-color:#4ade80;}
+  .sb3-btn.w{background:rgba(248,113,113,.2);border-color:#f87171;}
+  .sb3-fb{margin-top:10px;padding:12px 16px;background:rgba(255,255,255,.1);border-radius:10px;font-size:14px;line-height:1.6;display:none;}
+  .sb3-fb.show{display:block;}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.spot-bias,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.4 · Ethical Marketing & Bias</div>
+  <h1>How Bias Shows Up in the Words and Images AI Chooses</h1>
+  <p class="hero-sub">AI writing and image tools generate output based on statistical patterns in their training data — and those patterns carry the stereotypes, assumptions, and blind spots of the world the data came from.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>When you ask an AI to write a job posting, generate a marketing image, or draft a product description, it doesn't randomly assemble words and pictures. <mark>It predicts what output is most statistically likely based on patterns in billions of examples from the internet and other text sources — patterns that reflect who historically held which jobs, which faces appeared in which contexts, and which words were associated with which groups.</mark> The result is AI output that often reproduces stereotypes, excludes representation, and defaults to assumptions that reflect historical inequity rather than the world we want to depict.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Language Bias — Compare Biased vs. Improved Prompts</h2>
+    <p>Select a content type to see how AI language bias shows up — and how to fix it.</p>
+    <div class="lang-examples">
+      <div class="le-label">📝 Language Bias Explorer</div>
+      <div class="le-title">Biased vs. Improved AI Output</div>
+      <div class="le-sub">Select a scenario to see how unchecked AI output contains bias — and how human guidance improves it.</div>
+      <div class="le-nav">
+        <button class="le-btn active" onclick="showLang('job',this)">Job Posting</button>
+        <button class="le-btn" onclick="showLang('product',this)">Product Copy</button>
+        <button class="le-btn" onclick="showLang('campaign',this)">Campaign Hero</button>
+      </div>
+      <div id="le-display"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI doesn't know what's fair. It knows what's common. When "common" and "fair" don't align — and they often don't — AI defaults to common. That's why human review isn't optional.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Image Bias — Four Types to Watch For</h2>
+    <div class="img-bias">
+      <div class="ib-card"><div class="ib-icon">👤</div><div class="ib-name">Demographic Underrepresentation</div><div class="ib-desc">AI image tools default to generating people who reflect their training data — often skewing toward certain races, ages, and body types in professional and aspirational contexts.</div><div class="ib-example">Prompt "successful entrepreneur" → predominantly young white men in many tools without explicit diversity instruction.</div><div class="ib-fix">Fix: Specify demographic diversity explicitly in every image prompt. "Generate diverse, inclusive imagery representing multiple ethnicities, ages, and body types."</div></div>
+      <div class="ib-card"><div class="ib-icon">🔗</div><div class="ib-name">Occupational Stereotyping</div><div class="ib-desc">AI links certain professional roles to certain demographics based on historical representation — nurses female, engineers male, executives white, domestic workers as people of color.</div><div class="ib-example">Prompt "nurse caring for patient" → predominantly female nurse. "Senior executive boardroom" → predominantly white men.</div><div class="ib-fix">Fix: Prompt against stereotypes explicitly: "Generate images of male nurses and female engineers — actively subvert occupational stereotypes."</div></div>
+      <div class="ib-card"><div class="ib-icon">🌍</div><div class="ib-name">Western/Global North Default</div><div class="ib-desc">Images of abstract concepts (family, success, happiness, health) default to settings, aesthetics, and demographics associated with Western, English-speaking contexts — excluding the majority of the world.</div><div class="ib-example">"Happy family at home" → likely suburban US or European setting. "City street" → likely New York or London. </div><div class="ib-fix">Fix: Specify geographic context and cultural aesthetics explicitly. Review global campaigns with local cultural advisors before publishing.</div></div>
+      <div class="ib-card"><div class="ib-icon">✨</div><div class="ib-name">Idealized Beauty Standards</div><div class="ib-desc">AI image generators reproduce mainstream beauty standards — unrealistic body shapes, narrow age ranges, specific skin tones — because most professional photography in training data reflects these standards.</div><div class="ib-example">Prompt "beautiful woman" defaults to narrow Western beauty standards. Age diversity is significantly underrepresented in aspirational imagery.</div><div class="ib-fix">Fix: Explicitly include age, size, and beauty diversity in prompts. Or use photography of real, diverse customers rather than AI-generated idealized models.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="spot-bias sb3">
+      <div class="sb3-label">🔍 Spot the Bias</div>
+      <h2>Identify What's Biased and Why</h2>
+      <div class="sb3-scenarios">
+        <div class="sb3-s" id="sb1">
+          <div class="sb3-q">An AI-generated job posting for a software engineer role contains phrases like "strong work ethic," "competitive environment," "crushing deadlines," and "rock star developer." What type of bias might this contain?</div>
+          <div class="sb3-opts">
+            <button class="sb3-btn" onclick="sb3Answer('sb1',this,true)">A. Gender-coded language — these phrases statistically attract male applicants and deter women, creating disparate impact even without mentioning gender</button>
+            <button class="sb3-btn" onclick="sb3Answer('sb1',this,false)">B. No bias — these are standard industry terms with no differential impact</button>
+            <button class="sb3-btn" onclick="sb3Answer('sb1',this,false)">C. Age bias — "rock star" is specifically designed to exclude older workers</button>
+          </div>
+          <div class="sb3-fb" id="sb1-fb"></div>
+        </div>
+        <div class="sb3-s" id="sb2">
+          <div class="sb3-q">A healthcare brand's AI-generated campaign consistently shows doctors as men and nurses as women across all 40 pieces of content. Is this a problem?</div>
+          <div class="sb3-opts">
+            <button class="sb3-btn" onclick="sb3Answer('sb2',this,false)">A. No — this just reflects statistical reality (most doctors historically have been men)</button>
+            <button class="sb3-btn" onclick="sb3Answer('sb2',this,true)">B. Yes — this perpetuates occupational gender stereotypes that harm both women in medicine and men in nursing, reinforcing cultural barriers that decades of workplace progress has tried to reduce</button>
+            <button class="sb3-btn" onclick="sb3Answer('sb2',this,false)">C. Only a problem if the brand is in a country with gender equality laws</button>
+          </div>
+          <div class="sb3-fb" id="sb2-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">✅</div>
+      <div>
+        <h3>The Practical Fix: Prompt Engineering + Human Review</h3>
+        <p>Addressing AI bias in content doesn't require replacing AI — it requires two practices: (1) Bias-aware prompt engineering — explicitly instructing AI to diversify demographics, subvert stereotypes, and avoid gendered language in every relevant prompt; and (2) Human bias review before publishing — a checklist-driven review of AI output specifically looking for stereotyping, exclusion, and language that codes for protected characteristics. Neither step is difficult, but both must be intentional and consistent. Bias in AI content is a quality control issue — and quality control is always a human responsibility.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI language bias appears in job postings (gender-coded language), product copy (demographic assumptions), and campaign writing (cultural defaults) — all reflecting statistical patterns in training data, not intentional prejudice.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI image bias includes demographic underrepresentation, occupational stereotyping (female nurses, male engineers), Western defaults for global concepts, and idealized beauty standards — all require active prompt intervention to avoid.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The fix combines bias-aware prompt engineering (explicit diversity instructions) with human review checklists — both must be consistent practices, not occasional afterthoughts.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI defaults to "common" patterns in its training data — not "fair" representations of the world. When those patterns reflect historical inequality, human guidance is the only correction mechanism.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  const langData={
+    job:{biasedLabel:'🚩 Biased AI Output',biasedText:'We\'re looking for a rockstar developer who thrives under pressure and can crush deadlines in our fast-paced, competitive environment. Must have thick skin and be ready to hit the ground running. We move fast and break things — if you can\'t keep up, this isn\'t for you.',improvedLabel:'✅ Bias-Aware Revision',improvedText:'We\'re looking for a skilled software engineer who can work effectively in a collaborative, fast-moving environment. You\'re someone who approaches complex problems methodically and communicates clearly when priorities shift. We value diverse perspectives and encourage applications from underrepresented groups in tech.',explanation:'The original contains multiple types of gendered language ("rockstar," "crush," "thick skin") that research shows statistically deter women and increase male applications — creating disparate impact without mentioning gender at all. The revision removes competitive/aggressive language while maintaining the same talent expectations.'},
+    product:{biasedLabel:'🚩 Biased AI Output',biasedText:'For the modern man who demands only the best. This premium shaving kit is engineered for the man who won\'t settle — built tough, designed to perform, and worthy of a man who knows what he wants.',improvedLabel:'✅ Bias-Aware Revision',improvedText:'For anyone who takes their morning routine seriously. This premium shaving kit delivers a close, comfortable shave — built to last, easy to use, and designed to make every morning a little better.',explanation:'The original unnecessarily gendered a product that has no technical gender requirement — and used language ("demands," "won\'t settle," "tough") that codes masculine while excluding anyone who doesn\'t identify with that framing. The revision reaches a broader audience with identical quality messaging.'},
+    campaign:{biasedLabel:'🚩 Biased AI Output (Description)',biasedText:'Campaign hero image: Young, thin, white woman in activewear at an upscale gym. Background: sleek, modern fitness equipment. Vibe: aspirational, premium, effortless.',improvedLabel:'✅ Bias-Aware Revision',improvedText:'Campaign hero image: Multiple images across the campaign showing people of varied ethnicities, ages (30s-60s), and body types engaged in different forms of movement — gym, trail running, home workout. Shared vibe: effort, joy, consistency.',explanation:'The original defaults to a narrow beauty standard that excludes the majority of potential customers and reinforces that fitness is "for" a specific body type. The revision broadens the definition of who the brand serves — which expands addressable market while being more representative of actual customers.'}
+  };
+  function showLang(key,btn){
+    document.querySelectorAll('.le-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const d=langData[key];
+    document.getElementById('le-display').innerHTML=`<div class="le-panel active">
+      <div class="le-compare">
+        <div class="le-box biased"><div class="le-box-label">${d.biasedLabel}</div><div class="le-box-text">${d.biasedText}</div></div>
+        <div class="le-box improved"><div class="le-box-label">${d.improvedLabel}</div><div class="le-box-text">${d.improvedText}</div></div>
+      </div>
+      <div class="le-explanation">🔍 <strong>What changed and why:</strong> ${d.explanation}</div>
+    </div>`;
+  }
+  showLang('job',document.querySelector('.le-btn'));
+  const sb3Done={sb1:false,sb2:false};
+  function sb3Answer(id,btn,correct){
+    if(sb3Done[id])return;sb3Done[id]=true;
+    document.getElementById(id).querySelectorAll('.sb3-btn').forEach(b=>b.style.pointerEvents='none');
+    const fb=document.getElementById(`${id}-fb`);
+    btn.classList.add(correct?'c':'w');
+    if(id==='sb1'){
+      if(correct){fb.innerHTML='✅ <strong>Right.</strong> Research by LinkedIn, Harvard Business Review, and others has consistently shown that masculine-coded language ("competitive," "dominant," "ninja," "rockstar," "crushing") in job postings significantly reduces female applications — without ever mentioning gender. AI generates this language naturally because it\'s statistically common in tech job postings. Human review for gender-coded language is essential before publishing AI-drafted job descriptions.';}
+      else{fb.innerHTML='❌ Not quite. A is correct — these phrases are classic masculine-coded language that research shows creates disparate impact on female applicants. "Rockstar" and "ninja" specifically are flagged in gender bias research. They\'re not uniquely age-discriminatory (C), and they\'re definitely not bias-free (B) — their impact on application rates by gender is well-documented.';}
+    } else {
+      if(correct){fb.innerHTML='✅ <strong>Right.</strong> Occupational gender stereotyping in marketing imagery reinforces cultural barriers that limit career choices for both men and women. When healthcare brands consistently show female nurses and male doctors, they signal — intentionally or not — which roles are "appropriate" for which genders. This has real-world effects on career aspirations, patient trust, and workplace culture. It also misrepresents the actual workforce: 40%+ of US physicians are now women, and 12% of RNs are men.';}
+      else{fb.innerHTML='❌ Not quite. B is correct — and the "it\'s just statistics" argument doesn\'t hold. Marketing imagery doesn\'t just reflect reality; it shapes it. Consistently showing gender-stereotyped occupational imagery reinforces the cultural beliefs that create those statistics in the first place. It\'s a self-fulfilling cycle — and brands have both the opportunity and increasing responsibility to break it.';}
+    }
+    fb.className='sb3-fb show';
+  }
+</script>
+</body>
+</html>

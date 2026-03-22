@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building an Ethical AI Marketing Checklist — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  /* The master checklist */
+  .master-checklist{margin:24px 0;}
+  .mc-section{margin-bottom:24px;}
+  .mc-section-header{background:var(--purple);border-radius:14px 14px 0 0;padding:16px 22px;display:flex;gap:14px;align-items:center;}
+  .mc-section-icon{font-size:22px;}
+  .mc-section-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:white;}
+  .mc-section-count{font-size:13px;color:rgba(255,255,255,.7);margin-left:auto;}
+  .mc-items{border:1.5px solid var(--purple-mid);border-top:none;border-radius:0 0 14px 14px;overflow:hidden;}
+  .mc-item{display:flex;gap:14px;align-items:flex-start;padding:14px 20px;border-bottom:1px solid var(--purple-mid);cursor:pointer;transition:background .15s;}
+  .mc-item:last-child{border-bottom:none;}
+  .mc-item:hover{background:var(--purple-pale);}
+  .mc-item.done{background:var(--green-pale);}
+  .mc-cb{width:20px;height:20px;border:2px solid var(--purple-mid);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+  .mc-item.done .mc-cb{background:var(--green);border-color:var(--green);}
+  .mc-cb-check{display:none;font-size:12px;color:white;font-weight:700;}
+  .mc-item.done .mc-cb-check{display:block;}
+  .mc-text h3{font-size:14px;font-weight:600;color:var(--purple-dark);margin-bottom:2px;}
+  .mc-item.done .mc-text h3{color:var(--green);}
+  .mc-text p{font-size:13px;color:var(--gray-muted);margin:0;line-height:1.5;}
+  /* Overall score */
+  .score-display{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:20px;padding:28px;margin:24px 0;text-align:center;}
+  .score-num{font-family:'Fraunces',serif;font-size:56px;font-weight:900;color:var(--purple);line-height:1;}
+  .score-label{font-size:15px;color:var(--gray-muted);margin-top:6px;}
+  .score-bar-wrap{background:var(--purple-mid);border-radius:100px;height:10px;margin:14px 0;overflow:hidden;}
+  .score-bar{height:100%;background:var(--purple);border-radius:100px;transition:width .4s ease;}
+  .score-verdict{font-size:15px;font-weight:600;margin-top:8px;}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.4 · Ethical Marketing & Bias</div>
+  <h1>Building an Ethical AI Marketing Checklist</h1>
+  <p class="hero-sub">Ethics in AI marketing isn't a feeling — it's a process. A comprehensive ethical checklist transforms abstract values into concrete, auditable actions that every team member can apply consistently.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Every ethical principle in this lesson — avoiding bias, following FTC guidelines, not crossing the creepy line, reviewing content before publishing, building fair targeting — only has real impact when it becomes part of a systematic process. <mark>A checklist transforms ethics from intention to execution. It creates accountability, ensures nothing is missed in busy production cycles, and gives teams a shared standard against which all AI-assisted marketing work can be evaluated.</mark> This article gives you the complete ethical AI marketing checklist — ready to adapt and use.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Ethical AI Marketing Checklist — Work Through It</h2>
+    <p>Click each item to mark it complete as you apply it to a campaign or piece of content. Track your ethical readiness score.</p>
+    <div class="score-display" id="scoreDisplay">
+      <div class="score-num" id="scoreNum">0%</div>
+      <div class="score-label">Ethical readiness score</div>
+      <div class="score-bar-wrap"><div class="score-bar" id="scoreBar" style="width:0%"></div></div>
+      <div class="score-verdict" id="scoreVerdict">Work through the checklist below</div>
+    </div>
+    <div class="master-checklist" id="masterChecklist"></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>An ethical checklist isn't about slowing down. It's about catching what you would otherwise miss at 9pm before a launch. The time it takes to run through it is always less than the time it takes to fix the damage from skipping it.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🏢</div>
+      <div>
+        <h3>Making the Checklist Part of Your Team Culture</h3>
+        <p>A checklist only works if it's used. The most common reason checklists get skipped is that they're seen as bureaucracy rather than protection. The way to change that: (1) Make the checklist the final step before anything gets published — not optional, just part of the publishing process; (2) When the checklist catches something, share it with the team — it builds appreciation for the process; (3) Update the checklist when new risks emerge — AI capabilities and regulations change, and the checklist should reflect the current landscape. A living checklist that the team owns is far more powerful than a perfect checklist nobody uses.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>An ethical AI marketing checklist transforms abstract principles into concrete, auditable actions — making ethics a process rather than an intention, and creating team accountability for consistent application.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The checklist spans five domains: content ethics, targeting and data, legal compliance, process and oversight, and ongoing improvement — together covering the full range of ethical risks in AI-assisted marketing.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A checklist only works if it's consistently used — making it the final step before publication, sharing what it catches, and updating it as the regulatory and technology landscape changes are all essential to maintaining its value.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The time to run an ethical checklist is always less than the time to manage the damage from the issues it would have caught — it's protection, not bureaucracy.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const sections=[
+    {icon:'📝',name:'Content Ethics',items:[
+      {h:'All claims are truthful and substantiated',d:'Every factual claim can be backed with evidence before publishing, not after.'},
+      {h:'No AI-generated fake reviews or testimonials',d:'All testimonials come from real customers with genuine experiences. No synthetic endorsements.'},
+      {h:'Sponsored/paid content is clearly disclosed',d:'Any paid partnerships, gifted products, or affiliate relationships are visibly labeled per FTC guidelines.'},
+      {h:'AI-generated content has passed bias review',d:'Written copy reviewed for gender-coded language, demographic assumptions, and exclusionary phrasing.'},
+      {h:'Visual content represents diverse demographics',d:'Images show inclusive range of races, ages, body types, and abilities relevant to the campaign.'},
+    ]},
+    {icon:'🎯',name:'Targeting & Data',items:[
+      {h:'Targeting does not exclude protected groups in regulated categories',d:'For housing, employment, and credit: no exclusions based on race, religion, gender, age, national origin, disability, or familial status.'},
+      {h:'Ad delivery audit conducted',d:'Verified that actual ad delivery demographics match intended audience — not skewed by algorithmic optimization.'},
+      {h:'Proxy variable bias checked',d:'Targeting variables (ZIP code, income) reviewed for correlation with protected characteristics in the specific market.'},
+      {h:'Frequency and duration limits set',d:'Retargeting campaigns have frequency caps and duration limits to avoid stalker-like persistence.'},
+      {h:'Privacy disclosures are accurate and current',d:'Privacy policy reflects actual data collection and use practices — not what they were 3 years ago.'},
+    ]},
+    {icon:'⚖️',name:'Legal Compliance',items:[
+      {h:'Content reviewed against applicable advertising law',d:'FTC guidelines, GDPR/CCPA requirements, and sector-specific regulations (HIPAA, COPPA, etc.) reviewed for compliance.'},
+      {h:'Dark patterns audit conducted',d:'Checkout flow, email opt-ins, and cancellation paths reviewed for manipulative design elements.'},
+      {h:'Intellectual property cleared',d:'AI-generated images and content reviewed to ensure no copyright infringement in training data-derived outputs.'},
+      {h:'AI disclosure requirements met',d:'Any legally required disclosure of AI involvement (e.g., synthetic media, AI-generated endorsements) included.'},
+    ]},
+    {icon:'👥',name:'Process & Oversight',items:[
+      {h:'Human review gate applied before publishing',d:'No AI-generated content published without human review — especially for high-stakes or sensitive content.'},
+      {h:'Bias review checklist completed',d:'Content-type appropriate bias review completed and documented.'},
+      {h:'Crisis response plan in place',d:'Clear protocol exists for pausing scheduled content and responding if AI output creates a public problem.'},
+      {h:'Diverse review included for major campaigns',d:'At least one reviewer from a demographic featured in the campaign reviewed the material before launch.'},
+    ]},
+    {icon:'📈',name:'Ongoing Improvement',items:[
+      {h:'Bias incidents are documented and shared',d:'When the review catches something, the issue and fix are documented to build institutional knowledge.'},
+      {h:'Checklist is reviewed quarterly',d:'The checklist is updated as AI capabilities, FTC guidance, and industry standards evolve.'},
+      {h:'Team is trained on current ethical standards',d:'All team members using AI marketing tools have received training on current ethical guidelines and legal requirements.'},
+    ]}
+  ];
+
+  let checkedItems={};
+  let totalItems=0;
+  sections.forEach(s=>totalItems+=s.items.length);
+
+  document.getElementById('masterChecklist').innerHTML=sections.map((sec,si)=>`
+    <div class="mc-section">
+      <div class="mc-section-header"><span class="mc-section-icon">${sec.icon}</span><span class="mc-section-name">${sec.name}</span><span class="mc-section-count">${sec.items.length} items</span></div>
+      <div class="mc-items">${sec.items.map((item,ii)=>`
+        <div class="mc-item" id="mc-${si}-${ii}" onclick="toggleMC(${si},${ii})">
+          <div class="mc-cb"><span class="mc-cb-check">✓</span></div>
+          <div class="mc-text"><h3>${item.h}</h3><p>${item.d}</p></div>
+        </div>`).join('')}</div>
+    </div>`).join('');
+
+  function toggleMC(si,ii){
+    const key=`${si}-${ii}`;
+    const el=document.getElementById(`mc-${si}-${ii}`);
+    el.classList.toggle('done');
+    checkedItems[key]=el.classList.contains('done');
+    const count=Object.values(checkedItems).filter(Boolean).length;
+    const pct=Math.round((count/totalItems)*100);
+    document.getElementById('scoreNum').textContent=pct+'%';
+    document.getElementById('scoreBar').style.width=pct+'%';
+    const verdict=pct===100?'🎉 Fully compliant — ready to publish':pct>=80?'✅ Strong ethical readiness — review remaining items':pct>=50?'⚠️ Moderate — important items still unchecked':pct>0?'🔄 In progress — keep going':'Work through the checklist below';
+    document.getElementById('scoreVerdict').textContent=verdict;
+  }
+</script>
+</body>
+</html>

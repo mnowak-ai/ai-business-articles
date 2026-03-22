@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Environmental Cost of AI Marketing — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  /* Cost comparisons */
+  .cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+  @media(max-width:600px){.cost-grid{grid-template-columns:1fr;}}
+  .cg{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;text-align:center;}
+  .cg-num{font-family:'Fraunces',serif;font-size:34px;font-weight:900;color:var(--purple);line-height:1;margin-bottom:8px;}
+  .cg-label{font-size:13px;color:var(--gray-muted);line-height:1.5;}
+  /* Carbon comparisons interactive */
+  .carbon-compare{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cc-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cc-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cc-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .cc-rows{display:flex;flex-direction:column;gap:10px;}
+  .cc-row{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 18px;}
+  .cc-row-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .cc-activity{font-size:14px;font-weight:600;color:var(--purple-dark);}
+  .cc-co2{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple);}
+  .cc-bar-wrap{background:var(--purple-pale);border-radius:100px;height:8px;overflow:hidden;}
+  .cc-bar{height:100%;background:var(--purple);border-radius:100px;}
+  /* Reduce impact actions */
+  .reduce-actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.reduce-actions{grid-template-columns:1fr;}}
+  .ra-card{border:1.5px solid var(--green);border-radius:16px;padding:20px;background:var(--green-pale);}
+  .ra-icon{font-size:28px;margin-bottom:8px;}
+  .ra-title{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:8px;}
+  .ra-desc{font-size:14px;line-height:1.65;color:var(--gray-text);}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.4 · Ethical Marketing & Bias</div>
+  <h1>The Environmental Cost of AI Marketing</h1>
+  <p class="hero-sub">AI tools feel weightless — just software, just prompts, just clicks. But the computing infrastructure powering AI marketing consumes enormous amounts of electricity, water, and rare materials. This is a real and growing ethical consideration.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>When a marketer uses an AI tool to generate 50 ad copy variations, run a campaign optimization, or personalize content for a million users, it feels free — no physical materials, no visible energy consumption. <mark>But every AI operation runs on data centers filled with specialized processors that consume massive amounts of electricity to compute and even more electricity and water to cool. As AI marketing capabilities grow, so does their environmental footprint — and responsible marketers are starting to account for it.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Numbers Behind AI's Environmental Footprint</h2>
+    <div class="cost-grid">
+      <div class="cg"><div class="cg-num">~10×</div><div class="cg-label">More energy per query: a single ChatGPT query uses ~10× more electricity than a Google search</div></div>
+      <div class="cg"><div class="cg-num">500ml</div><div class="cg-label">Estimated water consumed per 20–50 ChatGPT queries for data center cooling</div></div>
+      <div class="cg"><div class="cg-num">2–4%</div><div class="cg-label">Of global electricity consumption: projected data center share by 2030 (up from ~1.5% today)</div></div>
+    </div>
+    <p>Training a large AI model like GPT-4 consumed an estimated 500+ metric tons of CO₂ equivalent — roughly equal to 500 transatlantic flights. Inference (the running of the model for daily use) at scale generates ongoing emissions that compound over millions of queries per day.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Putting AI Energy Use in Context</h2>
+    <div class="carbon-compare">
+      <div class="cc-label">⚡ Carbon Footprint Comparison</div>
+      <div class="cc-title">Relative CO₂e per Activity (Approximate)</div>
+      <div class="cc-sub">Relative scale — exact figures vary significantly by energy source, provider, and model size. These comparisons illustrate order-of-magnitude differences.</div>
+      <div class="cc-rows">
+        <div class="cc-row"><div class="cc-row-top"><span class="cc-activity">🔍 Google Search (1 query)</span><span class="cc-co2">~0.3g CO₂e</span></div><div class="cc-bar-wrap"><div class="cc-bar" style="width:2%"></div></div></div>
+        <div class="cc-row"><div class="cc-row-top"><span class="cc-activity">🤖 AI Chatbot Query (1 query)</span><span class="cc-co2">~4g CO₂e</span></div><div class="cc-bar-wrap"><div class="cc-bar" style="width:8%"></div></div></div>
+        <div class="cc-row"><div class="cc-row-top"><span class="cc-activity">📧 Email sent (with spam filters)</span><span class="cc-co2">~4g CO₂e</span></div><div class="cc-bar-wrap"><div class="cc-bar" style="width:8%"></div></div></div>
+        <div class="cc-row"><div class="cc-row-top"><span class="cc-activity">🖼️ AI Image Generation (1 image)</span><span class="cc-co2">~2.9g CO₂e</span></div><div class="cc-bar-wrap"><div class="cc-bar" style="width:6%"></div></div></div>
+        <div class="cc-row"><div class="cc-row-top"><span class="cc-activity">📱 Streaming 1hr of video (Netflix)</span><span class="cc-co2">~36g CO₂e</span></div><div class="cc-bar-wrap"><div class="cc-bar" style="width:18%"></div></div></div>
+        <div class="cc-row"><div class="cc-row-top"><span class="cc-activity">✈️ 1hr flight per passenger</span><span class="cc-co2">~255g CO₂e</span></div><div class="cc-bar-wrap"><div class="cc-bar" style="width:60%"></div></div></div>
+        <div class="cc-row"><div class="cc-row-top"><span class="cc-activity">🚗 1 mile in average car</span><span class="cc-co2">~411g CO₂e</span></div><div class="cc-bar-wrap"><div class="cc-bar" style="width:100%"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The environmental cost of AI marketing is real, but it shouldn't lead to abandoning these tools — it should lead to using them intentionally. Every unnecessary AI call, redundant image generation, and mass-produced low-quality content run adds up. Efficiency and ethics align here.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Practical Ways to Reduce AI Marketing's Environmental Impact</h2>
+    <div class="reduce-actions">
+      <div class="ra-card"><div class="ra-icon">🎯</div><div class="ra-title">Prompt efficiently — get more from fewer calls</div><div class="ra-desc">Batching requests, crafting detailed prompts that require fewer revisions, and using outputs that don't need regeneration all reduce the number of AI calls — cutting both cost and emissions.</div></div>
+      <div class="ra-card"><div class="ra-icon">♻️</div><div class="ra-title">Reuse and repurpose AI outputs</div><div class="ra-desc">Rather than regenerating similar content repeatedly, build a library of AI-generated assets that can be adapted. A strong set of copy variants generated once beats 10 separate generation sessions.</div></div>
+      <div class="ra-card"><div class="ra-icon">⚡</div><div class="ra-title">Choose providers using renewable energy</div><div class="ra-desc">Major AI providers vary significantly in their renewable energy commitments. Google DeepMind, Microsoft Azure, and AWS all publish sustainability reports. Factoring environmental commitments into tool selection is a meaningful choice.</div></div>
+      <div class="ra-card"><div class="ra-icon">📊</div><div class="ra-title">Right-size the model to the task</div><div class="ra-desc">Large frontier models (GPT-4, Claude Opus) use substantially more energy than smaller models. For routine tasks — simple copy tweaks, basic classification, short content — smaller models are sufficient and far more efficient.</div></div>
+      <div class="ra-card"><div class="ra-icon">🌱</div><div class="ra-title">Include AI emissions in sustainability reporting</div><div class="ra-desc">Forward-looking brands are beginning to include AI compute emissions in their sustainability reporting alongside travel and energy use. This accountability creates pressure to reduce and tracks progress over time.</div></div>
+      <div class="ra-card"><div class="ra-icon">❓</div><div class="ra-title">Question: does this need to be AI-generated?</div><div class="ra-desc">The most sustainable AI prompt is the one you don't send. Building a habit of asking whether AI is genuinely the right tool for a task — versus human judgment, existing assets, or simpler approaches — naturally reduces unnecessary compute.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🌍</div>
+      <div>
+        <h3>The Bigger Picture: AI and Climate</h3>
+        <p>The environmental cost of AI is contested and evolving. Some researchers argue AI's overall effect on climate could be net positive — enabling optimization in energy grids, climate modeling, and materials science that saves more energy than it consumes. Others point out that the computing industry's historical pattern has been to use efficiency gains to expand usage rather than reduce consumption. The honest answer is that the long-term environmental impact of AI at scale is genuinely uncertain. What is certain: the energy and water consumption are real, they're growing rapidly, and responsible use includes being aware of and accounting for them — not treating AI tools as consequence-free.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI marketing tools have real environmental costs — each query, image generation, and personalization call consumes electricity and water at data centers, with AI queries using roughly 10× more energy than a Google search.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Training large AI models generates hundreds of metric tons of CO₂ equivalent, and daily inference at scale compounds ongoing emissions — making AI's environmental footprint a legitimate sustainability consideration for marketing teams.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Practical reductions include: efficient prompting, reusing AI outputs, choosing renewable-energy providers, right-sizing models to tasks, and questioning whether AI is genuinely the right tool for each use case.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The long-term net environmental impact of AI is genuinely uncertain — responsible use means acknowledging the cost is real, making intentional choices to reduce unnecessary compute, and tracking AI emissions alongside other sustainability metrics.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

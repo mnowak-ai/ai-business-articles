@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who Is Responsible When AI Marketing Goes Wrong? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  /* Responsibility chain */
+  .resp-chain{display:flex;flex-direction:column;gap:12px;margin:24px 0;}
+  .rc-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:24px;}
+  .rc-who{display:flex;gap:14px;align-items:center;margin-bottom:14px;}
+  .rc-icon{font-size:32px;}
+  .rc-role{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);}
+  .rc-subtitle{font-size:13px;color:var(--gray-muted);}
+  .rc-owns{margin-bottom:10px;}
+  .rc-owns-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--purple);margin-bottom:6px;}
+  .rc-own-item{font-size:14px;color:var(--gray-text);padding:4px 0;border-bottom:1px solid var(--purple-mid);line-height:1.5;}
+  .rc-own-item:last-child{border-bottom:none;}
+  .rc-defense{background:var(--red-pale);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--red);font-style:italic;}
+  /* Scenario quiz */
+  .resp-quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .rq-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .rq-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .rq-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .rq-scenario{background:var(--white);border:2px solid var(--purple-mid);border-radius:16px;padding:22px;margin-bottom:14px;}
+  .rq-scenario-text{font-size:16px;font-weight:500;color:var(--purple-dark);margin-bottom:14px;line-height:1.5;}
+  .rq-opts{display:flex;flex-direction:column;gap:8px;}
+  .rq-btn{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:10px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:14px;text-align:left;cursor:pointer;transition:all .2s;color:var(--gray-text);}
+  .rq-btn:hover{background:var(--purple-pale);border-color:var(--purple);}
+  .rq-btn.c{background:var(--green-pale);border-color:var(--green);color:var(--green);font-weight:600;}
+  .rq-btn.w{background:var(--red-pale);border-color:var(--red);color:var(--red);}
+  .rq-fb{margin-top:10px;padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.6;display:none;}
+  .rq-fb.show{display:block;animation:fadeIn .3s ease;}
+  .rq-fb.c{background:var(--green-pale);color:var(--green);}
+  .rq-fb.w{background:var(--red-pale);color:var(--red);}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.4 · Ethical Marketing & Bias</div>
+  <h1>Who Is Responsible When AI Marketing Goes Wrong?</h1>
+  <p class="hero-sub">"The AI did it" is not a legal or ethical defense. Understanding who owns responsibility at each stage of AI marketing — and where the buck actually stops — is essential for every marketer using these tools.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>When an AI system produces discriminatory ad targeting, publishes a biased image, generates false claims, or causes a PR crisis — who is responsible? The AI? The company that made the AI? The team that deployed it? The individual marketer who approved the content? <mark>The short answer, consistently backed by regulators and legal precedent: the organization that deployed the AI and the humans who made the decisions to use it without adequate oversight are responsible — not the AI itself and not usually the AI tool provider.</mark></p>
+    <p>This isn't just a legal question. It's a practical one. Understanding where responsibility sits determines what review processes you need, what documentation to keep, and who makes the final call on high-stakes AI decisions.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Responsibility Chain in AI Marketing</h2>
+    <div class="resp-chain">
+      <div class="rc-card">
+        <div class="rc-who"><div class="rc-icon">🏗️</div><div><div class="rc-role">AI Tool Developer (e.g., OpenAI, Midjourney)</div><div class="rc-subtitle">Responsible for model capabilities and documented limitations</div></div></div>
+        <div class="rc-owns"><div class="rc-owns-label">Owns:</div>
+          <div class="rc-own-item">Building models that have safety guardrails and documented known limitations</div>
+          <div class="rc-own-item">Providing clear terms of service about acceptable use</div>
+          <div class="rc-own-item">Disclosing known biases and limitations in documentation</div>
+          <div class="rc-own-item">Responding to discovered harms promptly</div>
+        </div>
+        <div class="rc-defense">Does NOT own: What customers do with the tool within terms of service. The output of customer prompts is not the developer's legal responsibility in most jurisdictions.</div>
+      </div>
+      <div class="rc-card" style="border-color:var(--purple);">
+        <div class="rc-who"><div class="rc-icon">🏢</div><div><div class="rc-role">The Organization Deploying AI</div><div class="rc-subtitle">Primary legal and reputational responsibility — the buck stops here</div></div></div>
+        <div class="rc-owns"><div class="rc-owns-label">Owns:</div>
+          <div class="rc-own-item">Selecting appropriate tools and vetting their limitations</div>
+          <div class="rc-own-item">Establishing ethical use policies and review processes</div>
+          <div class="rc-own-item">Ensuring all AI-assisted outputs meet legal requirements</div>
+          <div class="rc-own-item">Auditing for bias, accuracy, and compliance before publishing</div>
+          <div class="rc-own-item">Any harm caused by AI outputs that the organization published</div>
+        </div>
+        <div class="rc-defense" style="background:var(--purple-pale);color:var(--purple);">"The AI generated it" is not a legal defense. Regulators hold organizations responsible for what they publish, regardless of the production method.</div>
+      </div>
+      <div class="rc-card">
+        <div class="rc-who"><div class="rc-icon">👩‍💼</div><div><div class="rc-role">Individual Marketers Using AI Tools</div><div class="rc-subtitle">Professional responsibility for outputs they approve and publish</div></div></div>
+        <div class="rc-owns"><div class="rc-owns-label">Owns:</div>
+          <div class="rc-own-item">Applying bias review and content standards to AI drafts before publishing</div>
+          <div class="rc-own-item">Escalating concerns about AI output rather than publishing questionable content</div>
+          <div class="rc-own-item">Staying informed about current legal and ethical standards for AI-assisted marketing</div>
+          <div class="rc-own-item">Advocating for adequate review processes within their organization</div>
+        </div>
+        <div class="rc-defense">"I was just following the AI's output" does not reduce professional responsibility. Editorial judgment is always required before publishing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The AI doesn't publish content. A human does. A human decides to deploy it. A human approves the output. A human signs off on the campaign. Accountability follows decision-making — and decisions are always made by people.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Who Bears Responsibility? — Scenario Practice</h2>
+    <div class="resp-quiz">
+      <div class="rq-label">⚖️ Responsibility Scenarios</div>
+      <div class="rq-title">Where Does the Responsibility Land?</div>
+      <div class="rq-sub">Read each scenario and identify who bears the primary responsibility.</div>
+      <div class="rq-scenario" id="rqs1">
+        <div class="rq-scenario-text">A marketing team uses an AI tool to generate 500 product descriptions and publishes them all without review. 12 descriptions contain inaccurate health claims that violate FTC guidelines. Who is primarily responsible?</div>
+        <div class="rq-opts">
+          <button class="rq-btn" onclick="rqAnswer('rqs1',this,false,'rqs1-fb')">A. The AI tool developer, for generating false claims</button>
+          <button class="rq-btn" onclick="rqAnswer('rqs1',this,true,'rqs1-fb')">B. The organization and the marketing team, for publishing without human review</button>
+          <button class="rq-btn" onclick="rqAnswer('rqs1',this,false,'rqs1-fb')">C. No one — AI outputs are not covered by FTC rules</button>
+        </div>
+        <div class="rq-fb" id="rqs1-fb"></div>
+      </div>
+      <div class="rq-scenario" id="rqs2">
+        <div class="rq-scenario-text">A startup uses Meta's ad platform with AI-optimized delivery for a housing ad campaign. The AI delivery system shows the ads to 94% white audiences without the advertiser specifying race. Who bears primary responsibility for the discriminatory outcome?</div>
+        <div class="rq-opts">
+          <button class="rq-btn" onclick="rqAnswer('rqs2',this,false,'rqs2-fb')">A. Meta, for building an algorithm that produces racially skewed delivery</button>
+          <button class="rq-btn" onclick="rqAnswer('rqs2',this,false,'rqs2-fb')">B. No one — algorithmic optimization without explicit discrimination intent is legal</button>
+          <button class="rq-btn" onclick="rqAnswer('rqs2',this,true,'rqs2-fb')">C. Shared responsibility: Meta has platform accountability; the advertiser has responsibility for auditing delivery and choosing to use a platform with known delivery disparities</button>
+        </div>
+        <div class="rq-fb" id="rqs2-fb"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">📋</div>
+      <div>
+        <h3>Document Your AI Decisions</h3>
+        <p>One of the most practical things any marketing team can do is maintain documentation of AI-related decisions: which tools were used, what review processes were applied, who approved what before publishing, and what the bias review found. This documentation serves three purposes: it demonstrates good faith in the event of a regulatory inquiry; it enables post-mortems when something goes wrong; and it builds institutional memory about which AI patterns have caused problems before. "We had a process and we followed it" is a meaningful legal and reputational position. "We had no process" is not.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>"The AI did it" is not a legal or ethical defense — organizations that publish AI-generated content are responsible for that content, regardless of how it was produced.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Responsibility is distributed: AI developers own model safety and documented limitations; organizations own deployment decisions and output review; individual marketers own editorial judgment before publishing.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>In housing, employment, and credit advertising, discriminatory AI delivery outcomes carry legal liability regardless of whether the advertiser intended the discrimination — disparate impact matters as much as discriminatory intent in these regulated categories.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Documenting AI decisions — tools used, review processes applied, who approved what — demonstrates good faith and creates a defensible paper trail if practices are ever challenged by regulators or affected parties.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  const rqDone={rqs1:false,rqs2:false};
+  const rqFbs={
+    rqs1:{c:'✅ <strong>Correct.</strong> The organization and the marketing team bear primary responsibility. FTC rules apply to all published advertising — the production method doesn\'t change the legal obligation. Publishing without human review of AI output is a process failure that the organization owns. The AI tool developer may have violated its own terms of service if the tool was designed to generate accurate content, but they do not bear the primary legal liability for the organization\'s publishing decision.',w:'❌ Not quite. The organization and team are primarily responsible (B). The FTC explicitly holds advertisers responsible for the claims in their advertising, regardless of whether AI or humans generated them. AI-generated false claims are still false claims — and they\'re still the publisher\'s responsibility to verify before publishing.'},
+    rqs2:{c:'✅ <strong>Right — shared responsibility, but both parties bear some.</strong> Meta has been found to have platform-level accountability for delivery systems that produce discriminatory outcomes in regulated categories (housing, employment, credit) — they\'ve paid settlements for exactly this. But the advertiser also has responsibility: choosing to use a platform known to have delivery disparities for housing ads, and failing to audit delivery demographics, is a failure of due diligence. In regulated categories, advertisers must verify that actual delivery is non-discriminatory — not just assume the platform handles it.',w:'❌ Not quite. The answer is C — shared responsibility. Both the platform (for building a discriminatory delivery system) and the advertiser (for failing to audit and for choosing to use a platform with known delivery disparities in a regulated category) bear responsibility. Housing ads are specifically regulated by the Fair Housing Act, which applies regardless of intent.'}
+  };
+  function rqAnswer(id,btn,correct,fbId){
+    if(rqDone[id])return;rqDone[id]=true;
+    document.getElementById(id).querySelectorAll('.rq-btn').forEach(b=>b.style.pointerEvents='none');
+    const fb=document.getElementById(fbId);
+    btn.classList.add(correct?'c':'w');
+    fb.innerHTML=correct?rqFbs[id].c:rqFbs[id].w;
+    fb.className='rq-fb show '+(correct?'c':'w');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Bias in AI Marketing? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Bias source explorer */
+  .bias-sources{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .bs-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .bs-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .bs-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .bs-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .bs-tab{padding:10px 20px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all .2s;}
+  .bs-tab:hover,.bs-tab.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .bs-panel{display:none;}
+  .bs-panel.active{display:block;animation:fadeIn .3s ease;}
+  .bs-source-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .bs-def{font-size:15px;color:var(--gray-muted);margin-bottom:14px;line-height:1.6;}
+  .bs-example{background:var(--red-pale);border:1.5px solid #FCA5A5;border-radius:12px;padding:14px 18px;margin-bottom:12px;}
+  .bs-example-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:5px;}
+  .bs-example-text{font-size:14px;line-height:1.65;color:var(--gray-text);}
+  .bs-fix{background:var(--green-pale);border:1.5px solid #6EE7B7;border-radius:12px;padding:14px 18px;}
+  .bs-fix-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:5px;}
+  .bs-fix-text{font-size:14px;line-height:1.65;color:var(--gray-text);}
+
+  /* Bias detection game */
+  .detect-game{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .dg-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .dg-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .dg-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .dg-scenarios{display:flex;flex-direction:column;gap:12px;}
+  .dg-scenario{background:var(--white);border:2px solid var(--purple-mid);border-radius:16px;padding:20px;}
+  .dg-text{font-size:15px;color:var(--gray-text);line-height:1.6;margin-bottom:14px;}
+  .dg-opts{display:flex;gap:8px;flex-wrap:wrap;}
+  .dg-opt{padding:8px 16px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
+  .dg-opt:hover{background:var(--purple-pale);border-color:var(--purple);}
+  .dg-opt.c{background:var(--green-pale);border-color:var(--green);color:var(--green);font-weight:600;}
+  .dg-opt.w{background:var(--red-pale);border-color:var(--red);color:var(--red);}
+  .dg-fb{margin-top:10px;padding:10px 14px;border-radius:10px;font-size:14px;line-height:1.6;display:none;}
+  .dg-fb.show{display:block;animation:fadeIn .3s ease;}
+  .dg-fb.correct{background:var(--green-pale);color:var(--green);}
+  .dg-fb.wrong{background:var(--red-pale);color:var(--red);}
+
+  /* Why it matters */
+  .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+  @media(max-width:600px){.impact-grid{grid-template-columns:1fr;}}
+  .ig{background:var(--purple-pale);border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;text-align:center;}
+  .ig-num{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--purple);line-height:1;margin-bottom:8px;}
+  .ig-label{font-size:13px;color:var(--gray-muted);line-height:1.5;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.4 · Ethical Marketing & Bias</div>
+  <h1>What Is Bias in AI Marketing?</h1>
+  <p class="hero-sub">AI doesn't discriminate on purpose — but it can discriminate by accident, amplifying hidden patterns in data in ways that harm real people and damage brands. Understanding where bias comes from is the first step to catching it.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>When most people think about bias, they think about intentional prejudice — someone choosing to treat people differently because of who they are. <mark>AI bias is different: it's when a system produces systematically unfair or skewed outputs not because anyone intended harm, but because the training data, the design choices, or the optimization goals encoded existing patterns of inequality into the system.</mark> In marketing, this can mean AI that consistently shows certain job ads to men and not women, targets financial products differently by neighborhood in ways that correlate with race, or generates images that center one demographic while excluding others.</p>
+    <p>None of these outcomes require a biased human to be involved — the AI can produce them automatically, at scale, invisibly, from patterns in data that reflects a world that was already unequal.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Why AI Bias in Marketing Matters</h2>
+    <div class="impact-grid">
+      <div class="ig"><div class="ig-num">4×</div><div class="ig-label">more likely: AI hiring ad tools showed high-paying jobs to men over equally qualified women in Amazon's now-discontinued recruitment AI</div></div>
+      <div class="ig"><div class="ig-num">88%</div><div class="ig-label">of facial recognition systems have higher error rates for darker-skinned women than lighter-skinned men — affecting AI image tools used in marketing</div></div>
+      <div class="ig"><div class="ig-num">$1.3B</div><div class="ig-label">in FTC enforcement actions related to deceptive or discriminatory digital advertising and AI-driven targeting practices since 2020</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Where Does AI Bias Come From? — Explore Each Source</h2>
+    <div class="bias-sources">
+      <div class="bs-label">🔍 Bias Source Explorer</div>
+      <div class="bs-title">Click Each Source to Understand How It Creates Bias</div>
+      <div class="bs-sub">Bias enters AI systems at multiple points — from data collection through model deployment. Understanding each entry point is essential for catching it.</div>
+      <div class="bs-tabs">
+        <button class="bs-tab active" onclick="showSource('data',this)">📊 Biased Training Data</button>
+        <button class="bs-tab" onclick="showSource('feedback',this)">🔄 Feedback Loops</button>
+        <button class="bs-tab" onclick="showSource('proxy',this)">🎭 Proxy Variables</button>
+        <button class="bs-tab" onclick="showSource('optimization',this)">⚙️ Wrong Optimization</button>
+      </div>
+      <div id="bs-display"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI systems don't invent bias from nothing. They find it in the data we give them — reflecting the history, inequalities, and blind spots of the world that data was collected from. The AI is a mirror. The question is what we do when we don't like what we see.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Detect the Bias — What Type Is It?</h2>
+    <p>Read each AI marketing scenario and identify what type of bias is at work.</p>
+    <div class="detect-game">
+      <div class="dg-label">🎯 Bias Detection Game</div>
+      <div class="dg-title">Name the Bias Source</div>
+      <div class="dg-sub">Match each scenario to the type of bias producing it.</div>
+      <div class="dg-scenarios">
+        <div class="dg-scenario" id="ds1">
+          <div class="dg-text">An AI image generation tool for a fitness brand consistently generates photos showing muscular, light-skinned, able-bodied athletes — because most of the fitness images in its training data featured that demographic.</div>
+          <div class="dg-opts">
+            <button class="dg-opt" onclick="dgAnswer('ds1',this,true,'ds1-fb','Biased Training Data')">Biased Training Data</button>
+            <button class="dg-opt" onclick="dgAnswer('ds1',this,false,'ds1-fb','Biased Training Data')">Feedback Loop</button>
+            <button class="dg-opt" onclick="dgAnswer('ds1',this,false,'ds1-fb','Biased Training Data')">Proxy Variable</button>
+            <button class="dg-opt" onclick="dgAnswer('ds1',this,false,'ds1-fb','Biased Training Data')">Wrong Optimization</button>
+          </div>
+          <div class="dg-fb" id="ds1-fb"></div>
+        </div>
+        <div class="dg-scenario" id="ds2">
+          <div class="dg-text">A job ad platform shows senior engineering roles primarily to men because its AI learned from historical click-through data where men historically clicked on those ads more — and now optimizes for that pattern.</div>
+          <div class="dg-opts">
+            <button class="dg-opt" onclick="dgAnswer('ds2',this,false,'ds2-fb','Feedback Loop')">Biased Training Data</button>
+            <button class="dg-opt" onclick="dgAnswer('ds2',this,true,'ds2-fb','Feedback Loop')">Feedback Loop</button>
+            <button class="dg-opt" onclick="dgAnswer('ds2',this,false,'ds2-fb','Feedback Loop')">Proxy Variable</button>
+            <button class="dg-opt" onclick="dgAnswer('ds2',this,false,'ds2-fb','Feedback Loop')">Wrong Optimization</button>
+          </div>
+          <div class="dg-fb" id="ds2-fb"></div>
+        </div>
+        <div class="dg-scenario" id="ds3">
+          <div class="dg-text">A financial services AI targets premium credit card offers based on ZIP code — a variable that, in many US cities, correlates strongly with race due to historical residential segregation patterns.</div>
+          <div class="dg-opts">
+            <button class="dg-opt" onclick="dgAnswer('ds3',this,false,'ds3-fb','Proxy Variable')">Biased Training Data</button>
+            <button class="dg-opt" onclick="dgAnswer('ds3',this,false,'ds3-fb','Proxy Variable')">Feedback Loop</button>
+            <button class="dg-opt" onclick="dgAnswer('ds3',this,true,'ds3-fb','Proxy Variable')">Proxy Variable</button>
+            <button class="dg-opt" onclick="dgAnswer('ds3',this,false,'ds3-fb','Proxy Variable')">Wrong Optimization</button>
+          </div>
+          <div class="dg-fb" id="ds3-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h3>Bias Isn't Always Visible Until Someone Gets Hurt</h3>
+        <p>One of the most challenging aspects of AI bias in marketing is that it often operates invisibly — no individual sees the full picture of who is being shown what. A woman doesn't know she wasn't shown the job ad. A customer in a lower-income zip code doesn't know they were shown a different credit offer. The bias only becomes visible through audits, investigative reporting, or when someone who was harmed comes forward. This is why proactive bias auditing is essential — you can't catch what you're not looking for.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI bias in marketing doesn't require intentional prejudice — it emerges from training data, feedback loops, proxy variables, and optimization goals that encode existing inequalities into automated systems.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The four main bias sources: biased training data (historical inequities baked into datasets), feedback loops (AI learns from biased human behavior and amplifies it), proxy variables (ZIP codes or names that correlate with protected characteristics), and wrong optimization goals (optimizing for engagement rather than fairness).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI bias in marketing causes real harm — people miss job opportunities, receive different financial offers, and see content that excludes or stereotypes them — often without ever knowing it happened.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Bias is often invisible without proactive auditing — no individual sees the full targeting picture, making systematic review essential for catching discrimination that hides in aggregate patterns.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const sources={
+    data:{name:'Biased Training Data',def:'AI learns from historical data — and history is full of inequality. If the data used to train a model reflects a world where women held fewer executive roles, or where certain demographics were underrepresented in advertising, the AI learns to replicate those patterns.',example:{label:'Real Example',text:'Amazon trained a hiring AI on 10 years of its own resumes — mostly from men, since tech historically hired more men. The AI learned to downgrade resumes that included the word "women\'s" (as in "women\'s chess club") and penalized graduates of all-women\'s colleges. Amazon scrapped the tool in 2018.'},fix:{label:'How to Address It',text:'Audit training datasets for demographic imbalance before training. Use techniques like re-weighting, oversampling underrepresented groups, or synthetic data generation to create more balanced datasets. Regularly review model outputs across demographic segments.'}},
+    feedback:{name:'Feedback Loops',def:'AI systems learn from user behavior — but user behavior reflects existing biases. If historical data shows men clicked on engineering ads more, an AI optimizing for clicks will show those ads to men more, which means fewer women see them, which means fewer women click, which "confirms" the original pattern. The bias self-reinforces.',example:{label:'Real Example',text:'Facebook\'s job ad delivery system was found by ProPublica to deliver ads differently by gender even when advertisers didn\'t specify gender targeting. Delivery algorithms learned from historical engagement data and optimized for it — nursing ads went mostly to women, mechanic ads mostly to men, perpetuating occupational stereotypes the advertiser never intended.'},fix:{label:'How to Address It',text:'Monitor ad delivery distributions across demographic groups, not just overall performance metrics. Set fairness constraints that limit how extreme delivery skew can be before triggering human review. Audit the gap between what you\'re targeting and who actually sees the ads.'}},
+    proxy:{name:'Proxy Variables',def:'AI isn\'t given protected characteristics like race or gender directly — but it can infer them from other variables that correlate with them. ZIP code, name, browsing history, and even word choices can all function as proxies for protected characteristics without anyone explicitly intending discrimination.',example:{label:'Real Example',text:'Multiple studies have shown that using ZIP codes or neighborhood for targeted advertising in US cities effectively creates racial targeting — because residential segregation patterns mean ZIP code is a strong predictor of race. A financial company "targeting by neighborhood" may be unintentionally discriminating by race.'},fix:{label:'How to Address It',text:'Audit which variables your targeting system is using and check whether they correlate with protected characteristics in your market. Apply disparate impact analysis: does your AI produce materially different outcomes for different racial, gender, or age groups, even without targeting them explicitly?'}},
+    optimization:{name:'Wrong Optimization Goal',def:'AI does exactly what you tell it to optimize for — and "most clicks," "highest conversion rate," or "lowest acquisition cost" can produce deeply unfair outcomes if those metrics are skewed by demographic factors. If the cheapest audience to acquire is also a systematically excluded one, optimizing for cost will amplify that exclusion.',example:{label:'Real Example',text:'Research by Upturn showed that programmatic ad systems optimizing for lowest CPM (cost per thousand impressions) frequently bought cheaper inventory that ended up appearing in contexts predominantly viewed by non-white audiences — not through explicit racial targeting, but through cost optimization that correlates with demographics.'},fix:{label:'How to Address It',text:'Add fairness metrics alongside performance metrics in campaign evaluation. Ask: who is this ad reaching, and is that distribution equitable? Consider adding demographic reach targets as explicit campaign constraints alongside efficiency targets.'}}
+  };
+
+  function showSource(key,btn){
+    document.querySelectorAll('.bs-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const s=sources[key];
+    document.getElementById('bs-display').innerHTML=`
+      <div class="bs-panel active">
+        <div class="bs-source-name">${s.name}</div>
+        <div class="bs-def">${s.def}</div>
+        <div class="bs-example"><div class="bs-example-label">⚠️ ${s.example.label}</div><div class="bs-example-text">${s.example.text}</div></div>
+        <div class="bs-fix"><div class="bs-fix-label">✅ ${s.fix.label}</div><div class="bs-fix-text">${s.fix.text}</div></div>
+      </div>`;
+  }
+  showSource('data',document.querySelector('.bs-tab'));
+
+  const dgDone={ds1:false,ds2:false,ds3:false};
+  const dgMsgs={
+    'Biased Training Data':'Biased training data — the AI learned from a dataset that reflected historical underrepresentation of diverse body types and skin tones in fitness media. It didn\'t choose to exclude anyone; it replicated what was already most common in the data it learned from.',
+    'Feedback Loop':'Feedback loop bias — the AI learned that men clicked on senior engineering ads more historically (because women saw them less and had less opportunity to click), then amplified that pattern by showing the ads to men preferentially, making the disparity worse.',
+    'Proxy Variable':'Proxy variable bias — ZIP code appears race-neutral on the surface, but in cities shaped by historical redlining and residential segregation, it functions as a strong predictor of race. Using it for premium offer targeting produces racially disparate outcomes without any explicit racial targeting.'
+  };
+  function dgAnswer(id,btn,correct,fbId,type){
+    if(dgDone[id])return;dgDone[id]=true;
+    document.getElementById(id).querySelectorAll('.dg-opt').forEach(b=>b.style.pointerEvents='none');
+    const fb=document.getElementById(fbId);
+    if(correct){btn.classList.add('c');fb.innerHTML=`✅ <strong>${type}.</strong> ${dgMsgs[type]}`;fb.className='dg-fb show correct';}
+    else{btn.classList.add('w');fb.innerHTML=`❌ Not quite — this is <strong>${type}</strong> bias. ${dgMsgs[type]}`;fb.className='dg-fb show wrong';}
+  }
+</script>
+</body>
+</html>

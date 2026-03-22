@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Privacy in Marketing: What Customers Deserve to Know — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  /* Rights accordion */
+  .rights-accordion{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .ra-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .ra-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .ra-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .right-item{border:1.5px solid var(--purple-mid);border-radius:14px;margin-bottom:8px;overflow:hidden;}
+  .right-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--white);transition:background .2s;}
+  .right-header:hover{background:var(--purple-pale);}
+  .right-item.open .right-header{background:var(--purple);}
+  .right-name{font-weight:600;font-size:15px;color:var(--purple-dark);}
+  .right-item.open .right-name{color:white;}
+  .right-arrow{font-size:11px;color:var(--gray-muted);transition:transform .2s;}
+  .right-item.open .right-arrow{transform:rotate(180deg);color:white;}
+  .right-body{display:none;padding:18px 20px;background:var(--white);}
+  .right-item.open .right-body{display:block;animation:fadeIn .3s ease;}
+  .right-law{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .right-law-tag{padding:3px 10px;border-radius:100px;font-size:12px;font-weight:600;}
+  .gdpr{background:#EDE9FE;color:#6D28D9;}
+  .ccpa{background:#FEF3C7;color:#92400E;}
+  .right-desc{font-size:14px;line-height:1.7;color:var(--gray-text);}
+  .right-marketing{background:var(--purple-pale);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:13px;color:var(--purple-dark);}
+  /* Transparency model comparison */
+  .transparency{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.transparency{grid-template-columns:1fr;}}
+  .tr-card{border-radius:18px;padding:24px;border:1.5px solid;}
+  .tr-card.opaque{background:var(--red-pale);border-color:#FCA5A5;}
+  .tr-card.transparent{background:var(--green-pale);border-color:#6EE7B7;}
+  .tr-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+  .tr-card.opaque .tr-label{color:var(--red);}
+  .tr-card.transparent .tr-label{color:var(--green);}
+  .tr-item{font-size:14px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.06);line-height:1.5;}
+  .tr-item:last-child{border-bottom:none;}
+  /* Quiz */
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-q{font-size:17px;line-height:1.6;color:rgba(255,255,255,.85);margin-bottom:28px;}
+  .quiz-opts{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all .2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,.2);}
+  .quiz-btn.correct{background:rgba(74,222,128,.25);border-color:#4ade80;}
+  .quiz-btn.wrong{background:rgba(248,113,113,.2);border-color:#f87171;}
+  .quiz-fb{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-fb.show{display:block;}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.4 · Ethical Marketing & Bias</div>
+  <h1>Data Privacy in Marketing: What Customers Deserve to Know</h1>
+  <p class="hero-sub">Customers provide their data — browsing history, purchase patterns, location, personal details — to power the personalized marketing experience. What do they have the right to know about how that data is used?</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Every piece of AI-powered marketing runs on customer data. Recommendation engines, personalized ads, behavioral targeting, churn prediction — all of it requires knowing things about people. <mark>Data privacy in marketing is the question of what rights customers have over their own information: the right to know what's collected, the right to say no, the right to see what you have, the right to correct it, and the right to delete it. Increasingly, these aren't just ethical principles — they're legal requirements backed by enforceable regulations.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Rights Customers Have — Click to Explore</h2>
+    <div class="rights-accordion">
+      <div class="ra-label">⚖️ Privacy Rights Explorer</div>
+      <div class="ra-title">What Customers Are Legally Entitled To Know and Control</div>
+      <div class="ra-sub">Click each right to see what it means legally — and what it requires from your marketing practices.</div>
+      <div class="right-item" id="r1" onclick="toggleRight('r1')">
+        <div class="right-header"><span class="right-name">🔍 The Right to Know — What data do you collect, and why?</span><span class="right-arrow">▼</span></div>
+        <div class="right-body">
+          <div class="right-law"><span class="right-law-tag gdpr">GDPR Art. 13</span><span class="right-law-tag ccpa">CCPA § 1798.100</span></div>
+          <div class="right-desc">Customers have the right to know what personal data you collect about them, why you collect it, how long you keep it, and who you share it with — before you collect it, not after. Privacy policies must be clear, accessible, and written in plain language.</div>
+          <div class="right-marketing">📋 Marketing implication: Your privacy policy must accurately describe AI-driven data use — behavioral tracking, lookalike audience creation, personalization. "We may use your data to improve your experience" is not sufficient specificity.</div>
+        </div>
+      </div>
+      <div class="right-item" id="r2" onclick="toggleRight('r2')">
+        <div class="right-header"><span class="right-name">🚫 The Right to Opt Out — Stop targeting or selling my data</span><span class="right-arrow">▼</span></div>
+        <div class="right-body">
+          <div class="right-law"><span class="right-law-tag ccpa">CCPA § 1798.120</span><span class="right-law-tag gdpr">GDPR Art. 7</span></div>
+          <div class="right-desc">California residents have the right to opt out of the sale or sharing of their personal information. GDPR requires freely given, specific, informed, and unambiguous consent for data processing — and the right to withdraw consent at any time. Opt-out must be as easy as opt-in.</div>
+          <div class="right-marketing">📋 Marketing implication: A "Do Not Sell My Personal Information" link must appear on the homepage for businesses subject to CCPA. Unsubscribe must work within 10 days. Pre-checked consent boxes violate GDPR.</div>
+        </div>
+      </div>
+      <div class="right-item" id="r3" onclick="toggleRight('r3')">
+        <div class="right-header"><span class="right-name">📁 The Right to Access — Show me what you have on me</span><span class="right-arrow">▼</span></div>
+        <div class="right-body">
+          <div class="right-law"><span class="right-law-tag gdpr">GDPR Art. 15</span><span class="right-law-tag ccpa">CCPA § 1798.110</span></div>
+          <div class="right-desc">Customers can request to see all the personal data a company holds about them — including what's been inferred. If your AI has built a behavioral profile predicting their likelihood to purchase or inferred their political leanings, they have the right to see that.</div>
+          <div class="right-marketing">📋 Marketing implication: AI-generated inferences about customers (interest categories, behavioral scores, predicted preferences) count as personal data subject to access requests. Marketing platforms must be auditable.</div>
+        </div>
+      </div>
+      <div class="right-item" id="r4" onclick="toggleRight('r4')">
+        <div class="right-header"><span class="right-name">✏️ The Right to Correct — Fix inaccurate data about me</span><span class="right-arrow">▼</span></div>
+        <div class="right-body">
+          <div class="right-law"><span class="right-law-tag gdpr">GDPR Art. 16</span><span class="right-law-tag ccpa">CCPA § 1798.106</span></div>
+          <div class="right-desc">Customers can request correction of inaccurate personal data. If your AI has miscategorized someone — placed them in the wrong demographic segment, assigned an incorrect interest profile, or made an inaccurate inference — they have the right to have it corrected.</div>
+          <div class="right-marketing">📋 Marketing implication: AI-driven audience segmentation and persona assignment are covered — if a customer challenges their categorization, businesses must have a process to review and correct it.</div>
+        </div>
+      </div>
+      <div class="right-item" id="r5" onclick="toggleRight('r5')">
+        <div class="right-header"><span class="right-name">🗑️ The Right to Delete — Erase my data</span><span class="right-arrow">▼</span></div>
+        <div class="right-body">
+          <div class="right-law"><span class="right-law-tag gdpr">GDPR Art. 17</span><span class="right-law-tag ccpa">CCPA § 1798.105</span></div>
+          <div class="right-desc">The "right to be forgotten" — customers can request deletion of their personal data, with specific exceptions (legal obligation, public interest, etc.). Deletion must cascade across systems — including backups, third-party processors, and AI training datasets.</div>
+          <div class="right-marketing">📋 Marketing implication: If your AI marketing platform stores customer data and a deletion request is made, the deletion must apply across all connected systems — including email platforms, CRMs, ad platforms, and analytics tools. "We can't delete from our AI model" is not an acceptable response.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Privacy isn't just compliance. Brands that treat customer data with genuine respect — being transparent about what they collect, making opt-out easy, and using data only in ways customers would expect — build deeper trust than brands that exploit every technically-legal data use.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Opaque Data Practices vs. Transparent Ones</h2>
+    <div class="transparency">
+      <div class="tr-card opaque">
+        <div class="tr-label">❌ Opaque Data Practices</div>
+        <div class="tr-item">1,200-word privacy policy written by lawyers, unreadable by humans</div>
+        <div class="tr-item">Consent buried in terms of service pre-checked boxes</div>
+        <div class="tr-item">No explanation of what AI personalization is doing with data</div>
+        <div class="tr-item">Opt-out requires calling a phone number during business hours</div>
+        <div class="tr-item">Data sold to third parties without customer knowledge</div>
+        <div class="tr-item">Inferred sensitive attributes never disclosed to customer</div>
+      </div>
+      <div class="tr-card transparent">
+        <div class="tr-label">✅ Transparent Data Practices</div>
+        <div class="tr-item">Plain-language privacy summary: "Here's what we collect and why"</div>
+        <div class="tr-item">Explicit, clear opt-in for each data use category</div>
+        <div class="tr-item">Dashboard where customers can see and edit their data profile</div>
+        <div class="tr-item">One-click opt-out available on every communication</div>
+        <div class="tr-item">Clear disclosure of any data sharing with third parties</div>
+        <div class="tr-item">AI personalization explained in customer-facing language</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-q">A US-based e-commerce company operates entirely within California and collects purchase history, browsing data, and email engagement to power AI personalization. A customer emails requesting to see all data the company has on them. Under CCPA, which response is correct?</p>
+      <div class="quiz-opts">
+        <button class="quiz-btn" onclick="answer(this,false)">A. The company can decline — customer data used for internal marketing is not subject to access requests</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. The company must provide a copy of all personal information it holds, including any inferences made about that customer, within 45 days</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. The company only needs to share explicitly provided data, not AI-generated inferences</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. CCPA only applies to companies with over $25M revenue, so the company can ignore the request</button>
+      </div>
+      <div class="quiz-fb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🔮</div>
+      <div>
+        <h3>The Future: Privacy-First Marketing</h3>
+        <p>The trajectory of privacy regulation is clear and consistent: more rights for consumers, more obligations for marketers, stricter enforcement. Third-party cookies are being phased out. AI inference of sensitive attributes is facing increasing scrutiny. Consent requirements are tightening globally. The marketers who thrive in this environment won't be the ones who fight every regulation — they'll be the ones who build privacy into their marketing strategy from the start, treating customer trust as the durable competitive advantage it actually is. First-party data built on genuine trust relationships is both ethically sound and increasingly the only type of data that will remain legally usable.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Customers have five core data privacy rights: to know what's collected, to opt out of targeting/data sales, to access their data, to correct inaccuracies, and to delete their information — backed by GDPR and CCPA with enforceable penalties.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI-generated inferences about customers — behavioral scores, interest categories, predicted preferences — count as personal data subject to access and deletion requests, not just explicitly provided information.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Privacy regulations are consistently moving toward more consumer rights, stricter consent requirements, and stronger enforcement — making privacy-first marketing both an ethical imperative and an increasingly necessary business strategy.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>First-party data built on genuine trust — where customers knowingly and willingly share information — is more durable, legally sound, and increasingly the only type of data that will remain viable as third-party tracking is phased out.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  const openRights={};
+  function toggleRight(id){
+    document.getElementById(id).classList.toggle('open');
+  }
+  let done=false;
+  function answer(btn,correct){
+    if(done)return;done=true;
+    document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');
+    const f=document.getElementById('qfb');
+    if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Correct.</strong> Under CCPA, California residents have the right to request access to all personal information a business has collected about them in the past 12 months — including any inferences made from that information. The business must respond within 45 days (extendable by another 45 with notice). CCPA applies to businesses meeting any of three thresholds: over $25M annual revenue, buying/selling/receiving/sharing personal information of 100,000+ consumers annually, or deriving 50%+ of annual revenue from selling personal information. Note: Option D is incorrect because CCPA doesn\'t only apply to $25M+ businesses — the data volume threshold (100K consumers) also triggers compliance.';}
+    else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ Not quite. The correct answer is B. CCPA gives California residents broad access rights — including to AI-generated inferences. "Internal marketing use" does not exempt data from access requests (A is wrong). Inferences are explicitly included in CCPA\'s definition of personal information (C is wrong). And CCPA applies to companies meeting any of three thresholds — revenue is only one (D is wrong for businesses that process data on 100K+ consumers).';}
+    f.classList.add('show');
+  }
+</script>
+</body>
+</html>

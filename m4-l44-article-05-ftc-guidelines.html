@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FTC Guidelines and Advertising Law: What You're Actually Not Allowed to Do — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  /* Rules cards */
+  .rules{display:flex;flex-direction:column;gap:12px;margin:24px 0;}
+  .rule{border-radius:16px;padding:22px;border:1.5px solid;}
+  .rule.legal{background:var(--green-pale);border-color:#6EE7B7;}
+  .rule.illegal{background:var(--red-pale);border-color:#FCA5A5;}
+  .rule-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
+  .rule.legal .rule-label{color:var(--green);}
+  .rule.illegal .rule-label{color:var(--red);}
+  .rule-title{font-size:16px;font-weight:600;color:var(--purple-dark);margin-bottom:8px;}
+  .rule-desc{font-size:14px;line-height:1.65;color:var(--gray-text);margin-bottom:8px;}
+  .rule-example{font-size:13px;font-style:italic;color:var(--gray-muted);}
+  /* Legal or illegal quiz */
+  .loi-quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .loi-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .loi-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .loi-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .loi-scenarios{display:flex;flex-direction:column;gap:12px;}
+  .loi-s{background:var(--white);border:2px solid var(--purple-mid);border-radius:14px;padding:18px;}
+  .loi-s-text{font-size:15px;color:var(--gray-text);line-height:1.6;margin-bottom:12px;}
+  .loi-opts{display:flex;gap:10px;}
+  .loi-opt{padding:9px 20px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+  .loi-opt:hover{background:var(--purple-pale);border-color:var(--purple);}
+  .loi-opt.correct-legal{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+  .loi-opt.correct-illegal{background:var(--red-pale);border-color:var(--red);color:var(--red);}
+  .loi-opt.wrong{background:#FEF9C3;border-color:#EAB308;color:#713F12;}
+  .loi-fb{margin-top:10px;padding:10px 14px;border-radius:10px;font-size:14px;line-height:1.6;display:none;}
+  .loi-fb.show{display:block;animation:fadeIn .3s ease;}
+  .loi-fb.legal{background:var(--green-pale);color:var(--green);}
+  .loi-fb.illegal{background:var(--red-pale);color:var(--red);}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.4 · Ethical Marketing & Bias</div>
+  <h1>FTC Guidelines and Advertising Law: What You're Actually Not Allowed to Do</h1>
+  <p class="hero-sub">The FTC has clear rules about truth in advertising, endorsements, and AI-generated content — and "I didn't know" is not a defense. Here's what every marketer needs to understand before publishing AI-assisted content.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Marketing law doesn't have a special exemption for AI. <mark>The Federal Trade Commission's core principle is simple: advertising must be truthful, not deceptive, and not unfair — and this applies whether a human wrote the ad or an AI generated it, whether the endorsement came from a real person or was fabricated by a language model, and whether the claim was made on social media, in email, or in a TV commercial.</mark> Understanding the FTC's core rules — and how they apply specifically to AI-assisted marketing — is essential for every working marketer.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Core FTC Rules — Legal vs. Illegal</h2>
+    <div class="rules">
+      <div class="rule illegal">
+        <div class="rule-label">❌ Illegal</div>
+        <div class="rule-title">Making false or unsubstantiated claims</div>
+        <div class="rule-desc">Any claim about your product or service must be truthful and, if factual, backed by evidence you have before making the claim — not claims you hope to prove later.</div>
+        <div class="rule-example">"Our supplement burns fat 3× faster than diet alone" requires clinical evidence before you say it — not after.</div>
+      </div>
+      <div class="rule illegal">
+        <div class="rule-label">❌ Illegal</div>
+        <div class="rule-title">Hiding material connections in endorsements</div>
+        <div class="rule-desc">If someone is paid, gifted products, or has any material connection to your brand, that must be clearly disclosed. "Gifted," "#ad," or "sponsored" must be prominently visible — not buried in hashtags or fine print.</div>
+        <div class="rule-example">An influencer paid $5,000 to post about your product without disclosing the relationship is FTC-illegal, even if their review is genuine.</div>
+      </div>
+      <div class="rule illegal">
+        <div class="rule-label">❌ Illegal (New 2024 Rule)</div>
+        <div class="rule-title">Fake reviews and AI-generated testimonials</div>
+        <div class="rule-desc">The FTC's 2024 rule explicitly bans fake reviews — including AI-generated reviews and testimonials, paying for positive reviews, and suppressing negative reviews. Violations carry fines up to $51,744 per violation.</div>
+        <div class="rule-example">Using AI to generate "customer testimonials" that don't represent real customer experiences is now explicitly illegal under FTC rules.</div>
+      </div>
+      <div class="rule illegal">
+        <div class="rule-label">❌ Illegal (Emerging)</div>
+        <div class="rule-title">AI-generated content that deceives about its nature</div>
+        <div class="rule-desc">Using AI to impersonate real people, create fake news articles promoting products, or generate synthetic media that misleads consumers about its origin is considered deceptive under FTC guidelines.</div>
+        <div class="rule-example">Creating a fake "news article" with AI that appears to be independent journalism but promotes your product is deceptive advertising.</div>
+      </div>
+      <div class="rule legal">
+        <div class="rule-label">✅ Legal</div>
+        <div class="rule-title">Using AI to create marketing content</div>
+        <div class="rule-desc">Using AI to draft ad copy, generate images, create social posts, or assist with marketing production is fully legal — as long as the resulting content meets all existing truthfulness, non-deception, and disclosure requirements.</div>
+        <div class="rule-example">"AI helped write this ad" is not a legal problem. "AI wrote a fake review for this product" is.</div>
+      </div>
+      <div class="rule legal">
+        <div class="rule-label">✅ Legal</div>
+        <div class="rule-title">Personalized advertising based on behavioral data</div>
+        <div class="rule-desc">Targeting ads based on behavioral data is legal under FTC guidelines when conducted with appropriate privacy disclosures and without discriminatory targeting of protected characteristics in regulated categories (housing, employment, credit).</div>
+        <div class="rule-example">Retargeting users who visited your product page is legal. Excluding users from housing ads based on race is not.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The FTC's fundamental test is simple: would a reasonable consumer be misled by this? If yes, it's illegal — regardless of whether a human or AI produced it, and regardless of whether the deception was intentional.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Legal or Illegal? Test Your Knowledge</h2>
+    <div class="loi-quiz">
+      <div class="loi-label">⚖️ Legal or Illegal?</div>
+      <div class="loi-title">Apply the FTC Rules</div>
+      <div class="loi-sub">Classify each marketing practice based on FTC guidelines.</div>
+      <div class="loi-scenarios">
+        <div class="loi-s" id="ls1">
+          <div class="loi-s-text">A beauty brand uses AI to generate before/after photos for a skincare product — the "after" shows results that are more dramatic than what customers actually experience.</div>
+          <div class="loi-opts">
+            <button class="loi-opt" onclick="loiAnswer('ls1',this,false,'ls1-fb','Legal','Illegal')">✅ Legal</button>
+            <button class="loi-opt" onclick="loiAnswer('ls1',this,true,'ls1-fb','Illegal','Illegal')">❌ Illegal</button>
+          </div>
+          <div class="loi-fb" id="ls1-fb"></div>
+        </div>
+        <div class="loi-s" id="ls2">
+          <div class="loi-s-text">A SaaS company uses Claude to help write blog posts and social media captions, then publishes them as their own marketing content without disclosing AI was involved.</div>
+          <div class="loi-opts">
+            <button class="loi-opt" onclick="loiAnswer('ls2',this,true,'ls2-fb','Legal','Legal')">✅ Legal</button>
+            <button class="loi-opt" onclick="loiAnswer('ls2',this,false,'ls2-fb','Legal','Legal')">❌ Illegal</button>
+          </div>
+          <div class="loi-fb" id="ls2-fb"></div>
+        </div>
+        <div class="loi-s" id="ls3">
+          <div class="loi-s-text">An e-commerce brand sends free products to influencers and asks them to post about it, but doesn't require the influencers to disclose they received the products for free.</div>
+          <div class="loi-opts">
+            <button class="loi-opt" onclick="loiAnswer('ls3',this,false,'ls3-fb','Legal','Illegal')">✅ Legal</button>
+            <button class="loi-opt" onclick="loiAnswer('ls3',this,true,'ls3-fb','Illegal','Illegal')">❌ Illegal</button>
+          </div>
+          <div class="loi-fb" id="ls3-fb"></div>
+        </div>
+        <div class="loi-s" id="ls4">
+          <div class="loi-s-text">A supplement company uses AI to generate 50 five-star reviews from fictional customers with made-up names and posts them on their website and Amazon listing.</div>
+          <div class="loi-opts">
+            <button class="loi-opt" onclick="loiAnswer('ls4',this,false,'ls4-fb','Legal','Illegal')">✅ Legal</button>
+            <button class="loi-opt" onclick="loiAnswer('ls4',this,true,'ls4-fb','Illegal','Illegal')">❌ Illegal</button>
+          </div>
+          <div class="loi-fb" id="ls4-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>AI Doesn't Change the Rules — It Changes the Scale of Risk</h3>
+        <p>Every FTC rule that existed before AI still applies with AI. What changes is the scale: AI can generate thousands of fake reviews, hundreds of deceptive before/after images, or dozens of undisclosed endorsements in the time it used to take a human to create one. That means violations that would previously have been small-scale can now be massive — and the FTC has explicitly stated that it is treating AI-scale violations of existing rules as priorities for enforcement. Using AI responsibly in marketing means applying existing legal standards to AI-generated content, not assuming AI creates a new legal exception.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>FTC rules require all advertising to be truthful, non-deceptive, and fair — these rules apply equally to AI-generated content. "AI wrote it" is not a legal exemption from content standards.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The FTC's 2024 rule explicitly bans AI-generated fake reviews and testimonials, with fines up to $51,744 per violation — making AI-generated review content one of the highest-risk areas in AI marketing.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Material connections (paid partnerships, gifted products, affiliate relationships) must be clearly disclosed in endorsements — #ad or "gifted" must be prominently visible, not buried in hashtag lists.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Using AI to create marketing content (ads, blog posts, captions) is fully legal — what's illegal is creating deceptive content at AI scale, including false claims, fake testimonials, and undisclosed synthetic endorsements.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  const loiDone={ls1:false,ls2:false,ls3:false,ls4:false};
+  const loiFeedback={
+    ls1:{illegal:'❌ Illegal. AI-generated before/after images that show results more dramatic than customers actually experience are deceptive advertising — exactly the kind of false substantiation the FTC prohibits. The fact that AI made the image rather than a human Photoshopping it doesn\'t change the legal analysis. The FTC has specifically cited cosmetic advertising as a priority enforcement area for deceptive imagery.',legal:''},
+    ls2:{legal:'✅ Legal. Using AI to draft marketing content — blog posts, social posts, ad copy — is fully legal. There is currently no FTC requirement to disclose AI involvement in content creation (as opposed to AI-generated endorsements or reviews). The content must meet all normal truth-in-advertising standards, but "AI helped write this" does not trigger any disclosure requirement under current FTC rules.',illegal:''},
+    ls3:{illegal:'❌ Illegal. This is a clear FTC violation. When influencers receive any material benefit — free products, payment, discounts, or any other compensation — they must clearly disclose the material connection. The FTC requires this disclosure to be clear and conspicuous, meaning in the post itself (not just in a bio or buried in hashtags). Brands are responsible for ensuring their influencer partners make required disclosures.',legal:''},
+    ls4:{illegal:'❌ Illegal — and specifically addressed by the FTC\'s 2024 rule. Generating fake reviews using AI, from fictional customers, is explicitly prohibited and carries fines of up to $51,744 per violation. The FTC treats AI-generated fake reviews as a particularly serious violation because of the scale at which AI can produce them. This practice also potentially violates Amazon\'s terms of service, which could result in account termination.',legal:''}
+  };
+  function loiAnswer(id,btn,correct,fbId,answer,correctAnswer){
+    if(loiDone[id])return;loiDone[id]=true;
+    document.getElementById(id).querySelectorAll('.loi-opt').forEach(b=>b.style.pointerEvents='none');
+    const fb=document.getElementById(fbId);
+    const isLegal=answer==='Legal';
+    if(correct){
+      btn.classList.add(isLegal?'correct-legal':'correct-illegal');
+      fb.innerHTML=loiFeedback[id][correctAnswer.toLowerCase()];
+      fb.className=`loi-fb show ${correctAnswer.toLowerCase()}`;
+    } else {
+      btn.classList.add('wrong');
+      fb.innerHTML=loiFeedback[id][correctAnswer.toLowerCase()];
+      fb.className=`loi-fb show ${correctAnswer.toLowerCase()}`;
+    }
+  }
+</script>
+</body>
+</html>
