@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is a Workflow? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Workflow builder — click through stages */
+.wf-builder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.wf-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.wf-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.wf-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.wf-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.wf-tab{padding:8px 16px;border-radius:10px;border:1.5px solid var(--purple-mid);background:var(--white);color:var(--gray-muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.wf-tab.active{background:var(--purple);border-color:var(--purple);color:white;}
+.wf-scenario{display:none;animation:fadeIn .3s ease;}
+.wf-scenario.active{display:block;}
+.wf-flow{display:flex;align-items:flex-start;gap:0;flex-wrap:wrap;margin:12px 0;}
+.wf-step{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:14px 16px;min-width:140px;flex:1;position:relative;}
+.wf-step-num{width:24px;height:24px;background:var(--purple);color:white;border-radius:6px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.wf-step h4{font-size:13px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+.wf-step p{font-size:12px;color:var(--gray-muted);line-height:1.5;margin:0;}
+.wf-arrow{font-size:20px;color:var(--purple-mid);padding:0 6px;margin-top:28px;flex-shrink:0;}
+.wf-result{background:var(--purple);color:white;border-radius:10px;padding:10px 14px;text-align:center;font-size:13px;font-weight:600;margin-top:12px;}
+
+/* Three formats */
+.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+.format-card{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:18px;padding:20px;text-align:center;}
+.format-icon{font-size:28px;margin-bottom:10px;}
+.format-name{font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.format-desc{font-size:13px;color:var(--gray-muted);line-height:1.55;}
+
+/* Individual vs team */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+.cmp{border-radius:20px;padding:22px;}
+.cmp.ind{background:#EFF6FF;border:2px solid #BFDBFE;}
+.cmp.team{background:var(--purple-pale);border:2px solid var(--purple-mid);}
+.cmp-lbl{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.cmp.ind .cmp-lbl{color:#2563EB;}
+.cmp.team .cmp-lbl{color:var(--purple);}
+.cmp-item{display:flex;gap:8px;margin-bottom:9px;font-size:14px;line-height:1.5;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.format-grid{grid-template-columns:1fr;}.compare{grid-template-columns:1fr;}.wf-flow{flex-direction:column;}.wf-arrow{display:none;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.2 · Workflow Planning with AI</div>
+  <h1>What Is a Workflow? The Backbone of Every Business</h1>
+  <p class="hero-sub">Before AI can improve a workflow, you need to understand what a workflow actually is. Every business runs on them — and most problems that look like "people problems" are actually workflow problems in disguise.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>The Definition That Changes How You See Work</h2>
+    <p>A <mark>workflow</mark> is a defined sequence of steps that transforms an input into an output. That's it. Simple in theory — endlessly complex in practice. When you order something online and it shows up at your door, a workflow made that happen: the order was received, payment was processed, the warehouse was notified, the item was picked, packed, labeled, routed, and delivered. Dozens of steps, multiple teams, precise sequencing.</p>
+    <p>Every business function runs on workflows. Marketing campaigns, sales processes, hiring, product launches, customer support — each is a series of connected tasks with a defined outcome. <mark>When workflows are clear and well-designed, work flows.</mark> When they're unclear or broken, everything stalls — even if the people involved are talented and hardworking.</p>
+    <div class="pull-quote"><p>Most business problems that look like people problems are actually workflow problems. The process is broken — not the person.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>See It In Real Life — Three Familiar Workflows</h2>
+    <p>Click each scenario to see how it maps to a real workflow structure:</p>
+    <div class="wf-builder">
+      <div class="wf-label">🔄 Interactive Explorer</div>
+      <div class="wf-title">Workflows You Already Know</div>
+      <div class="wf-sub">Select a scenario to see the workflow behind it.</div>
+      <div class="wf-tabs">
+        <button class="wf-tab active" onclick="showWf(0)">🎉 Plan a School Event</button>
+        <button class="wf-tab" onclick="showWf(1)">🚀 Launch a Product</button>
+        <button class="wf-tab" onclick="showWf(2)">📣 Run a Marketing Campaign</button>
+      </div>
+      <div id="wfContainer"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Three Ways Workflows Are Documented</h2>
+    <p>Businesses capture workflows in different formats depending on the complexity of the work and how many people need to follow it. You'll encounter all three in a professional setting:</p>
+    <div class="format-grid">
+      <div class="format-card">
+        <div class="format-icon">📋</div>
+        <div class="format-name">Task Board</div>
+        <div class="format-desc">Visual cards representing tasks, organized into columns (To Do / In Progress / Done). Great for teams that need to see status at a glance. Asana, Trello, and Monday.com use this format.</div>
+      </div>
+      <div class="format-card">
+        <div class="format-icon">☑️</div>
+        <div class="format-name">Checklist</div>
+        <div class="format-desc">A sequential list of steps that must be completed in order. Simple and effective for standard processes where sequencing is critical. Checklists prevent steps from being skipped accidentally.</div>
+      </div>
+      <div class="format-card">
+        <div class="format-icon">📅</div>
+        <div class="format-name">Timeline / Gantt</div>
+        <div class="format-desc">Shows tasks mapped against time, with start and end dates. Reveals how tasks overlap and depend on each other. Essential for projects with hard deadlines and multiple parallel workstreams.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Why Workflows Matter Even More for Teams</h2>
+    <p>When you work alone, a messy workflow mostly hurts you. When you work in a team, a messy workflow hurts everyone — and can block entire projects from moving forward. The bigger the team, the more critical clear workflows become.</p>
+    <div class="compare">
+      <div class="cmp ind">
+        <div class="cmp-lbl">👤 Individual Work</div>
+        <div class="cmp-item">→ <span>You know what needs to happen next</span></div>
+        <div class="cmp-item">→ <span>Ambiguity only slows you down</span></div>
+        <div class="cmp-item">→ <span>You can adjust on the fly without telling anyone</span></div>
+        <div class="cmp-item">→ <span>Mistakes affect only your output</span></div>
+        <div class="cmp-item">→ <span>Documentation is optional</span></div>
+      </div>
+      <div class="cmp team">
+        <div class="cmp-lbl">👥 Team Work</div>
+        <div class="cmp-item">→ <span>Everyone needs to know their role and what comes next</span></div>
+        <div class="cmp-item">→ <span>Ambiguity blocks other people's work</span></div>
+        <div class="cmp-item">→ <span>Changes need to be communicated to all dependencies</span></div>
+        <div class="cmp-item">→ <span>One person's delay cascades to everyone downstream</span></div>
+        <div class="cmp-item">→ <span>Documentation is essential — it's everyone's shared map</span></div>
+      </div>
+    </div>
+    <p>This is why businesses invest heavily in workflow documentation, project management tools, and — increasingly — AI systems that can monitor workflow health in real time. A well-documented workflow isn't bureaucracy. It's the shared understanding that lets a team move fast without constantly asking "wait, who's doing what next?"</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Why AI Needs Documented Workflows to Help</h2>
+    <p>Here's something important to understand before you learn about AI workflow tools: <mark>AI can only optimize what has been defined</mark>. If your workflow exists only in someone's head, AI has nothing to work with. If tasks aren't documented, deadlines aren't recorded, and dependencies aren't mapped — AI tools like Asana's AI Work Graph are flying blind.</p>
+    <p>This is why the first step in any AI-assisted workflow improvement is documentation. Before asking "how can AI make this faster?" the question is "have we actually mapped out what happens, in what order, and who owns each step?" Without that foundation, AI adds noise, not value.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">A startup's product launches keep running late. The team is talented and works long hours, but every launch feels chaotic — things get missed, handoffs are unclear, and the same problems repeat. What is the most likely root cause?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">The team isn't working hard enough</button>
+        <button class="qopt" onclick="cq(this,false)">The product itself is too complex to launch reliably</button>
+        <button class="qopt" onclick="cq(this,true)">The launch process is undocumented — they don't have a defined workflow with clear steps, ownership, and sequencing</button>
+        <button class="qopt" onclick="cq(this,false)">They need a bigger team to handle the workload</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A workflow is a defined sequence of steps that transforms an input into an output. Every business function runs on workflows — whether they're documented or not.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Most business problems that look like people problems are actually workflow problems. When the process is unclear, even great teams struggle.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Workflows are documented in three main formats: task boards (visual status), checklists (sequential steps), and timelines/Gantt charts (tasks mapped against time).</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI can only optimize what has been defined. Documentation isn't bureaucracy — it's the foundation that makes AI workflow tools actually work.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const workflows=[
+  {
+    name:'Plan a School Event',
+    steps:[
+      {n:1,h:'Set the goal',p:'Decide: what kind of event, when, how many people, what budget?'},
+      {n:2,h:'Assign roles',p:'Who handles venue, food, promotion, and day-of coordination?'},
+      {n:3,h:'Book the venue',p:'Confirm date, capacity, and any rules or costs.'},
+      {n:4,h:'Promote the event',p:'Social posts, flyers, emails — get people to actually show up.'},
+      {n:5,h:'Confirm logistics',p:'Catering, AV equipment, setup crew, check-in process.'},
+      {n:6,h:'Run the event',p:'Execute the plan, handle problems, keep things on schedule.'},
+    ],
+    result:'🎉 A successful event that people remember — and a workflow you can reuse next time.'
+  },
+  {
+    name:'Launch a Product',
+    steps:[
+      {n:1,h:'Define the product',p:'What problem does it solve? Who is it for? What does it do?'},
+      {n:2,h:'Build & test',p:'Development, QA, beta feedback — fix what's broken before launch.'},
+      {n:3,h:'Create launch materials',p:'Website copy, demo videos, press kit, sales deck.'},
+      {n:4,h:'Train the team',p:'Sales, support, and marketing all need to know the product cold.'},
+      {n:5,h:'Soft launch',p:'Release to a small group first — catch real-world issues before full rollout.'},
+      {n:6,h:'Full launch & monitor',p:'Go live, track metrics, respond to feedback fast.'},
+    ],
+    result:'🚀 A product in market with a team that knows how to support it.'
+  },
+  {
+    name:'Run a Marketing Campaign',
+    steps:[
+      {n:1,h:'Set campaign goal',p:'Brand awareness? Leads? Sales? The goal shapes every other decision.'},
+      {n:2,h:'Define the audience',p:'Who are we trying to reach? What do they care about?'},
+      {n:3,h:'Create the content',p:'Copy, visuals, videos — the actual stuff people will see.'},
+      {n:4,h:'Set up distribution',p:'Email, social, ads, partnerships — where will it appear?'},
+      {n:5,h:'Launch',p:'Send, post, publish — everything goes live on schedule.'},
+      {n:6,h:'Measure & iterate',p:'What's working? What's not? Adjust before the budget runs out.'},
+    ],
+    result:'📣 A campaign that reaches the right people with the right message at the right time.'
+  }
+];
+function showWf(i){
+  document.querySelectorAll('.wf-tab').forEach((t,ti)=>t.classList.toggle('active',ti===i));
+  const w=workflows[i];
+  const arrows=w.steps.map((_,si)=>si<w.steps.length-1?`<div class="wf-arrow">→</div>`:``);
+  const steps=w.steps.map((s,si)=>`<div class="wf-step"><div class="wf-step-num">${s.n}</div><h4>${s.h}</h4><p>${s.p}</p></div>${arrows[si]||''}`).join('');
+  document.getElementById('wfContainer').innerHTML=`<div class="wf-flow">${steps}</div><div class="wf-result">${w.result}</div>`;
+}
+showWf(0);
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! Repeated chaos with talented people is almost always a workflow problem. When handoffs are unclear, steps aren\'t documented, and ownership is ambiguous — good people can\'t save a broken process. The fix isn\'t hiring — it\'s documentation and structure.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('undocumented'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ Effort and talent can\'t compensate for a missing workflow. When the same problems repeat launch after launch, it means the process itself isn\'t defined. Documenting the steps, assigning clear ownership, and mapping dependencies is what breaks the cycle.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

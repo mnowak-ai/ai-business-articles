@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assigning Work: Roles, Responsibilities & Accountability — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* RACI explainer */
+.raci-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0;}
+.raci-card{border-radius:16px;padding:18px;text-align:center;}
+.raci-card.r{background:#FEE2E2;border:2px solid #FECACA;}
+.raci-card.a{background:var(--purple-pale);border:2px solid var(--purple-mid);}
+.raci-card.c{background:var(--green-pale);border:2px solid #86EFAC;}
+.raci-card.i{background:var(--orange-pale);border:2px solid #FDE68A;}
+.raci-letter{font-family:'Fraunces',serif;font-size:40px;font-weight:900;line-height:1;margin-bottom:6px;}
+.raci-card.r .raci-letter{color:#DC2626;}
+.raci-card.a .raci-letter{color:var(--purple);}
+.raci-card.c .raci-letter{color:var(--green);}
+.raci-card.i .raci-letter{color:var(--orange);}
+.raci-word{font-size:14px;font-weight:700;margin-bottom:6px;}
+.raci-card.r .raci-word{color:#DC2626;}
+.raci-card.a .raci-word{color:var(--purple);}
+.raci-card.c .raci-word{color:var(--green);}
+.raci-card.i .raci-word{color:var(--orange);}
+.raci-desc{font-size:12px;line-height:1.5;color:var(--gray-text);}
+
+/* Interactive RACI matrix */
+.raci-matrix-wrap{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.rm-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.rm-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.rm-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.raci-table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+.raci-table th{background:var(--purple);color:white;padding:10px 12px;font-size:12px;font-weight:600;text-align:center;}
+.raci-table th:first-child{text-align:left;}
+.raci-table td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--purple-mid);text-align:center;cursor:pointer;transition:background .15s;}
+.raci-table td:first-child{text-align:left;font-weight:600;color:var(--gray-text);cursor:default;}
+.raci-table tr:last-child td{border-bottom:none;}
+.raci-table tr:nth-child(even) td{background:var(--gray-soft);}
+.raci-cell{display:inline-block;width:24px;height:24px;border-radius:6px;font-size:11px;font-weight:700;line-height:24px;text-align:center;}
+.raci-cell.R{background:#FEE2E2;color:#DC2626;}
+.raci-cell.A{background:var(--purple-pale);color:var(--purple);}
+.raci-cell.C{background:var(--green-pale);color:var(--green);}
+.raci-cell.I{background:var(--orange-pale);color:var(--orange);}
+.raci-cell.empty{background:transparent;}
+.rm-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}
+.rm-leg{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-muted);}
+.rm-dot{width:14px;height:14px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
+
+/* What AI can/can't */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+.cmp{border-radius:20px;padding:22px;}
+.cmp.good{background:var(--green-pale);border:2px solid #86EFAC;}
+.cmp.bad{background:#FFF1F1;border:2px solid #FECACA;}
+.cmp-lbl{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.cmp.good .cmp-lbl{color:var(--green);}
+.cmp.bad .cmp-lbl{color:#DC2626;}
+.cmp-item{display:flex;gap:8px;margin-bottom:9px;font-size:14px;line-height:1.5;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.raci-grid{grid-template-columns:1fr 1fr;}.compare{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.2 · Workflow Planning with AI</div>
+  <h1>Assigning Work: Roles, Responsibilities, and Accountability</h1>
+  <p class="hero-sub">A project with great tasks but unclear ownership is a project that will fail. RACI is the framework professionals use to make sure every task has exactly one person responsible and one person accountable. AI can help assign work — but only humans can navigate the dynamics that make assignments actually stick.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Why Ownership Prevents Chaos</h2>
+    <p>Accountability is the invisible infrastructure of every successful project. Without it, tasks drift: everyone assumes someone else is handling it, nobody wants to step on toes, and things fall through the cracks even when the team is talented and motivated.</p>
+    <p>The solution isn't motivation — it's clarity. When every task has <mark>one person whose name is on it</mark>, the question "who's responsible for this?" has an immediate, unambiguous answer. RACI is the most widely used framework for creating that clarity at scale.</p>
+    <div class="pull-quote"><p>Shared responsibility is no responsibility. The moment everyone owns something, nobody does.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>RACI: The Four Roles Every Task Needs</h2>
+    <p>RACI stands for Responsible, Accountable, Consulted, and Informed. Every task in a well-run project should have all four assigned — though not every role needs a different person:</p>
+    <div class="raci-grid">
+      <div class="raci-card r"><div class="raci-letter">R</div><div class="raci-word">Responsible</div><div class="raci-desc">The person doing the actual work. Can be multiple people if the task involves a team. They execute — but they report to the Accountable person.</div></div>
+      <div class="raci-card a"><div class="raci-letter">A</div><div class="raci-word">Accountable</div><div class="raci-desc">The single person who owns the outcome. They approve the work and answer for it if something goes wrong. There can only ever be ONE Accountable person per task.</div></div>
+      <div class="raci-card c"><div class="raci-letter">C</div><div class="raci-word">Consulted</div><div class="raci-desc">People whose input is needed before the task is finalized. Two-way communication. They're involved in shaping the output — not just notified about it.</div></div>
+      <div class="raci-card i"><div class="raci-letter">I</div><div class="raci-word">Informed</div><div class="raci-desc">People who need to know what happened or what was decided. One-way communication. They receive updates but don't shape the work.</div></div>
+    </div>
+    <p>The most common RACI mistake: making too many people <strong>Accountable</strong>. The moment you have two names in the A column, accountability evaporates. One person. Always.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>A RACI Matrix in Practice</h2>
+    <p>Here's a RACI matrix for a product launch. Click any cell to understand what that role means in context:</p>
+    <div class="raci-matrix-wrap">
+      <div class="rm-label">📋 Interactive RACI Matrix</div>
+      <div class="rm-title">Product Launch — Role Assignments</div>
+      <div class="rm-sub">Click any cell to learn what that role means for that specific task.</div>
+      <div style="overflow-x:auto;">
+        <table class="raci-table" id="raciTable"></table>
+      </div>
+      <div class="rm-legend">
+        <div class="rm-leg"><div class="rm-dot" style="background:#FEE2E2;color:#DC2626;">R</div>Responsible — does the work</div>
+        <div class="rm-leg"><div class="rm-dot" style="background:var(--purple-pale);color:var(--purple);">A</div>Accountable — owns the outcome</div>
+        <div class="rm-leg"><div class="rm-dot" style="background:var(--green-pale);color:var(--green);">C</div>Consulted — provides input</div>
+        <div class="rm-leg"><div class="rm-dot" style="background:var(--orange-pale);color:var(--orange);">I</div>Informed — receives updates</div>
+      </div>
+      <div id="raciDetail" style="background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 18px;margin-top:12px;display:none;font-size:13px;line-height:1.65;"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How AI Helps — and Where It Falls Short</h2>
+    <div class="compare">
+      <div class="cmp good">
+        <div class="cmp-lbl">✅ What AI Can Do</div>
+        <div class="cmp-item">✓ <span>Flag tasks with no assigned owner in your project tool</span></div>
+        <div class="cmp-item">✓ <span>Suggest assignments based on workload capacity data</span></div>
+        <div class="cmp-item">✓ <span>Detect when one person is Accountable for too many critical tasks</span></div>
+        <div class="cmp-item">✓ <span>Identify when the same person is Responsible for conflicting tasks at the same time</span></div>
+        <div class="cmp-item">✓ <span>Generate a RACI matrix template given a task list and team roster</span></div>
+      </div>
+      <div class="cmp bad">
+        <div class="cmp-lbl">❌ What Only Humans Can Do</div>
+        <div class="cmp-item">✕ <span>Know who is actually best-suited for a task (skills, not just title)</span></div>
+        <div class="cmp-item">✕ <span>Understand team dynamics — who works well together, who has tension</span></div>
+        <div class="cmp-item">✕ <span>Know who needs a development opportunity vs. who's already stretched</span></div>
+        <div class="cmp-item">✕ <span>Recognize political sensitivities in assignment decisions</span></div>
+        <div class="cmp-item">✕ <span>Handle conversations when someone disagrees with their assignment</span></div>
+      </div>
+    </div>
+    <p>This division of labor is important to internalize: AI handles the data layer of assignments (who's available, who's overloaded) while humans handle the context layer (who's right for this, what are the relationship dynamics, how do we have the conversation about it).</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">A project manager assigns the task "Write final report" with both Sarah and Marcus listed as Accountable. Two weeks later, the report isn't done — Sarah thought Marcus was leading, and Marcus thought Sarah was. What does this illustrate?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">A communication gap — they should have checked in with each other more</button>
+        <button class="qopt" onclick="cq(this,false)">A resource conflict — both had too much other work</button>
+        <button class="qopt" onclick="cq(this,true)">A RACI error — having two Accountable people creates ambiguity, making it functionally equivalent to having zero Accountable people</button>
+        <button class="qopt" onclick="cq(this,false)">A sequencing issue — the report was assigned too early in the project</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>RACI — Responsible, Accountable, Consulted, Informed — is the standard framework for making ownership explicit. Every task needs all four roles assigned, with exactly one Accountable person.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Two Accountable people = zero Accountable people. Shared accountability is the organizational equivalent of nobody being responsible.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI can handle the data layer of assignments: detecting overload, flagging missing owners, suggesting rebalancing. Only humans can handle the context layer: skills fit, team dynamics, development needs, and political sensitivities.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const tasks=['Define project scope','Create design assets','Develop features','Legal & compliance review','QA testing','Stakeholder approval','Launch'];
+const roles=['PM','Designer','Engineer','Legal','Exec'];
+const matrix=[
+  ['A','I','I','I','A'],
+  ['C','R','I','I','A'],
+  ['C','C','R','I','A'],
+  ['I','I','I','R','A'],
+  ['R','C','C','I','A'],
+  ['C','I','I','C','A'],
+  ['A','R','R','I','I'],
+];
+const cellDetail=[
+  ['PM is Accountable for scope — they own this decision and answer for it if scope creep happens later.','Designer is Informed — they need to know the scope before design can begin, but don\'t shape this decision.','Engineer is Informed — same as designer. Understanding scope is essential context for their work.','Legal is Informed — unusual dependencies may affect their later review, so they\'re kept in the loop.','Exec is Accountable as well? No — only ONE A per task. This would be an error in a real RACI.'],
+  ['PM is Consulted on design — they provide strategic input on whether design aligns with project goals.','Designer is Responsible — they do the actual work. Their name is on the deliverable.','Engineer is Informed — design assets directly affect their implementation work.','Legal is Informed — design may have trademark/IP implications worth flagging.','Exec is Accountable for design output — they approve and own the quality standard.'],
+  ['PM is Consulted — they ensure development aligns with project plan and surface blockers.','Designer is Consulted — implementation questions often require design input.','Engineer is Responsible — they do the building. The code is their direct output.','Legal is Informed — data handling in features may need legal awareness.','Exec is Accountable for feature delivery — they answer if features miss the mark.'],
+  ['PM is Informed — legal review status affects timeline planning directly.','Designer is Informed — legal approval may require design changes.','Engineer is Informed — legal review may require technical changes.','Legal is Responsible — they do the actual review work.','Exec is Accountable — legal risk ultimately sits with leadership.'],
+  ['PM is Responsible — they coordinate QA, manage the process, and own the test plan.','Designer is Consulted — visual bugs and UX issues need designer input to resolve.','Engineer is Consulted — bugs need engineering assessment before they can be fixed.','Legal is Informed — QA outcomes may affect compliance status.','Exec is Accountable — product quality before launch is an executive responsibility.'],
+  ['PM is Consulted — they prepare the approval materials and context.','Designer is Informed — approval outcome affects any final design adjustments.','Engineer is Informed — approval may trigger final technical changes.','Legal is Consulted — they confirm compliance before exec sign-off.','Exec is Accountable — this is the final decision gate before launch.'],
+  ['PM is Accountable for launch execution — they own the launch day plan and process.','Designer is Responsible — launch assets, landing pages, and visuals are live.','Engineer is Responsible — deployment, monitoring, and technical launch execution.','Legal is Informed — launch confirmation is a legal milestone.','Exec is Informed — they receive confirmation the launch happened successfully.'],
+];
+const tableEl=document.getElementById('raciTable');
+let thead=`<tr><th style="min-width:160px">Task</th>${roles.map(r=>`<th>${r}</th>`).join('')}</tr>`;
+let tbody=tasks.map((t,ti)=>`<tr><td>${t}</td>${matrix[ti].map((v,ri)=>`<td onclick="showRaciDetail(${ti},${ri})"><span class="raci-cell ${v}">${v}</span></td>`).join('')}</tr>`).join('');
+tableEl.innerHTML=`<thead>${thead}</thead><tbody>${tbody}</tbody>`;
+function showRaciDetail(ti,ri){
+  const det=document.getElementById('raciDetail');
+  det.innerHTML=`<strong>${roles[ri]} on "${tasks[ti]}":</strong><br>${cellDetail[ti][ri]}`;
+  det.style.display='block';
+}
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! This is the textbook RACI failure: two Accountable people creates diffusion of responsibility. Both believed the other was leading — a natural cognitive response when accountability is shared. The fix is simple but non-negotiable: one name, one Accountable, per task. Always.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('two Accountable'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ The core problem wasn\'t communication or workload — it was the RACI setup. When two people share accountability, both assume the other is leading. This is a predictable, documented organizational failure mode. The structural fix is to designate ONE Accountable person — then communication and coordination fall into place naturally.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

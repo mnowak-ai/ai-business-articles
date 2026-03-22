@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Management Fundamentals — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Interactive Gantt chart */
+.gantt-wrap{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.gantt-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.gantt-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.gantt-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.gantt-header{display:grid;grid-template-columns:160px repeat(8,1fr);gap:2px;margin-bottom:8px;}
+.gantt-week{font-size:11px;font-weight:700;color:var(--gray-muted);text-align:center;padding:4px 0;}
+.gantt-row{display:grid;grid-template-columns:160px repeat(8,1fr);gap:2px;margin-bottom:6px;align-items:center;}
+.gantt-task-name{font-size:13px;font-weight:600;color:var(--gray-text);padding-right:8px;cursor:pointer;}
+.gantt-task-name:hover{color:var(--purple);}
+.gantt-cell{height:28px;border-radius:4px;}
+.gantt-cell.empty{background:transparent;}
+.gantt-cell.bar{background:var(--purple);border-radius:6px;cursor:pointer;transition:all .2s;position:relative;}
+.gantt-cell.bar:hover{background:var(--purple-dark);transform:scaleY(1.1);}
+.gantt-cell.bar.milestone{background:var(--orange);border-radius:50%;width:28px;height:28px;justify-self:center;}
+.gantt-cell.bar.blocked{background:#FCA5A5;}
+.gantt-cell.bar.complete{background:#86EFAC;}
+.gantt-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;}
+.gantt-leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-muted);}
+.gantt-leg-dot{width:14px;height:14px;border-radius:4px;}
+.gantt-detail{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:16px 20px;margin-top:12px;display:none;animation:fadeIn .3s ease;}
+.gantt-detail.show{display:block;}
+.gantt-detail h4{font-size:15px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.gantt-detail p{font-size:13px;line-height:1.65;color:var(--gray-text);margin:0;}
+
+/* Cascade simulation */
+.cascade{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:20px;padding:24px;margin:24px 0;}
+.cascade-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+.cascade-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:16px;}
+.cascade-timeline{display:flex;flex-direction:column;gap:8px;}
+.cascade-task{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;border:1.5px solid var(--purple-mid);transition:all .5s;}
+.cascade-task.delayed{background:#FEE2E2;border-color:#FECACA;}
+.cascade-task.blocked{background:#FFF7ED;border-color:#FDE68A;}
+.cascade-task.fine{background:var(--green-pale);border-color:#86EFAC;}
+.cascade-status{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;min-width:60px;text-align:center;}
+.cascade-task.delayed .cascade-status{background:#FEE2E2;color:#DC2626;}
+.cascade-task.blocked .cascade-status{background:#FFF7ED;color:var(--orange);}
+.cascade-task.fine .cascade-status{background:var(--green-pale);color:var(--green);}
+.cascade-name{font-size:14px;font-weight:600;color:var(--gray-text);}
+.cascade-arrow-row{text-align:center;color:var(--gray-muted);font-size:14px;padding:2px 0;}
+.cascade-btn{background:var(--purple);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px;}
+.cascade-note{font-size:13px;color:var(--gray-muted);margin-top:10px;line-height:1.6;min-height:40px;}
+
+/* Vocab cards */
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+.vocab-card{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:18px;}
+.vocab-term{font-size:13px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.vocab-def{font-size:14px;line-height:1.65;color:var(--gray-text);margin-bottom:8px;}
+.vocab-ex{font-size:13px;font-style:italic;color:var(--gray-muted);}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.vocab-grid{grid-template-columns:1fr;}.gantt-header,.gantt-row{grid-template-columns:120px repeat(8,1fr);}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.2 · Workflow Planning with AI</div>
+  <h1>Project Management Fundamentals: Timelines, Milestones, and Dependencies</h1>
+  <p class="hero-sub">AI project tools like Asana manage timelines, dependencies, and milestones automatically. But you can't use — or evaluate — those features without understanding what they are. This article gives you the vocabulary and the mental model.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>The Language of Project Management</h2>
+    <p>Project management has its own vocabulary, and not knowing it puts you at a disadvantage in any business setting. The good news: there are really only a handful of terms you need to internalize to understand how professional projects are planned, tracked, and managed — and to understand what AI tools are doing when they analyze your workflow.</p>
+    <div class="vocab-grid">
+      <div class="vocab-card"><div class="vocab-term">Timeline</div><div class="vocab-def">A visual representation of all project tasks mapped against calendar dates — showing when each task starts, ends, and how long it takes.</div><div class="vocab-ex">Example: A 6-week product launch timeline showing research in Week 1, design in Weeks 2–3, development in Weeks 3–5, and launch in Week 6.</div></div>
+      <div class="vocab-card"><div class="vocab-term">Milestone</div><div class="vocab-def">A significant checkpoint in a project — not a task itself, but a marker that signals an important stage has been completed. Usually a decision point or deliverable approval.</div><div class="vocab-ex">Example: "Beta version approved by stakeholders" or "Contract signed" or "Design assets finalized."</div></div>
+      <div class="vocab-card"><div class="vocab-term">Dependency</div><div class="vocab-def">A relationship between two tasks where one cannot start (or finish) until another reaches a certain state. The downstream task is "blocked" until the upstream task is done.</div><div class="vocab-ex">Example: You can't write the website copy (Task B) until the brand voice guidelines are approved (Task A).</div></div>
+      <div class="vocab-card"><div class="vocab-term">Critical Path</div><div class="vocab-def">The longest sequence of dependent tasks in a project — the path that determines the minimum possible project duration. Any delay on the critical path delays the entire project.</div><div class="vocab-ex">Example: If Research → Design → Development → Testing are all dependent on each other, that chain is the critical path.</div></div>
+      <div class="vocab-card"><div class="vocab-term">Blockers</div><div class="vocab-def">Anything preventing a task from moving forward — an unresolved dependency, a missing decision, a resource conflict, or external factor outside the team's control.</div><div class="vocab-ex">Example: "Development is blocked pending legal approval of the privacy policy."</div></div>
+      <div class="vocab-card"><div class="vocab-term">Buffer / Slack</div><div class="vocab-def">Extra time built into a timeline intentionally — not because tasks take that long, but to absorb the unexpected. Projects without buffer consistently run late.</div><div class="vocab-ex">Example: A task that takes 3 days gets scheduled for 4 days to account for feedback loops and revisions.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Reading a Gantt Chart — Click Any Task to Learn More</h2>
+    <p>A Gantt chart is the most common way to visualize a project timeline. It shows tasks on the left and time across the top — the bars show when each task runs. Click any bar to see what it represents:</p>
+    <div class="gantt-wrap">
+      <div class="gantt-label">📅 Interactive Gantt Chart</div>
+      <div class="gantt-title">Product Launch — 8 Week Timeline</div>
+      <div class="gantt-sub">Click any task bar to see its details, dependencies, and status.</div>
+      <div id="ganttChart"></div>
+      <div class="gantt-legend">
+        <div class="gantt-leg-item"><div class="gantt-leg-dot" style="background:var(--purple)"></div>In Progress</div>
+        <div class="gantt-leg-item"><div class="gantt-leg-dot" style="background:#86EFAC"></div>Complete</div>
+        <div class="gantt-leg-item"><div class="gantt-leg-dot" style="background:#FCA5A5"></div>Blocked</div>
+        <div class="gantt-leg-item"><div class="gantt-leg-dot" style="background:var(--orange);border-radius:50%"></div>Milestone</div>
+      </div>
+      <div class="gantt-detail" id="ganttDetail"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How Delays Cascade: The Domino Effect</h2>
+    <p>This is the most important thing to understand about dependencies: <mark>a delay in one task doesn't just delay that task — it delays every task that depends on it</mark>. This is called the cascade effect, and it's why project managers obsess over the critical path.</p>
+    <div class="cascade">
+      <div class="cascade-label">🎬 Simulation</div>
+      <div class="cascade-title">What happens when Task 1 slips by 1 week?</div>
+      <div class="cascade-timeline" id="cascadeTimeline"></div>
+      <button class="cascade-btn" onclick="runCascade()">▶ Delay Task 1 by 1 Week</button>
+      <div class="cascade-note" id="cascadeNote"></div>
+    </div>
+    <p>This is why AI project tools place such a heavy emphasis on dependency monitoring. When Asana's AI detects that a task on the critical path is running late, it immediately surfaces the downstream impact — so teams can make decisions before the cascade becomes unmanageable.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>A one-week delay at the start of a project doesn't just add one week to the deadline. It adds one week — plus every delay it causes in every downstream dependency.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">A project has 10 tasks. Tasks 3, 5, and 7 are on the critical path. Task 3 is delayed by 3 days. Tasks 1, 2, 4, 6, 8, 9, and 10 are all on schedule. What is the minimum delay to the overall project completion?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">No delay — most tasks are on schedule</button>
+        <button class="qopt" onclick="cq(this,false)">1 day — the delay is spread across all tasks</button>
+        <button class="qopt" onclick="cq(this,true)">3 days — the critical path determines project duration, so Task 3's delay cascades to the end</button>
+        <button class="qopt" onclick="cq(this,false)">It depends on whether Task 5 has buffer</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Six terms to know: Timeline, Milestone, Dependency, Critical Path, Blocker, and Buffer. These are the vocabulary of every project management conversation you'll have professionally.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A Gantt chart maps tasks against time, showing duration and overlap. It's the most common tool for visualizing project timelines.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Delays cascade: one delay on the critical path delays the entire project by at least that amount. This cascade effect is why AI tools monitor dependencies in real time.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI project tools automate dependency monitoring — flagging when upstream delays will impact downstream tasks before the cascade becomes a crisis.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const ganttTasks=[
+  {name:'Market Research',weeks:[1,2],type:'complete',detail:'Completed in Weeks 1–2. No dependencies — this was the first task. Milestone: Research report approved.',deps:'None (first task)',status:'✅ Complete'},
+  {name:'Brand Strategy',weeks:[2,3],type:'complete',detail:'Ran in Weeks 2–3, overlapping with research. Depends on preliminary research findings being available.',deps:'Depends on: Market Research (partial)',status:'✅ Complete'},
+  {name:'Design Assets',weeks:[3,4,5],type:'complete',detail:'Three-week task running Weeks 3–5. Depends on Brand Strategy being finalized before design can begin.',deps:'Depends on: Brand Strategy ✓',status:'✅ Complete'},
+  {name:'Website Development',weeks:[4,5,6,7],type:'bar',detail:'Currently running Weeks 4–7. Depends on design assets being finalized. Running on schedule.',deps:'Depends on: Design Assets ✓',status:'🔄 In Progress'},
+  {name:'Legal Review',weeks:[5,6],type:'blocked',detail:'Blocked! Legal review cannot start until the website development is far enough along to review. Development is behind this phase.',deps:'Depends on: Website Development (in progress)',status:'🔴 Blocked'},
+  {name:'🏁 Soft Launch',weeks:[7],type:'milestone',detail:'MILESTONE: Soft launch to beta users. This is a critical checkpoint — everything must be ready before this date. Milestone cannot slip without pushing the full launch.',deps:'Depends on: All prior tasks + Legal Review',status:'⏳ Upcoming'},
+  {name:'Full Launch',weeks:[8],type:'bar',detail:'The final launch date. One week after soft launch gives time to address beta feedback. This is the project deadline.',deps:'Depends on: Soft Launch milestone',status:'📅 Scheduled'},
+];
+function buildGantt(){
+  const weeks=['','Wk 1','Wk 2','Wk 3','Wk 4','Wk 5','Wk 6','Wk 7','Wk 8'];
+  let html=`<div class="gantt-header">${weeks.map(w=>`<div class="gantt-week">${w}</div>`).join('')}</div>`;
+  ganttTasks.forEach((t,ti)=>{
+    let cells='';
+    for(let w=1;w<=8;w++){
+      if(t.weeks.includes(w)){
+        const cls=t.type==='milestone'?'bar milestone':t.type==='blocked'?'bar blocked':t.type==='complete'?'bar complete':'bar';
+        cells+=`<div class="gantt-cell ${cls}" onclick="showGanttDetail(${ti})" title="${t.name}"></div>`;
+      } else {
+        cells+=`<div class="gantt-cell empty"></div>`;
+      }
+    }
+    html+=`<div class="gantt-row"><div class="gantt-task-name" onclick="showGanttDetail(${ti})">${t.name}</div>${cells}</div>`;
+  });
+  document.getElementById('ganttChart').innerHTML=html;
+}
+function showGanttDetail(i){
+  const t=ganttTasks[i];
+  const det=document.getElementById('ganttDetail');
+  det.innerHTML=`<h4>${t.name} — ${t.status}</h4><p>${t.detail}</p><p style="margin-top:8px;font-size:13px;color:var(--purple);"><strong>Dependencies:</strong> ${t.deps}</p>`;
+  det.classList.add('show');
+}
+buildGantt();
+
+const cascadeTasks=[
+  {name:'Task 1: Research & Discovery',dep:'No dependency',status:'fine',delay:false},
+  {name:'Task 2: Strategy Approval',dep:'Depends on Task 1',status:'fine',delay:false},
+  {name:'Task 3: Design Phase',dep:'Depends on Task 2',status:'fine',delay:false},
+  {name:'Task 4: Development',dep:'Depends on Task 3',status:'fine',delay:false},
+  {name:'🏁 Launch',dep:'Depends on Task 4',status:'fine',delay:false},
+];
+let cascadeRun=false;
+function renderCascade(delayed){
+  const tl=document.getElementById('cascadeTimeline');
+  tl.innerHTML='';
+  cascadeTasks.forEach((t,i)=>{
+    if(i>0){const ar=document.createElement('div');ar.className='cascade-arrow-row';ar.textContent='↓ depends on ↓';tl.appendChild(ar);}
+    const el=document.createElement('div');
+    const st=delayed&&i>0?'blocked':(delayed&&i===0?'delayed':t.status);
+    el.className=`cascade-task ${st}`;
+    el.innerHTML=`<span class="cascade-status">${st==='delayed'?'DELAYED':st==='blocked'?'BLOCKED':'ON TRACK'}</span><div><div class="cascade-name">${t.name}</div><div style="font-size:12px;color:var(--gray-muted)">${t.dep}</div></div>`;
+    tl.appendChild(el);
+  });
+}
+function runCascade(){
+  if(cascadeRun)return;
+  cascadeRun=true;
+  renderCascade(true);
+  document.getElementById('cascadeNote').textContent='Task 1 slipped by 1 week → Task 2 is now blocked → Task 3 is blocked → Task 4 is blocked → Launch is delayed by at least 1 week. One delay, five impacts. This is why the critical path matters so much — and why AI tools flag upstream delays immediately.';
+  document.querySelector('.cascade-btn').textContent='↺ This is the cascade effect';
+  document.querySelector('.cascade-btn').style.background='var(--gray-muted)';
+}
+renderCascade(false);
+
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! The critical path is the chain of dependent tasks that determines the minimum project duration. A delay on Task 3 (which is on the critical path) cascades through Tasks 5 and 7, pushing the project end date by the full 3 days — regardless of how many other tasks are on schedule.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('3 days'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ When a task on the critical path is delayed, the project end date is delayed by at least that amount — no matter how many other tasks are on schedule. Tasks not on the critical path have buffer ("float") that lets them slip without affecting the end date. Critical path tasks don\'t.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

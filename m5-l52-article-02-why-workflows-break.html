@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Workflows Break Down — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Bottleneck accordion */
+.bottleneck-list{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+.bn{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;}
+.bn-header{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer;transition:background .2s;}
+.bn-header:hover{background:var(--gray-soft);}
+.bn-num{width:36px;height:36px;background:#FEE2E2;color:#DC2626;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:17px;font-weight:900;flex-shrink:0;}
+.bn-name{font-size:15px;font-weight:700;color:var(--purple-dark);flex:1;}
+.bn-badge{font-size:11px;background:var(--orange-pale);color:var(--orange);font-weight:700;padding:3px 10px;border-radius:6px;}
+.bn-chevron{color:var(--gray-muted);font-size:16px;transition:transform .3s;}
+.bn-body{display:none;padding:0 20px 18px;border-top:1px solid var(--purple-mid);}
+.bn-body.open{display:block;animation:fadeIn .3s ease;}
+.bn-example{background:var(--orange-pale);border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.7;color:#92400E;margin:12px 0;border-left:3px solid var(--orange);}
+.bn-signs{margin-top:10px;}
+.bn-signs-title{font-size:12px;font-weight:700;color:var(--purple-dark);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+.bn-sign{display:flex;gap:8px;font-size:13px;line-height:1.5;margin-bottom:6px;}
+.bn-ai{background:var(--purple-pale);border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.7;color:var(--purple-dark);margin-top:10px;}
+.bn-ai strong{color:var(--purple);}
+
+/* Spot the bottleneck simulation */
+.sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.sim-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.sim-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.sim-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.sim-scenario{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:16px;}
+.sim-scenario-title{font-size:13px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.sim-task-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.sim-task{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:10px;border:1.5px solid var(--purple-mid);cursor:pointer;transition:all .2s;font-size:14px;}
+.sim-task:hover{border-color:var(--purple);background:var(--purple-pale);}
+.sim-task.selected-wrong{background:#FFF1F1;border-color:#DC2626;}
+.sim-task.selected-right{background:var(--green-pale);border-color:var(--green);}
+.sim-task.revealed-answer{background:var(--green-pale);border-color:var(--green);}
+.sim-task-icon{font-size:16px;flex-shrink:0;}
+.sim-result{font-size:14px;padding:12px 16px;border-radius:10px;margin-top:8px;display:none;}
+.sim-result.show{display:block;animation:fadeIn .35s ease;}
+.sim-result.good{background:var(--green-pale);color:var(--green);}
+.sim-result.bad{background:#FFF1F1;color:#DC2626;}
+.sim-next-btn{background:var(--purple);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:12px;display:none;}
+.sim-next-btn.show{display:inline-block;}
+.sim-score{background:var(--purple);color:white;border-radius:14px;padding:16px 20px;text-align:center;margin-top:12px;display:none;}
+.sim-score.show{display:block;animation:fadeIn .4s ease;}
+.sim-score-num{font-family:'Fraunces',serif;font-size:48px;font-weight:900;}
+.sim-score-label{font-size:14px;opacity:.85;margin-top:4px;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.2 · Workflow Planning with AI</div>
+  <h1>Why Workflows Break Down: The 5 Most Common Bottlenecks</h1>
+  <p class="hero-sub">Before AI can fix a workflow, you need to know how workflows fail. Every project delay, missed handoff, and chaotic launch traces back to one of five root causes. Learn to spot them — and you'll understand exactly what AI tools are designed to prevent.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Workflows Don't Break at Random</h2>
+    <p>When a project falls behind schedule or something important gets dropped, it rarely happens for a mysterious reason. Workflow failures are <mark>predictable and patterned</mark>. The same five breakdowns appear again and again, across industries, company sizes, and team types. Knowing them in advance lets you spot the warning signs early — and gives you the vocabulary to fix them.</p>
+    <div class="pull-quote"><p>A delayed project isn't bad luck. It's almost always one of five things — and all five are preventable once you know what to look for.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 5 Bottlenecks — Click Each to Explore</h2>
+    <div class="bottleneck-list" id="bnList"></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Spot the Bottleneck: Practice Scenarios</h2>
+    <p>Read each scenario and click the task or situation that contains the bottleneck:</p>
+    <div class="sim">
+      <div class="sim-label">🔍 Simulation</div>
+      <div class="sim-title">Find the Bottleneck</div>
+      <div class="sim-sub">Each scenario has one clear bottleneck. Click the item that's causing the breakdown.</div>
+      <div id="simContainer"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">A software team's launch keeps slipping. Investigation reveals that the design team can't start work until the product team finalizes specs — but the product team is waiting on research from the data team. The data team delivered their report two weeks ago but nobody told the product team. What type of bottleneck is this?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Unclear ownership — nobody knows who's responsible</button>
+        <button class="qopt" onclick="cq(this,false)">Resource conflict — too many tasks competing for the same person</button>
+        <button class="qopt" onclick="cq(this,true)">Communication gap — a completed deliverable wasn't communicated to the team that needed it</button>
+        <button class="qopt" onclick="cq(this,false)">Poor sequencing — tasks are being done in the wrong order</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Workflow failures are predictable. The same five bottlenecks — unclear ownership, missing dependencies, poor sequencing, resource conflicts, and communication gaps — account for the vast majority of project delays.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI workflow tools like Asana's AI Work Graph are specifically designed to detect these five patterns — flagging unclear ownership, unmet dependencies, and resource overloads before they cascade into delays.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Being able to name the bottleneck type changes everything. "The project is late" is unsolvable. "Task 4 is blocked because it depends on Task 2 which has no owner" is immediately actionable.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const bottlenecks=[
+  {
+    num:1,name:'Unclear Ownership',badge:'Most Common',
+    desc:'Every task needs one person who is unmistakably responsible for it. Not "the team" — one specific person whose name is on it. When ownership is shared or assumed, the task falls through the cracks. Everyone assumes someone else is handling it.',
+    example:'⚠️ Real scenario: A marketing team is preparing a product launch. "Someone" was supposed to write the press release. Three days before launch, the team realizes nobody wrote it — because everyone assumed someone else had it covered.',
+    signs:['📌 "I thought you were handling that"','📌 Tasks with no assignee in the project tool','📌 Work discovered undone at the last minute','📌 Multiple people working on the same thing without coordination'],
+    ai:'🤖 How AI helps: Tools like Asana flag tasks with no assigned owner and can suggest assignments based on workload data. But AI can\'t know who has the right skills or relationships — that\'s a human call.'
+  },
+  {
+    num:2,name:'Missing Dependencies',badge:'Hardest to Spot',
+    desc:'A dependency means Task B cannot start until Task A is complete. When dependencies aren\'t mapped, teams start work that can\'t be finished yet — wasting time — or they complete work that gets invalidated by upstream changes they didn\'t know were coming.',
+    example:'⚠️ Real scenario: A developer builds a feature based on wireframes from two weeks ago. The design team updated the wireframes last week — but the developer didn\'t know. Now the build needs to be redone.',
+    signs:['📌 Work completed that immediately needs to be redone','📌 Teams starting tasks without knowing upstream work is still changing','📌 Nobody knows what "ready to start" means for any given task','📌 Surprise blockers discovered mid-execution'],
+    ai:'🤖 How AI helps: Dependency conflict detection is one of AI\'s strongest workflow applications. Tools can flag when a downstream task starts before its upstream dependency is complete — something impossible to track manually at scale.'
+  },
+  {
+    num:3,name:'Poor Sequencing',badge:'Causes Rework',
+    desc:'Tasks done in the wrong order create rework. This sounds obvious, but under pressure, teams often start "doing" before they\'ve finished "planning" — resulting in work that has to be redone once the earlier decisions are made.',
+    example:'⚠️ Real scenario: A startup builds a full website before finalizing their brand guidelines. When the brand guidelines are approved, the website needs a complete visual overhaul. Two weeks of development wasted.',
+    signs:['📌 Teams building things that keep getting redesigned','📌 Decisions being made late that invalidate earlier work','📌 "We\'ll figure that out later" becoming a recurring phrase','📌 The same task appearing multiple times in different phases'],
+    ai:'🤖 How AI helps: AI can analyze project templates and historical data to suggest optimal task sequencing — recommending which decisions must be locked before execution begins.'
+  },
+  {
+    num:4,name:'Resource Conflicts',badge:'Kills Timelines',
+    desc:'Resource conflict happens when the same person or tool is needed by multiple tasks at the same time. One person can\'t be in two places at once. When project plans don\'t account for who else is claiming someone\'s time, timelines become fiction.',
+    example:'⚠️ Real scenario: Both the Q3 marketing campaign and the product launch are scheduled for the same week. Both require the graphic designer. The designer can\'t do both at full capacity — one or both will be late.',
+    signs:['📌 One person\'s name appears on half the critical path tasks','📌 Timeline looks achievable on paper but keeps slipping in practice','📌 Frequent "I\'m blocked waiting on [one person]"','📌 Key contributors working nights and weekends to keep up'],
+    ai:'🤖 How AI helps: AI tools can model workload across team members and flag when someone is over-capacity before the project starts. This is one of the most valuable AI workflow features — catching resource conflicts during planning instead of mid-execution.'
+  },
+  {
+    num:5,name:'Communication Gaps',badge:'Sneaky & Costly',
+    desc:'A communication gap is when information that exists in one part of the team doesn\'t reach the part of the team that needs it. Unlike the other bottlenecks, this one often happens even when everyone is doing their job correctly — the system itself doesn\'t move information reliably.',
+    example:'⚠️ Real scenario: The sales team closes a deal with a custom feature request. They send an email to their manager. The manager forgets to escalate it to the product team. Three months later, the client asks about the feature and nothing has been built.',
+    signs:['📌 "Nobody told us" appearing repeatedly in post-mortems','📌 Decisions made in one meeting that contradict decisions made in another','📌 Teams working in parallel without awareness of each other\'s progress','📌 Information living in someone\'s inbox instead of a shared system'],
+    ai:'🤖 How AI helps: Workflow tools create a single source of truth where updates, decisions, and status changes are automatically visible to all stakeholders. AI meeting tools (like Otter.ai) ensure verbal decisions get captured and distributed — closing the communication gap between spoken decisions and written records.'
+  }
+];
+
+const bnList=document.getElementById('bnList');
+bottlenecks.forEach((bn,i)=>{
+  const d=document.createElement('div');d.className='bn';
+  d.innerHTML=`<div class="bn-header" onclick="toggleBn(${i})">
+    <div class="bn-num">${bn.num}</div>
+    <div class="bn-name">${bn.name}</div>
+    <div class="bn-badge">${bn.badge}</div>
+    <div class="bn-chevron" id="bchev${i}">▼</div>
+  </div>
+  <div class="bn-body" id="bnBody${i}">
+    <p style="font-size:15px;line-height:1.7;color:var(--gray-text);margin:12px 0;">${bn.desc}</p>
+    <div class="bn-example">${bn.example}</div>
+    <div class="bn-signs">
+      <div class="bn-signs-title">⚠️ Warning signs</div>
+      ${bn.signs.map(s=>`<div class="bn-sign">${s}</div>`).join('')}
+    </div>
+    <div class="bn-ai">${bn.ai}</div>
+  </div>`;
+  bnList.appendChild(d);
+});
+function toggleBn(i){
+  const body=document.getElementById('bnBody'+i);
+  const chev=document.getElementById('bchev'+i);
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  chev.style.transform=open?'':'rotate(180deg)';
+}
+
+const simScenarios=[
+  {
+    title:'Scenario 1: The Marketing Launch',
+    tasks:[
+      {icon:'✅',text:'Campaign strategy approved by leadership',bottleneck:false},
+      {icon:'✅',text:'Design assets created by creative team',bottleneck:false},
+      {icon:'❓',text:'Social media scheduling — task exists but has no assigned owner',bottleneck:true,why:'Unclear ownership! The task is visible in the project but nobody\'s name is on it. Posting will be missed.'},
+      {icon:'✅',text:'Email copy drafted and reviewed',bottleneck:false},
+    ]
+  },
+  {
+    title:'Scenario 2: The Software Release',
+    tasks:[
+      {icon:'🔄',text:'Frontend development — in progress',bottleneck:false},
+      {icon:'🔄',text:'Backend API — in progress',bottleneck:false},
+      {icon:'⏳',text:'QA testing — scheduled to start tomorrow, but depends on both frontend AND backend being complete',bottleneck:true,why:'Missing dependency! QA can\'t start until both frontend and backend are done. But backend is only 60% complete. Tomorrow\'s start date is impossible.'},
+      {icon:'📋',text:'Documentation — not started yet',bottleneck:false},
+    ]
+  },
+  {
+    title:'Scenario 3: The Product Team',
+    tasks:[
+      {icon:'👤',text:'Sarah: 3 high-priority tasks this week',bottleneck:false},
+      {icon:'👤',text:'Marcus: 2 tasks this week',bottleneck:false},
+      {icon:'🔴',text:'Jamie: 8 critical tasks across 3 different projects all due Friday',bottleneck:true,why:'Resource conflict! Jamie is over-capacity by 300%. At least 5 of these tasks will slip — the question is just which ones.'},
+      {icon:'👤',text:'Priya: 1 task this week',bottleneck:false},
+    ]
+  }
+];
+
+let simIdx=0,simScore=0;
+function renderSim(){
+  if(simIdx>=simScenarios.length){
+    document.getElementById('simContainer').innerHTML=`<div class="sim-score show"><div class="sim-score-num">${simScore}/${simScenarios.length}</div><div class="sim-score-label">bottlenecks correctly identified! ${simScore===simScenarios.length?'Perfect — you\'ve got a sharp eye for workflow problems. 🎯':'Review the bottleneck types above and try to spot the pattern.'}</div></div>`;
+    return;
+  }
+  const s=simScenarios[simIdx];
+  const tasks=s.tasks.map((t,ti)=>`<div class="sim-task" id="stask${ti}" onclick="checkTask(${ti},${t.bottleneck},'${t.why||''}')"><span class="sim-task-icon">${t.icon}</span><span>${t.text}</span></div>`).join('');
+  document.getElementById('simContainer').innerHTML=`<div class="sim-scenario"><div class="sim-scenario-title">${s.title}</div><div class="sim-task-list">${tasks}</div><div class="sim-result" id="simResult"></div><button class="sim-next-btn" id="simNextBtn" onclick="nextSim()">Next Scenario →</button></div>`;
+}
+function checkTask(ti,correct,why){
+  if(document.querySelector('.sim-task.selected-right')||document.querySelector('.sim-task.selected-wrong'))return;
+  const el=document.getElementById('stask'+ti);
+  el.classList.add(correct?'selected-right':'selected-wrong');
+  if(!correct){
+    simScenarios[simIdx].tasks.forEach((_,i)=>{if(simScenarios[simIdx].tasks[i].bottleneck)document.getElementById('stask'+i).classList.add('revealed-answer');});
+  }
+  const res=document.getElementById('simResult');
+  if(correct){
+    simScore++;
+    res.className='sim-result show good';
+    res.textContent='✅ Correct! '+why;
+  } else {
+    res.className='sim-result show bad';
+    res.textContent='❌ Not quite — the answer is highlighted above. '+simScenarios[simIdx].tasks.find(t=>t.bottleneck).why;
+  }
+  document.getElementById('simNextBtn').classList.add('show');
+}
+function nextSim(){simIdx++;renderSim();}
+renderSim();
+
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! The data team completed their work — so this isn\'t a missing dependency or unclear ownership. The problem is that the completion wasn\'t communicated. The product team was waiting on information that had already arrived, just never reached them. Classic communication gap.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('Communication gap'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ Look closely: the data was delivered, ownership was clear, and the sequence was right. The breakdown was that a completed deliverable wasn\'t passed along to the people who needed it. That\'s a communication gap — information existing in one pocket without reaching the pocket that needs it.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

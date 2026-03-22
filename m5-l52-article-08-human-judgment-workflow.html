@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human Judgment in Workflow Decisions — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Multi-step scenario */
+.scenario-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.ss-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.ss-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.ss-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.ss-context{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px 20px;margin-bottom:16px;font-size:15px;line-height:1.7;border-left:4px solid var(--purple);}
+.ss-ai-box{background:var(--purple);color:white;border-radius:12px;padding:16px 20px;margin-bottom:16px;}
+.ss-ai-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;opacity:.8;}
+.ss-ai-content{font-size:14px;line-height:1.65;}
+.ss-q{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:12px;}
+.ss-opts{display:flex;flex-direction:column;gap:8px;}
+.ss-opt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:12px 16px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;line-height:1.5;}
+.ss-opt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.ss-opt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.ss-opt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.ss-fb{font-size:14px;line-height:1.65;padding:14px 18px;border-radius:10px;margin-top:10px;display:none;}
+.ss-fb.show{display:block;animation:fadeIn .35s ease;}
+.ss-fb.cfb{background:var(--green-pale);color:var(--green);}
+.ss-fb.wfb{background:#FFF1F1;color:#DC2626;}
+.ss-next{background:var(--purple);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:12px;display:none;}
+.ss-next.show{display:inline-block;}
+.ss-complete{background:var(--purple-pale);border-radius:14px;padding:20px;text-align:center;display:none;}
+.ss-complete.show{display:block;animation:fadeIn .4s ease;}
+.ss-complete-icon{font-size:40px;margin-bottom:10px;}
+.ss-complete-title{font-family:'Fraunces',serif;font-size:22px;color:var(--purple-dark);margin-bottom:8px;}
+.ss-complete-body{font-size:14px;line-height:1.65;color:var(--gray-text);}
+
+/* Framework cards */
+.fw-cards{display:flex;flex-direction:column;gap:12px;margin:24px 0;}
+.fw-card{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px;display:flex;gap:14px;}
+.fw-q{width:32px;height:32px;background:var(--purple);color:white;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:16px;font-weight:700;flex-shrink:0;}
+.fw-content h3{font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+.fw-content p{font-size:13px;color:var(--gray-muted);line-height:1.55;margin:0;}
+.fw-override{background:var(--orange-pale);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--orange);font-weight:600;margin-top:6px;display:inline-block;}
+
+/* Three responses */
+.response-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+.rg-card{border-radius:16px;padding:18px;}
+.rg-card.bad{background:#FFF1F1;border:2px solid #FECACA;}
+.rg-card.ok{background:var(--orange-pale);border:2px solid #FDE68A;}
+.rg-card.good{background:var(--green-pale);border:2px solid #86EFAC;}
+.rg-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.rg-card.bad .rg-label{color:#DC2626;}
+.rg-card.ok .rg-label{color:var(--orange);}
+.rg-card.good .rg-label{color:var(--green);}
+.rg-title{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--gray-text);}
+.rg-desc{font-size:13px;line-height:1.55;color:var(--gray-text);}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.response-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.2 · Workflow Planning with AI</div>
+  <h1>Human Judgment in Workflow Decisions: When to Override AI</h1>
+  <p class="hero-sub">AI workflow tools are excellent at processing data and flagging patterns. But they operate without the context, relationships, and values that make the difference between a technically optimal plan and a genuinely good one. This article teaches you when and how to push back.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>The Difference Between Optimal and Right</h2>
+    <p>An AI can calculate the mathematically optimal way to restructure a project timeline. It can identify which tasks to compress, which resources to reallocate, and which milestones to shift to meet a deadline. What it cannot do is weigh those recommendations against a client relationship that's been building for two years, a team member who is privately struggling, or a strategic priority that lives in the CEO's head but hasn't been written down anywhere.</p>
+    <p><mark>Optimal and right are not always the same thing.</mark> An AI optimizes for the variables it can see. A human with professional judgment optimizes for the full picture — including the invisible variables that make or break real-world outcomes.</p>
+    <div class="pull-quote"><p>AI tells you what the data says. You decide what to do about it — because you're the one who knows what the data can't say.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Work Through a Real Scenario</h2>
+    <p>This multi-part scenario walks you through an AI recommendation. At each step, decide what to do:</p>
+    <div class="scenario-sim">
+      <div class="ss-label">🧭 Scenario Simulation</div>
+      <div class="ss-title">The Timeline Restructure</div>
+      <div class="ss-sub">Work through 3 decision points. There's no single right answer — the goal is to practice reasoning through AI suggestions.</div>
+      <div id="ssContainer"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>A Framework for Evaluating Any AI Workflow Recommendation</h2>
+    <p>Before accepting or rejecting an AI suggestion, run through these four questions. They take less than 2 minutes and can prevent expensive mistakes:</p>
+    <div class="fw-cards">
+      <div class="fw-card"><div class="fw-q">1</div><div class="fw-content"><h3>What is the AI optimizing for — and is that actually what matters most here?</h3><p>AI tools optimize for the metric they're given: timeline, resource utilization, task completion rate. But the most important outcome might be client satisfaction, team morale, or quality — none of which appear in the project data.</p><div class="fw-override">Override signal: The recommendation improves a metric but at the cost of something unmeasured.</div></div></div>
+      <div class="fw-card"><div class="fw-q">2</div><div class="fw-content"><h3>What context does the AI not have access to?</h3><p>Relationships, private conversations, strategic context that hasn't been written down, a team member's personal situation, the client's unstated preferences. Any of these can make a technically sound recommendation the wrong call.</p><div class="fw-override">Override signal: You know something relevant that's nowhere in the project tool.</div></div></div>
+      <div class="fw-card"><div class="fw-q">3</div><div class="fw-content"><h3>Is this reversible — or does it lock in a path?</h3><p>Some workflow changes are easy to undo. Others trigger a cascade: you move a deadline, the client adjusts their plans, a vendor locks in a date, and suddenly reversing is nearly impossible. The less reversible a decision, the more human scrutiny it deserves.</p><div class="fw-override">Override signal: The recommendation creates downstream commitments that are hard to walk back.</div></div></div>
+      <div class="fw-card"><div class="fw-q">4</div><div class="fw-content"><h3>Who is affected, and have they been considered?</h3><p>Project data shows tasks and timelines. It doesn't show people's feelings, career concerns, or the impact on their workload in ways they haven't had a chance to voice. Workflow changes affect humans — and AI has no empathy for that.</p><div class="fw-override">Override signal: People will be significantly impacted by this change and haven't been consulted.</div></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Three Ways to Respond to an AI Recommendation</h2>
+    <p>"Accept" and "reject" aren't your only options. Professional judgment often produces a third, better response:</p>
+    <div class="response-grid">
+      <div class="rg-card bad">
+        <div class="rg-label">❌ Reflexive Rejection</div>
+        <div class="rg-title">"I don't trust AI — I'll decide this myself"</div>
+        <div class="rg-desc">Ignores genuinely useful data-driven insights. Misses patterns and risks that AI can detect at scale. Loses most of the value of having the tool.</div>
+      </div>
+      <div class="rg-card ok">
+        <div class="rg-label">⚠️ Blind Acceptance</div>
+        <div class="rg-title">"The AI says to do it, so we'll do it"</div>
+        <div class="rg-desc">Efficient, but dangerous. Misses the human context AI can't see. Makes you responsible for outcomes AI can't be held accountable for.</div>
+      </div>
+      <div class="rg-card good">
+        <div class="rg-label">✅ Reasoned Decision</div>
+        <div class="rg-title">"The AI is right about the data — here's how I'm adjusting the recommendation"</div>
+        <div class="rg-desc">Engages with the AI's analysis seriously. Adds the human context layer. Produces decisions you can explain and stand behind. This is professional judgment.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">Asana's AI flags that the project is at risk of missing its deadline and recommends cutting the user testing phase from 2 weeks to 3 days to compress the timeline. The data supports this from a scheduling perspective. What should the project manager do?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Implement the change immediately — the AI has analyzed the data and the math works out</button>
+        <button class="qopt" onclick="cq(this,false)">Reject the change — AI shouldn't be recommending changes to project scope</button>
+        <button class="qopt" onclick="cq(this,true)">Evaluate what cutting testing from 2 weeks to 3 days actually means for quality and risk, consult the QA team, then make an informed decision that may or may not follow the recommendation</button>
+        <button class="qopt" onclick="cq(this,false)">Ask the AI for an alternative recommendation that doesn't involve cutting testing</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Optimal and right are not the same thing. AI optimizes for what it can measure. Human judgment adds the context, relationships, and values that data can't capture.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Four questions to ask before accepting any AI workflow recommendation: What is it optimizing for? What context is missing? Is this reversible? Who is affected?</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The goal is reasoned decisions — neither reflexive rejection nor blind acceptance. Engage with AI's analysis seriously, add the human context layer, and produce decisions you can explain and stand behind.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>When you override AI, document why. This creates accountability, helps your team learn from the decision, and builds the institutional knowledge that makes future AI recommendations more accurate.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const simSteps=[
+  {
+    context:'Your team is 3 days behind on a 10-week product launch. Asana\'s AI analyzes the project and recommends compressing the "Stakeholder Alignment" phase from 5 days to 1 day to recover the timeline. Technically, the meetings could be shortened and combined.',
+    ai:'AI Recommendation: Compress stakeholder alignment from 5 days → 1 day. This will recover 4 days of schedule buffer and put the project back on track. Risk level: Low (based on historical patterns).',
+    q:'What is your first instinct as the project manager?',
+    opts:[
+      {text:'Accept it — the AI flagged it as low risk and we need the time back',correct:false,fb:'The AI classified this as low risk based on scheduling patterns — but it can\'t assess the relationship dynamics with stakeholders. Rushing alignment meetings can surface disagreements at the worst possible time. This needs more investigation before accepting.'},
+      {text:'Think: "Low risk on paper, but I know two key stakeholders have conflicting views that need real discussion time — this could backfire"',correct:true,fb:'✅ Exactly right. This is human context the AI doesn\'t have. Those stakeholder dynamics aren\'t in the project tool — they\'re in your head from experience. That context should shape your response to the recommendation.'},
+      {text:'Reject it without further analysis — you can\'t compress alignment',correct:false,fb:'Reflexive rejection doesn\'t serve you either. The AI correctly identified a real problem (you\'re behind). The question isn\'t whether to recover time — it\'s whether this particular method is safe given context the AI doesn\'t have.'},
+    ]
+  },
+  {
+    context:'You\'ve decided the alignment compression is too risky. You tell Asana\'s AI to find an alternative. It suggests moving a developer to full-time on this project by pulling them from the company\'s internal tool project for 2 weeks.',
+    ai:'AI Recommendation: Reallocate Developer (Jordan) from Internal Tools to Product Launch for Weeks 7–8. This will recover 4 days through increased development velocity. Jordan\'s current project has buffer. Risk level: Moderate.',
+    q:'What do you do next?',
+    opts:[
+      {text:'Accept it — Jordan\'s current project has buffer, so this is clearly fine',correct:false,fb:'Buffer existing on paper doesn\'t mean the reallocation is consequence-free. The AI doesn\'t know: Is Jordan\'s other project manager aware? Does Jordan have capacity or is she already stretched? Is the internal tool project more politically important than its buffer suggests? These are human checks.'},
+      {text:'Speak with Jordan and the other project manager before making any commitment',correct:true,fb:'✅ Correct. Reallocating people without their awareness or consent is a relationship problem, not just a scheduling problem. The right move is to surface the AI\'s suggestion as a possibility and confirm with the humans involved before any decision is made.'},
+      {text:'Tell AI to find a solution that doesn\'t involve moving Jordan',correct:false,fb:'This might be the eventual outcome, but skipping the conversation means you might be eliminating the best option. Better to explore the Jordan reallocation properly with the people involved and then decide — not to avoid it based on discomfort.'},
+    ]
+  },
+  {
+    context:'You\'ve talked to Jordan and the other PM. Jordan is willing to shift temporarily. The other PM agrees the internal project has buffer. You\'re about to accept the recommendation when you remember: the client for the product launch specifically asked that Jordan not be assigned to their project (a past conflict you resolved quietly).',
+    ai:'AI Recommendation: Confirmed — Jordan reallocation approved by all parties. Proceed with implementation.',
+    q:'What do you do?',
+    opts:[
+      {text:'Proceed — both PMs agreed and the timeline math works',correct:false,fb:'The client constraint isn\'t in Asana — it was a verbal agreement you hold in memory. The AI confirmed approval from the people in the tool, not from the client. This is a perfect example of context that lives only in human memory, not in the system.'},
+      {text:'Override the AI and find a different solution — the client context can\'t be in the system but it\'s real and binding',correct:true,fb:'✅ Correct and well-reasoned. You know something critical that isn\'t in any project tool: a client relationship constraint. Overriding the AI here isn\'t stubbornness — it\'s professional judgment. The right move is to find an alternative and document the constraint for future reference.'},
+      {text:'Ask the client if they\'ve changed their mind about Jordan',correct:false,fb:'This reopens a resolved conflict without any new basis for doing so. The smarter move is to honor the existing agreement and find a different path — then potentially revisit the Jordan situation in a separate conversation if it makes strategic sense.'},
+    ]
+  },
+];
+let ssIdx=0,ssScore=0;
+function renderSS(){
+  const container=document.getElementById('ssContainer');
+  if(ssIdx>=simSteps.length){
+    container.innerHTML=`<div class="ss-complete show"><div class="ss-complete-icon">🏆</div><div class="ss-complete-title">Scenario Complete — ${ssScore}/3 optimal choices</div><div class="ss-complete-body">${ssScore===3?'Excellent professional judgment throughout. You consistently added human context to AI recommendations rather than accepting or rejecting reflexively.':ssScore>=2?'Strong reasoning. You\'re developing the habit of questioning AI recommendations with context before deciding.':'Review the framework above and notice how human context — relationship dynamics, unwritten agreements, people concerns — shaped each correct answer.'}</div></div>`;
+    return;
+  }
+  const s=simSteps[ssIdx];
+  container.innerHTML=`
+    <div class="ss-context"><strong>Situation (${ssIdx+1}/3):</strong> ${s.context}</div>
+    <div class="ss-ai-box"><div class="ss-ai-label">🤖 Asana AI Recommendation</div><div class="ss-ai-content">${s.ai}</div></div>
+    <div class="ss-q">${s.q}</div>
+    <div class="ss-opts" id="ssOpts">${s.opts.map((o,i)=>`<button class="ss-opt" onclick="checkSS(${i})">${o.text}</button>`).join('')}</div>
+    <div class="ss-fb" id="ssFb"></div>
+    <button class="ss-next" id="ssNext" onclick="nextSS()">Next Situation →</button>`;
+}
+function checkSS(i){
+  if(document.querySelector('.ss-opt.correct')||document.querySelector('.ss-opt.wrong'))return;
+  const s=simSteps[ssIdx];
+  const opts=document.querySelectorAll('.ss-opt');
+  opts[i].classList.add(s.opts[i].correct?'correct':'wrong');
+  if(s.opts[i].correct)ssScore++;
+  else opts.forEach((o,oi)=>{if(s.opts[oi].correct)o.classList.add('correct');});
+  const fb=document.getElementById('ssFb');
+  fb.className='ss-fb show '+(s.opts[i].correct?'cfb':'wfb');
+  fb.textContent=s.opts[i].fb;
+  document.getElementById('ssNext').classList.add('show');
+}
+function nextSS(){ssIdx++;renderSS();}
+renderSS();
+
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! The AI has correctly identified a deadline risk and one potential solution. But cutting user testing from 2 weeks to 3 days is a quality risk that requires QA expertise to evaluate — not a scheduling decision alone. Implement the AI\'s analysis, add the human expertise layer, and make a decision you can defend to stakeholders.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('consult the QA team'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ AI recommendation for scope change always requires human review. The AI sees schedule data — not the quality implications of compressed testing. Implementing immediately risks launch problems. Rejecting outright ignores a real deadline problem. Asking for alternatives without expert consultation skips the essential step: understanding what 3 days of testing means vs. 2 weeks before deciding anything.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
