@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crisis Communication: When AI Gets Your Brand in Trouble — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Crisis case accordion */
+  .cases{display:flex;flex-direction:column;gap:12px;margin:24px 0;}
+  .case{border:1.5px solid var(--purple-mid);border-radius:18px;overflow:hidden;}
+  .case-header{padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;}
+  .case-header:hover{background:var(--purple-pale);}
+  .case.open .case-header{background:var(--purple);color:white;}
+  .case-title-wrap{display:flex;gap:14px;align-items:center;}
+  .case-severity{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;}
+  .sev-high{background:rgba(229,62,62,0.15);color:var(--red);}
+  .case.open .sev-high{background:rgba(248,113,113,0.25);color:#fca5a5;}
+  .sev-med{background:var(--purple-mid);color:var(--purple-dark);}
+  .case.open .sev-med{background:rgba(192,132,252,0.3);color:#e9d5ff;}
+  .case-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;}
+  .case-arrow{font-size:12px;transition:transform 0.2s;}
+  .case.open .case-arrow{transform:rotate(180deg);}
+  .case-body{display:none;padding:20px 24px;border-top:1px solid var(--purple-mid);background:var(--gray-soft);}
+  .case.open .case-body{display:block;animation:fadeIn 0.3s ease;}
+  .case-what-happened{font-size:15px;line-height:1.7;color:var(--gray-text);margin-bottom:14px;}
+  .case-ai-role{background:var(--red-pale);border:1.5px solid #FCA5A5;border-radius:10px;padding:12px 16px;margin-bottom:12px;}
+  .case-ai-role-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);margin-bottom:4px;}
+  .case-ai-role-text{font-size:14px;line-height:1.6;color:var(--gray-text);}
+  .case-lesson{background:var(--green-pale);border:1.5px solid #6EE7B7;border-radius:10px;padding:12px 16px;}
+  .case-lesson-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:4px;}
+  .case-lesson-text{font-size:14px;line-height:1.6;color:var(--gray-text);}
+
+  /* Crisis response simulator */
+  .crisis-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cs2-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cs2-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cs2-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .crisis-scenario{background:var(--red-pale);border:2px solid #FCA5A5;border-radius:16px;padding:20px;margin-bottom:20px;}
+  .crisis-scenario-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);margin-bottom:6px;}
+  .crisis-scenario-text{font-size:15px;line-height:1.6;color:var(--gray-text);}
+  .cs2-options{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+  .cs2-opt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:16px 20px;cursor:pointer;font-size:15px;color:var(--gray-text);text-align:left;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+  .cs2-opt:hover{border-color:var(--purple);background:var(--purple-pale);}
+  .cs2-opt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+  .cs2-opt.wrong{background:var(--red-pale);border-color:var(--red);color:var(--red);}
+  .cs2-feedback{padding:16px 20px;border-radius:12px;font-size:15px;line-height:1.65;display:none;margin-top:8px;}
+  .cs2-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+  .cs2-feedback.correct-fb{background:var(--green-pale);color:var(--green);}
+  .cs2-feedback.wrong-fb{background:var(--red-pale);color:var(--red);}
+
+  /* Crisis playbook steps */
+  .playbook{display:flex;flex-direction:column;gap:12px;margin:24px 0;}
+  .pb-step{display:flex;gap:16px;align-items:flex-start;padding:18px 22px;border:1.5px solid var(--purple-mid);border-radius:14px;background:var(--white);}
+  .pb-num{width:36px;height:36px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:white;flex-shrink:0;}
+  .pb-content h3{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:4px;}
+  .pb-content p{font-size:14px;line-height:1.65;color:var(--gray-text);margin:0;}
+  .pb-time{display:inline-block;background:var(--purple-pale);color:var(--purple);font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;margin-top:6px;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.2 · AI for Social Media & Branding</div>
+  <h1>Crisis Communication: When AI Gets Your Brand in Trouble</h1>
+  <p class="hero-sub">AI can help brands move fast on social media — but speed without oversight can turn a minor misstep into a full-blown PR crisis. Here's what goes wrong and how to respond.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>AI-powered social media tools are designed to keep brands moving — posting consistently, responding quickly, generating content at scale. But that speed creates new risks. <mark>When AI publishes content without adequate human review, it can post something tone-deaf during a tragedy, make factually incorrect claims, use culturally insensitive language, or respond to a customer complaint in a way that makes the situation dramatically worse.</mark></p>
+    <p>Understanding how these crises happen — and what to do when they do — is essential for anyone using AI tools to manage a brand's social presence.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Real Ways AI Causes Social Media Crises</h2>
+    <p>Click each case to see what happened, AI's role in the failure, and the lesson learned.</p>
+    <div class="cases">
+
+      <div class="case" id="case1" onclick="toggleCase('case1')">
+        <div class="case-header">
+          <div class="case-title-wrap">
+            <span class="case-severity sev-high">High Severity</span>
+            <span class="case-name">Scheduled post during a tragedy</span>
+          </div>
+          <span class="case-arrow">▼</span>
+        </div>
+        <div class="case-body">
+          <div class="case-what-happened">A brand had pre-scheduled a promotional post about a "going fast!" sale. While it was scheduled, a major national tragedy occurred. The post went live automatically — cheerfully urging people to "hurry before it's gone!" — during a period of national mourning. Screenshots went viral within hours.</div>
+          <div class="case-ai-role"><div class="case-ai-role-label">🤖 AI's Role in the Failure</div><div class="case-ai-role-text">Automated scheduling systems have no awareness of real-world context. They execute the calendar without any ability to detect that the moment has changed — that humor or urgency is now deeply inappropriate.</div></div>
+          <div class="case-lesson"><div class="case-lesson-label">✅ Lesson</div><div class="case-lesson-text">Any brand using automated scheduling must have a human "pause protocol" — someone responsible for monitoring real-world events and immediately halting scheduled content when context demands it. The queue should never run fully on autopilot.</div></div>
+        </div>
+      </div>
+
+      <div class="case" id="case2" onclick="toggleCase('case2')">
+        <div class="case-header">
+          <div class="case-title-wrap">
+            <span class="case-severity sev-high">High Severity</span>
+            <span class="case-name">AI chatbot makes a false promise</span>
+          </div>
+          <span class="case-arrow">▼</span>
+        </div>
+        <div class="case-body">
+          <div class="case-what-happened">An airline deployed an AI chatbot to handle customer service on social media. A grieving customer asked about bereavement fares — discounted tickets for people traveling due to a family death. The AI confidently gave incorrect information about a policy that had changed, leading the customer to book expensive flights expecting a refund that didn't exist. The customer then shared the conversation publicly.</div>
+          <div class="case-ai-role"><div class="case-ai-role-label">🤖 AI's Role in the Failure</div><div class="case-ai-role-text">AI language models generate confident-sounding answers even when they're working from outdated or incorrect information. The chatbot had no mechanism to flag uncertainty or escalate sensitive situations to a human agent.</div></div>
+          <div class="case-lesson"><div class="case-lesson-label">✅ Lesson</div><div class="case-lesson-text">AI customer service bots must have clear escalation rules: any mention of bereavement, medical emergencies, serious complaints, or financial disputes should automatically route to a human agent. AI handles volume; humans handle sensitivity.</div></div>
+        </div>
+      </div>
+
+      <div class="case" id="case3" onclick="toggleCase('case3')">
+        <div class="case-header">
+          <div class="case-title-wrap">
+            <span class="case-severity sev-med">Medium Severity</span>
+            <span class="case-name">AI-generated image uses insensitive imagery</span>
+          </div>
+          <span class="case-arrow">▼</span>
+        </div>
+        <div class="case-body">
+          <div class="case-what-happened">A food brand used an AI image generator to create visuals for a cultural holiday campaign. The generated images inadvertently combined iconography from multiple different cultures in a way that was considered disrespectful to members of one community. The team had approved the images quickly without consulting anyone from that background.</div>
+          <div class="case-ai-role"><div class="case-ai-role-label">🤖 AI's Role in the Failure</div><div class="case-ai-role-text">AI image generators don't understand cultural meaning, sacred symbols, or the significance of specific imagery to specific communities. They combine visual elements based on statistical patterns — not cultural understanding.</div></div>
+          <div class="case-lesson"><div class="case-lesson-label">✅ Lesson</div><div class="case-lesson-text">Any AI-generated content for cultural, religious, or community-specific campaigns must be reviewed by someone with genuine knowledge of that community before publishing. Statistical pattern-matching is not cultural competence.</div></div>
+        </div>
+      </div>
+
+      <div class="case" id="case4" onclick="toggleCase('case4')">
+        <div class="case-header">
+          <div class="case-title-wrap">
+            <span class="case-severity sev-med">Medium Severity</span>
+            <span class="case-name">Automated reply escalates a complaint</span>
+          </div>
+          <span class="case-arrow">▼</span>
+        </div>
+        <div class="case-body">
+          <div class="case-what-happened">A customer tweeted a frustrated but relatively mild complaint about a product issue. An AI-powered social listening tool automatically flagged it and generated a template response. The response was technically polite but missed the emotional tone entirely — responding with generic "we're sorry to hear that, please DM us your order number" when the customer was clearly venting and just wanted acknowledgment. They screenshot the robotic response and reposted it with the caption "This is why I'm done with this brand."</div>
+          <div class="case-ai-role"><div class="case-ai-role-label">🤖 AI's Role in the Failure</div><div class="case-ai-role-text">Template-based AI responses optimize for efficiency — resolving the complaint process — without recognizing that sometimes the customer just wants to feel heard first, before solutions are offered.</div></div>
+          <div class="case-lesson"><div class="case-lesson-label">✅ Lesson</div><div class="case-lesson-text">AI can draft responses, but a human should review any reply to a public complaint before posting. Empathy and emotional attunement are human skills. The goal isn't to close the ticket — it's to make the person feel respected.</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>In a crisis, speed matters — but speed in the wrong direction makes everything worse. The first question isn't "what do we post?" It's "should we post anything at all right now?"</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Crisis Response Decision Simulator</h2>
+    <p>A brand's AI scheduling tool just published a promotional post while a major news event is dominating everyone's feed. What's the right response?</p>
+    <div class="crisis-sim">
+      <div class="cs2-label">🚨 Crisis Simulator</div>
+      <div class="cs2-title">What Do You Do?</div>
+      <div class="cs2-sub">Read the scenario and choose the best response.</div>
+      <div class="crisis-scenario">
+        <div class="crisis-scenario-label">🔴 Live Situation</div>
+        <div class="crisis-scenario-text">It's Tuesday morning. Your brand's AI scheduling tool just auto-posted a cheerful promotional caption: "Nothing beats a great deal! Our summer sale is live — prices this low won't last! 🌞" Meanwhile, a major natural disaster that began overnight is dominating all social media and news coverage. The post has been live for 8 minutes and has 3 replies so far — two are confused, one is angry.</div>
+      </div>
+      <div class="cs2-options" id="crisisOptions">
+        <button class="cs2-opt" onclick="crisisAnswer(this,false,'A')">A. Leave it up — deleting looks worse and draws more attention to the mistake</button>
+        <button class="cs2-opt" onclick="crisisAnswer(this,false,'B')">B. Quickly add a comment under the post acknowledging the situation and expressing condolences</button>
+        <button class="cs2-opt" onclick="crisisAnswer(this,true,'C')">C. Delete the post immediately, pause all scheduled content, send a brief authentic acknowledgment of the situation, and hold all promotional content until the news cycle shifts</button>
+        <button class="cs2-opt" onclick="crisisAnswer(this,false,'D')">D. Post a separate apology thread explaining the scheduling mistake in detail</button>
+      </div>
+      <div class="cs2-feedback" id="crisisFeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The AI Crisis Playbook: What to Do When It Goes Wrong</h2>
+    <div class="playbook">
+      <div class="pb-step"><div class="pb-num">1</div><div class="pb-content"><h3>Pause everything immediately</h3><p>The first action in any brand crisis is stopping the bleeding. Pause all scheduled posts across every platform. Don't let automated tools continue publishing while a crisis is unfolding.</p><span class="pb-time">⏱ Within minutes</span></div></div>
+      <div class="pb-step"><div class="pb-num">2</div><div class="pb-content"><h3>Assess before responding</h3><p>Don't post a reactive response before understanding the full situation. Who is upset? What exactly happened? Who saw it? What's the scope? Rushing a response without this context often makes things worse.</p><span class="pb-time">⏱ First 30 minutes</span></div></div>
+      <div class="pb-step"><div class="pb-num">3</div><div class="pb-content"><h3>Respond with a human voice — not AI</h3><p>Crisis responses must come from a real human with authority. This is not the moment for AI-generated drafts. Audiences can tell the difference, and an AI-sounding apology in a crisis feels insulting.</p><span class="pb-time">⏱ Within 1–2 hours</span></div></div>
+      <div class="pb-step"><div class="pb-num">4</div><div class="pb-content"><h3>Acknowledge, don't over-explain</h3><p>A genuine acknowledgment — "We got this wrong and we're sorry" — is more powerful than a three-paragraph explanation of what the algorithm did. The explanation can come later. The acknowledgment must come first.</p><span class="pb-time">⏱ First response</span></div></div>
+      <div class="pb-step"><div class="pb-num">5</div><div class="pb-content"><h3>Build guardrails so it doesn't happen again</h3><p>After the immediate crisis is managed, analyze what process failure allowed this to happen. Update your AI tool settings, human review checkpoints, and escalation protocols to close the gap.</p><span class="pb-time">⏱ Post-crisis</span></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🛡️</div>
+      <div>
+        <h3>Prevention Is Better Than Response</h3>
+        <p>The best crisis response is the one you never have to give. Smart brands using AI for social media build prevention into their workflow: a human reviews all AI content before it posts, scheduled queues have a manual pause capability that's easy to activate, AI chatbots automatically escalate sensitive topics to humans, and there's always someone responsible for monitoring real-world context — ready to hit pause the moment the news changes. AI moves fast; crisis prevention requires a human hand on the brake.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI creates social media crises in predictable ways: tone-deaf scheduled posts during tragedies, confident incorrect claims from chatbots, culturally insensitive generated images, and robotic responses to emotional complaints.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>When a crisis hits: pause all scheduled content immediately, assess before responding, respond with a human voice — not AI-generated copy — and acknowledge rather than over-explain.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Prevention requires human oversight at every stage: reviewing before posting, monitoring real-world context, having a pause protocol, and escalating sensitive topics away from AI automation.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI has no awareness of real-world events, cultural meaning, or emotional context — these are permanently human responsibilities that automation cannot replace.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  function toggleCase(id){document.getElementById(id).classList.toggle('open');}
+
+  let crisisDone=false;
+  function crisisAnswer(btn,correct,letter){
+    if(crisisDone)return; crisisDone=true;
+    document.querySelectorAll('.cs2-opt').forEach(b=>b.style.pointerEvents='none');
+    const fb=document.getElementById('crisisFeedback');
+    if(correct){
+      btn.classList.add('correct');
+      fb.innerHTML='✅ <strong>Correct — Option C is the right move.</strong> Delete the post immediately (8 minutes is short enough that not everyone has seen it), pause the entire content queue, and post a brief genuine acknowledgment — not a long explanation, just "We\'re pausing all content today. Our thoughts are with those affected." Then hold everything until the news cycle settles. The detailed "how this happened" explanation can come days later if needed — but acknowledgment must come first.';
+      fb.className='cs2-feedback show correct-fb';
+    } else {
+      btn.classList.add('wrong');
+      document.querySelectorAll('.cs2-opt')[2].classList.add('correct');
+      const explanations={A:'Leaving it up doesn\'t "avoid attention" — it extends the window of exposure and signals you either didn\'t notice or don\'t care. Delete quickly while the reach is still small.',B:'Adding a comment under a promotional post during a crisis creates an awkward, contradictory combination. The original post still sits there promoting a sale while your comment expresses sympathy.',D:'A detailed apology thread about a scheduling mistake draws far more attention to the mistake than it deserves. Over-explanation reads as defensive and makes it a bigger story.'};
+      fb.innerHTML=`❌ Not the best choice. ${explanations[letter]} The right answer (C) is to delete immediately, pause all content, and post a simple human acknowledgment.`;
+      fb.className='cs2-feedback show wrong-fb';
+    }
+  }
+</script>
+</body>
+</html>

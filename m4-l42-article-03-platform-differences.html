@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Differences: Writing for Instagram vs. LinkedIn vs. TikTok vs. X — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Platform cards */
+  .platform-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+  @media(max-width:560px){.platform-grid{grid-template-columns:1fr;}}
+  .plat-card{border:1.5px solid var(--purple-mid);border-radius:20px;overflow:hidden;}
+  .plat-header{padding:20px 24px;display:flex;gap:14px;align-items:center;}
+  .plat-icon{font-size:32px;}
+  .plat-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);}
+  .plat-tagline{font-size:13px;color:var(--purple);font-weight:600;}
+  .plat-body{padding:0 24px 24px;}
+  .plat-row{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--purple-mid);font-size:14px;}
+  .plat-row:last-child{border-bottom:none;}
+  .plat-key{font-weight:600;color:var(--gray-muted);min-width:100px;flex-shrink:0;}
+  .plat-val{color:var(--gray-text);line-height:1.5;}
+  .plat-example{background:var(--gray-soft);margin:12px 0 0;border-radius:12px;padding:14px 16px;}
+  .plat-ex-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);margin-bottom:6px;}
+  .plat-ex-text{font-size:14px;line-height:1.6;color:var(--gray-text);font-style:italic;}
+
+  /* Same message translator */
+  .translator{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .tr-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .tr-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .tr-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .tr-topics{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .tr-topic{padding:10px 20px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;}
+  .tr-topic:hover,.tr-topic.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .tr-translate-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+  .tr-output{display:none;margin-top:20px;}
+  .tr-output.show{display:grid;grid-template-columns:1fr 1fr;gap:12px;animation:fadeIn 0.4s ease;}
+  @media(max-width:560px){.tr-output.show{grid-template-columns:1fr;}}
+  .tr-post{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px;}
+  .tr-platform{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);margin-bottom:8px;}
+  .tr-content{font-size:15px;line-height:1.65;color:var(--gray-text);margin-bottom:8px;}
+  .tr-why{font-size:12px;color:var(--gray-muted);border-top:1px solid var(--purple-mid);padding-top:8px;margin-top:8px;}
+
+  /* What NOT to do */
+  .dont-cards{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .dont-card{display:flex;gap:14px;align-items:flex-start;padding:16px 20px;background:var(--red-pale);border:1.5px solid #FCA5A5;border-radius:14px;}
+  .dont-icon{font-size:22px;flex-shrink:0;}
+  .dont-text h3{font-size:15px;font-weight:600;color:var(--red);margin-bottom:4px;}
+  .dont-text p{font-size:14px;line-height:1.6;color:var(--gray-text);margin:0;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.2 · AI for Social Media & Branding</div>
+  <h1>Platform Differences: Writing for Instagram vs. LinkedIn vs. TikTok vs. X</h1>
+  <p class="hero-sub">Copying the same post across every platform is one of the most common mistakes in social media marketing. Each platform has a different audience, culture, and content standard — and your writing needs to match.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Imagine posting a formal, professional LinkedIn update about your company's quarterly results on TikTok. Or dropping slang-filled, emoji-heavy TikTok text onto LinkedIn. Both would feel off — and users would notice immediately. <mark>Every social platform has its own unwritten rules, content culture, and audience expectations — and ignoring these differences is why so much brand social content underperforms.</mark></p>
+    <p>The good news: once you understand each platform's personality, adapting your message becomes a learnable skill — one that AI can help accelerate.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Four Major Platforms at a Glance</h2>
+    <div class="platform-grid">
+      <div class="plat-card">
+        <div class="plat-header"><div class="plat-icon">📸</div><div><div class="plat-name">Instagram</div><div class="plat-tagline">Aspirational & Visual-First</div></div></div>
+        <div class="plat-body">
+          <div class="plat-row"><span class="plat-key">Audience</span><span class="plat-val">18–34 primarily, highly visual, lifestyle & brand discovery</span></div>
+          <div class="plat-row"><span class="plat-key">Caption length</span><span class="plat-val">Short hook (1–2 lines) + expanded body, under 2,200 chars</span></div>
+          <div class="plat-row"><span class="plat-key">Tone</span><span class="plat-val">Warm, aspirational, community-focused, authentic</span></div>
+          <div class="plat-row"><span class="plat-key">Hashtags</span><span class="plat-val">5–10 relevant hashtags, mix of niche and broad</span></div>
+          <div class="plat-row"><span class="plat-key">Best content</span><span class="plat-val">Reels, carousels, Stories with polls/questions</span></div>
+          <div class="plat-example"><div class="plat-ex-label">Example Caption</div><div class="plat-ex-text">"Your morning, upgraded ☕ Swipe to see how we source every bean that ends up in your cup — from farm to your hands. Hit save if you want the full story. 🌿 #CoffeeStory #SingleOrigin #MorningRoutine"</div></div>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-header"><div class="plat-icon">💼</div><div><div class="plat-name">LinkedIn</div><div class="plat-tagline">Professional & Insight-Driven</div></div></div>
+        <div class="plat-body">
+          <div class="plat-row"><span class="plat-key">Audience</span><span class="plat-val">Professionals, B2B, decision-makers, career-focused</span></div>
+          <div class="plat-row"><span class="plat-key">Caption length</span><span class="plat-val">Longer is fine — 150–300 word posts perform well</span></div>
+          <div class="plat-row"><span class="plat-key">Tone</span><span class="plat-val">Professional but personal, insight-sharing, thought leadership</span></div>
+          <div class="plat-row"><span class="plat-key">Hashtags</span><span class="plat-val">3–5 professional hashtags, no fluff</span></div>
+          <div class="plat-row"><span class="plat-key">Best content</span><span class="plat-val">Personal lessons, data/insights, carousels, articles</span></div>
+          <div class="plat-example"><div class="plat-ex-label">Example Post</div><div class="plat-ex-text">"3 years ago I almost quit. We had 4 weeks of runway left. Here's what I learned from nearly losing the company — and what we did to turn it around: [thread] #Entrepreneurship #StartupLife"</div></div>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-header"><div class="plat-icon">🎵</div><div><div class="plat-name">TikTok</div><div class="plat-tagline">Authentic, Fast & Entertainment-Led</div></div></div>
+        <div class="plat-body">
+          <div class="plat-row"><span class="plat-key">Audience</span><span class="plat-val">Gen Z primary, 18–34 secondary, trend-driven discovery</span></div>
+          <div class="plat-row"><span class="plat-key">Caption length</span><span class="plat-val">Very short — 1–3 lines max; content is in the video</span></div>
+          <div class="plat-row"><span class="plat-key">Tone</span><span class="plat-val">Unpolished, genuine, humorous, trend-aware, direct</span></div>
+          <div class="plat-row"><span class="plat-key">Hashtags</span><span class="plat-val">3–5 max, trending hashtags crucial for discovery</span></div>
+          <div class="plat-row"><span class="plat-key">Best content</span><span class="plat-val">Educational "POV" videos, behind-the-scenes, trends, duets</span></div>
+          <div class="plat-example"><div class="plat-ex-label">Example Caption</div><div class="plat-ex-text">"Things baristas notice but never say 👀 Part 3 #CoffeeTok #BaristaLife #WorkHumor"</div></div>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-header"><div class="plat-icon">𝕏</div><div><div class="plat-name">X (Twitter)</div><div class="plat-tagline">Real-Time, Witty & Conversational</div></div></div>
+        <div class="plat-body">
+          <div class="plat-row"><span class="plat-key">Audience</span><span class="plat-val">News-followers, tech/culture, journalists, political audiences</span></div>
+          <div class="plat-row"><span class="plat-key">Caption length</span><span class="plat-val">280 chars max — concise, punchy, clever is rewarded</span></div>
+          <div class="plat-row"><span class="plat-key">Tone</span><span class="plat-val">Witty, direct, opinionated, real-time reactive</span></div>
+          <div class="plat-row"><span class="plat-key">Hashtags</span><span class="plat-val">1–2 max — hashtag overload is penalized culturally</span></div>
+          <div class="plat-row"><span class="plat-key">Best content</span><span class="plat-val">Hot takes, breaking news, brand banter, threads</span></div>
+          <div class="plat-example"><div class="plat-ex-label">Example Post</div><div class="plat-ex-text">"Hot take: the best coffee you'll ever have is the one you made yourself at home and drank while it was still hot. We said what we said."</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The platform is the context. Your message might be the same — but the packaging, length, tone, and style need to match where you're posting. Otherwise it's like showing up to a beach party in a tuxedo.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Platform Post Translator</h2>
+    <p>Pick a topic and see how the same message gets adapted for each platform's style and culture.</p>
+    <div class="translator">
+      <div class="tr-label">🔄 Post Translator</div>
+      <div class="tr-title">Same Message, Four Platforms</div>
+      <div class="tr-sub">Select a topic and see how a pro would adapt it for each platform.</div>
+      <div class="tr-topics">
+        <button class="tr-topic active" onclick="setTopic('launch',this)">🚀 Product Launch</button>
+        <button class="tr-topic" onclick="setTopic('hiring',this)">💼 We're Hiring</button>
+        <button class="tr-topic" onclick="setTopic('tip',this)">💡 Quick Tip</button>
+      </div>
+      <button class="tr-translate-btn" onclick="translate()">✨ Translate Across Platforms</button>
+      <div class="tr-output" id="trOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Common Cross-Posting Mistakes</h2>
+    <div class="dont-cards">
+      <div class="dont-card"><div class="dont-icon">❌</div><div class="dont-text"><h3>Copying the same caption everywhere</h3><p>The most common mistake. A LinkedIn post pasted to Instagram misses the visual hook. The same post on TikTok reads as out of touch. Each platform needs intentional adaptation.</p></div></div>
+      <div class="dont-card"><div class="dont-icon">❌</div><div class="dont-text"><h3>Using all hashtags on X</h3><p>#Using #hashtags #on #every #word is a #TikTok thing that reads as completely out of place on X, where 1–2 hashtags max is the cultural norm.</p></div></div>
+      <div class="dont-card"><div class="dont-icon">❌</div><div class="dont-text"><h3>Being overly formal on TikTok</h3><p>"We are pleased to announce our newest product offering" is LinkedIn language. TikTok audiences will scroll past anything that feels like a press release.</p></div></div>
+      <div class="dont-card"><div class="dont-icon">❌</div><div class="dont-text"><h3>Posting Instagram-length captions on X</h3><p>X users are there for speed. A 200-word caption on X will be skipped immediately. The constraint of 280 characters is a feature — brevity is the skill.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>How AI Helps with Platform Adaptation</h3>
+        <p>One of AI's most practical uses in social media marketing is platform adaptation. You give an AI tool your core message and tell it to rewrite for each platform — it handles the length adjustment, tone shift, hashtag strategy, and format optimization automatically. This makes it possible for a solo marketer to be active on four platforms without producing four separate pieces of content from scratch every time. The human still provides the strategic message; AI handles the translation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Each platform has a different culture, audience, and content standard — Instagram is aspirational, LinkedIn is professional, TikTok is authentic and fast, X is witty and real-time.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Caption length, tone, hashtag count, and content format all need to be adapted per platform — copying the same post everywhere is one of the most common and costly social media mistakes.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The message can be the same — the packaging must change. Adapting a core message for each platform's culture is a key social media marketing skill.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI can automate platform adaptation — rewriting one core message into platform-specific versions — making multi-platform content production practical for small teams.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const translations={
+    launch:{
+      ig:{p:'📸 Instagram',c:'Something we\'ve been building for months is finally here ✨\n\nSwipe through to see what went into making it — every detail, every decision, every late night.\n\nLink in bio to be first. 🚀 #NewLaunch #BehindTheScenes #ProductDrop',w:'Visual hook, carousel tease, "link in bio" CTA, 5–7 hashtags.'},
+      li:{p:'💼 LinkedIn',c:'Today we\'re launching something I\'m genuinely proud of.\n\nIt took 18 months, 3 failed prototypes, and more feedback sessions than I can count. What we learned along the way changed how we think about product development entirely.\n\nHere\'s what I wish we\'d known at the start: [thread]\n\n#ProductLaunch #Startups #Lessons',w:'Personal story, professional insight, thought leadership framing, minimal hashtags.'},
+      tiktok:{p:'🎵 TikTok',c:'it\'s finally here 😭 the thing we\'ve been teasing for weeks #launch #newproduct #fyp',w:'Super short, lowercase feels intentional, emotional reaction, trending hashtags for discovery.'},
+      x:{p:'𝕏 X',c:'We\'ve been working on this for 18 months. It\'s live. That\'s all.',w:'Maximum restraint. Understated confidence. Let the brevity speak. No hashtags needed.'}
+    },
+    hiring:{
+      ig:{p:'📸 Instagram',c:'We\'re growing 🌱\n\nLooking for someone who cares about [craft] as much as we do — someone who\'ll make this team better just by being in it.\n\nSwipe to meet the people you\'d work with, and check the link in bio for the full role. Come build something great with us. ✨ #NowHiring #JoinOurTeam #WeAreHiring',w:'Emphasizes culture and team, visual storytelling via carousel, link in bio.'},
+      li:{p:'💼 LinkedIn',c:'We\'re hiring a [role] — and I\'ll be direct about what we\'re actually looking for.\n\nSkills matter. But what matters more is someone who asks hard questions, admits what they don\'t know, and makes the people around them better.\n\nIf that sounds like you — or sounds like someone you know — the full role description is in the comments.\n\n#Hiring #OpenRole #JoinUs',w:'Honest and direct, explains culture values, professional network activation, comments for link.'},
+      tiktok:{p:'🎵 TikTok',c:'POV: you just got hired at a company that actually respects your time 👀 we\'re hiring btw #hiring #jobs #worktok',w:'POV format, casual tone, creates aspiration through implicit contrast, culture-signaling.'},
+      x:{p:'𝕏 X',c:'We\'re hiring a [role]. Fully remote. Good pay. Great team. No mandatory fun.\n\nLink below.',w:'Humor about corporate culture, immediate benefit signals, sub-200 chars.'}
+    },
+    tip:{
+      ig:{p:'📸 Instagram',c:'The tip that changed how I use social media forever 👇\n\nSave this for the next time you\'re staring at a blank caption box. It takes 2 minutes and makes everything easier. Swipe → 📲 #ContentTips #SocialMediaMarketing #CreatorTips',w:'Hook in first line, save CTA, carousel for the tip itself.'},
+      li:{p:'💼 LinkedIn',c:'The single habit that improved my social media performance more than anything else:\n\nBatch your content creation. Set aside 2 hours once a week to write everything. Not one post at a time.\n\nHere\'s why the psychology works — and how to implement it this week:\n\n1. Creative momentum builds across posts\n2. You make better decisions with context\n3. Distribution becomes intentional, not reactive\n\nTry it for one month and report back. 📊',w:'Numbered list, professional credibility framing, action-oriented close.'},
+      tiktok:{p:'🎵 TikTok',c:'wait this actually works?? content creation tip nobody talks about ✍️ #contentcreator #socialmediatips #fyp',w:'Disbelief hook, curiosity gap, tip is in the video not the caption.'},
+      x:{p:'𝕏 X',c:'Counterintuitive content tip: write less, publish more often.\n\nA good 50-word post beats a perfect 500-word post nobody reads.',w:'Hot take format, provocative but defensible claim, no hashtags needed.'}
+    }
+  };
+
+  let currentTopic='launch';
+  function setTopic(t,btn){currentTopic=t;document.querySelectorAll('.tr-topic').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('trOutput').classList.remove('show');}
+  function translate(){
+    const d=translations[currentTopic];
+    document.getElementById('trOutput').innerHTML=['ig','li','tiktok','x'].map(k=>`<div class="tr-post"><div class="tr-platform">${d[k].p}</div><div class="tr-content">${d[k].c.replace(/\n/g,'<br>')}</div><div class="tr-why">Why this works: ${d[k].w}</div></div>`).join('');
+    document.getElementById('trOutput').className='tr-output show';
+  }
+</script>
+</body>
+</html>

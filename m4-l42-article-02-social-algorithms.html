@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Social Media Algorithms Decide What You See — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Platform signal explorer */
+  .platform-tabs{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .pt-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .pt-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:22px;}
+  .pt-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .pt-btn{padding:10px 20px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;}
+  .pt-btn:hover,.pt-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .pt-panel{display:none;}
+  .pt-panel.active{display:block;animation:fadeIn 0.3s ease;}
+  .pt-platform-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .pt-platform-goal{font-size:14px;color:var(--purple);font-weight:600;margin-bottom:16px;}
+  .signal-list{display:flex;flex-direction:column;gap:8px;}
+  .sig-row{display:flex;gap:12px;align-items:center;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:12px 16px;}
+  .sig-weight{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--purple);min-width:48px;text-align:center;}
+  .sig-info h4{font-size:14px;font-weight:600;color:var(--purple-dark);margin-bottom:2px;}
+  .sig-info p{font-size:13px;color:var(--gray-muted);margin:0;line-height:1.5;}
+  .sig-bar-wrap{flex:1;height:8px;background:var(--purple-mid);border-radius:100px;overflow:hidden;min-width:60px;}
+  .sig-bar{height:100%;background:var(--purple);border-radius:100px;}
+
+  /* Organic reach reality */
+  .reach-reality{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+  @media(max-width:600px){.reach-reality{grid-template-columns:1fr;}}
+  .rr-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;text-align:center;}
+  .rr-platform{font-size:13px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+  .rr-num{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--purple-dark);line-height:1;margin-bottom:6px;}
+  .rr-label{font-size:12px;color:var(--gray-muted);}
+
+  /* Feed simulation */
+  .feed-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .fs-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .fs-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .fs-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .fs-posts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+  .fs-post{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px;cursor:pointer;transition:all 0.2s;display:flex;justify-content:space-between;align-items:flex-start;}
+  .fs-post:hover{border-color:var(--purple);}
+  .fs-post-content{flex:1;}
+  .fs-post-brand{font-size:12px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;}
+  .fs-post-text{font-size:15px;color:var(--gray-text);line-height:1.5;margin-bottom:8px;}
+  .fs-post-stats{font-size:12px;color:var(--gray-muted);}
+  .fs-post-score{text-align:right;min-width:70px;}
+  .fs-score-num{font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:var(--purple);}
+  .fs-score-label{font-size:11px;color:var(--gray-muted);}
+  .fs-rank-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+  .fs-ranked{margin-top:16px;display:none;}
+  .fs-ranked.show{display:block;animation:fadeIn 0.4s ease;}
+  .fs-rank-item{display:flex;gap:12px;align-items:center;padding:12px 16px;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;margin-bottom:8px;}
+  .fs-rank-pos{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--purple);min-width:36px;}
+  .fs-rank-text{font-size:14px;font-weight:500;color:var(--purple-dark);}
+  .fs-rank-why{font-size:12px;color:var(--gray-muted);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.2 · AI for Social Media & Branding</div>
+  <h1>How Social Media Algorithms Decide What You See</h1>
+  <p class="hero-sub">Nobody sees everything posted on social media. Algorithms decide what gets shown — and what gets buried. Understanding how they work is the key to creating content that actually reaches people.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Every social media platform has billions of pieces of content and hundreds of millions of users. There's no way every user could see every post — so each platform uses an algorithm to decide what to show each person in what order. <mark>These algorithms are essentially ranking systems — they score every piece of content based on dozens of signals, then show you the highest-scoring content first.</mark></p>
+    <p>For marketers, this means that posting great content is only the first step. You also need to understand how the algorithm scores content — so your posts earn enough ranking points to actually be seen by the people you're trying to reach.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Every Algorithm Cares About Most</h2>
+    <p>Every platform's algorithm is different, but they all optimize for the same thing: <strong>keeping users on the platform as long as possible.</strong> Content that makes people stop scrolling, engage, and come back is content the algorithm rewards.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;">
+      <div style="background:var(--green-pale);border:1.5px solid #6EE7B7;border-radius:14px;padding:18px;">
+        <div style="font-weight:700;color:var(--green);margin-bottom:10px;font-size:15px;">✅ Algorithm Rewards</div>
+        <div style="font-size:14px;color:var(--gray-text);line-height:1.7;">High completion rates · Saves · Shares · Comments · Meaningful engagement · Watch time · Quick replies · Profile visits after seeing post</div>
+      </div>
+      <div style="background:var(--red-pale);border:1.5px solid #FCA5A5;border-radius:14px;padding:18px;">
+        <div style="font-weight:700;color:var(--red);margin-bottom:10px;font-size:15px;">❌ Algorithm Penalizes</div>
+        <div style="font-size:14px;color:var(--gray-text);line-height:1.7;">Immediate scrolling past · Low watch time · No engagement · Muted accounts · Reported content · Outbound links that take users off-platform · Repetitive posting</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How Each Platform's Algorithm Works</h2>
+    <p>Each platform weights signals differently because each has a different content model and user goal. Explore each one:</p>
+    <div class="platform-tabs">
+      <div class="pt-label">📊 Platform Algorithm Explorer</div>
+      <div class="pt-title">What Each Platform Rewards Most</div>
+      <div class="pt-nav">
+        <button class="pt-btn active" onclick="showPlatform('ig',this)">📸 Instagram</button>
+        <button class="pt-btn" onclick="showPlatform('tiktok',this)">🎵 TikTok</button>
+        <button class="pt-btn" onclick="showPlatform('linkedin',this)">💼 LinkedIn</button>
+        <button class="pt-btn" onclick="showPlatform('x',this)">𝕏 X (Twitter)</button>
+      </div>
+      <div id="platform-display"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Organic reach is shrinking on every platform. The algorithm isn't your enemy — but it is a gatekeeper. Understanding its rules is how you earn your way through.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Organic Reach Reality Check</h2>
+    <p>Average organic reach (the % of your followers who actually see a given post) has declined significantly on most platforms. This is partly algorithmic and partly because competition for feed space has exploded.</p>
+    <div class="reach-reality">
+      <div class="rr-card">
+        <div class="rr-platform">Facebook</div>
+        <div class="rr-num">1–3%</div>
+        <div class="rr-label">average organic reach of page followers per post (down from 16% in 2012)</div>
+      </div>
+      <div class="rr-card">
+        <div class="rr-platform">Instagram</div>
+        <div class="rr-num">3–6%</div>
+        <div class="rr-label">average organic reach for feed posts from business accounts</div>
+      </div>
+      <div class="rr-card">
+        <div class="rr-platform">TikTok</div>
+        <div class="rr-num">Up to 100%</div>
+        <div class="rr-label">new account posts can reach non-followers if content performs well (For You Page)</div>
+      </div>
+    </div>
+    <p>TikTok's radical difference is why it became so important for brands — its algorithm gives new and small accounts the same shot at viral reach as established accounts, purely based on content performance.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Rank the Feed</h2>
+    <p>Imagine you're an Instagram algorithm. Below are four posts from accounts a user follows. Rank them by how the algorithm would likely prioritize them in the feed.</p>
+    <div class="feed-sim">
+      <div class="fs-label">🤖 Algorithm Simulator</div>
+      <div class="fs-title">How Would the Algorithm Rank These?</div>
+      <div class="fs-sub">Review the posts and their stats, then hit "Rank Feed" to see how the algorithm would order them.</div>
+      <div class="fs-posts">
+        <div class="fs-post">
+          <div class="fs-post-content">
+            <div class="fs-post-brand">Sneaker Brand — Posted 30 min ago</div>
+            <div class="fs-post-text">"New colorway just dropped 🔥 Limited pairs available. Link in bio."</div>
+            <div class="fs-post-stats">❤️ 48 likes · 💬 3 comments · ↗️ 12 shares · 🔖 89 saves</div>
+          </div>
+          <div class="fs-post-score"><div class="fs-score-num">A</div><div class="fs-score-label">Post</div></div>
+        </div>
+        <div class="fs-post">
+          <div class="fs-post-content">
+            <div class="fs-post-brand">Fitness Coach — Posted 2 hours ago</div>
+            <div class="fs-post-text">"Nobody talks about this but here's why your diet isn't working (it's not the food 👇)" [carousel, 8 slides]</div>
+            <div class="fs-post-stats">❤️ 892 likes · 💬 147 comments · ↗️ 334 shares · 🔖 1,204 saves</div>
+          </div>
+          <div class="fs-post-score"><div class="fs-score-num">B</div><div class="fs-score-label">Post</div></div>
+        </div>
+        <div class="fs-post">
+          <div class="fs-post-content">
+            <div class="fs-post-brand">Travel Blogger — Posted 4 hours ago</div>
+            <div class="fs-post-text">"Santorini sunset ✨ #travel #greece #sunset #beautiful #wanderlust #photooftheday"</div>
+            <div class="fs-post-stats">❤️ 214 likes · 💬 8 comments · ↗️ 11 shares · 🔖 22 saves</div>
+          </div>
+          <div class="fs-post-score"><div class="fs-score-num">C</div><div class="fs-score-label">Post</div></div>
+        </div>
+        <div class="fs-post">
+          <div class="fs-post-content">
+            <div class="fs-post-brand">Coffee Brand — Posted 6 hours ago</div>
+            <div class="fs-post-text">"Caption this ☕ [photo of latte art that looks like a confused cat]"</div>
+            <div class="fs-post-stats">❤️ 1,103 likes · 💬 489 comments · ↗️ 203 shares · 🔖 41 saves</div>
+          </div>
+          <div class="fs-post-score"><div class="fs-score-num">D</div><div class="fs-score-label">Post</div></div>
+        </div>
+      </div>
+      <button class="fs-rank-btn" onclick="rankFeed()">🏆 Rank the Feed</button>
+      <div class="fs-ranked" id="fsRanked"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h3>The Marketer's Algorithm Playbook</h3>
+        <p>Smart marketers don't fight the algorithm — they work with it. This means: posting consistently (algorithms favor active accounts), using formats each platform prioritizes (Reels on Instagram, carousels on LinkedIn), generating saves and shares rather than just likes (higher-value signals), posting when your audience is most active, and always encouraging comments with questions or prompts. Understanding the algorithm isn't gaming the system — it's speaking the platform's language.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Social media algorithms rank content based on engagement signals — saves, shares, comments, watch time — with the goal of keeping users on the platform as long as possible.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Each platform weights signals differently: TikTok prioritizes watch time and completion rate; Instagram rewards saves and Reels; LinkedIn boosts content that keeps users on-platform.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Organic reach has declined sharply on most platforms — posting isn't enough. You need content that earns algorithmic distribution through strong engagement signals.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Working with the algorithm — using preferred formats, posting consistently, encouraging high-value signals like saves and comments — is how modern marketers earn free reach.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const platforms={
+    ig:{name:'Instagram',goal:'Maximize time spent — especially on Reels and Stories',signals:[{w:'🥇',label:'Saves',desc:'Highest-value signal — means content was worth keeping',pct:95},{w:'🥈',label:'Shares (DMs)',desc:'Sharing to Stories or DMs signals deeply resonant content',pct:88},{w:'🥉',label:'Comments',desc:'Especially meaningful comments — not just emoji',pct:80},{w:'4',label:'Reels watch time',desc:'Completion % of Reels heavily weighted for discovery',pct:75},{w:'5',label:'Likes',desc:'Lowest individual weight, but high volume still matters',pct:50}]},
+    tiktok:{name:'TikTok',goal:'Predict video completion — optimize For You Page',signals:[{w:'🥇',label:'Video completion rate',desc:'% of users who watch to the end — the #1 signal',pct:98},{w:'🥈',label:'Re-watches',desc:'Watching a video twice signals extremely high interest',pct:90},{w:'🥉',label:'Shares',desc:'Sharing off-platform (WhatsApp, text) is a massive signal',pct:82},{w:'4',label:'Comments',desc:'Especially early comments in the first hour after posting',pct:70},{w:'5',label:'Account age/history',desc:'Less weight than other platforms — new accounts get equal shots',pct:30}]},
+    linkedin:{name:'LinkedIn',goal:'Professional engagement — prioritize dwell time on platform',signals:[{w:'🥇',label:'Comments & replies',desc:'Especially from people outside your network (signals broad relevance)',pct:92},{w:'🥈',label:'Dwell time',desc:'How long users pause on your post while scrolling',pct:85},{w:'🥉',label:'Saves',desc:'Saving for later signals high professional value',pct:78},{w:'4',label:'Re-shares',desc:'Sharing with added commentary weighted higher than plain shares',pct:72},{w:'5',label:'Reactions',desc:'Thoughtful reactions (Insightful, Celebrate) weighted above Like',pct:55}]},
+    x:{name:'X (Twitter)',goal:'Keep users in conversations — reward replies and quote posts',signals:[{w:'🥇',label:'Replies',desc:'Conversations signal high interest — algorithm amplifies threaded discussions',pct:90},{w:'🥈',label:'Quote posts',desc:'Adding commentary to reposts creates new conversations',pct:82},{w:'🥉',label:'Bookmarks',desc:'Private save action — strong personal relevance signal',pct:75},{w:'4',label:'Retweets',desc:'Traditional signal — less weight now vs. replies',pct:65},{w:'5',label:'Blue check / Premium',desc:'X Premium subscribers get algorithmic boost in 2024+',pct:50}]}
+  };
+
+  function showPlatform(key,btn){
+    document.querySelectorAll('.pt-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const p=platforms[key];
+    document.getElementById('platform-display').innerHTML=`<div class="pt-platform-name">${p.name}</div><div class="pt-platform-goal">Primary goal: ${p.goal}</div><div class="signal-list">${p.signals.map(s=>`<div class="sig-row"><div class="sig-weight">${s.w}</div><div class="sig-info" style="flex:1"><h4>${s.label}</h4><p>${s.desc}</p></div><div class="sig-bar-wrap"><div class="sig-bar" style="width:${s.pct}%"></div></div></div>`).join('')}</div>`;
+  }
+  showPlatform('ig',document.querySelector('.pt-btn'));
+
+  function rankFeed(){
+    const rankings=[
+      {pos:1,post:'B — Fitness Coach (carousel)',why:'Highest saves (1,204) + strong comments + shares. Carousel format + educational hook = algorithm goldmine.'},
+      {pos:2,post:'D — Coffee Brand (latte cat)',why:'Highest comment count (489) — "caption this" explicitly drives comments, which Instagram heavily rewards.'},
+      {pos:3,post:'A — Sneaker Brand (new drop)',why:'Very high saves-to-likes ratio (89 saves vs 48 likes) signals product intent. Recent post time also helps.'},
+      {pos:4,post:'C — Travel Blogger (sunset)',why:'Low saves and comments relative to likes. Hashtag overload can signal spam. Generic content = weak algorithm signals.'}
+    ];
+    document.getElementById('fsRanked').innerHTML=`<div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:14px;">Algorithm Feed Ranking:</div>${rankings.map(r=>`<div class="fs-rank-item"><div class="fs-rank-pos">#${r.pos}</div><div><div class="fs-rank-text">${r.post}</div><div class="fs-rank-why">${r.why}</div></div></div>`).join('')}`;
+    document.getElementById('fsRanked').className='fs-ranked show';
+  }
+</script>
+</body>
+</html>

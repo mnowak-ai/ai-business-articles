@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Makes Content Go Viral? The Psychology Behind Sharing — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  .triggers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.triggers{grid-template-columns:1fr;}}
+  .trigger-card{border:1.5px solid var(--purple-mid);border-radius:20px;padding:24px;transition:all 0.25s;cursor:pointer;}
+  .trigger-card:hover{border-color:var(--purple);background:var(--purple-pale);transform:translateY(-3px);box-shadow:0 8px 24px rgba(123,47,190,0.12);}
+  .tc-emoji{font-size:36px;margin-bottom:10px;}
+  .tc-name{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .tc-why{font-size:14px;color:var(--gray-text);line-height:1.65;margin-bottom:10px;}
+  .tc-example{background:var(--gray-soft);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--gray-muted);font-style:italic;display:none;}
+  .trigger-card:hover .tc-example{display:block;}
+  .viral-scorer{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .vs2-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .vs2-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .vs2-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .vs2-posts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+  .vs2-post{background:var(--white);border:2px solid var(--purple-mid);border-radius:14px;padding:18px;cursor:pointer;transition:all 0.2s;}
+  .vs2-post.selected{border-color:var(--purple);background:var(--purple-pale);}
+  .vs2-post-text{font-size:15px;color:var(--gray-text);line-height:1.55;margin-bottom:6px;}
+  .vs2-post-meta{font-size:12px;color:var(--gray-muted);}
+  .vs2-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+  .vs2-result{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .vs2-result.show{display:block;animation:fadeIn 0.4s ease;}
+  .vs2-score{font-family:'Fraunces',serif;font-size:48px;font-weight:900;color:var(--purple);line-height:1;margin-bottom:8px;}
+  .vs2-triggers-found{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;}
+  .vs2-tag{padding:5px 14px;border-radius:100px;font-size:13px;font-weight:600;background:var(--purple-pale);color:var(--purple-dark);}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.2 · AI for Social Media & Branding</div>
+  <h1>What Makes Content Go Viral? The Psychology Behind Sharing</h1>
+  <p class="hero-sub">Virality isn't random luck. Research shows that people share content for predictable psychological reasons — and understanding those reasons is the foundation of content that spreads.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Every marketing team wants content that goes viral. But most viral content isn't an accident — it triggers specific psychological responses that make people want to share it with others. <mark>Researcher Jonah Berger's STEPPS framework (Social Currency, Triggers, Emotion, Public, Practical Value, Stories) identifies the core reasons people share content — and these principles apply just as much to brand content as to personal posts.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The 6 Viral Triggers — Hover to See Examples</h2>
+    <div class="triggers">
+      <div class="trigger-card"><div class="tc-emoji">💎</div><div class="tc-name">Social Currency</div><div class="tc-why">People share things that make them look good, informed, or "in the know." Exclusive info, insider access, and counterintuitive takes all trigger this.</div><div class="tc-example">"Most people don't know this about investing..." — The hook implies you're about to learn something others don't know, making sharing it feel smart.</div></div>
+      <div class="trigger-card"><div class="tc-emoji">🔔</div><div class="tc-name">Triggers</div><div class="tc-why">Content linked to something people encounter daily keeps the brand top-of-mind. "Peanut butter makes me think of Jelly" is a classic trigger example.</div><div class="tc-example">KitKat's "Have a break, have a KitKat" links the brand to any moment of rest. Every time someone takes a break, they think of KitKat.</div></div>
+      <div class="trigger-card"><div class="tc-emoji">❤️</div><div class="tc-name">Emotion</div><div class="tc-why">High-arousal emotions — awe, amusement, anger, anxiety — drive sharing. Content that makes you feel something strongly is content you want to share.</div><div class="tc-example">The "Dove Real Beauty Sketches" video triggered awe and emotion in millions — people shared it because it moved them, not because it sold soap.</div></div>
+      <div class="trigger-card"><div class="tc-emoji">👁️</div><div class="tc-name">Public</div><div class="tc-why">Content that's visually distinctive and shareable-looking spreads faster. People share things that look good in their feed or reflect who they are.</div><div class="tc-example">Starbucks' red holiday cups go viral every year — not because of coffee, but because they're a public, photogenic signal that "the season" has started.</div></div>
+      <div class="trigger-card"><div class="tc-emoji">🛠️</div><div class="tc-name">Practical Value</div><div class="tc-why">Genuinely useful information gets shared because sharing useful things makes you helpful. "News you can use" is fundamentally shareable.</div><div class="tc-example">"5 things to do before a job interview" — practical, specific, actionable. People forward this to friends who are job hunting.</div></div>
+      <div class="trigger-card"><div class="tc-emoji">📖</div><div class="tc-name">Stories</div><div class="tc-why">Humans process information through narrative. A story wrapping a message is remembered and shared; a list of facts is forgotten.</div><div class="tc-example">Instead of "Our product reduces stress," tell the story of a specific person whose life changed. The story carries the message to audiences the fact never reaches.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>People don't share content because it's good. They share it because sharing it does something for them — makes them look smart, helps a friend, expresses their identity, or connects them to a feeling.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Viral Score the Post</h2>
+    <p>Select a post and analyze which psychological triggers it contains — and how likely it is to be shared.</p>
+    <div class="viral-scorer">
+      <div class="vs2-label">🧠 Virality Analyzer</div>
+      <div class="vs2-title">Which Post Has Higher Viral Potential?</div>
+      <div class="vs2-sub">Select a post and analyze its psychological sharing triggers.</div>
+      <div class="vs2-posts">
+        <div class="vs2-post" id="vp1" onclick="selectPost('vp1')">
+          <div class="vs2-post-text">"Our new sneaker collection is available now. Shop at the link in our bio. Free shipping on orders over $50."</div>
+          <div class="vs2-post-meta">Post A — Product announcement</div>
+        </div>
+        <div class="vs2-post" id="vp2" onclick="selectPost('vp2')">
+          <div class="vs2-post-text">"We almost didn't make this shoe. Our lead designer cried in a meeting because we were going to cut it for cost reasons. Here's the story of how it survived — and why it might be the most important thing we've ever made. 🧵"</div>
+          <div class="vs2-post-meta">Post B — Origin story thread</div>
+        </div>
+        <div class="vs2-post" id="vp3" onclick="selectPost('vp3')">
+          <div class="vs2-post-text">"The one thing every runner gets wrong (that costs you 20 minutes in a marathon): most people train for endurance. The actual limiter is something completely different. Here's the research 👇"</div>
+          <div class="vs2-post-meta">Post C — Educational counterintuitive take</div>
+        </div>
+      </div>
+      <button class="vs2-btn" onclick="analyzePost()">🔬 Analyze Virality</button>
+      <div class="vs2-result" id="vsResult2"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>How AI Uses Viral Psychology</h3>
+        <p>AI content tools trained on high-performing social content have implicitly learned these patterns. When you ask an AI to write a social post, the best results come when you specify which psychological triggers you want to activate — "write this as a counterintuitive take that makes readers feel smart for knowing it" or "frame this as a story about a real challenge." Naming the viral mechanism helps AI produce content that's more likely to spread.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Viral content is not random — it triggers predictable psychological responses. Jonah Berger's STEPPS framework identifies six: Social Currency, Triggers, Emotion, Public, Practical Value, and Stories.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>People share content because it does something for them — makes them look smart, helps someone, expresses their identity, or connects them emotionally — not just because it's "good."</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>High-arousal emotions (awe, humor, surprise, even mild anger) drive sharing. Low-arousal emotions (contentment, mild sadness) do not. Emotional intensity matters.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Specifying which viral triggers to activate when prompting AI tools produces significantly better-performing social content than generic content requests.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  let selPost=null;
+  function selectPost(id){document.querySelectorAll('.vs2-post').forEach(p=>p.classList.remove('selected'));document.getElementById(id).classList.add('selected');selPost=id;document.getElementById('vsResult2').classList.remove('show');}
+  const postData={vp1:{score:12,triggers:['Basic Awareness'],verdict:'Very low viral potential',analysis:'This post has zero psychological triggers for sharing. It\'s purely transactional — "here is a product, here is a link." There\'s no reason for anyone to share it. Nobody shares a product announcement unless they\'re already a brand evangelist.'},vp2:{score:78,triggers:['Stories','Emotion','Social Currency'],verdict:'High viral potential',analysis:'Strong story trigger (origin narrative with conflict and resolution) + high-arousal emotion (the designer crying scene creates genuine investment) + social currency (knowing "why" a product exists makes you feel like an insider). This post gives people a reason to share it because sharing it reflects their appreciation for craft and authenticity.'},vp3:{score:91,triggers:['Social Currency','Practical Value','Emotion (Curiosity)'],verdict:'Very high viral potential',analysis:'Counterintuitive hook ("you\'re doing it wrong") is a social currency goldmine — sharing it makes you look informed. Strong practical value for runners. The curiosity gap ("completely different limiter") creates mild anxiety that drives click-throughs and shares. This post is engineered — whether intentionally or not — for maximum distribution.'}};
+  function analyzePost(){if(!selPost){alert('Select a post first.');return;}const d=postData[selPost];document.getElementById('vsResult2').innerHTML=`<div class="vs2-score">${d.score}/100</div><div style="font-size:14px;color:var(--gray-muted);margin-bottom:12px;">${d.verdict}</div><div class="vs2-triggers-found">${d.triggers.map(t=>`<span class="vs2-tag">${t}</span>`).join('')}</div><p style="font-size:15px;line-height:1.7;color:var(--gray-text);margin:12px 0 0">${d.analysis}</p>`;document.getElementById('vsResult2').className='vs2-result show';}
+</script>
+</body>
+</html>

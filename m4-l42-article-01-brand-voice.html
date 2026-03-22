@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Brand Voice and Why Does Consistency Matter? — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Voice spectrum */
+  .voice-spectrum{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .vs-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .vs-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .vs-sub{font-size:15px;color:var(--gray-muted);margin-bottom:22px;}
+  .vs-brands{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .vs-btn{padding:10px 20px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;}
+  .vs-btn:hover,.vs-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .vs-result{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .vs-result.show{display:block;animation:fadeIn 0.3s ease;}
+  .vs-brand-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .vs-voice-type{font-size:13px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;}
+  .vs-trait{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--purple-mid);}
+  .vs-trait:last-child{border-bottom:none;}
+  .vs-trait-label{font-size:13px;font-weight:600;color:var(--gray-muted);min-width:90px;}
+  .vs-trait-val{font-size:14px;color:var(--gray-text);}
+  .vs-example-box{margin-top:14px;background:var(--purple-pale);border-radius:12px;padding:14px 18px;}
+  .vs-example-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);margin-bottom:6px;}
+  .vs-example-text{font-size:15px;line-height:1.6;color:var(--purple-dark);font-style:italic;}
+
+  /* Same message different voice */
+  .voice-compare{margin:24px 0;}
+  .vc-scenario{background:var(--purple);border-radius:16px;padding:18px 22px;margin-bottom:16px;}
+  .vc-scenario-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:6px;}
+  .vc-scenario-text{font-size:16px;color:white;font-weight:500;}
+  .vc-versions{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:560px){.vc-versions{grid-template-columns:1fr;}}
+  .vc-version{border:1.5px solid var(--purple-mid);border-radius:14px;padding:18px;background:var(--white);}
+  .vc-brand{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);margin-bottom:8px;}
+  .vc-text{font-size:15px;line-height:1.6;color:var(--gray-text);margin-bottom:10px;}
+  .vc-analysis{font-size:13px;color:var(--gray-muted);font-style:italic;}
+
+  /* Consistency impact */
+  .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+  @media(max-width:600px){.impact-grid{grid-template-columns:1fr;}}
+  .ig-card{background:var(--purple-pale);border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;text-align:center;}
+  .ig-num{font-family:'Fraunces',serif;font-size:38px;font-weight:900;color:var(--purple);line-height:1;margin-bottom:8px;}
+  .ig-label{font-size:13px;color:var(--gray-muted);line-height:1.5;}
+
+  /* Inconsistency radar — quiz */
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.2 · AI for Social Media & Branding</div>
+  <h1>What Is Brand Voice and Why Does Consistency Matter?</h1>
+  <p class="hero-sub">Every brand has a personality. Brand voice is how that personality shows up in words — and consistency is what makes customers recognize, trust, and connect with a brand across every touchpoint.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>Think about your favorite brands. If Nike posted something online without a logo, could you still tell it was Nike from the words alone? What about Apple? Wendy's? Probably yes — because those brands have a consistent, recognizable voice that shows up the same way whether it's an ad, a tweet, a product description, or a customer service reply.</p>
+    <p><mark>Brand voice is the consistent personality and tone a brand uses in all its written communications.</mark> It's not just what you say — it's how you say it. And consistency in that voice is one of the most powerful tools for building customer trust and recognition.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Brand Voice Is Not the Same as Tone</h2>
+    <p>These two terms get confused all the time, but they mean different things:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0;">
+      <div style="background:var(--purple);border-radius:18px;padding:24px;color:white;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Brand Voice</div>
+        <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:10px;">Consistent Personality</div>
+        <p style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;">The overall character of your brand — bold, friendly, authoritative, playful. This stays the same across every platform, every campaign, every year.</p>
+      </div>
+      <div style="background:var(--purple-pale);border:1.5px solid var(--purple-mid);border-radius:18px;padding:24px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;">Tone</div>
+        <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:10px;">Situational Adjustment</div>
+        <p style="font-size:14px;color:var(--gray-text);line-height:1.65;margin:0;">How you adapt your voice to context. A brand might be playful in a social post but more serious in a customer service response — but both feel like the same brand.</p>
+      </div>
+    </div>
+    <p style="margin-top:8px;">Think of it like a person: your personality doesn't change, but how you speak at a job interview vs. with your friends does. Same core character, different situational tone.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Explore Real Brand Voices</h2>
+    <p>Select a brand to see how their voice is defined — and how it shows up in real copy.</p>
+    <div class="voice-spectrum">
+      <div class="vs-label">🎭 Brand Voice Explorer</div>
+      <div class="vs-title">How Do Real Brands Define Their Voice?</div>
+      <div class="vs-sub">Click a brand to explore their voice attributes and see examples in action.</div>
+      <div class="vs-brands">
+        <button class="vs-btn" onclick="showVoice('nike',this)">Nike</button>
+        <button class="vs-btn" onclick="showVoice('wendys',this)">Wendy's</button>
+        <button class="vs-btn" onclick="showVoice('apple',this)">Apple</button>
+        <button class="vs-btn" onclick="showVoice('mailchimp',this)">Mailchimp</button>
+        <button class="vs-btn" onclick="showVoice('patagonia',this)">Patagonia</button>
+      </div>
+      <div class="vs-result" id="vsResult"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Same News, Four Different Voices</h2>
+    <p>See how the exact same marketing scenario sounds completely different depending on brand voice. All four are announcing a product delay:</p>
+    <div class="voice-compare">
+      <div class="vc-scenario">
+        <div class="vc-scenario-label">The situation</div>
+        <div class="vc-scenario-text">A brand needs to post about a 2-week product shipping delay due to supply chain issues.</div>
+      </div>
+      <div class="vc-versions">
+        <div class="vc-version">
+          <div class="vc-brand">🏃 Nike-style — Motivational</div>
+          <div class="vc-text">"Every great thing takes time. Your order is worth the wait — and we're working relentlessly to get it to you. Stay ready."</div>
+          <div class="vc-analysis">Turns a negative into a motivational moment. Consistent with "Just Do It" energy.</div>
+        </div>
+        <div class="vc-version">
+          <div class="vc-brand">🍔 Wendy's-style — Witty</div>
+          <div class="vc-text">"Good news: your order exists. Better news: it's coming. Slightly unfortunate news: it needs two more weeks. Worth it."</div>
+          <div class="vc-analysis">Self-aware humor even in bad news. Customers expect this from Wendy's.</div>
+        </div>
+        <div class="vc-version">
+          <div class="vc-brand">🍎 Apple-style — Minimal & Direct</div>
+          <div class="vc-text">"Your order has been delayed by approximately two weeks. We appreciate your patience. Updated tracking information is available in your account."</div>
+          <div class="vc-analysis">Clean, factual, no fluff. Apple's voice is confident precision — not warmth.</div>
+        </div>
+        <div class="vc-version">
+          <div class="vc-brand">🌿 Patagonia-style — Honest & Values-Led</div>
+          <div class="vc-text">"We're behind. Supply chain disruptions pushed your shipment back two weeks. We'd rather tell you straight than make excuses. Thank you for your patience."</div>
+          <div class="vc-analysis">Radical transparency as brand value. "We don't spin" is the voice.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Brand voice is the difference between customers who recognize you and customers who just see a company. Recognition breeds trust. Trust breeds loyalty. Loyalty is the entire game.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Why Consistency Is the Key Ingredient</h2>
+    <p>Having a great brand voice is only half the challenge. The other half is being consistent with it — across every platform, every team member, every piece of content.</p>
+    <div class="impact-grid">
+      <div class="ig-card">
+        <div class="ig-num">3–4×</div>
+        <div class="ig-label">more revenue for brands with consistent presentation across all platforms</div>
+      </div>
+      <div class="ig-card">
+        <div class="ig-num">33%</div>
+        <div class="ig-label">average revenue increase attributed to consistent brand presentation</div>
+      </div>
+      <div class="ig-card">
+        <div class="ig-num">68%</div>
+        <div class="ig-label">of businesses say brand consistency has directly contributed to revenue growth</div>
+      </div>
+    </div>
+    <p>Here's why consistency matters so much: every time a customer encounters your brand and the voice feels familiar, it builds recognition. Every time recognition builds, trust increases. And trust is the foundation of every purchase decision, recommendation, and long-term customer relationship.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>Where AI Comes In — and Where It Can Break Things</h3>
+        <p>AI tools can generate brand content at incredible speed — but they're only as good as the brand voice guidance they're given. If a team uses AI without a clear voice definition, they end up with generic-sounding content that doesn't feel like the brand at all. The best AI-powered marketing teams create detailed brand voice guidelines first, then use those guidelines as the foundation for every AI prompt — ensuring AI output matches the brand's established personality.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A startup has a friendly, conversational brand voice — they always sound like a helpful friend, never corporate. Their social team uses that voice perfectly. But their customer service emails are formal and stiff, and their website is full of business jargon. What is the core problem?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Their social team is too informal — they should match the formal tone used elsewhere</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. Brand voice inconsistency — customers experience different personalities depending on where they encounter the brand, which undermines trust and recognition</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. The website has too much jargon — fix the website and the brand voice problem is solved</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. This is normal and expected — different channels require completely different voices</button>
+      </div>
+      <div class="quiz-feedback" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Brand voice is the consistent personality a brand uses in all written communications — not just what you say, but how you say it across every platform and touchpoint.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Voice (consistent personality) differs from tone (situational adjustments) — your personality stays the same, but how you express it adapts to context.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Consistency across all touchpoints builds recognition → recognition builds trust → trust drives revenue. Brands with consistent presentation earn significantly more than those without.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI content tools require strong brand voice guidelines to produce on-brand output — feeding AI a clear voice definition is essential before using it for content generation.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const voices={
+    nike:{name:'Nike',type:'Motivational & Bold',traits:[{l:'Personality',v:'Confident, inspiring, challenger-minded'},{ l:'Language',v:'Active verbs, short punchy sentences, imperative commands'},{ l:'What to avoid',v:'Passive language, hedging, corporate speak'},{ l:'Audience relationship',v:'Coach/athlete — pushing you to be your best'}],example:'"You\'re not just an athlete. You\'re proof. The work you put in when no one\'s watching is exactly what this is made for. Don\'t stop."'},
+    wendys:{name:"Wendy's",type:'Witty & Unapologetically Sassy',traits:[{l:'Personality',v:'Playful, sharp, self-aware, not afraid to roast competitors'},{l:'Language',v:'Internet slang, pop culture references, direct address'},{l:'What to avoid',v:'Being too polished, generic food marketing praise, sycophancy'},{l:'Audience relationship',v:'Friend who keeps you on your toes — entertainment first'}],example:'"We heard McDonald\'s is launching a new burger. Brave. Very brave. 🍔 (Our drive-thru is still open BTW)"'},
+    apple:{name:'Apple',type:'Minimal, Precise & Premium',traits:[{l:'Personality',v:'Calm confidence, sophisticated simplicity, quietly powerful'},{l:'Language',v:'Short declarative sentences, no superlatives, benefit-first'},{l:'What to avoid',v:'Exclamation points, hype language, feature lists without meaning'},{l:'Audience relationship',v:'Trusted expert — no hard sell, no noise, just clarity'}],example:'"iPhone 16 Pro. Titanium. A18 Pro chip. The thinnest bezels ever on an iPhone. Some things just have to be experienced."'},
+    mailchimp:{name:'Mailchimp',type:'Friendly Expert',traits:[{l:'Personality',v:'Warm, approachable, slightly quirky, genuinely helpful'},{l:'Language',v:'Conversational, plain English, humor used gently'},{l:'What to avoid',v:'Jargon, condescension, overly formal tone'},{l:'Audience relationship',v:'Smart friend who happens to be great at marketing'}],example:'"Your email is ready to go. We\'ll be honest — it looks really good. Like, your subscribers are lucky to have you good. Hit send when you\'re ready."'},
+    patagonia:{name:'Patagonia',type:'Honest & Mission-Driven',traits:[{l:'Personality',v:'Direct, principled, passionate about the environment, no corporate veneer'},{l:'Language',v:'Transparent, values-first, comfortable with nuance and complexity'},{l:'What to avoid',v:'Greenwashing, vague feel-good language, selling for selling\'s sake'},{l:'Audience relationship',v:'Fellow activist — you share values, not just a transaction'}],example:'"We make stuff that lasts. Not because it\'s good marketing (it is), but because more stuff in landfills is a disaster we helped create. We\'re trying to do better. Thanks for being part of that."'}
+  };
+
+  function showVoice(key,btn){
+    document.querySelectorAll('.vs-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const v=voices[key];
+    document.getElementById('vsResult').innerHTML=`<div class="vs-brand-name">${v.name}</div><div class="vs-voice-type">${v.type}</div>${v.traits.map(t=>`<div class="vs-trait"><div class="vs-trait-label">${t.l}</div><div class="vs-trait-val">${t.v}</div></div>`).join('')}<div class="vs-example-box"><div class="vs-example-label">Example Copy</div><div class="vs-example-text">${v.example}</div></div>`;
+    document.getElementById('vsResult').className='vs-result show';
+  }
+
+  let done=false;
+  function answer(btn,correct){
+    if(done)return;done=true;
+    document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');
+    const f=document.getElementById('qfb');
+    if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> Brand voice inconsistency is the core problem. Customers who get a warm, friendly social experience and then hit a stiff corporate email wall don\'t feel like they\'re dealing with the same brand. That disconnect erodes trust — because they can\'t form a clear mental model of who you are. The fix isn\'t to improve one channel — it\'s to define the voice clearly and enforce it across every channel and every team.';}
+    else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ Not quite. The social team is doing it right — they\'re the model to follow. And fixing just the website would help, but the root problem is that there\'s no unified voice standard being applied consistently across channels. A brand voice style guide — applied everywhere — is the solution to inconsistency like this.';}
+    f.classList.add('show');
+  }
+</script>
+</body>
+</html>

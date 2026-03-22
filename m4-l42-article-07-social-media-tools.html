@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Tools for Social Media Management — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  .tool-categories{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .tc-btn{padding:10px 20px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;}
+  .tc-btn:hover,.tc-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .tool-panel{display:none;}
+  .tool-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:14px;animation:fadeIn 0.3s ease;}
+  @media(max-width:560px){.tool-panel.active{grid-template-columns:1fr;}}
+  .tool-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;background:var(--white);}
+  .tool-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .tool-cat{font-size:12px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+  .tool-desc{font-size:14px;line-height:1.65;color:var(--gray-text);margin-bottom:12px;}
+  .tool-ai-feature{background:var(--purple-pale);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--purple-dark);}
+  .tool-ai-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);margin-bottom:3px;}
+  .choose-guide{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cg2-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cg2-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cg2-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .cg2-questions{display:flex;flex-direction:column;gap:14px;margin-bottom:16px;}
+  .cg2-q{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:16px 20px;}
+  .cg2-q-text{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:10px;}
+  .cg2-opts{display:flex;gap:8px;flex-wrap:wrap;}
+  .cg2-opt{padding:8px 16px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .cg2-opt:hover,.cg2-opt.active{background:var(--purple-pale);border-color:var(--purple);}
+  .cg2-recommend-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+  .cg2-result{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .cg2-result.show{display:block;animation:fadeIn 0.4s ease;}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.2 · AI for Social Media & Branding</div>
+  <h1>AI Tools for Social Media Management</h1>
+  <p class="hero-sub">The social media tool landscape has exploded with AI capabilities. Here's a practical guide to what exists, what each category does, and how to choose the right tools for different needs.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>There's no single AI tool that does everything in social media. The landscape is made up of specialized tools for different parts of the workflow — from content creation to scheduling to analytics to listening. <mark>Understanding what each category of tool does is more valuable than memorizing specific product names, because the specific tools will change — but the categories and the problems they solve won't.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Tools by Category — Explore Each</h2>
+    <div class="tool-categories">
+      <button class="tc-btn active" onclick="showTools('scheduling',this)">📅 Scheduling</button>
+      <button class="tc-btn" onclick="showTools('content',this)">✍️ Content Creation</button>
+      <button class="tc-btn" onclick="showTools('analytics',this)">📊 Analytics</button>
+      <button class="tc-btn" onclick="showTools('listening',this)">👂 Social Listening</button>
+    </div>
+    <div id="tool-display"></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The best social media tool is the one your team will actually use consistently. A powerful tool that's too complex gets abandoned. A simple tool used every day beats a sophisticated one used once a month.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Which Tool Category Do You Need?</h2>
+    <p>Answer three questions and get a recommendation for what to prioritize first.</p>
+    <div class="choose-guide">
+      <div class="cg2-label">🎯 Tool Finder</div>
+      <div class="cg2-title">Match Your Biggest Problem to a Solution</div>
+      <div class="cg2-sub">Select the answer that best matches your situation.</div>
+      <div class="cg2-questions">
+        <div class="cg2-q">
+          <div class="cg2-q-text">1. What's your biggest social media pain point?</div>
+          <div class="cg2-opts" id="q1-opts">
+            <button class="cg2-opt" onclick="setAns('q1','time',this)">I don't have enough time to post consistently</button>
+            <button class="cg2-opt" onclick="setAns('q1','content',this)">Creating content is hard and slow</button>
+            <button class="cg2-opt" onclick="setAns('q1','results',this)">I don't know what's working</button>
+            <button class="cg2-opt" onclick="setAns('q1','reputation',this)">I miss mentions and brand conversations</button>
+          </div>
+        </div>
+        <div class="cg2-q">
+          <div class="cg2-q-text">2. How large is your social media team?</div>
+          <div class="cg2-opts" id="q2-opts">
+            <button class="cg2-opt" onclick="setAns('q2','solo',this)">Just me (solo marketer)</button>
+            <button class="cg2-opt" onclick="setAns('q2','small',this)">Small team (2–5 people)</button>
+            <button class="cg2-opt" onclick="setAns('q2','agency',this)">Agency managing multiple brands</button>
+          </div>
+        </div>
+      </div>
+      <button class="cg2-recommend-btn" onclick="recommend()">🎯 Get Recommendation</button>
+      <div class="cg2-result" id="cg2Result"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h3>The Most Important Thing About Any Tool</h3>
+        <p>Every AI social media tool is only as valuable as the human strategy behind it. Tools that schedule automatically still need a human deciding what to schedule. Analytics tools surface data, but a human has to interpret what it means and decide what to do. Content tools generate drafts, but a human must ensure brand voice and accuracy. The mistake is thinking a tool will solve problems that are actually strategy problems. Tools amplify execution — they can't replace strategic thinking.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI social media tools fall into four main categories: Scheduling (consistency), Content Creation (speed), Analytics (performance insight), and Social Listening (brand intelligence).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The right tool depends on your biggest pain point — not on what's most popular. Match the tool category to the specific problem you're solving.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI features in these tools (optimal send times, content suggestions, sentiment analysis) are amplifiers — they make good strategies better, but can't replace the strategy itself.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The best tool for any team is the one they'll actually use consistently — simplicity and adoption matter more than feature count.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const tools={
+    scheduling:[
+      {name:'Hootsuite',cat:'Scheduling & Management',desc:'One of the most established platforms. Schedule posts across all major platforms, manage a content calendar, and collaborate across teams.',ai:'AI-powered optimal send-time recommendations based on your audience\'s historical engagement patterns.'},
+      {name:'Buffer',cat:'Scheduling & Analytics',desc:'Known for its clean, simple interface. Great for small teams and individuals. Built-in analytics show what\'s performing.',ai:'AI suggestions for best posting times and hashtag recommendations based on content analysis.'},
+      {name:'Later',cat:'Visual Scheduling',desc:'Built for visual-first platforms (Instagram, Pinterest, TikTok). Drag-and-drop calendar with visual grid preview.',ai:'Best Time to Post predictions and caption writing assistance powered by machine learning.'},
+      {name:'Sprout Social',cat:'Enterprise Management',desc:'Full-featured platform for larger teams. Robust reporting, approval workflows, and CRM integration.',ai:'Optimal send times, AI-generated caption suggestions, and smart inbox prioritization for customer messages.'}
+    ],
+    content:[
+      {name:'Jasper',cat:'AI Copywriting',desc:'AI writing tool trained specifically for marketing. Templates for social captions, ad copy, blog posts, and more.',ai:'Brand voice training feature — feed it your existing content and it learns to write in your specific style.'},
+      {name:'Copy.ai',cat:'AI Copywriting',desc:'Generates social media captions, ad copy, and content variations rapidly. Good for producing multiple options quickly.',ai:'Generates 5–10 variations of any piece of content instantly, enabling faster A/B testing.'},
+      {name:'Canva AI',cat:'Visual Content',desc:'Design tool with AI image generation, text-to-image, and AI-powered design suggestions built in.',ai:'Magic Write for captions, AI image generation for graphics, and brand kit enforcement across designs.'},
+      {name:'Runway',cat:'AI Video',desc:'AI video generation and editing tool. Creates short video clips from text descriptions or edits existing footage.',ai:'Text-to-video generation, background removal, and auto-editing for social video formats (9:16, 1:1, 16:9).'}
+    ],
+    analytics:[
+      {name:'Sprinklr',cat:'Enterprise Analytics',desc:'Enterprise-level social analytics with competitor benchmarking, content attribution, and ROI reporting.',ai:'AI-powered anomaly detection flags unusual performance changes automatically — no manual monitoring needed.'},
+      {name:'Iconosquare',cat:'Instagram & TikTok Analytics',desc:'Detailed analytics specifically for Instagram and TikTok. Best-in-class follower growth and content performance data.',ai:'AI benchmarking compares your metrics against competitors in your industry automatically.'},
+      {name:'Socialbakers (Emplifi)',cat:'AI-Powered Analytics',desc:'AI-first analytics platform that predicts content performance before posting and recommends content types.',ai:'Pre-publish performance prediction — estimates engagement before you post based on content analysis.'},
+      {name:'Native Platform Analytics',cat:'Free Built-In',desc:'Instagram Insights, TikTok Analytics, LinkedIn Analytics — all free. Limited but essential baseline metrics.',ai:'Platform AI surfaces top-performing content and audience insights automatically within each dashboard.'}
+    ],
+    listening:[
+      {name:'Brandwatch',cat:'Enterprise Listening',desc:'Industry-leading social listening. Monitors brand mentions across social, news, blogs, and forums globally.',ai:'Sentiment analysis, trend detection, and crisis early warning system powered by NLP models.'},
+      {name:'Mention',cat:'Mid-Market Listening',desc:'Real-time monitoring of brand mentions across social and web. More affordable than enterprise options.',ai:'AI sentiment scoring on every mention and automated daily digests of brand conversation trends.'},
+      {name:'Hootsuite Streams',cat:'Basic Listening',desc:'Built into Hootsuite. Monitor keywords and hashtags across platforms without a separate tool.',ai:'Basic keyword trend monitoring and notification when mentions spike above normal volume.'},
+      {name:'Google Alerts (Free)',cat:'Free Basic Monitoring',desc:'Free tool from Google. Monitors web mentions (not social) for any keyword. Essential starting point.',ai:'No AI features, but provides baseline web mention monitoring at zero cost.'}
+    ]
+  };
+
+  function showTools(cat,btn){
+    document.querySelectorAll('.tc-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tool-display').className='';
+    document.getElementById('tool-display').innerHTML=tools[cat].map(t=>`<div class="tool-card"><div class="tool-name">${t.name}</div><div class="tool-cat">${t.cat}</div><div class="tool-desc">${t.desc}</div><div class="tool-ai-feature"><div class="tool-ai-label">🤖 AI Feature</div>${t.ai}</div></div>`).join('');
+    document.getElementById('tool-display').className='tool-panel active';
+  }
+  showTools('scheduling',document.querySelector('.tc-btn'));
+
+  const answers={q1:null,q2:null};
+  function setAns(q,val,btn){answers[q]=val;btn.closest('.cg2-opts').querySelectorAll('.cg2-opt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+
+  const recommendations={
+    time:{solo:'Start with Buffer or Later — simple scheduling tools that let you batch-create content and auto-post throughout the week. A solo marketer can set up a full week of content in under 2 hours.',small:'Hootsuite or Sprout Social for team scheduling with approval workflows — so multiple people can draft content and one person approves before anything goes live.',agency:'Sprout Social or Hootsuite Enterprise — built for managing multiple brand accounts with clear permission levels and client reporting.'},
+    content:{solo:'Jasper or Copy.ai for caption drafts, plus Canva AI for visuals. A solo marketer can produce a week of content significantly faster with AI drafts + visual generation.',small:'Same tools, but establish a shared brand voice guide that everyone feeds into the AI tools — ensures consistency even when multiple people are generating content.',agency:'Jasper with brand voice training — you can train it on each client\'s voice separately so AI output stays on-brand for each account automatically.'},
+    results:{solo:'Start with the native analytics on each platform (free). Once you have 3+ months of data, Instagram Insights and TikTok Analytics give you enough to make smarter content decisions.',small:'Iconosquare for Instagram/TikTok deep analytics — the AI benchmarking against competitors is particularly valuable for understanding relative performance.',agency:'Sprinklr or Emplifi for multi-client reporting with AI anomaly detection — you can\'t monitor every client manually, so automated flagging is essential.'},
+    reputation:{solo:'Google Alerts (free) for web mentions + Hootsuite Streams for social keyword monitoring. Not comprehensive, but covers the basics without cost.',small:'Mention — real-time monitoring with AI sentiment analysis. Affordable for a small team and covers social + web mentions.',agency:'Brandwatch — enterprise listening with the scale and AI sophistication to monitor multiple brand conversations simultaneously with proper sentiment analysis.'}
+  };
+
+  function recommend(){
+    const pain=answers.q1;const size=answers.q2;
+    if(!pain||!size){alert('Please answer both questions.');return;}
+    const rec=recommendations[pain][size];
+    document.getElementById('cg2Result').innerHTML=`<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple);margin-bottom:10px;">🎯 Recommendation</div><p style="font-size:16px;line-height:1.7;color:var(--gray-text);margin:0">${rec}</p>`;
+    document.getElementById('cg2Result').className='cg2-result show';
+  }
+</script>
+</body>
+</html>

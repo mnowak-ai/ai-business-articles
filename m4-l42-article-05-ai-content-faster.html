@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How AI Helps You Create Social Media Content Faster — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Content workflow */
+  .workflow-steps{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+  .wf-step{display:flex;gap:20px;position:relative;padding-bottom:24px;}
+  .wf-step:last-child{padding-bottom:0;}
+  .wf-step::before{content:'';position:absolute;left:19px;top:44px;bottom:0;width:2px;background:var(--purple-mid);}
+  .wf-step:last-child::before{display:none;}
+  .wf-num{width:40px;height:40px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:white;flex-shrink:0;z-index:1;}
+  .wf-content{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:20px;flex:1;}
+  .wf-who{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;}
+  .wf-who.human{color:var(--green);}
+  .wf-who.ai{color:var(--purple);}
+  .wf-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .wf-desc{font-size:14px;line-height:1.65;color:var(--gray-text);margin:0;}
+  .wf-time-save{display:inline-block;background:var(--green-pale);color:var(--green);font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;margin-top:8px;}
+
+  /* Caption builder sim */
+  .caption-builder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cb-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cb-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cb-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .cb-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+  .cb-lbl{font-size:13px;font-weight:600;color:var(--purple-dark);}
+  .cb-opts{display:flex;gap:8px;flex-wrap:wrap;}
+  .cb-opt{padding:8px 16px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-size:13px;cursor:pointer;transition:all 0.2s;}
+  .cb-opt:hover,.cb-opt.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .cb-generate{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;}
+  .cb-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .cb-output.show{display:block;animation:fadeIn 0.4s ease;}
+  .cb-out-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+  .cb-out-text{font-size:15px;line-height:1.75;color:var(--gray-text);background:var(--gray-soft);padding:16px 18px;border-radius:10px;margin-bottom:10px;}
+  .cb-out-note{font-size:13px;color:var(--gray-muted);font-style:italic;}
+
+  /* Time savings */
+  .time-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.time-compare{grid-template-columns:1fr;}}
+  .tc-card{border-radius:18px;padding:24px;border:1.5px solid;}
+  .tc-card.manual{background:var(--red-pale);border-color:#FCA5A5;}
+  .tc-card.ai{background:var(--green-pale);border-color:#6EE7B7;}
+  .tc-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+  .tc-card.manual .tc-label{color:var(--red);}
+  .tc-card.ai .tc-label{color:var(--green);}
+  .tc-task{padding:6px 0;font-size:14px;border-bottom:1px solid rgba(0,0,0,0.06);}
+  .tc-task:last-child{border-bottom:none;}
+  .tc-total{font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-top:12px;}
+  .tc-card.manual .tc-total{color:var(--red);}
+  .tc-card.ai .tc-total{color:var(--green);}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,0.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.2 · AI for Social Media & Branding</div>
+  <h1>How AI Helps You Create Social Media Content Faster</h1>
+  <p class="hero-sub">Creating great social content consistently is one of the hardest parts of marketing. AI doesn't just speed it up — it fundamentally changes what a small team can produce.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>A strong social media presence requires showing up consistently — multiple posts per week, across multiple platforms, each adapted to the platform's culture. For most marketing teams, that's an enormous amount of content production. <mark>AI tools have cut the time to produce a full week of social content from days to hours — not by replacing creative thinking, but by eliminating the most time-consuming parts of the production process.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The AI-Assisted Content Workflow</h2>
+    <p>Here's how a modern marketing team creates a week of social content using AI — with clear ownership of each step.</p>
+    <div class="workflow-steps">
+      <div class="wf-step">
+        <div class="wf-num">1</div>
+        <div class="wf-content">
+          <div class="wf-who human">👤 Human</div>
+          <div class="wf-title">Set the Weekly Strategy</div>
+          <div class="wf-desc">Decide this week's themes, key messages, product focus, and any upcoming events or promotions. This requires business knowledge AI doesn't have.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">2</div>
+        <div class="wf-content">
+          <div class="wf-who ai">🤖 AI</div>
+          <div class="wf-title">Generate Caption Drafts</div>
+          <div class="wf-desc">Feed the strategy + brand voice guidelines into an AI tool. Get 3–5 draft captions per post in minutes.</div>
+          <span class="wf-time-save">Saves 2–3 hrs/week</span>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">3</div>
+        <div class="wf-content">
+          <div class="wf-who ai">🤖 AI</div>
+          <div class="wf-title">Suggest Hashtags & Posting Times</div>
+          <div class="wf-desc">AI tools analyze platform trends and your historical data to recommend optimal hashtag sets and the best times to post for your specific audience.</div>
+          <span class="wf-time-save">Saves 30–60 min/week</span>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">4</div>
+        <div class="wf-content">
+          <div class="wf-who human">👤 Human</div>
+          <div class="wf-title">Edit, Brand & Approve</div>
+          <div class="wf-desc">Review AI drafts, inject brand voice, fix anything that feels generic or off, verify factual accuracy, and approve for scheduling.</div>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">5</div>
+        <div class="wf-content">
+          <div class="wf-who ai">🤖 AI</div>
+          <div class="wf-title">Adapt Across Platforms</div>
+          <div class="wf-desc">AI rewrites each approved post for every platform — Instagram length and hashtags, LinkedIn professional tone, X brevity — automatically.</div>
+          <span class="wf-time-save">Saves 1–2 hrs/week</span>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">6</div>
+        <div class="wf-content">
+          <div class="wf-who ai">🤖 AI</div>
+          <div class="wf-title">Schedule & Monitor Performance</div>
+          <div class="wf-desc">AI scheduling tools auto-post at optimal times and send performance summaries — flagging what's overperforming so you know what to make more of.</div>
+          <span class="wf-time-save">Saves 1 hr/week</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Build a Caption in the AI Workflow</h2>
+    <p>Configure your content parameters and see how an AI-assisted workflow would generate a draft caption.</p>
+    <div class="caption-builder">
+      <div class="cb-label">⚡ AI Caption Simulator</div>
+      <div class="cb-title">Generate Your Caption Draft</div>
+      <div class="cb-sub">Select your parameters and generate a simulated AI first draft.</div>
+      <div class="cb-row"><div class="cb-lbl">Industry</div><div class="cb-opts" id="industry-opts">
+        <button class="cb-opt active" onclick="setOpt('industry','fitness',this)">🏋️ Fitness</button>
+        <button class="cb-opt" onclick="setOpt('industry','food',this)">🍕 Food & Beverage</button>
+        <button class="cb-opt" onclick="setOpt('industry','tech',this)">💻 Tech / SaaS</button>
+        <button class="cb-opt" onclick="setOpt('industry','retail',this)">🛍️ Retail</button>
+      </div></div>
+      <div class="cb-row"><div class="cb-lbl">Content Goal</div><div class="cb-opts" id="goal-opts">
+        <button class="cb-opt active" onclick="setOpt('goal','awareness',this)">📢 Awareness</button>
+        <button class="cb-opt" onclick="setOpt('goal','engagement',this)">💬 Drive Engagement</button>
+        <button class="cb-opt" onclick="setOpt('goal','conversion',this)">🛒 Drive Sales</button>
+      </div></div>
+      <div class="cb-row"><div class="cb-lbl">Platform</div><div class="cb-opts" id="platform-opts">
+        <button class="cb-opt active" onclick="setOpt('platform','instagram',this)">📸 Instagram</button>
+        <button class="cb-opt" onclick="setOpt('platform','linkedin',this)">💼 LinkedIn</button>
+        <button class="cb-opt" onclick="setOpt('platform','tiktok',this)">🎵 TikTok</button>
+      </div></div>
+      <button class="cb-generate" onclick="generateCaption()">✨ Generate AI Draft</button>
+      <div class="cb-output" id="cbOutput"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI removes the blank page. A blank page is where most social content goes to die. Getting a draft — even an imperfect one — is 80% of the battle.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Time Savings: Manual vs. AI-Assisted</h2>
+    <p>Here's a realistic comparison for creating one week of social content (5 posts, 3 platforms = 15 pieces of content):</p>
+    <div class="time-compare">
+      <div class="tc-card manual">
+        <div class="tc-label">✍️ Manual Only</div>
+        <div class="tc-task">Writing 15 captions: 4.5 hrs</div>
+        <div class="tc-task">Platform adaptation: 2 hrs</div>
+        <div class="tc-task">Hashtag research: 1 hr</div>
+        <div class="tc-task">Scheduling & setup: 1 hr</div>
+        <div class="tc-task">Revisions: 1.5 hrs</div>
+        <div class="tc-total">~10 hrs/week</div>
+      </div>
+      <div class="tc-card ai">
+        <div class="tc-label">🤖 AI-Assisted</div>
+        <div class="tc-task">Strategy & brief: 30 min</div>
+        <div class="tc-task">AI generation: 20 min</div>
+        <div class="tc-task">Human editing: 1 hr</div>
+        <div class="tc-task">Platform adapt (AI): 10 min</div>
+        <div class="tc-task">Review & schedule: 30 min</div>
+        <div class="tc-total">~2.5 hrs/week</div>
+      </div>
+    </div>
+    <p>That's a <mark>75% reduction in time spent</mark> — freeing the equivalent of a full work day every week for strategy, creative direction, and higher-value work.</p>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">⚠️</div>
+      <div>
+        <h3>The One Thing AI Gets Wrong Every Time</h3>
+        <p>AI-generated social captions have a consistent weakness: they sound generic. They lack the specific brand personality, the insider references, the tone nuances that make a brand's voice distinctly its own. Every AI draft needs a human pass to inject what only a human can provide — genuine brand character. Think of AI as a first draft machine, not a finished content machine. The human edit is not optional.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI assists in every stage of social content production: generating drafts, suggesting hashtags and timing, adapting across platforms, and scheduling — reducing production time by up to 75%.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Humans own strategy, brand voice editing, and final approval. AI owns draft generation, adaptation, and optimization — a clear division of what each does best.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A week of social content that previously took ~10 hours can be produced in ~2.5 hours with AI assistance — the time savings enable more content, more platforms, or more strategic work.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI drafts always need a human editing pass — AI's consistent weakness is generic-sounding output that lacks authentic brand personality.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const opts={industry:'fitness',goal:'awareness',platform:'instagram'};
+  function setOpt(key,val,btn){opts[key]=val;btn.closest('.cb-opts').querySelectorAll('.cb-opt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+
+  const captions={
+    fitness:{
+      awareness:{instagram:"The difference between where you are and where you want to be? It's not talent. It's not time. It's the decision to start. 💪\n\nWhat are you starting this week? Drop it in the comments 👇\n\n#FitnessMotivation #StartToday #FitnessJourney",linkedin:"Most people wait for the perfect moment to start getting in shape.\n\nThere isn't one.\n\nThe best training program is the one you'll actually do — imperfect, consistent, and starting today.\n\n#Fitness #Health #ConsistencyWins",tiktok:"things nobody tells you about starting your fitness journey 👀 part 1 #fitnesstok #beginnerworkout #gymmotivation"},
+      engagement:{instagram:"Real talk: what's the hardest part of sticking to a fitness routine for YOU? 👇\n\nDrop your honest answer — no judgment here. We read every single reply 💬\n\n#FitnessCommunity #WeeklyCheck #FitnessHonesty",linkedin:"Quick poll for my network:\n\nWhat's the #1 thing that derails your fitness consistency?\n\nA) Work schedule\nB) Motivation dips\nC) Injury / pain\nD) Not knowing what to do\n\nComment your letter. Sharing for a reason 👇",tiktok:"comment your biggest workout excuse bc I want to fight it 😤 #fitness #accountability #gymmotivation"},
+      conversion:{instagram:"Your first month of training, on us 🎯\n\nWe're opening 10 spots for new members this week — and we're including a free personalized program so you're not guessing on day one.\n\nLink in bio → spots go fast. 🏃\n\n#JoinNow #FitnessOffer #NewMember",linkedin:"We're offering 10 free first-month trials to professionals looking to build a sustainable fitness habit in 2025.\n\nNo pressure. No contracts. Just a structured program and a coach who checks in.\n\nDM me 'TRIAL' if you're interested.",tiktok:"ok we're doing something a little crazy 🤯 10 free first months, first come first served #giveaway #fitness #freeoffer"}
+    },
+    food:{
+      awareness:{instagram:"Every cup we roast starts here ☕\n\nThe farm. The hands that picked it. The 14-hour drive to the roastery. Swipe to follow your morning ritual from origin → your mug ✨\n\n#CoffeeOrigin #SingleOrigin #CoffeeLover",linkedin:"Something I didn't know until I started this business:\n\nThe journey from coffee farm to your cup takes an average of 18 months.\n\nHere's what happens in between — and why it affects what you taste:\n\n#Coffee #SupplyChain #FoodBusiness",tiktok:"how your morning coffee gets to you (this took way longer than expected) ☕ #coffeefacts #farmtocup #foodtok"},
+      engagement:{instagram:"Hot take: the best coffee you'll ever drink is made at home ☕\n\nAgree or disagree? And what's your go-to home setup? 👇\n\n#HomeBarista #CoffeeDebate #MorningCoffee",linkedin:"Coffee question for the office:\n\nWhat does your morning coffee routine look like — and do you think it actually affects your productivity?\n\nI have a theory and I'm curious if data backs it up 📊",tiktok:"home barista vs café coffee... let's settle this once and for all ☕ comment your vote #coffee #debate #coffeelover"},
+      conversion:{instagram:"Your new morning routine is 3 clicks away ☕\n\nThis month: free shipping on all first orders + a free grinder with any 3-bag bundle.\n\nLink in bio → don't let your current coffee hold you back anymore.\n\n#CoffeeShop #FreeShipping #CoffeeDeal",linkedin:"We're running a founding member offer this week — 20% off your first subscription + a personal consultation on your ideal roast profile.\n\nFor professionals who want better coffee without the research: link in comments.",tiktok:"okay the deal we're running is actually kind of crazy ☕ 20% off + free shipping for the next 48 hours #coffeeoffer #deal #fyp"}
+    },
+    tech:{
+      awareness:{instagram:"Built for the way you actually work — not how productivity gurus say you should 📱\n\nSwipe to see what makes our approach different from every other task app you've abandoned. 👀\n\n#ProductivityApp #WorkSmarter #NewApp",linkedin:"Most productivity tools are built for the way people think they work.\n\nOurs is built for the way people actually work.\n\nThat distinction drove every product decision we made. Here's what it looks like in practice:\n\n#Productivity #SaaS #ProductDesign",tiktok:"pov: you finally found a task app that doesn't make you want to throw your laptop 💻 #productivitytok #appoftheday #workflow"},
+      engagement:{instagram:"The productivity tip you swear by — go 👇\n\nWe're building a list of what actually works for real people and we'll share the top 10 next week 📋\n\n#ProductivityTips #WorkSmarter #ShareYours",linkedin:"Genuine question: what's the one productivity habit that has made the biggest difference in your work?\n\nNot a tool. A habit.\n\nI'll compile the best answers into a thread for the community 👇",tiktok:"the productivity advice I'd actually give vs what sounds good... tell me your best real tips in the comments 💻 #productivitytok #worktips"},
+      conversion:{instagram:"We're opening 50 spots in our beta this week 🚀\n\nFirst 50 get: lifetime deal pricing + direct access to our product team for feedback.\n\nLink in bio → applications close Friday.\n\n#BetaLaunch #SaaS #EarlyAccess",linkedin:"We're launching a 30-day free trial for teams of 5+ this week — no credit card required, full access to all features.\n\nIf you've been curious: this is the moment. Link in comments. 🚀",tiktok:"we're giving 50 people lifetime access to our app this week and yes I'm serious 🤯 #appLaunch #saas #freeoffer"}
+    },
+    retail:{
+      awareness:{instagram:"The story behind this piece 🧵\n\nSome things are worth knowing before you buy them. Swipe for the full origin story of our bestselling jacket — where it's made, who made it, and why we obsessed over every stitch.\n\n#SlowFashion #BehindTheProduct #Craftsmanship",linkedin:"We're a small retail brand trying to compete with giants.\n\nThe only way we can do that is by being transparent about things large brands won't say.\n\nHere's what that looks like in practice:\n\n#RetailBusiness #SmallBusiness #Transparency",tiktok:"things your favorite clothing brand doesn't want you to know (we're telling you anyway) 🧵 #slowfashion #retailtok #transparency"},
+      engagement:{instagram:"Hot or not: buying secondhand fashion 👇\n\nWe have a strong opinion on this but we want to hear yours first. Tell us in the comments 💬\n\n#SustainableFashion #FashionDebate #StyleTalk",linkedin:"We surveyed our customers and asked: would you pay 20% more for clothing that's provably sustainable?\n\n71% said yes.\n\nThen we asked: have you actually done this in the last year?\n\nThe result surprised us. What do you think they said? 👇",tiktok:"would you pay more for sustainable fashion? answering the comments 🧵 #sustainablefashion #debate #fashiontok"},
+      conversion:{instagram:"New arrivals are here and they're already selling fast 🔥\n\nLink in bio → shop before your size sells out. We don't restock these.\n\n#NewArrivals #ShopNow #LimitedStock",linkedin:"We're running our annual end-of-season sale this week — up to 40% off select styles.\n\nLink in the comments. Sizes are limited.",tiktok:"new arrivals just dropped and I already know sizes are going fast 😭 link in bio #shopnow #fashionhaul #newdrop"}
+    }
+  };
+
+  function generateCaption(){
+    const {industry,goal,platform}=opts;
+    const text=captions[industry]?.[goal]?.[platform]||'Please select all options above.';
+    const out=document.getElementById('cbOutput');
+    out.innerHTML=`<div class="cb-out-label">🤖 AI Draft Caption — ${platform} · ${goal} · ${industry}</div><div class="cb-out-text">${text.replace(/\n/g,'<br>')}</div><div class="cb-out-note">⚠️ This is a simulated first draft. A human must review for brand voice, factual accuracy, and genuine authenticity before publishing.</div>`;
+    out.className='cb-output show';
+  }
+</script>
+</body>
+</html>
