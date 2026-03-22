@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing Action Items That Actually Get Done — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Rewrite game */
+.rewrite-game{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.rg-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.rg-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.rg-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.rg-round{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:12px;}
+.rg-original{background:#FFF1F1;border-radius:8px;padding:10px 14px;font-size:14px;color:#7F1D1D;margin-bottom:10px;font-family:monospace;}
+.rg-options{display:flex;flex-direction:column;gap:8px;}
+.rg-opt{background:var(--white);border:2px solid var(--purple-mid);border-radius:10px;padding:10px 14px;cursor:pointer;font-size:14px;font-family:monospace;transition:all .2s;text-align:left;}
+.rg-opt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.rg-opt.correct{background:var(--green-pale);border-color:var(--green);}
+.rg-opt.wrong{background:#FFF1F1;border-color:#DC2626;}
+.rg-fb{font-size:13px;padding:10px 14px;border-radius:8px;margin-top:8px;display:none;}
+.rg-fb.show{display:block;animation:fadeIn .3s ease;}
+.rg-fb.cfb{background:var(--green-pale);color:var(--green);}
+.rg-fb.wfb{background:#FFF1F1;color:#DC2626;}
+.rg-score-bar{background:var(--purple-pale);border-radius:12px;padding:14px 18px;text-align:center;display:none;}
+.rg-score-bar.show{display:block;}
+.rg-score-num{font-family:'Fraunces',serif;font-size:40px;font-weight:900;color:var(--purple);}
+
+/* Three-part formula */
+.formula{display:flex;align-items:center;gap:12px;background:var(--purple-pale);border:2px solid var(--purple-mid);border-radius:20px;padding:20px 24px;margin:24px 0;flex-wrap:wrap;}
+.formula-part{background:var(--purple);color:white;border-radius:12px;padding:12px 18px;text-align:center;flex:1;min-width:120px;}
+.formula-part-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:4px;}
+.formula-part-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;}
+.formula-plus{font-size:22px;font-weight:900;color:var(--purple);flex-shrink:0;}
+
+/* Bad/good comparison grid */
+.bg-grid{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+.bg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.bg-cell{border-radius:12px;padding:12px 14px;font-size:13px;font-family:monospace;line-height:1.6;}
+.bg-cell.bad{background:#FFF1F1;color:#7F1D1D;border-left:3px solid #DC2626;}
+.bg-cell.good{background:var(--green-pale);color:#064E3B;border-left:3px solid var(--green);}
+.bg-header{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:0 2px;margin-bottom:4px;}
+.bg-header span:first-child{color:#DC2626;}
+.bg-header span:last-child{color:var(--green);}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.bg-row{grid-template-columns:1fr;}.formula{flex-direction:column;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.3 · Meeting Notes & Summaries</div>
+  <h1>Writing Action Items That Actually Get Done</h1>
+  <p class="hero-sub">An action item written poorly is a task that won't get done. This isn't a character flaw — it's a structural problem. The good news is there's a simple, learnable formula that eliminates ambiguity and makes every commitment in a meeting trackable and accountable.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Why Most Action Items Fail</h2>
+    <p>Research on follow-through in professional settings consistently shows the same pattern: <mark>tasks without clear ownership and deadlines get done at roughly half the rate</mark> of tasks with both. This isn't about effort — it's about specificity. The human brain needs clarity to prioritize. Vague commitments get perpetually deprioritized in favor of anything concrete.</p>
+    <p>The pattern appears in meeting after meeting: "We should follow up on that" turns into nothing. "Someone look into the pricing thing" gets dropped. "Let's figure out the launch date" never results in a launch date being figured out. The problem is structural: these aren't action items. They're vague intentions without owners or deadlines.</p>
+    <div class="pull-quote"><p>If an action item doesn't have one person's name and one specific date on it, it's not an action item. It's a wish.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Three-Part Formula</h2>
+    <p>Every action item — whether written by a human or extracted by AI — must have exactly three parts:</p>
+    <div class="formula">
+      <div class="formula-part"><div class="formula-part-label">Part 1</div><div class="formula-part-name">Task</div></div>
+      <div class="formula-plus">+</div>
+      <div class="formula-part"><div class="formula-part-label">Part 2</div><div class="formula-part-name">Owner</div></div>
+      <div class="formula-plus">+</div>
+      <div class="formula-part"><div class="formula-part-label">Part 3</div><div class="formula-part-name">Deadline</div></div>
+    </div>
+    <p><strong>Task:</strong> A specific verb-driven description of what needs to happen. "Email" not "follow up." "Draft" not "work on." "Confirm" not "check." The task should be specific enough that anyone reading it knows exactly what "done" looks like.<br><br><strong>Owner:</strong> One name. One person. Not "the team," not "marketing," not "someone." When two people own a task, nobody does. If collaboration is needed, one person is still accountable and others are supporting.<br><br><strong>Deadline:</strong> A specific date. Not "soon," not "ASAP," not "next week." If you can't name a date, ask in the meeting: "When can you have that done?" Get a date before the meeting ends.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Bad vs. Good — See the Difference</h2>
+    <div class="bg-grid">
+      <div class="bg-header"><span>❌ Vague (Won't Get Done)</span><span>✅ Specific (Will Get Done)</span></div>
+      <div class="bg-row"><div class="bg-cell bad">Follow up on the client thing</div><div class="bg-cell good">Marcus — Email Acme Corp proposal draft for review → Due Wed June 5</div></div>
+      <div class="bg-row"><div class="bg-cell bad">Someone look into pricing</div><div class="bg-cell good">Priya — Research competitor pricing for Tiers 2-3, share findings in Slack → Due Friday</div></div>
+      <div class="bg-row"><div class="bg-cell bad">The team will handle onboarding</div><div class="bg-cell good">Jordan — Draft onboarding checklist for new hires → Due June 10</div></div>
+      <div class="bg-row"><div class="bg-cell bad">Update the roadmap at some point</div><div class="bg-cell good">Sarah — Update Q3 roadmap doc to reflect Option A decision → Due today EOD</div></div>
+      <div class="bg-row"><div class="bg-cell bad">We need to fix the login bug soon</div><div class="bg-cell good">Marcus — Fix login timeout bug, deploy to staging → Due Thursday June 6</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Practice: Rewrite These Action Items</h2>
+    <p>Each of these action items was pulled from real meeting notes. Pick the version that's correctly written:</p>
+    <div class="rewrite-game">
+      <div class="rg-label">✏️ Rewrite Game</div>
+      <div class="rg-title">Fix These Action Items</div>
+      <div class="rg-sub">Each round shows a poorly-written action item. Pick the correct rewrite.</div>
+      <div id="rgContainer"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>When AI Extracts Action Items: What to Check</h2>
+    <p>AI meeting tools automatically extract action items from transcripts. But AI can only work with what was actually said. Here's what to check before publishing AI-extracted action items:</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin:16px 0;">
+      <div style="background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 18px;display:flex;gap:10px;align-items:flex-start;"><span style="font-size:16px;">🔍</span><div><strong style="font-size:13px;color:var(--purple-dark);">Check for vague tasks</strong><p style="font-size:13px;color:var(--gray-muted);margin:3px 0 0;">AI extracts "follow up on pricing" because those words were spoken. Before publishing, turn it into something specific.</p></div></div>
+      <div style="background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 18px;display:flex;gap:10px;align-items:flex-start;"><span style="font-size:16px;">👤</span><div><strong style="font-size:13px;color:var(--purple-dark);">Verify owners were confirmed in the meeting</strong><p style="font-size:13px;color:var(--gray-muted);margin:3px 0 0;">AI attributes tasks to whoever spoke the commitment. But if Sarah suggested Marcus do something and Marcus didn't explicitly agree, the owner is uncertain.</p></div></div>
+      <div style="background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 18px;display:flex;gap:10px;align-items:flex-start;"><span style="font-size:16px;">📅</span><div><strong style="font-size:13px;color:var(--purple-dark);">Add deadlines where AI left them blank</strong><p style="font-size:13px;color:var(--gray-muted);margin:3px 0 0;">When no deadline was stated in the meeting, AI leaves the field empty. Before publishing, either confirm a deadline or flag it as "deadline TBD — confirm with owner."</p></div></div>
+      <div style="background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 18px;display:flex;gap:10px;align-items:flex-start;"><span style="font-size:16px;">⚠️</span><div><strong style="font-size:13px;color:var(--purple-dark);">Flag tentative commitments</strong><p style="font-size:13px;color:var(--gray-muted);margin:3px 0 0;">"I can probably do that" is not a commitment. Mark uncertain action items as needing confirmation before including them in the official notes.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">At the end of a meeting, the facilitator says: "OK so the team will take care of the marketing materials." You're the note-taker. What do you do?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Write it down as-is: "Team — handle marketing materials"</button>
+        <button class="qopt" onclick="cq(this,false)">Skip it — it's too vague to record</button>
+        <button class="qopt" onclick="cq(this,true)">Ask before the meeting ends: "Who specifically is owning the marketing materials, and when should it be done by?" Then write the answer</button>
+        <button class="qopt" onclick="cq(this,false)">Write it down and email the team after to figure out who owns it</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Every action item needs exactly three parts: a specific task, one owner (one name), and a specific deadline. All three are required. Missing any one significantly reduces the chance it gets done.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>"The team will handle it" is not an action item. When ownership is shared, accountability disappears. One name per task — every time.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>When reviewing AI-extracted action items, check for: vague task descriptions, unconfirmed owners, missing deadlines, and tentative commitments that weren't explicitly agreed to.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const rounds=[
+  {
+    original:'Someone needs to look at the contracts.',
+    options:[
+      {text:'Legal team — review contracts',correct:false,fb:'Still missing owner specificity (which person?) and a deadline.'},
+      {text:'Jamie — Review all vendor contracts and flag any renewal dates within 90 days → Due June 7',correct:true,fb:'✅ Specific task, one named owner, specific deadline. Done.'},
+      {text:'Jamie — look at contracts soon',correct:false,fb:'"Look at" is vague. "Soon" is not a deadline.'},
+    ]
+  },
+  {
+    original:'We should probably schedule a follow-up meeting.',
+    options:[
+      {text:'Priya — Schedule 30-min follow-up for next week',correct:false,fb:'Close, but "next week" is not a specific date. Better: "Due by Friday" or "Schedule for Wednesday June 11."'},
+      {text:'Priya — Send calendar invite for 30-min follow-up meeting → By end of today',correct:true,fb:'✅ Specific action (send calendar invite, not just "schedule"), named owner, specific deadline.'},
+      {text:'Meeting to be scheduled soon',correct:false,fb:'No owner, no deadline, and "be scheduled" is passive — nobody knows who will do it.'},
+    ]
+  },
+  {
+    original:'Marketing will handle the social posts.',
+    options:[
+      {text:'Marketing team — social posts for launch',correct:false,fb:'"Marketing team" is not one person. No deadline either.'},
+      {text:'Alex (Marketing) — Draft and schedule 5 launch social posts for LinkedIn + Twitter → Due June 12',correct:true,fb:'✅ One named owner, specific deliverable (5 posts, specific platforms), and a clear deadline.'},
+      {text:'Alex — social media stuff by June 12',correct:false,fb:'"Social media stuff" is vague. What exactly? How many? Which platforms? What does "done" look like?'},
+    ]
+  },
+];
+let rgScores=[];
+const rgContainer=document.getElementById('rgContainer');
+rounds.forEach((r,ri)=>{
+  const el=document.createElement('div');el.className='rg-round';
+  el.innerHTML=`<div style="font-size:12px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Round ${ri+1} of ${rounds.length}</div>
+  <div style="font-size:12px;color:var(--gray-muted);margin-bottom:6px">Original (bad) action item:</div>
+  <div class="rg-original">"${r.original}"</div>
+  <div style="font-size:12px;color:var(--gray-muted);margin-bottom:8px">Pick the correct rewrite:</div>
+  <div class="rg-options" id="rgOpts${ri}">${r.options.map((o,oi)=>`<button class="rg-opt" onclick="checkRG(${ri},${oi})">${o.text}</button>`).join('')}</div>
+  <div class="rg-fb" id="rgFb${ri}"></div>`;
+  rgContainer.appendChild(el);
+});
+const scoreEl=document.createElement('div');scoreEl.className='rg-score-bar';scoreEl.id='rgScore';scoreEl.innerHTML='<div class="rg-score-num" id="rgScoreNum"></div><div style="font-size:14px;color:var(--gray-muted);margin-top:4px" id="rgScoreMsg"></div>';
+rgContainer.appendChild(scoreEl);
+function checkRG(ri,oi){
+  if(rgScores[ri]!==undefined)return;
+  const r=rounds[ri];
+  const opts=document.querySelectorAll(`#rgOpts${ri} .rg-opt`);
+  opts[oi].classList.add(r.options[oi].correct?'correct':'wrong');
+  if(!r.options[oi].correct)opts.forEach((o,idx)=>{if(r.options[idx].correct)o.classList.add('correct');});
+  rgScores[ri]=r.options[oi].correct?1:0;
+  const fb=document.getElementById('rgFb'+ri);
+  fb.className='rg-fb show '+(r.options[oi].correct?'cfb':'wfb');
+  fb.textContent=r.options[oi].fb;
+  if(rgScores.length===rounds.length&&rgScores.every(s=>s!==undefined)){
+    const total=rgScores.reduce((a,b)=>a+b,0);
+    document.getElementById('rgScoreNum').textContent=`${total}/${rounds.length}`;
+    document.getElementById('rgScoreMsg').textContent=total===rounds.length?'Perfect — all three rewrites correct. You understand the formula.':total>=2?'Strong work. Review the failed round and notice what made the correct version specific.':'Review the Task + Owner + Deadline formula — all three are required.';
+    document.getElementById('rgScore').classList.add('show');
+  }
+}
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! The right time to get a specific owner and deadline is before the meeting ends — not after. Once people leave, the "the team will handle it" commitment becomes even more diffuse. A good note-taker (and a good facilitator) catches vague commitments and asks the clarifying question in the room, while everyone is present and accountable.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('Ask before'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ Writing "team — handle marketing materials" without owner or deadline creates exactly the action item that won\'t get done. Skipping it loses the commitment entirely. Following up after the meeting introduces delay and gives people a chance to forget. The right move is to get the specifics in the room, while the commitment is fresh and the people who need to confirm it are present.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

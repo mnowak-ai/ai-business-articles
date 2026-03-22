@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Spotlight: Otter.ai, Fireflies & Notion AI — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Tool tabs */
+.tool-tabs{margin:24px 0;}
+.tt-nav{display:flex;gap:8px;margin-bottom:0;border-bottom:2px solid var(--purple-mid);}
+.tt-tab{padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--gray-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.tt-tab.active{color:var(--purple);border-bottom-color:var(--purple);}
+.tt-panel{display:none;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:0 16px 16px 16px;padding:28px;animation:fadeIn .3s ease;}
+.tt-panel.active{display:block;}
+.tp-header{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.tp-logo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.tp-name{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:var(--purple-dark);}
+.tp-tagline{font-size:14px;color:var(--gray-muted);}
+.tp-sections{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+.tp-sec{background:var(--gray-soft);border-radius:12px;padding:14px;}
+.tp-sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:8px;}
+.tp-item{display:flex;gap:8px;font-size:13px;line-height:1.5;margin-bottom:6px;}
+.tp-pricing{background:var(--purple-pale);border-radius:10px;padding:11px 14px;margin-top:10px;font-size:13px;color:var(--purple-dark);}
+.tp-best-for{background:var(--purple);color:white;border-radius:10px;padding:10px 14px;margin-top:8px;font-size:13px;font-weight:600;}
+.tp-privacy{background:#FFF7ED;border:1.5px solid #FDE68A;border-radius:10px;padding:11px 14px;margin-top:8px;font-size:12px;color:#92400E;}
+
+/* Privacy deep dive */
+.privacy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+.priv-card{border-radius:16px;padding:18px;}
+.priv-card.good{background:var(--green-pale);border:2px solid #86EFAC;}
+.priv-card.warn{background:var(--orange-pale);border:2px solid #FDE68A;}
+.priv-card.bad{background:#FFF1F1;border:2px solid #FECACA;}
+.priv-icon{font-size:24px;margin-bottom:8px;}
+.priv-title{font-size:13px;font-weight:700;margin-bottom:6px;}
+.priv-card.good .priv-title{color:var(--green);}
+.priv-card.warn .priv-title{color:var(--orange);}
+.priv-card.bad .priv-title{color:#DC2626;}
+.priv-desc{font-size:12px;line-height:1.6;}
+
+/* Comparison table */
+.comp-table{width:100%;border-collapse:collapse;margin:24px 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+.comp-table th{background:var(--purple);color:white;padding:11px 14px;font-size:12px;font-weight:600;text-align:left;}
+.comp-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--purple-mid);vertical-align:top;line-height:1.5;}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-table tr:nth-child(even) td{background:var(--gray-soft);}
+.cpill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;}
+.cpill.h{background:var(--green-pale);color:var(--green);}
+.cpill.m{background:var(--orange-pale);color:var(--orange);}
+.cpill.l{background:#FEE2E2;color:#DC2626;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.tp-sections{grid-template-columns:1fr;}.privacy-grid{grid-template-columns:1fr;}.tt-tab{padding:8px 10px;font-size:12px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.3 · Meeting Notes & Summaries</div>
+  <h1>Tool Spotlight: Otter.ai, Fireflies, and Notion AI</h1>
+  <p class="hero-sub">Three real tools, three distinct approaches to AI meeting assistance. Understanding what each does well — and what each requires you to know about privacy — is essential knowledge for anyone entering a professional environment where these tools are increasingly standard.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Why These Three Tools?</h2>
+    <p>Otter.ai, Fireflies, and Notion AI collectively represent three different design philosophies for AI meeting assistance: a standalone dedicated transcription tool, a CRM-integrated sales-focused assistant, and an embedded workspace tool. One of these three (or something very similar) is almost certainly what you'll encounter in your first job — especially in tech, marketing, sales, or consulting.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Explore Each Tool</h2>
+    <div class="tool-tabs">
+      <div class="tt-nav">
+        <button class="tt-tab active" onclick="showTool(0)">🎙️ Otter.ai</button>
+        <button class="tt-tab" onclick="showTool(1)">🔥 Fireflies</button>
+        <button class="tt-tab" onclick="showTool(2)">⚫ Notion AI</button>
+      </div>
+      <div class="tt-panel active" id="tp0">
+        <div class="tp-header"><div class="tp-logo" style="background:#E0F2FE;">🎙️</div><div><div class="tp-name">Otter.ai</div><div class="tp-tagline">The most widely used standalone transcription tool</div></div></div>
+        <p style="font-size:15px;line-height:1.7;color:var(--gray-text);">Otter.ai is the most consumer-friendly AI transcription tool on the market. It integrates with Zoom, Google Meet, and Microsoft Teams to join meetings automatically and produce real-time transcripts with speaker labels. Its "OtterPilot" feature summarizes key topics and extracts action items automatically.</p>
+        <div class="tp-sections">
+          <div class="tp-sec"><div class="tp-sec-label">✅ Strongest at</div><div class="tp-item">🎯 <span>Real-time transcription with live captions visible to all</span></div><div class="tp-item">🎯 <span>Speaker identification with good calibration</span></div><div class="tp-item">🎯 <span>Ease of use — very low setup friction</span></div><div class="tp-item">🎯 <span>Searchable transcript archive</span></div></div>
+          <div class="tp-sec"><div class="tp-sec-label">⚠️ Weaker at</div><div class="tp-item">⚠️ <span>CRM integrations (more limited than Fireflies)</span></div><div class="tp-item">⚠️ <span>Accuracy with heavy technical jargon</span></div><div class="tp-item">⚠️ <span>Advanced team analytics</span></div></div>
+        </div>
+        <div class="tp-pricing"><strong>Pricing:</strong> Free (limited minutes). Pro ~$17/month. Business ~$30/user/month.</div>
+        <div class="tp-best-for">🏆 Best for: Students, freelancers, small teams, anyone who wants simple and reliable meeting transcription with minimal setup.</div>
+        <div class="tp-privacy">⚠️ <strong>Privacy note:</strong> Otter's bot appears visibly in meetings. All attendees should know the meeting is being recorded. Audio data is stored on Otter's servers — not suitable for confidential client meetings without a data processing agreement.</div>
+      </div>
+      <div class="tt-panel" id="tp1">
+        <div class="tp-header"><div class="tp-logo" style="background:#FFF7ED;">🔥</div><div><div class="tp-name">Fireflies.ai</div><div class="tp-tagline">Sales and revenue teams' AI meeting assistant</div></div></div>
+        <p style="font-size:15px;line-height:1.7;color:var(--gray-text);">Fireflies is built with sales and business development teams in mind. Its strongest differentiator is deep CRM integration — it automatically syncs meeting notes, action items, and conversation summaries to Salesforce, HubSpot, and other CRM platforms. It also includes conversation intelligence features: sentiment analysis, talk ratio tracking, and competitor mention detection.</p>
+        <div class="tp-sections">
+          <div class="tp-sec"><div class="tp-sec-label">✅ Strongest at</div><div class="tp-item">🎯 <span>CRM integration — auto-sync to Salesforce, HubSpot, Pipedrive</span></div><div class="tp-item">🎯 <span>Conversation intelligence (talk ratios, sentiment, keywords)</span></div><div class="tp-item">🎯 <span>Team-level analytics across all meetings</span></div><div class="tp-item">🎯 <span>Sales coaching use cases</span></div></div>
+          <div class="tp-sec"><div class="tp-sec-label">⚠️ Weaker at</div><div class="tp-item">⚠️ <span>Consumer or non-sales use cases — feels over-engineered for basic needs</span></div><div class="tp-item">⚠️ <span>Real-time transcript visibility (more post-meeting focused)</span></div><div class="tp-item">⚠️ <span>Free plan is limited in useful features</span></div></div>
+        </div>
+        <div class="tp-pricing"><strong>Pricing:</strong> Free (limited). Pro ~$18/user/month. Business ~$29/user/month. Enterprise custom.</div>
+        <div class="tp-best-for">🏆 Best for: Sales teams, account executives, SDRs, revenue operations — any team where meeting insights need to flow automatically into CRM records.</div>
+        <div class="tp-privacy">⚠️ <strong>Privacy note:</strong> Fireflies stores all meeting audio and transcripts on their servers. Conversation intelligence features analyze tone and sentiment — attendees may not be aware their speaking patterns are being analyzed. High sensitivity for client-facing meetings.</div>
+      </div>
+      <div class="tt-panel" id="tp2">
+        <div class="tp-header"><div class="tp-logo" style="background:var(--gray-soft);">⚫</div><div><div class="tp-name">Notion AI</div><div class="tp-tagline">Meeting notes embedded in your team's knowledge system</div></div></div>
+        <p style="font-size:15px;line-height:1.7;color:var(--gray-text);">Notion AI doesn't join your meetings automatically — it enhances the notes you bring into your Notion workspace. You can record a meeting externally (using Otter.ai, for example), paste the transcript into Notion, and then use Notion AI to summarize it, extract action items, generate a decision log, or answer questions about the content. Its power is in the connection to your broader workspace.</p>
+        <div class="tp-sections">
+          <div class="tp-sec"><div class="tp-sec-label">✅ Strongest at</div><div class="tp-item">🎯 <span>Summarizing and structuring pasted transcripts</span></div><div class="tp-item">🎯 <span>Connecting meeting outcomes to project docs, wikis, and tasks</span></div><div class="tp-item">🎯 <span>Q&A — ask questions about your meeting notes in plain language</span></div><div class="tp-item">🎯 <span>Privacy — no data sent to a third-party meeting bot</span></div></div>
+          <div class="tp-sec"><div class="tp-sec-label">⚠️ Weaker at</div><div class="tp-item">⚠️ <span>Real-time transcription (not built in)</span></div><div class="tp-item">⚠️ <span>Automatic meeting joining and capture</span></div><div class="tp-item">⚠️ <span>Speaker diarization (doesn't do this independently)</span></div></div>
+        </div>
+        <div class="tp-pricing"><strong>Pricing:</strong> Notion AI add-on ~$10/user/month on any Notion plan.</div>
+        <div class="tp-best-for">🏆 Best for: Teams already using Notion for project management and documentation, who want AI to work with their notes rather than a separate transcription tool.</div>
+        <div class="tp-privacy">✅ <strong>Privacy advantage:</strong> Because Notion AI processes content within your workspace rather than a meeting bot, it's easier to control what data is shared. Better suited for confidential meetings — you control what goes in.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Privacy Dimension You Can't Ignore</h2>
+    <p>AI meeting tools require all participants' data to be processed — often on third-party servers. This creates privacy and consent considerations that professionals need to understand:</p>
+    <div class="privacy-grid">
+      <div class="priv-card good"><div class="priv-icon">✅</div><div class="priv-title">Best practice</div><div class="priv-desc">Inform all attendees at the start that the meeting is being recorded and transcribed by AI. Give people the opportunity to opt out. This is legally required in some jurisdictions.</div></div>
+      <div class="priv-card warn"><div class="priv-icon">⚠️</div><div class="priv-title">Caution zone</div><div class="priv-desc">Client meetings, vendor negotiations, HR discussions, and any meeting with legally sensitive content should not be AI-transcribed without explicit consent and a data processing agreement.</div></div>
+      <div class="priv-card bad"><div class="priv-icon">🚫</div><div class="priv-title">Never do this</div><div class="priv-desc">Recording a meeting with an AI tool without informing participants. In many countries and US states, this is illegal without consent. It also destroys trust when discovered.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Side-by-Side Feature Comparison</h2>
+    <div style="overflow-x:auto;">
+      <table class="comp-table">
+        <thead><tr><th>Feature</th><th>Otter.ai</th><th>Fireflies</th><th>Notion AI</th></tr></thead>
+        <tbody>
+          <tr><td>Automatic meeting joining</td><td><span class="cpill h">Yes</span></td><td><span class="cpill h">Yes</span></td><td><span class="cpill l">No (manual)</span></td></tr>
+          <tr><td>Real-time transcription</td><td><span class="cpill h">Strong</span></td><td><span class="cpill m">Post-meeting focus</span></td><td><span class="cpill l">Not built-in</span></td></tr>
+          <tr><td>Speaker identification</td><td><span class="cpill h">Strong</span></td><td><span class="cpill h">Strong</span></td><td><span class="cpill l">Depends on input</span></td></tr>
+          <tr><td>CRM integration</td><td><span class="cpill m">Limited</span></td><td><span class="cpill h">Core strength</span></td><td><span class="cpill l">Not native</span></td></tr>
+          <tr><td>Privacy control</td><td><span class="cpill m">Standard</span></td><td><span class="cpill l">Less control</span></td><td><span class="cpill h">Most control</span></td></tr>
+          <tr><td>Project tool integration</td><td><span class="cpill m">Basic</span></td><td><span class="cpill m">CRM-focused</span></td><td><span class="cpill h">Deep (within Notion)</span></td></tr>
+          <tr><td>Free plan value</td><td><span class="cpill m">Decent</span></td><td><span class="cpill l">Limited</span></td><td><span class="cpill m">Requires Notion plan</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">A sales team needs their meeting notes from client calls to automatically sync into Salesforce as CRM activity records. Which tool is the best fit?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Otter.ai — it's the most widely used transcription tool</button>
+        <button class="qopt" onclick="cq(this,true)">Fireflies — CRM integration is its core differentiator and it's specifically built for sales workflows</button>
+        <button class="qopt" onclick="cq(this,false)">Notion AI — it handles meeting summaries and is easy to use</button>
+        <button class="qopt" onclick="cq(this,false)">Any of the three — they all integrate with Salesforce equally well</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Otter.ai = best for standalone, consumer-friendly transcription with real-time visibility. Fireflies = best for sales teams with CRM integration needs. Notion AI = best for teams where meeting notes need to live inside their broader project/documentation workspace.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Privacy is non-negotiable: always inform attendees when AI transcription is active. Client meetings, HR discussions, and legally sensitive content require extra care — or should avoid AI transcription tools entirely.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Tool choice should match the team's workflow — not the other way around. Understanding the differences means you can recommend the right tool when asked, and use whichever one you encounter more effectively.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+function showTool(i){
+  document.querySelectorAll('.tt-tab').forEach((t,ti)=>t.classList.toggle('active',ti===i));
+  document.querySelectorAll('.tt-panel').forEach((p,pi)=>p.classList.toggle('active',pi===i));
+}
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! Fireflies was built specifically for sales teams and its primary differentiator is deep CRM integration. Auto-syncing meeting notes to Salesforce is a core feature, not an add-on. Otter.ai has more limited CRM capabilities, and Notion AI requires manual workflows to connect to external CRMs.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('Fireflies'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ CRM integration is Fireflies\' core strength — it\'s specifically designed for this use case. Otter.ai has limited Salesforce support. Notion AI doesn\'t natively integrate with CRMs. When the requirement is "automatically sync to CRM," Fireflies is the right answer.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

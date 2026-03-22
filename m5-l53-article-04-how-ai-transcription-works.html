@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How AI Transcription Works — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Animated pipeline */
+.pipeline{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+.pipe-step{display:flex;gap:16px;position:relative;}
+.pipe-step:not(:last-child)::after{content:'';position:absolute;left:20px;top:44px;bottom:-2px;width:2px;background:var(--purple-mid);}
+.pipe-num{width:40px;height:40px;background:var(--purple);color:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:18px;font-weight:700;flex-shrink:0;margin-top:4px;}
+.pipe-body{flex:1;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:18px 20px;margin-bottom:10px;}
+.pipe-body h3{font-size:15px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.pipe-body p{font-size:14px;line-height:1.65;color:var(--gray-text);margin:0;}
+.pipe-note{font-size:12px;color:var(--orange);font-style:italic;margin-top:6px;}
+
+/* Live transcript simulation */
+.transcript-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.ts-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.ts-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.ts-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.ts-phases{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.ts-phase-btn{padding:8px 14px;border-radius:10px;border:1.5px solid var(--purple-mid);background:var(--white);color:var(--gray-muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.ts-phase-btn.active{background:var(--purple);border-color:var(--purple);color:white;}
+.ts-display{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;min-height:180px;}
+.ts-display-label{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--purple);letter-spacing:.1em;margin-bottom:10px;}
+.ts-raw{font-family:monospace;font-size:13px;line-height:1.8;color:var(--gray-text);}
+.ts-speaker{font-weight:700;color:var(--purple-dark);}
+.ts-action-item{background:var(--green-pale);border-left:3px solid var(--green);padding:5px 10px;border-radius:0 6px 6px 0;font-size:13px;margin:3px 0;}
+.ts-decision{background:var(--purple-pale);border-left:3px solid var(--purple);padding:5px 10px;border-radius:0 6px 6px 0;font-size:13px;margin:3px 0;}
+.ts-summary-block{font-size:14px;line-height:1.75;}
+
+/* Can/can't table */
+.cant-table{width:100%;border-collapse:collapse;margin:24px 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--purple-mid);}
+.cant-table th{padding:12px 14px;font-size:13px;font-weight:600;text-align:left;}
+.cant-table th:first-child{background:var(--green);color:white;}
+.cant-table th:last-child{background:#DC2626;color:white;}
+.cant-table td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--purple-mid);vertical-align:top;line-height:1.5;}
+.cant-table tr:last-child td{border-bottom:none;}
+.cant-table tr:nth-child(even) td{background:var(--gray-soft);}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.3 · Meeting Notes & Summaries</div>
+  <h1>How AI Transcription Works — and How It Becomes a Summary</h1>
+  <p class="hero-sub">When you join a meeting with Otter.ai running, something sophisticated is happening in the background. Understanding the technology — and its limits — is what separates someone who uses AI meeting tools well from someone who trusts them blindly.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>From Sound Waves to Structured Notes: The Pipeline</h2>
+    <p>AI transcription isn't one process — it's a <mark>four-stage pipeline</mark> where each stage transforms the meeting data into something more structured and useful. Here's exactly what happens:</p>
+    <div class="pipeline">
+      <div class="pipe-step"><div class="pipe-num">1</div><div class="pipe-body"><h3>Audio Capture & Processing</h3><p>The AI tool connects to your meeting audio (via mic or video platform integration). Audio is streamed in real time to the AI's servers, where it's cleaned up — background noise reduced, volume normalized — to maximize transcription accuracy.</p><div class="pipe-note">Limitation: Poor audio quality (low-quality microphones, echo-heavy rooms, people talking over each other) is the #1 cause of transcription errors. Garbage in, garbage out.</div></div></div>
+      <div class="pipe-step"><div class="pipe-num">2</div><div class="pipe-body"><h3>Speech-to-Text Conversion (ASR)</h3><p>Automatic Speech Recognition (ASR) converts spoken audio to text in near-real-time. Modern ASR models are trained on millions of hours of speech and achieve 85–95% accuracy in clean conditions — but accuracy drops significantly with accents, technical jargon, or overlapping speech.</p><div class="pipe-note">Limitation: Industry-specific terms, proper nouns, and uncommon names are frequent error points. "Let's use React" might transcribe as "Let's use reacts."</div></div></div>
+      <div class="pipe-step"><div class="pipe-num">3</div><div class="pipe-body"><h3>Speaker Diarization</h3><p>The AI identifies who is speaking when — separating the transcript into speaker-attributed lines. This uses voice fingerprinting: the AI analyzes vocal patterns to distinguish Speaker A from Speaker B throughout the meeting.</p><div class="pipe-note">Limitation: Works best after calibration. Early in a meeting with many participants, speakers may be mislabeled. The AI often asks attendees to say their names aloud to improve accuracy.</div></div></div>
+      <div class="pipe-step"><div class="pipe-num">4</div><div class="pipe-body"><h3>AI Summarization & Extraction</h3><p>Once transcribed, an LLM (large language model) analyzes the full transcript to extract structured outputs: a summary of key points, decisions made, and action items with owners. This is where the raw transcript becomes a usable document.</p><div class="pipe-note">Limitation: The LLM identifies action items from linguistic patterns ("I'll...", "Can you...", "We need to...") but can miss commitments made with unusual phrasing or heavy implication.</div></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>See the Transformation: Raw → Structured</h2>
+    <p>Click through the three phases to see how the same 2-minute meeting excerpt transforms from raw audio to final summary:</p>
+    <div class="transcript-sim">
+      <div class="ts-label">🔄 Transformation Demo</div>
+      <div class="ts-title">A Meeting Excerpt — Three Views</div>
+      <div class="ts-sub">See the same 2 minutes of meeting data at each stage of the AI pipeline.</div>
+      <div class="ts-phases">
+        <button class="ts-phase-btn active" onclick="showPhase(0)">1. Raw Transcript</button>
+        <button class="ts-phase-btn" onclick="showPhase(1)">2. Highlighted Extraction</button>
+        <button class="ts-phase-btn" onclick="showPhase(2)">3. Final Summary</button>
+      </div>
+      <div class="ts-display" id="tsDisplay"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What AI Transcription Can and Can't Do</h2>
+    <table class="cant-table">
+      <thead><tr><th>✅ AI Does Well</th><th>❌ AI Struggles With</th></tr></thead>
+      <tbody>
+        <tr><td>Capturing every word in clean audio conditions (85–95% accuracy)</td><td>Heavy accents, non-native speakers, regional dialects</td></tr>
+        <tr><td>Attributing statements to speakers once calibrated</td><td>Distinguishing speakers with similar voices or when multiple people talk at once</td></tr>
+        <tr><td>Identifying explicit action items ("I'll do X by Friday")</td><td>Implied commitments, sarcasm, or "we should probably..." statements</td></tr>
+        <tr><td>Summarizing the general direction of a long discussion</td><td>Capturing nuanced context — why a decision was made, not just that it was</td></tr>
+        <tr><td>Technical terms it's been trained on</td><td>New jargon, brand names, internal project codenames, people's names</td></tr>
+        <tr><td>Producing a searchable, text-based record instantly</td><td>Understanding that a "decision" was actually hypothetical or exploratory</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>AI produces the first draft of a meeting record in seconds. But a first draft is not a final record. The human review step is not optional — it's where accuracy and accountability are confirmed.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">During a meeting, the CEO says: "Look, we probably should move forward with the acquisition — but let me sleep on it and we'll confirm Tuesday." Otter.ai transcribes this as: "Action Item — CEO: Move forward with acquisition." What has gone wrong?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">The transcription technology failed — this is a software bug</button>
+        <button class="qopt" onclick="cq(this,false)">Nothing went wrong — AI correctly identified a commitment</button>
+        <button class="qopt" onclick="cq(this,true)">AI extracted an explicit-sounding action item from what was actually a tentative statement pending confirmation — the human reviewer must catch this kind of contextual error</button>
+        <button class="qopt" onclick="cq(this,false)">The CEO should have been clearer in their speech</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI transcription is a 4-stage pipeline: audio capture → speech-to-text → speaker identification → AI summarization and extraction. Each stage has specific limitations.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI is excellent at converting clean audio to text and identifying explicit action items. It struggles with accents, jargon, implied commitments, and contextual nuance.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The final human review step is not optional. AI produces a first draft — accurately structured but potentially containing errors that only a meeting participant would recognize.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const phases=[
+  {
+    label:'📼 Raw Transcript (straight from ASR)',
+    content:`<div class="ts-raw">
+<span class="ts-speaker">Sarah [10:03]:</span> OK so we need to decide on the vendor today. I've looked at both proposals and honestly I think Apex is the stronger choice on price. Marcus, what's your read?<br><br>
+<span class="ts-speaker">Marcus [10:04]:</span> Yeah I mean functionally they're pretty similar but Apex has better documentation which matters for onboarding. The integration timeline is also shorter — like 3 weeks vs 6 weeks for Vertex.<br><br>
+<span class="ts-speaker">Sarah [10:05]:</span> OK so let's go with Apex then. Marcus can you reach out to them by end of week to start the contract process?<br><br>
+<span class="ts-speaker">Marcus [10:05]:</span> Sure, I'll do that. I'll loop in Legal too since there's some data processing stuff they'll want to review.<br><br>
+<span class="ts-speaker">Priya [10:06]:</span> Great. One thing — do we need procurement approval for this spend level? I think contracts over $50k need VP sign-off.<br><br>
+<span class="ts-speaker">Sarah [10:06]:</span> Good catch. Priya can you check with procurement today and let me know? I'll be around all afternoon.
+    </div>`
+  },
+  {
+    label:'🔍 AI-Highlighted Extraction (decisions + actions flagged)',
+    content:`<div class="ts-raw">
+<span class="ts-speaker">Sarah:</span> OK so we need to decide on the vendor today. I've looked at both proposals and honestly I think Apex is the stronger choice on price. Marcus, what's your read?<br><br>
+<span class="ts-speaker">Marcus:</span> Yeah I mean functionally they're pretty similar but Apex has better documentation which matters for onboarding. Integration timeline is also shorter — 3 weeks vs 6 weeks for Vertex.<br><br>
+<div class="ts-decision">✅ DECISION DETECTED: "Let's go with Apex then." — Sarah</div>
+<div class="ts-action-item">⬜ ACTION DETECTED: Marcus → Contact Apex to start contract process → By end of week</div>
+<div class="ts-action-item">⬜ ACTION DETECTED: Marcus → Loop in Legal re: data processing review</div>
+<span class="ts-speaker">Priya:</span> Great. One thing — do we need procurement approval for this spend level? I think contracts over $50k need VP sign-off.<br><br>
+<div class="ts-action-item">⬜ ACTION DETECTED: Priya → Check with procurement re: VP approval requirement → Today</div>
+<span class="ts-speaker">Sarah:</span> Good catch. Priya can you check with procurement today and let me know? I'll be around all afternoon.
+    </div>`
+  },
+  {
+    label:'📋 Final AI Summary (clean structured output)',
+    content:`<div class="ts-summary-block">
+<strong style="color:var(--purple)">Meeting Summary · Vendor Selection Discussion · ~3 minutes</strong><br><br>
+<strong>Discussion:</strong> Team compared Apex and Vertex vendor proposals. Both are functionally similar; Apex preferred for stronger documentation and faster integration timeline (3 weeks vs 6 weeks for Vertex). Sarah reviewed pricing and found Apex more competitive.<br><br>
+<div class="ts-decision" style="margin:8px 0;">✅ <strong>DECIDED:</strong> Proceed with Apex as selected vendor. Decision made by Sarah.</div>
+<div style="margin-top:12px;"><strong style="color:var(--green)">Action Items:</strong></div>
+<div class="ts-action-item">⬜ Marcus — Contact Apex to initiate contract process → Due: End of week (Friday)</div>
+<div class="ts-action-item">⬜ Marcus — Loop Legal team in on data processing review requirements</div>
+<div class="ts-action-item">⬜ Priya — Confirm with Procurement whether $50k+ contract requires VP approval → Due: Today</div>
+<div style="margin-top:12px;"><strong style="color:var(--orange)">Open Question:</strong></div>
+<div style="font-size:13px;color:var(--orange);padding:5px 10px;background:var(--orange-pale);border-radius:6px;">❓ Does this contract require VP sign-off? Priya investigating. Decision cannot be fully executed until resolved.</div>
+    </div>`
+  }
+];
+function showPhase(i){
+  document.querySelectorAll('.ts-phase-btn').forEach((b,bi)=>b.classList.toggle('active',bi===i));
+  const d=document.getElementById('tsDisplay');
+  d.innerHTML=`<div class="ts-display-label">${phases[i].label}</div>${phases[i].content}`;
+}
+showPhase(0);
+
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! The AI detected "move forward with the acquisition" as an action item — linguistically, it fits the pattern. But the CEO said "probably" and "let me sleep on it" — qualifications that signal a tentative position, not a commitment. Human reviewers catch this because they were in the room and understood the tone. AI reads words, not intent.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('tentative statement'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ This isn\'t a software failure — it\'s an inherent limitation of AI language processing. The AI identified linguistic patterns that look like a commitment ("move forward with"). It can\'t weigh "probably" and "let me sleep on it" as signals of tentative intent. This is exactly the kind of contextual error that human review is designed to catch.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

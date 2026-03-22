@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewing AI-Generated Meeting Notes — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Spot the error simulation */
+.spot-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.ss-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.ss-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.ss-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.ai-notes{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:20px;}
+.ai-notes-header{background:var(--purple);color:white;border-radius:10px;padding:10px 14px;margin-bottom:14px;}
+.ai-notes-header div{font-size:13px;opacity:.85;}
+.ai-notes-header strong{font-size:15px;}
+.ai-line{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:10px;margin-bottom:8px;font-size:14px;line-height:1.6;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.ai-line:hover{background:var(--purple-pale);border-color:var(--purple-mid);}
+.ai-line.selected-error{background:#FFF1F1;border-color:#DC2626;}
+.ai-line.selected-ok{background:var(--green-pale);border-color:var(--green);}
+.ai-line.revealed-error{background:#FFF1F1;border-color:#DC2626;}
+.ai-line-icon{font-size:16px;flex-shrink:0;margin-top:2px;}
+.ai-line-body{flex:1;}
+.ss-fb{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 18px;margin-top:12px;display:none;font-size:14px;line-height:1.65;}
+.ss-fb.show{display:block;animation:fadeIn .3s ease;}
+.ss-score{background:var(--purple);color:white;border-radius:14px;padding:20px;text-align:center;margin-top:12px;display:none;}
+.ss-score.show{display:block;animation:fadeIn .4s ease;}
+.ss-score-num{font-family:'Fraunces',serif;font-size:48px;font-weight:900;}
+
+/* Review checklist */
+.checklist{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+.check-item{display:flex;gap:12px;padding:14px 18px;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;cursor:pointer;transition:all .2s;}
+.check-item:hover{border-color:var(--purple);}
+.check-item.checked{background:var(--green-pale);border-color:var(--green);}
+.check-box{width:22px;height:22px;border:2px solid var(--purple-mid);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.check-item.checked .check-box{background:var(--green);border-color:var(--green);}
+.check-label{font-size:14px;font-weight:600;color:var(--purple-dark);}
+.check-detail{font-size:13px;color:var(--gray-muted);margin-top:2px;line-height:1.5;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.3 · Meeting Notes & Summaries</div>
+  <h1>Reviewing and Editing AI-Generated Meeting Notes</h1>
+  <p class="hero-sub">AI produces meeting notes in seconds. But the moment those notes are distributed with your name on them, they become your responsibility — not the AI's. Learning to review AI output quickly and accurately is one of the most valuable professional skills you can develop.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Why Review Is Non-Negotiable</h2>
+    <p>AI meeting notes are a first draft, not a final document. The AI processes acoustic signals and language patterns — it doesn't understand context, relationship dynamics, or the difference between a genuine commitment and a hypothetical suggestion. <mark>Errors in meeting notes aren't just inaccuracies — they're potential sources of conflict, missed deadlines, and accountability failures.</mark></p>
+    <p>When you distribute meeting notes, you're creating a shared organizational record. If the notes say Marcus committed to the spec by Friday and Marcus said he'd "try to get to it," that's not a typo — that's a misrepresentation of what happened. The professional who catches it before distribution is more valuable than the one who notices afterward.</p>
+    <div class="pull-quote"><p>The AI's job is speed. Your job is accuracy. Together, you produce meeting notes in minutes that are both fast and right.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Spot the Errors: Review This AI Output</h2>
+    <p>These are AI-generated notes from a real meeting. Three items contain errors — click each line to classify it as an error or correct. See how many you find:</p>
+    <div class="spot-sim">
+      <div class="ss-label">🔍 Spot the Errors</div>
+      <div class="ss-title">AI Meeting Notes Review Challenge</div>
+      <div class="ss-sub">Click each line to classify it: is it accurate, or does it contain an error that needs correction?</div>
+      <div class="ai-notes">
+        <div class="ai-notes-header"><strong>AI-Generated Notes — Product Strategy Meeting · June 5</strong><div>Transcribed by Otter.ai · Reviewed by: [You]</div></div>
+        <div id="noteLines"></div>
+      </div>
+      <div class="ss-fb" id="ssFb"></div>
+      <div class="ss-score" id="ssScore"><div class="ss-score-num" id="ssScoreNum"></div><div style="font-size:14px;opacity:.85;margin-top:4px" id="ssScoreMsg"></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Your Pre-Distribution Review Checklist</h2>
+    <p>Before sending any AI-generated meeting notes, work through this checklist. Click each item to confirm you've checked it:</p>
+    <div class="checklist" id="checklist"></div>
+    <div id="checklistComplete" style="background:var(--green-pale);border-radius:14px;padding:16px 20px;margin-top:12px;font-size:14px;color:var(--green);font-weight:600;display:none;animation:fadeIn .4s ease;">
+      ✅ All checks complete — notes are ready to distribute.
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">Otter.ai transcribes the following: "Marcus said he will have the report done by the end of June." When you review the notes, you remember that Marcus actually said "I'm hoping to get the report done by end of June — depends on the other priorities." What should you do?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Leave it as-is — "hoping to" and "will" are close enough in meaning</button>
+        <button class="qopt" onclick="cq(this,false)">Delete the action item — if it's uncertain, don't include it</button>
+        <button class="qopt" onclick="cq(this,true)">Edit the action item to reflect the actual commitment: "Marcus — Report (tentative, pending priority review) → Target: end of June. Confirm with Marcus before treating as firm deadline."</button>
+        <button class="qopt" onclick="cq(this,false)">Ask Marcus to confirm in writing before sending notes</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>When you distribute meeting notes, you own their accuracy — not the AI. Errors in distributed notes become organizational records that can cause real conflicts and missed commitments.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The five most common AI note errors: transcription inaccuracies, tentative statements extracted as firm commitments, incorrect owner attribution, mischaracterized decisions, and missing context that changes meaning.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>A pre-distribution checklist — checking decisions, action items, owner accuracy, completeness, and appropriate audience — takes less than 5 minutes and prevents the errors that matter most.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const noteLines=[
+  {icon:'✅',text:'DECIDED: Proceed with the mobile-first redesign for Q3. Sarah\'s decision based on mobile traffic data (68% of users on mobile).',isError:false,explanation:'This decision is correctly formatted — explicit decision, named decision-maker, clear rationale. No changes needed.'},
+  {icon:'⬜',text:'ACTION: Marcus — Complete technical spec for mobile redesign → Due Thursday June 8',isError:false,explanation:'This action item is correctly formatted — specific task, one named owner, specific deadline. No changes needed.'},
+  {icon:'⬜',text:'ACTION: Sarah — Approve final budget for redesign → Due by end of Q3',isError:true,explanation:'ERROR: "End of Q3" is not a specific deadline — that\'s a 3-month window. If this needs to happen before Marcus can start, this is critical. A correct version would be: "Sarah — Approve redesign budget → Due June 10 (required before development starts)."'},
+  {icon:'⬜',text:'ACTION: Marketing team — Update all brand assets → Due June 15',isError:true,explanation:'ERROR: "Marketing team" is not one person. This task has no single owner, which means nobody will be accountable for it. Should be: "[Specific name, e.g. Alex] — Coordinate marketing asset updates → Due June 15."'},
+  {icon:'❓',text:'OPEN: Should the redesign include the checkout flow? Decision deferred — needs further discussion.',isError:false,explanation:'This open question is correctly flagged. The decision was genuinely deferred and the parking lot note is appropriate. No error here.'},
+  {icon:'✅',text:'DECIDED: Jordan will lead the redesign project as primary PM, with Priya providing support.',isError:true,explanation:'ERROR: This was discussed as a possibility — the actual decision was "Jordan and Priya to discuss capacity and confirm PM lead by Friday." This is a misrepresentation of what was actually decided. A firm decision was NOT made in the meeting.'},
+];
+let scores=[];
+const nl=document.getElementById('noteLines');
+noteLines.forEach((line,i)=>{
+  const el=document.createElement('div');el.className='ai-line';
+  el.innerHTML=`<span class="ai-line-icon">${line.icon}</span><div class="ai-line-body">${line.text}</div>`;
+  el.onclick=()=>{
+    if(scores[i]!==undefined)return;
+    const correct=(el.dataset.selected==='error')===line.isError;
+    // toggle selection
+    if(!el.classList.contains('selected-error')&&!el.classList.contains('selected-ok')){
+      // first click — mark as error
+      el.classList.add('selected-error');
+      el.dataset.selected='error';
+    } else if(el.dataset.selected==='error'){
+      el.classList.remove('selected-error');el.classList.add('selected-ok');el.dataset.selected='ok';
+    } else {
+      // already ok, confirm
+    }
+    // On second click confirm
+    if(el.dataset.confirmed==='true')return;
+    el.dataset.confirmed='true';
+    const isCalledError=el.dataset.selected==='error';
+    const wasRight=isCalledError===line.isError;
+    el.classList.remove('selected-error','selected-ok');
+    el.classList.add(wasRight?(line.isError?'selected-error':'selected-ok'):(line.isError?'revealed-error':'selected-ok'));
+    scores[i]=wasRight?1:0;
+    const fb=document.getElementById('ssFb');
+    fb.innerHTML=`<strong>${wasRight?(line.isError?'✅ Error found!':'✅ Correct — no error here'):'❌ '+(line.isError?'This line contains an error — missed it':'This line is actually correct')}:</strong> ${line.explanation}`;
+    fb.className='ss-fb show';
+    if(scores.filter(s=>s!==undefined).length===noteLines.length){
+      const total=scores.reduce((a,b)=>a+b,0);
+      document.getElementById('ssScoreNum').textContent=`${total}/${noteLines.length}`;
+      document.getElementById('ssScoreMsg').textContent=total>=5?'Sharp eye — you caught the errors that would have caused real problems.':total>=3?'Good start. Review the errors you missed — they\'re the ones most likely to slip past in real reviews.':'Review the common error types and practice slowing down during the action items section.';
+      document.getElementById('ssScore').classList.add('show');
+    }
+  };
+  nl.appendChild(el);
+});
+
+const checkItems=[
+  {label:'Decisions are explicit and attributed',detail:'Every decision says "X decided" or "Team agreed" — not implied. Decision-maker is named.'},
+  {label:'Action items have owner + deadline',detail:'Every action item has one person\'s name and a specific date — no "the team" and no "ASAP."'},
+  {label:'Tentative commitments are flagged',detail:'Anything said as "I\'ll try" or "probably" is marked tentative — not extracted as a firm commitment.'},
+  {label:'Owner attributions are verified',detail:'Tasks are assigned to people who actually agreed to them — not suggested by others.'},
+  {label:'Open questions are captured',detail:'Any topic raised but not resolved has a follow-up owner and is in the parking lot.'},
+  {label:'Notes are appropriate for all recipients',detail:'Notes don\'t include sensitive side-conversations or information that shouldn\'t be shared with the full distribution list.'},
+];
+const cl=document.getElementById('checklist');
+checkItems.forEach((item,i)=>{
+  const el=document.createElement('div');el.className='check-item';
+  el.innerHTML=`<div class="check-box" id="cb${i}"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="display:none" id="cbCheck${i}"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="check-label">${item.label}</div><div class="check-detail">${item.detail}</div></div>`;
+  el.onclick=()=>{
+    el.classList.toggle('checked');
+    document.getElementById('cbCheck'+i).style.display=el.classList.contains('checked')?'block':'none';
+    const allChecked=document.querySelectorAll('.check-item.checked').length===checkItems.length;
+    document.getElementById('checklistComplete').style.display=allChecked?'block':'none';
+  };
+  cl.appendChild(el);
+});
+
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! The AI captured the words accurately — but missed the commitment level. "I\'m hoping to" and "will" are meaningfully different. If you distribute notes saying Marcus "will" deliver when he said he\'s "hoping to," you\'ve created a false accountability record. The edit preserves the commitment while accurately reflecting its tentative nature.';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('Confirm with Marcus'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ "Hoping to" and "will" carry very different accountability weight. Leaving it as-is creates a false record. Deleting it loses the commitment. Waiting for Marcus\'s confirmation adds unnecessary delay. The best solution is to accurately capture the tentative nature of the commitment in the notes and flag it as needing confirmation — that way the record is accurate and the follow-up is prompted.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Roles: Who Does What — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--green:#276749;--green-pale:#F0FFF4;--orange:#D97706;--orange-pale:#FFFBEB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;}
+.hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+.lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+.lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+.hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+.hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+.content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+.section{padding:32px 0 0;}
+h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+.pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+.pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+.pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+/* Role flip cards */
+.flip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:24px 0;}
+.flip-card{perspective:1000px;height:200px;cursor:pointer;}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d;}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:18px;padding:22px;display:flex;flex-direction:column;justify-content:center;}
+.flip-front{background:var(--purple);border:2px solid var(--purple-dark);}
+.flip-back{background:var(--white);border:2px solid var(--purple-mid);transform:rotateY(180deg);}
+.flip-role-icon{font-size:32px;margin-bottom:8px;}
+.flip-role-name{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:white;margin-bottom:4px;}
+.flip-hint{font-size:12px;color:rgba(255,255,255,.7);}
+.flip-back-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:8px;}
+.flip-back-list{display:flex;flex-direction:column;gap:5px;}
+.flip-back-item{font-size:13px;color:var(--gray-text);line-height:1.45;display:flex;gap:6px;}
+
+/* Before/after meeting comparison */
+.ba-wrap{margin:24px 0;}
+.ba-tabs{display:flex;gap:8px;margin-bottom:12px;}
+.ba-tab{padding:8px 16px;border-radius:10px;border:1.5px solid var(--purple-mid);background:var(--white);color:var(--gray-muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.ba-tab.active{background:var(--purple);border-color:var(--purple);color:white;}
+.ba-panel{display:none;border-radius:18px;padding:24px;}
+.ba-panel.active{display:block;animation:fadeIn .3s ease;}
+.ba-panel.bad{background:#FFF1F1;border:1.5px solid #FECACA;}
+.ba-panel.good{background:var(--green-pale);border:1.5px solid #86EFAC;}
+.ba-panel-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+.ba-panel.bad .ba-panel-label{color:#DC2626;}
+.ba-panel.good .ba-panel-label{color:var(--green);}
+.ba-line{display:flex;gap:10px;margin-bottom:10px;font-size:14px;line-height:1.55;}
+
+/* Role assignment sim */
+.ra-sim{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.ra-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.ra-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+.ra-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+.ra-scenario{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;padding:16px 20px;margin-bottom:14px;font-size:15px;line-height:1.7;}
+.ra-people{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.ra-person{display:flex;align-items:center;gap:12px;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:12px 16px;}
+.ra-person-icon{font-size:22px;}
+.ra-person-name{font-size:14px;font-weight:700;color:var(--purple-dark);flex:1;}
+.ra-select{padding:6px 10px;border:1.5px solid var(--purple-mid);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--white);outline:none;}
+.ra-btn{background:var(--purple);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
+.ra-result{margin-top:12px;display:none;}
+.ra-result.show{display:block;animation:fadeIn .35s ease;}
+.ra-result-item{padding:10px 14px;border-radius:10px;margin-bottom:8px;font-size:13px;line-height:1.5;}
+.ra-result-item.correct{background:var(--green-pale);border-left:3px solid var(--green);color:var(--green);}
+.ra-result-item.wrong{background:#FFF1F1;border-left:3px solid #DC2626;color:#DC2626;}
+
+/* Quiz */
+.quiz{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+.quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.quiz-q{font-family:'Fraunces',serif;font-size:20px;color:var(--purple-dark);margin-bottom:20px;font-weight:700;}
+.qopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{background:var(--white);border:2px solid var(--purple-mid);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:15px;transition:all .2s;text-align:left;}
+.qopt:hover{border-color:var(--purple);background:var(--purple-pale);}
+.qopt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+.qopt.wrong{background:#FFF1F1;border-color:#DC2626;color:#DC2626;}
+.qfb{font-size:15px;line-height:1.65;padding:16px 20px;border-radius:12px;margin-top:12px;display:none;}
+.qfb.show{display:block;animation:fadeIn .35s ease;}
+.qfb.cfb{background:var(--green-pale);color:var(--green);}
+.qfb.wfb{background:#FFF1F1;color:#DC2626;}
+.summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+.summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+.summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+.spoints{display:flex;flex-direction:column;gap:14px;}
+.spoint{display:flex;gap:14px;align-items:flex-start;}
+.sdot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sdot svg{width:12px;height:12px;}
+.spoint p{font-size:16px;line-height:1.65;margin:0;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.flip-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 5.3 · Meeting Notes & Summaries</div>
+  <h1>Meeting Roles: Who Does What</h1>
+  <p class="hero-sub">A meeting without defined roles is a conversation. A conversation can be valuable — but it rarely produces documented decisions and clear ownership. Before you can take great notes, you need to understand the structure that makes notes meaningful.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <h2>Why Roles Matter Before Notes</h2>
+    <p>Meeting notes don't exist in a vacuum. They're a record of decisions, discussions, and commitments made by people in specific roles. Without knowing who was in which role, it's impossible to capture a meeting accurately — you can write down what was said, but you can't write down what it meant, who owns what came out of it, or whether it was a final decision or a preliminary discussion.</p>
+    <p>Every effective meeting has at least three active roles. In small teams, one person might fill two of them. In larger organizations, these are distinct responsibilities:</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Four Core Meeting Roles — Click Each to Flip</h2>
+    <div class="flip-grid" id="flipGrid"></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Good vs. Bad Role Assignment Looks Like</h2>
+    <div class="ba-wrap">
+      <div class="ba-tabs">
+        <button class="ba-tab active" onclick="showBA(0)">❌ Without Roles</button>
+        <button class="ba-tab" onclick="showBA(1)">✅ With Roles</button>
+      </div>
+      <div class="ba-panel bad active" id="ba0">
+        <div class="ba-panel-label">❌ Meeting without defined roles</div>
+        <div class="ba-line">🌀 <span>Everyone talks at once, conversation drifts from topic to topic</span></div>
+        <div class="ba-line">🌀 <span>Nobody is capturing what's being said — it's all in people's heads</span></div>
+        <div class="ba-line">🌀 <span>Discussion of a decision goes 35 minutes without resolution because nobody is managing time</span></div>
+        <div class="ba-line">🌀 <span>Meeting ends without clarity on what was decided or who does what next</span></div>
+        <div class="ba-line">🌀 <span>Three people leave with three different interpretations of the outcome</span></div>
+        <div class="ba-line">🌀 <span>Notes (if they exist) are a scattered bullet list nobody can parse later</span></div>
+      </div>
+      <div class="ba-panel good" id="ba1">
+        <div class="ba-panel-label">✅ Meeting with clear roles assigned in advance</div>
+        <div class="ba-line">✅ <span>Facilitator opens with agenda and time checks — discussion stays on track</span></div>
+        <div class="ba-line">✅ <span>Note-taker (or AI tool) captures decisions and commitments as they happen</span></div>
+        <div class="ba-line">✅ <span>Facilitator calls the decision at minute 15: "We're going with Option B — Marcus, are you confirming that?"</span></div>
+        <div class="ba-line">✅ <span>Decision-maker is present and gives explicit sign-off before the topic closes</span></div>
+        <div class="ba-line">✅ <span>Action items captured in real time: task / owner / deadline — no ambiguity</span></div>
+        <div class="ba-line">✅ <span>Notes distributed within 24 hours — shared record everyone can verify</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Practice: Assign the Roles</h2>
+    <p>Read the scenario below and drag each person into their correct role:</p>
+    <div class="ra-sim">
+      <div class="ra-label">🎯 Role Assignment Practice</div>
+      <div class="ra-title">Assign Meeting Roles</div>
+      <div class="ra-sub">For each person, select their most appropriate meeting role based on their description.</div>
+      <div class="ra-scenario">
+        <strong>Meeting context:</strong> A 45-minute weekly product review. The goal is to decide which features to prioritize for next sprint, review progress from last sprint, and assign any blockers.
+      </div>
+      <div class="ra-people" id="raPeople"></div>
+      <button class="ra-btn" onclick="checkRA()">Check Assignments →</button>
+      <div class="ra-result" id="raResult"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>When AI takes notes, the Note-taker role doesn't disappear — it shifts. Someone still needs to review the AI transcript, confirm accuracy, and ensure the decisions captured are the decisions that were actually made.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🧠 Quick Check</div>
+      <div class="quiz-q">Your team uses Otter.ai to automatically transcribe every meeting. Does this eliminate the need for a designated note-taker or meeting owner?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="cq(this,false)">Yes — AI transcription replaces both roles completely</button>
+        <button class="qopt" onclick="cq(this,false)">Yes — note-taking is now automated, so the role is obsolete</button>
+        <button class="qopt" onclick="cq(this,true)">No — someone still needs to review the transcript, verify decisions were captured accurately, and own the follow-through process</button>
+        <button class="qopt" onclick="cq(this,false)">It depends on how accurate the AI transcription is</button>
+      </div>
+      <div class="qfb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="summary fade-in">
+    <div class="summary-label">📌 Article Summary</div>
+    <h2>What to Remember</h2>
+    <div class="spoints">
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Four roles make meetings work: Facilitator (keeps things on track), Note-taker (captures decisions and commitments), Decision-maker (has authority to decide), and Participants (come prepared, contribute on-topic).</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI meeting tools automate the note-taking function — but they don't replace the human accountability to review outputs, verify accuracy, and own follow-through.</p></div>
+      <div class="spoint"><div class="sdot"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>In small teams, one person may fill multiple roles. What matters is that each role is explicitly assigned — not assumed — before the meeting begins.</p></div>
+    </div>
+  </div>
+</div>
+<script>
+const roles=[
+  {icon:'🎤',name:'Facilitator',items:['Opens the meeting and states the goal','Keeps conversation on-agenda and on time','Calls decisions explicitly ("Are we aligned on Option B?")','Manages participation — ensures quieter voices are heard','Closes the meeting with a clear summary of what was decided']},
+  {icon:'📝',name:'Note-Taker',items:['Captures decisions (not just discussion) in real time','Records action items with owner and deadline attached','Stays neutral — doesn\'t need to contribute to discussion while taking notes','Distributes notes within 24 hours','With AI tools: reviews transcript and verifies accuracy']},
+  {icon:'🏛️',name:'Decision-Maker',items:['Has actual authority to approve, reject, or commit resources','Must be present for decisions to be final','Gives explicit sign-off (not implied)','May be same person as facilitator in smaller teams','Without this role present, decisions made are provisional only']},
+  {icon:'👤',name:'Participant',items:['Reviews agenda and any pre-read materials before attending','Contributes relevant information and perspective','Stays on-topic and respects time allocations','Owns their action items completely — no follow-up required','Raises blockers or disagreements during the meeting, not after'],},
+];
+const fg=document.getElementById('flipGrid');
+roles.forEach((r,i)=>{
+  const el=document.createElement('div');el.className='flip-card';
+  el.innerHTML=`<div class="flip-inner"><div class="flip-front"><div class="flip-role-icon">${r.icon}</div><div class="flip-role-name">${r.name}</div><div class="flip-hint">Click to see responsibilities</div></div><div class="flip-back"><div class="flip-back-label">${r.name} responsibilities</div><div class="flip-back-list">${r.items.map(it=>`<div class="flip-back-item">→ <span>${it}</span></div>`).join('')}</div></div></div>`;
+  el.onclick=()=>el.classList.toggle('flipped');
+  fg.appendChild(el);
+});
+
+function showBA(i){
+  document.querySelectorAll('.ba-tab').forEach((t,ti)=>t.classList.toggle('active',ti===i));
+  document.querySelectorAll('.ba-panel').forEach((p,pi)=>p.classList.toggle('active',pi===i));
+}
+
+const people=[
+  {icon:'👩‍💼',name:'Sarah — VP of Product',desc:'Has final say on roadmap priorities. Rarely takes notes — usually speaking or listening.',correct:'Decision-Maker'},
+  {icon:'👨‍💻',name:'Marcus — Senior Engineer',desc:'Knows the technical constraints best. Usually explains what\'s feasible.',correct:'Participant'},
+  {icon:'📊',name:'Priya — Project Manager',desc:'Prepared the agenda and will send the recap email afterward. Good at keeping conversations focused.',correct:'Facilitator'},
+  {icon:'🖊️',name:'Jordan — Associate PM',desc:'New to the team and attending to learn. Has been asked to capture decisions and send notes to the group.',correct:'Note-Taker'},
+];
+const raP=document.getElementById('raPeople');
+people.forEach((p,i)=>{
+  const el=document.createElement('div');el.className='ra-person';
+  el.innerHTML=`<span class="ra-person-icon">${p.icon}</span><div style="flex:1"><div class="ra-person-name">${p.name}</div><div style="font-size:12px;color:var(--gray-muted)">${p.desc}</div></div><select class="ra-select" id="ra${i}"><option value="">Select role...</option><option>Facilitator</option><option>Note-Taker</option><option>Decision-Maker</option><option>Participant</option></select>`;
+  raP.appendChild(el);
+});
+function checkRA(){
+  let html='';
+  people.forEach((p,i)=>{
+    const val=document.getElementById('ra'+i).value;
+    const correct=val===p.correct;
+    html+=`<div class="ra-result-item ${correct?'correct':'wrong'}">${correct?'✅':'❌'} <strong>${p.name}:</strong> ${correct?`Correct — ${p.correct}`:`Your answer: ${val||'(none)'} · Correct role: ${p.correct}`}. ${correct?'':'Reason: '+getReason(p.correct)}</div>`;
+  });
+  document.getElementById('raResult').innerHTML=html;
+  document.getElementById('raResult').classList.add('show');
+}
+function getReason(role){
+  const map={'Facilitator':'She prepared the agenda and will manage the recap — she\'s managing the meeting process.','Note-Taker':'She was explicitly asked to capture decisions and send notes — that\'s the note-taker role.','Decision-Maker':'As VP, she has final authority over roadmap priorities — only she can make a binding call.','Participant':'He contributes technical expertise but doesn\'t run the meeting or own the outcome.'};
+  return map[role]||'';
+}
+function cq(btn,correct){
+  if(document.querySelector('.qopt.correct')||document.querySelector('.qopt.wrong'))return;
+  btn.classList.add(correct?'correct':'wrong');
+  const fb=document.getElementById('qfb');
+  if(correct){fb.className='qfb show cfb';fb.textContent='✅ Correct! AI transcription automates the capture part of note-taking — but it doesn\'t review its own output, verify that decisions were captured accurately, or ensure action items are followed up on. Someone still needs to own that. The role shifts from "capturing everything" to "quality-checking what was captured."';}
+  else{document.querySelectorAll('.qopt').forEach(o=>{if(o.textContent.includes('still needs'))o.classList.add('correct');});fb.className='qfb show wfb';fb.textContent='❌ AI transcription is powerful, but it doesn\'t self-verify. It can mis-hear words, miss context (like sarcasm or a hypothetical), or capture the words without capturing the meaning. A human still needs to review the output, confirm decisions are correctly recorded, and own the follow-through process. The role evolves — it doesn\'t disappear.';}
+}
+window.addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('pb').style.width=((e.scrollTop/(e.scrollHeight-e.clientHeight))*100)+'%';});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
