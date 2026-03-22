@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Market Research & Consumer Insights — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width 0.1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-0.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Research methods comparison */
+  .research-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:560px){.research-compare{grid-template-columns:1fr;}}
+  .rc-card{border:1.5px solid var(--purple-mid);border-radius:18px;padding:24px;}
+  .rc-header{display:flex;gap:10px;align-items:center;margin-bottom:14px;}
+  .rc-icon{font-size:28px;}
+  .rc-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);}
+  .rc-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--purple-mid);font-size:14px;}
+  .rc-row:last-child{border-bottom:none;}
+  .rc-metric{color:var(--gray-muted);}
+  .rc-value{font-weight:600;color:var(--purple-dark);}
+  .rc-value.good{color:var(--green);}
+  .rc-value.slow{color:var(--red);}
+
+  /* Sentiment analysis demo */
+  .sentiment-demo{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sd-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sd-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sd-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .sd-reviews{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+  .sd-review{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:16px;cursor:pointer;transition:all 0.2s;}
+  .sd-review:hover{border-color:var(--purple);}
+  .sd-review.selected{border-color:var(--purple);background:var(--purple-pale);}
+  .sd-review-text{font-size:15px;line-height:1.6;color:var(--gray-text);margin-bottom:8px;}
+  .sd-review-source{font-size:12px;color:var(--gray-muted);}
+  .sd-analyze-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+  .sd-analyze-btn:hover{background:var(--purple-dark);}
+  .sd-result{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;margin-top:16px;display:none;}
+  .sd-result.show{display:block;animation:fadeIn 0.4s ease;}
+  .sd-sentiment-bar{margin:16px 0;}
+  .sd-bar-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;}
+  .sd-bar-track{height:10px;background:var(--purple-mid);border-radius:100px;overflow:hidden;}
+  .sd-bar-fill{height:100%;border-radius:100px;transition:width 0.8s ease;}
+  .sd-bar-fill.positive{background:#4ade80;}
+  .sd-bar-fill.neutral{background:#facc15;}
+  .sd-bar-fill.negative{background:#f87171;}
+  .sd-themes{margin-top:16px;}
+  .sd-theme{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:500;margin:4px 4px 0 0;}
+  .sd-theme.pos{background:var(--green-pale);color:var(--green);}
+  .sd-theme.neg{background:var(--red-pale);color:var(--red);}
+
+  /* AI research capabilities */
+  .ai-caps{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .ac-item{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:14px;}
+  .ac-icon{font-size:26px;flex-shrink:0;}
+  .ac-text h3{font-size:16px;font-weight:600;color:var(--purple-dark);margin-bottom:4px;}
+  .ac-text p{font-size:14px;line-height:1.65;color:var(--gray-text);margin:0;}
+
+  /* Quiz */
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-question{font-size:17px;line-height:1.6;color:rgba(255,255,255,0.85);margin-bottom:28px;}
+  .quiz-options{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all 0.2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,0.2);}
+  .quiz-btn.correct{background:rgba(74,222,128,0.25);border-color:#4ade80;color:#d1fae5;}
+  .quiz-btn.wrong{background:rgba(248,113,113,0.2);border-color:#f87171;color:#fecaca;}
+  .quiz-feedback{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,0.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-feedback.show{display:block;animation:fadeIn 0.3s ease;}
+
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.1 · Introduction to AI in Marketing</div>
+  <h1>AI for Market Research & Consumer Insights</h1>
+  <p class="hero-sub">Marketers have always needed to understand customers — what they want, what they feel, and what they'll do next. AI doesn't just help with this. It does it at a speed and scale that changes what's possible entirely.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>The video covered how AI helps marketers gather market insights. But what does that actually mean? Market research is the process of collecting and analyzing information about customers, competitors, and the market to make better business decisions.</p>
+    <p><mark>Before AI, market research was slow, expensive, and limited in scale. You could survey a few hundred people or analyze last quarter's data. With AI, you can continuously analyze millions of signals in real time — customer reviews, social media posts, search trends, competitor moves — and turn all of that into actionable insights automatically.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Traditional Research vs. AI-Powered Research</h2>
+    <div class="research-compare">
+      <div class="rc-card">
+        <div class="rc-header"><div class="rc-icon">📋</div><div class="rc-name">Traditional Research</div></div>
+        <div class="rc-row"><span class="rc-metric">Speed</span><span class="rc-value slow">Weeks to months</span></div>
+        <div class="rc-row"><span class="rc-metric">Sample size</span><span class="rc-value">Hundreds–thousands</span></div>
+        <div class="rc-row"><span class="rc-metric">Cost</span><span class="rc-value slow">$10K–$100K+ per study</span></div>
+        <div class="rc-row"><span class="rc-metric">Frequency</span><span class="rc-value">Quarterly or annual</span></div>
+        <div class="rc-row"><span class="rc-metric">Data type</span><span class="rc-value">Surveys, focus groups</span></div>
+      </div>
+      <div class="rc-card">
+        <div class="rc-header"><div class="rc-icon">🤖</div><div class="rc-name">AI-Powered Research</div></div>
+        <div class="rc-row"><span class="rc-metric">Speed</span><span class="rc-value good">Real-time, continuous</span></div>
+        <div class="rc-row"><span class="rc-metric">Sample size</span><span class="rc-value good">Millions of data points</span></div>
+        <div class="rc-row"><span class="rc-metric">Cost</span><span class="rc-value good">Fraction of traditional</span></div>
+        <div class="rc-row"><span class="rc-metric">Frequency</span><span class="rc-value good">Continuous, always-on</span></div>
+        <div class="rc-row"><span class="rc-metric">Data type</span><span class="rc-value">Behavior, social, search</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What AI Can Analyze at Scale</h2>
+    <div class="ai-caps">
+      <div class="ac-item"><div class="ac-icon">💬</div><div class="ac-text"><h3>Social Media Mentions</h3><p>AI scans millions of social posts per day to understand how customers talk about a brand, what language they use, what they love, and what frustrates them. This is called social listening.</p></div></div>
+      <div class="ac-item"><div class="ac-icon">⭐</div><div class="ac-text"><h3>Customer Reviews</h3><p>AI reads thousands of product reviews and automatically categorizes feedback by theme — "battery life complaints," "packaging praise," "price sensitivity" — surfacing patterns no human team could find manually.</p></div></div>
+      <div class="ac-item"><div class="ac-icon">🔍</div><div class="ac-text"><h3>Search Trends</h3><p>What people search for reveals what they want, need, and are worried about. AI analyzes search data to detect rising trends and shifts in consumer interest before they become obvious.</p></div></div>
+      <div class="ac-item"><div class="ac-icon">🕵️</div><div class="ac-text"><h3>Competitor Intelligence</h3><p>AI monitors competitor websites, pricing changes, ad campaigns, and social presence automatically — giving marketers a live view of the competitive landscape without manual tracking.</p></div></div>
+      <div class="ac-item"><div class="ac-icon">🔮</div><div class="ac-text"><h3>Predictive Analytics</h3><p>By finding patterns in past customer behavior, AI predicts future behavior — which customers are likely to buy again, which are likely to churn, and which segments are about to grow.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The problem was never a lack of customer data. The problem was always too much data to analyze in time to act on it. AI solves that problem.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Try It: Sentiment Analysis Simulator</h2>
+    <p>Sentiment analysis is one of AI's most powerful market research capabilities — it reads customer feedback and automatically identifies emotions and themes. Select a review and see how an AI would analyze it.</p>
+    <div class="sentiment-demo">
+      <div class="sd-label">🔬 Live Demo</div>
+      <div class="sd-title">Sentiment Analysis</div>
+      <div class="sd-sub">Select a customer review, then run the AI analysis to see what it detects.</div>
+      <div class="sd-reviews">
+        <div class="sd-review" id="rev1" onclick="selectRev('rev1')">
+          <div class="sd-review-text">"The product quality is amazing and it arrived super fast! Only thing — the packaging felt wasteful and the instructions were confusing at first. Still, 5 stars overall. Would definitely buy again."</div>
+          <div class="sd-review-source">⭐⭐⭐⭐⭐ — Amazon, Verified Purchase</div>
+        </div>
+        <div class="sd-review" id="rev2" onclick="selectRev('rev2')">
+          <div class="sd-review-text">"Honestly disappointed. The app crashes constantly, customer support took 4 days to respond, and when they finally did the problem still wasn't fixed. Used to love this company but something has changed."</div>
+          <div class="sd-review-source">⭐⭐ — App Store Review</div>
+        </div>
+        <div class="sd-review" id="rev3" onclick="selectRev('rev3')">
+          <div class="sd-review-text">"Decent product, nothing groundbreaking. Does what it says on the box. Shipping was standard. Price is fair for what it is. Probably wouldn't go out of my way to recommend it but wouldn't warn people off either."</div>
+          <div class="sd-review-source">⭐⭐⭐ — Google Review</div>
+        </div>
+      </div>
+      <button class="sd-analyze-btn" onclick="runSentiment()">🔍 Analyze Sentiment</button>
+      <div class="sd-result" id="sdResult"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-question">A brand manager wants to understand how customers feel about their brand right now. They have a $5,000 budget and need results in 3 days. Which approach gives them the best answer?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,false)">A. Commission a traditional market research survey — it's the most rigorous method</button>
+        <button class="quiz-btn" onclick="answer(this,false)">B. Ask their own employees what they think customers feel — quick and free</button>
+        <button class="quiz-btn" onclick="answer(this,true)">C. Use an AI-powered social listening tool to analyze recent brand mentions and reviews across platforms</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. Wait until the annual brand tracking study is complete</button>
+      </div>
+      <div class="quiz-feedback" id="qfeedback"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI-powered market research is faster, cheaper, larger in scale, and continuous — compared to traditional research which is slow, expensive, small-sample, and point-in-time.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI can analyze social mentions, reviews, search trends, competitor activity, and customer behavior continuously — finding patterns that humans would miss in the volume of data.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Sentiment analysis automatically identifies emotions and themes in customer feedback — turning thousands of unstructured reviews into structured, actionable insights.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The key advantage: AI solves the "too much data to act on in time" problem that traditional research always faced — turning data into decisions faster than ever before.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  let selectedRev=null;
+  const revData={
+    rev1:{pos:75,neu:20,neg:5,themes:[{t:'Product quality',v:'pos'},{t:'Fast delivery',v:'pos'},{t:'Would repurchase',v:'pos'},{t:'Packaging waste concern',v:'neg'},{t:'Unclear instructions',v:'neg'}],summary:'Primarily positive. Customer is satisfied and loyal but flagged two specific improvement areas. Operational feedback worth addressing in packaging and UX.'},
+    rev2:{pos:5,neu:10,neg:85,themes:[{t:'App stability issues',v:'neg'},{t:'Slow customer support',v:'neg'},{t:'Unresolved issue',v:'neg'},{t:'Declining loyalty',v:'neg'},{t:'Historical positive sentiment',v:'pos'}],summary:'Strongly negative. Customer shows signs of churn — formerly loyal, now experiencing multiple failure points. High-priority retention case. Root issues: technical reliability and support responsiveness.'},
+    rev3:{pos:20,neu:70,neg:10,themes:[{t:'Meets basic expectations',v:'pos'},{t:'No strong differentiation',v:'neg'},{t:'Fair pricing',v:'pos'},{t:'Neutral recommendation',v:'neg'}],summary:'Neutral-leaning. Customer is not a churn risk but also not an advocate. Brand is perceived as adequate, not exceptional. Opportunity to exceed expectations and convert to promoter.'}
+  };
+
+  function selectRev(id){
+    document.querySelectorAll('.sd-review').forEach(r=>r.classList.remove('selected'));
+    document.getElementById(id).classList.add('selected');
+    selectedRev=id;
+    document.getElementById('sdResult').classList.remove('show');
+  }
+
+  function runSentiment(){
+    if(!selectedRev){alert('Please select a review first.');return;}
+    const d=revData[selectedRev];
+    document.getElementById('sdResult').innerHTML=`
+      <div style="margin-bottom:16px;font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);">AI Sentiment Analysis Results</div>
+      <div class="sd-sentiment-bar"><div class="sd-bar-label"><span>😊 Positive</span><span>${d.pos}%</span></div><div class="sd-bar-track"><div class="sd-bar-fill positive" style="width:${d.pos}%"></div></div></div>
+      <div class="sd-sentiment-bar"><div class="sd-bar-label"><span>😐 Neutral</span><span>${d.neu}%</span></div><div class="sd-bar-track"><div class="sd-bar-fill neutral" style="width:${d.neu}%"></div></div></div>
+      <div class="sd-sentiment-bar"><div class="sd-bar-label"><span>😠 Negative</span><span>${d.neg}%</span></div><div class="sd-bar-track"><div class="sd-bar-fill negative" style="width:${d.neg}%"></div></div></div>
+      <div class="sd-themes" style="margin-bottom:14px;">${d.themes.map(t=>`<span class="sd-theme ${t.v}">${t.v==='pos'?'✓ ':'✗ '}${t.t}</span>`).join('')}</div>
+      <div style="background:var(--purple-pale);border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.6;color:var(--purple-dark);"><strong>AI Summary:</strong> ${d.summary}</div>`;
+    document.getElementById('sdResult').className='sd-result show';
+  }
+
+  let done=false;
+  function answer(btn,correct){
+    if(done)return;done=true;
+    document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');
+    const f=document.getElementById('qfeedback');
+    if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Exactly right.</strong> AI social listening tools can analyze thousands of recent brand mentions and reviews across platforms in hours — far faster and broader than a traditional survey. With a $5K budget and 3-day deadline, this is the only option that produces meaningful results. Traditional surveys take 3–8 weeks minimum and cost significantly more. Asking employees introduces confirmation bias. Waiting is obviously not acceptable.';}
+    else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[2].classList.add('correct');f.innerHTML='❌ Not quite. Traditional surveys are rigorous but require 3–8 weeks and typically cost $20K+. Employees have insider bias. Waiting is obviously not an option. AI social listening tools analyze thousands of actual customer statements across platforms within hours — giving the most current, authentic, and scalable view of customer sentiment within the given constraints.';}
+    f.classList.add('show');
+  }
+</script>
+</body>
+</html>
