@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When Targeting Goes Too Far: The Creepy Line in Personalization — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Creepy meter interactive */
+  .creepy-meter{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cm-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cm-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cm-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .cm-scenarios{display:flex;flex-direction:column;gap:12px;}
+  .cm-scenario{background:var(--white);border:2px solid var(--purple-mid);border-radius:16px;padding:20px;}
+  .cm-scenario-text{font-size:16px;font-weight:500;color:var(--purple-dark);margin-bottom:14px;line-height:1.5;}
+  .cm-scale{display:flex;gap:8px;flex-wrap:wrap;}
+  .cm-opt{padding:8px 16px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
+  .cm-opt:hover{background:var(--purple-pale);border-color:var(--purple);}
+  .cm-opt.selected-helpful{background:var(--green-pale);border-color:var(--green);color:var(--green);font-weight:600;}
+  .cm-opt.selected-neutral{background:#FEF3C7;border-color:#F59E0B;color:#92400E;font-weight:600;}
+  .cm-opt.selected-creepy{background:var(--red-pale);border-color:var(--red);color:var(--red);font-weight:600;}
+  .cm-fb{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.6;display:none;}
+  .cm-fb.show{display:block;animation:fadeIn .3s ease;}
+  .cm-fb.helpful{background:var(--green-pale);color:var(--green);}
+  .cm-fb.neutral{background:#FEF3C7;color:#78350F;}
+  .cm-fb.creepy{background:var(--red-pale);color:var(--red);}
+
+  /* The creepiness factors */
+  .factors{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .factor{display:flex;gap:14px;align-items:flex-start;padding:16px 20px;border:1.5px solid var(--purple-mid);border-radius:14px;background:var(--white);}
+  .factor-icon{font-size:24px;flex-shrink:0;}
+  .factor-text h3{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:4px;}
+  .factor-text p{font-size:14px;line-height:1.65;color:var(--gray-text);margin:0;}
+
+  /* Helpful vs creepy side by side */
+  .hvc{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.hvc{grid-template-columns:1fr;}}
+  .hvc-card{border-radius:18px;padding:24px;border:1.5px solid;}
+  .hvc-card.helpful{background:var(--green-pale);border-color:#6EE7B7;}
+  .hvc-card.creepy{background:var(--red-pale);border-color:#FCA5A5;}
+  .hvc-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+  .hvc-card.helpful .hvc-label{color:var(--green);}
+  .hvc-card.creepy .hvc-label{color:var(--red);}
+  .hvc-item{font-size:14px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.06);line-height:1.5;}
+  .hvc-item:last-child{border-bottom:none;}
+
+  /* Quiz */
+  .quiz{background:var(--purple);border-radius:24px;padding:40px;margin:24px 0;color:white;}
+  .quiz-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+  .quiz h2{font-family:'Fraunces',serif;font-size:24px;color:white;margin-bottom:8px;}
+  .quiz-q{font-size:17px;line-height:1.6;color:rgba(255,255,255,.85);margin-bottom:28px;}
+  .quiz-opts{display:flex;flex-direction:column;gap:12px;}
+  .quiz-btn{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:16px 20px;color:white;font-family:'DM Sans',sans-serif;font-size:15px;text-align:left;cursor:pointer;transition:all .2s;}
+  .quiz-btn:hover{background:rgba(255,255,255,.2);}
+  .quiz-btn.correct{background:rgba(74,222,128,.25);border-color:#4ade80;}
+  .quiz-btn.wrong{background:rgba(248,113,113,.2);border-color:#f87171;}
+  .quiz-fb{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,.1);border-radius:12px;font-size:15px;line-height:1.6;display:none;}
+  .quiz-fb.show{display:block;}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.quiz,.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.3 · Customer Personas & Targeting</div>
+  <h1>When Targeting Goes Too Far: The Creepy Line in Personalization</h1>
+  <p class="hero-sub">Personalization feels helpful — until it suddenly feels invasive. Understanding where that line is, why customers react the way they do, and how to stay on the right side of it is one of the most important skills in modern marketing.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>You've probably experienced this: you mention a product in conversation and see an ad for it within hours. You search something once and it follows you everywhere for weeks. A company emails you referencing something that makes you wonder how they could possibly know that. <mark>Personalization crosses the "creepy line" when it reminds customers that they're being watched — when the feeling of being understood suddenly flips into the feeling of being surveilled.</mark> That flip destroys trust, damages brand perception, and can turn loyal customers into vocal critics.</p>
+    <p>The technology to hyper-target has far outpaced social norms around what feels acceptable. Marketers who understand where that line sits — and build their strategies to stay well behind it — earn lasting trust. Those who push past it lose customers for good.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>What Makes Personalization Feel Helpful vs. Creepy</h2>
+    <div class="factors">
+      <div class="factor"><div class="factor-icon">👁️</div><div class="factor-text"><h3>Visibility of surveillance</h3><p>Customers accept that Netflix recommends based on viewing history because they understand they gave Netflix that data. But when an ad references something from a private conversation or an incognito search session, they haven't consented to that being tracked — and the "how did they know that?" reaction feels like a violation.</p></div></div>
+      <div class="factor"><div class="factor-icon">🔗</div><div class="factor-text"><h3>Cross-context data use</h3><p>Data given in one context feels wrong when used in a different context. A medical information site showing you health ads is expected. That same health data being used to target you on a fashion app you've never connected to healthcare feels deeply inappropriate — even if it's technically legal.</p></div></div>
+      <div class="factor"><div class="factor-icon">🧠</div><div class="factor-text"><h3>Inferring sensitive information</h3><p>The famous Target case: the retailer predicted a teenager was pregnant based on purchasing patterns and sent coupons to her house — before she had told her family. Inferring and then acting on sensitive personal characteristics (health, relationships, finances, sexual orientation) without explicit disclosure is a fast path to a PR crisis.</p></div></div>
+      <div class="factor"><div class="factor-icon">📢</div><div class="factor-text"><h3>Frequency and persistence</h3><p>An ad following someone for 6 weeks after a single search creates a stalker-like sensation. Even relevant ads become intrusive when they appear with overwhelming frequency or for disproportionately long after the initial signal. Most retargeting campaigns would dramatically improve by simply reducing frequency and capping campaign duration.</p></div></div>
+      <div class="factor"><div class="factor-icon">🎯</div><div class="factor-text"><h3>Demonstrating knowledge explicitly</h3><p>"We noticed you were looking at running shoes last Tuesday" explicitly demonstrates surveillance. "Gear up for your next run" implies relevance without revealing the tracking mechanism. Same intent, entirely different customer reaction. The second version feels like serendipity; the first feels like being watched.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The difference between "this brand gets me" and "this brand is stalking me" is often just one degree of explicitness. The data is the same. The trust impact is completely different.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Helpful or Creepy? Rate These Targeting Scenarios</h2>
+    <p>Rate each scenario based on how you think customers would likely experience it.</p>
+    <div class="creepy-meter">
+      <div class="cm-label">🌡️ Creepiness Calibrator</div>
+      <div class="cm-title">Where Does Each Scenario Land?</div>
+      <div class="cm-sub">Select your rating — then see the marketing analysis.</div>
+      <div class="cm-scenarios">
+        <div class="cm-scenario" id="sc1">
+          <div class="cm-scenario-text">Netflix recommends a show by saying "Because you watched Breaking Bad, you might love Ozark."</div>
+          <div class="cm-scale">
+            <button class="cm-opt" onclick="rateScenario('sc1','helpful',this)">✅ Helpful</button>
+            <button class="cm-opt" onclick="rateScenario('sc1','neutral',this)">😐 Neutral</button>
+            <button class="cm-opt" onclick="rateScenario('sc1','creepy',this)">😰 Creepy</button>
+          </div>
+          <div class="cm-fb" id="sc1-fb"></div>
+        </div>
+        <div class="cm-scenario" id="sc2">
+          <div class="cm-scenario-text">A shoe retailer shows you an Instagram ad that says: "You left these in your cart on Tuesday — they're almost sold out."</div>
+          <div class="cm-scale">
+            <button class="cm-opt" onclick="rateScenario('sc2','neutral',this)">✅ Helpful</button>
+            <button class="cm-opt" onclick="rateScenario('sc2','neutral',this)">😐 Neutral</button>
+            <button class="cm-opt" onclick="rateScenario('sc2','neutral',this)">😰 Creepy</button>
+          </div>
+          <div class="cm-fb" id="sc2-fb"></div>
+        </div>
+        <div class="cm-scenario" id="sc3">
+          <div class="cm-scenario-text">A pharmacy sends you a coupon for prenatal vitamins without you having searched for them — inferred from your recent purchase history of certain supplements and lifestyle products.</div>
+          <div class="cm-scale">
+            <button class="cm-opt" onclick="rateScenario('sc3','creepy',this)">✅ Helpful</button>
+            <button class="cm-opt" onclick="rateScenario('sc3','creepy',this)">😐 Neutral</button>
+            <button class="cm-opt" onclick="rateScenario('sc3','creepy',this)">😰 Creepy</button>
+          </div>
+          <div class="cm-fb" id="sc3-fb"></div>
+        </div>
+        <div class="cm-scenario" id="sc4">
+          <div class="cm-scenario-text">Spotify plays you a "Monday Morning Commute" playlist without you asking — based on your time-of-day listening patterns over the past month.</div>
+          <div class="cm-scale">
+            <button class="cm-opt" onclick="rateScenario('sc4','helpful',this)">✅ Helpful</button>
+            <button class="cm-opt" onclick="rateScenario('sc4','neutral',this)">😐 Neutral</button>
+            <button class="cm-opt" onclick="rateScenario('sc4','creepy',this)">😰 Creepy</button>
+          </div>
+          <div class="cm-fb" id="sc4-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Same Targeting Data — Two Very Different Executions</h2>
+    <div class="hvc">
+      <div class="hvc-card helpful">
+        <div class="hvc-label">✅ Personalization Done Right</div>
+        <div class="hvc-item">Shows relevant products without revealing tracking method</div>
+        <div class="hvc-item">Feels like serendipity, not surveillance</div>
+        <div class="hvc-item">Uses data in the context where it was collected</div>
+        <div class="hvc-item">Respects frequency limits and campaign duration</div>
+        <div class="hvc-item">Avoids inferring or acting on sensitive attributes</div>
+        <div class="hvc-item">Gives users control (easy opt-out, clear explanation)</div>
+      </div>
+      <div class="hvc-card creepy">
+        <div class="hvc-label">❌ Personalization Gone Wrong</div>
+        <div class="hvc-item">Explicitly references surveillance ("you searched for...")</div>
+        <div class="hvc-item">Uses data from one context in unrelated contexts</div>
+        <div class="hvc-item">Infers and acts on sensitive personal characteristics</div>
+        <div class="hvc-item">Retargets excessively — same ad for weeks</div>
+        <div class="hvc-item">No visible opt-out or control mechanism</div>
+        <div class="hvc-item">Combines data in ways users never anticipated or consented to</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="quiz">
+      <div class="quiz-label">🎯 Knowledge Check</div>
+      <h2>Quick Question</h2>
+      <p class="quiz-q">A dating app uses behavioral signals from its platform to infer users' sexual orientation, then sells this data to advertisers who target LGBTQ+-identified users with specific product ads. What's the core problem with this?</p>
+      <div class="quiz-opts">
+        <button class="quiz-btn" onclick="answer(this,false)">A. The targeting is too narrow to be effective at scale</button>
+        <button class="quiz-btn" onclick="answer(this,true)">B. It involves inferring and sharing sensitive personal identity data without explicit consent, across contexts users never anticipated, with potential for serious real-world harm</button>
+        <button class="quiz-btn" onclick="answer(this,false)">C. LGBTQ+ consumers are a valuable market segment, so the targeting is actually good marketing</button>
+        <button class="quiz-btn" onclick="answer(this,false)">D. The problem is that dating apps can't legally share user data</button>
+      </div>
+      <div class="quiz-fb" id="qfb"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">⚖️</div>
+      <div>
+        <h3>The Business Case for Ethical Personalization</h3>
+        <p>Staying on the right side of the creepy line isn't just about being ethical — it's good business. Research consistently shows that consumers who feel a brand respects their privacy have higher lifetime value, lower churn, and generate more referrals than those who feel surveilled. The short-term conversion boost from hyper-targeting is real; the long-term trust cost is larger. The most durable marketing strategies are ones that earn personalization rights through transparency, value exchange, and demonstrated respect for customer data — not those that exploit every technical capability available.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Personalization crosses the "creepy line" when it reminds customers they're being watched — when the feeling of being understood flips into the feeling of being surveilled. This destroys trust and damages brand perception.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Five factors that push personalization into creepy territory: visible surveillance, cross-context data use, inferring sensitive characteristics, excessive frequency/persistence, and explicitly demonstrating knowledge of tracked behavior.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The same data can be used in ways that feel like helpful serendipity or invasive surveillance — the difference is often execution: showing relevant content without revealing the tracking mechanism vs. explicitly naming what was tracked.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Ethical personalization is also better business: customers who feel respected have higher lifetime value, lower churn, and more referrals than those who feel surveilled. The long-term trust cost of crossing the creepy line exceeds any short-term conversion gains.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const scenarioFeedback={
+    sc1:{helpful:'✅ Helpful — and most people agree. Netflix is transparent about the signal ("because you watched"), uses data you consciously gave them in the context you gave it, and the result feels genuinely useful. This is the gold standard of personalization done right.',neutral:'Most customers find this helpful, not just neutral. Netflix names the signal explicitly ("because you watched") and it still feels fine — because you gave them that data consciously and the context matches.',creepy:'Most customers actually find this helpful. Netflix is transparent about why they\'re recommending it, uses data you willingly provided in that exact context, and the result is genuinely useful. Transparency makes surveillance feel like service.'},
+    sc2:{helpful:'Many customers find this mildly creepy, not just helpful. "You left these in your cart on Tuesday" explicitly names the surveillance — most customers would prefer "Complete your order" or "These are almost sold out" without the specific day reference.',neutral:'You\'re in the middle — which is where most people land. The cart abandonment is expected. Naming the specific day ("Tuesday") is what pushes some into creepy territory. The same targeting without that detail would feel much more neutral.',creepy:'You\'re right that some find this creepy — particularly the "on Tuesday" detail. Same ad without the day reference ("Still thinking about these?") would feel much more comfortable. The data is the same; the explicitness of the reference is what changes the reaction.'},
+    sc3:{helpful:'This is widely considered deeply creepy — regardless of framing. Inferring a major life event (pregnancy) from purchase patterns and sending targeted coupons without any explicit signal from the customer crosses a clear ethical line. This is exactly what happened to Target, which resulted in a major public controversy.',neutral:'Most people would find this clearly creepy. Inferring and acting on sensitive health or life events from indirect behavioral data — without any explicit customer signal — is one of the most criticized forms of personalization. The reaction is compounded when the inference is about something as personal as reproductive health.',creepy:'✅ Correct — this is the creepiest scenario in the list. This is essentially the Target pregnancy prediction controversy. Inferring sensitive health or life events from behavioral data and acting on them without explicit consent is a serious ethical violation — and a significant legal risk. It\'s also demonstrably harmful when the inference is wrong.'},
+    sc4:{helpful:'✅ Most customers find this delightful, not creepy. Spotify surfaces useful playlists based on time-of-day patterns — but the mechanism feels intuitive ("of course they know I commute Monday mornings"), it doesn\'t reference specific surveillance, and the result is genuinely helpful. Context-appropriate, transparent-feeling personalization.',neutral:'Reasonable. This scenario sits on the friendlier side of personalization for most users — Spotify isn\'t naming exactly which Monday they tracked, just responding helpfully to a pattern. The result feels more like a smart assistant than a surveillance system.',creepy:'This is actually one of the more well-received personalization examples. The key: Spotify doesn\'t say "We noticed you play music every Monday at 8:12am on your commute." They just surface a playlist that fits your pattern. The inference is the same; the invisibility of the tracking mechanism is what keeps it feeling helpful.'}
+  };
+
+  const scenarioDone={sc1:false,sc2:false,sc3:false,sc4:false};
+  function rateScenario(id,rating,btn){
+    if(scenarioDone[id])return;scenarioDone[id]=true;
+    document.getElementById(id).querySelectorAll('.cm-opt').forEach(b=>b.style.pointerEvents='none');
+    btn.classList.add(`selected-${rating}`);
+    const fb=document.getElementById(`${id}-fb`);
+    fb.innerHTML=scenarioFeedback[id][rating];
+    fb.className=`cm-fb show ${rating}`;
+  }
+
+  let done=false;
+  function answer(btn,correct){
+    if(done)return;done=true;
+    document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');
+    const f=document.getElementById('qfb');
+    if(correct){btn.classList.add('correct');f.innerHTML='✅ <strong>Correct.</strong> This scenario involves three compounding violations: inferring sensitive personal identity data from behavioral signals (without explicit disclosure), sharing that inferred data with third parties in a different context than where it was collected, and creating potential real-world harm — in some countries and contexts, exposure of sexual orientation can result in discrimination, violence, or legal consequences. This is exactly why data privacy laws like GDPR specifically protect inferred sensitive attributes, not just explicitly stated ones. The technical capability to do this exists; the ethical and often legal permission does not.';}
+    else{btn.classList.add('wrong');document.querySelectorAll('.quiz-btn')[1].classList.add('correct');f.innerHTML='❌ Not the right framing. The core issue isn\'t legality or targeting efficiency — it\'s that inferring and sharing sensitive identity characteristics without explicit consent represents a serious ethical violation with potential for real-world harm. Sexual orientation is a protected characteristic in many jurisdictions, and exposure without consent can lead to discrimination or worse. Option B captures all of this: sensitive data, lack of consent, cross-context use, and potential harm.';}
+    f.classList.add('show');
+  }
+</script>
+</body>
+</html>

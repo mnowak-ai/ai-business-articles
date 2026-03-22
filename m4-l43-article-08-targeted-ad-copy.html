@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Write Targeted Ad Copy for Different Personas — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  /* Copy variants display */
+  .copy-variants{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .cv-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .cv-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cv-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .cv-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .cv-btn{padding:10px 20px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all .2s;}
+  .cv-btn:hover,.cv-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .cv-panel{display:none;}
+  .cv-panel.active{display:block;animation:fadeIn .3s ease;}
+  .cv-persona-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .cv-persona-desc{font-size:13px;color:var(--gray-muted);margin-bottom:16px;}
+  .cv-ad{background:var(--white);border:2px solid var(--purple-mid);border-radius:14px;padding:20px;margin-bottom:12px;}
+  .cv-ad-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:8px;}
+  .cv-headline{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .cv-body{font-size:14px;line-height:1.65;color:var(--gray-text);margin-bottom:10px;}
+  .cv-cta{display:inline-block;background:var(--purple);color:white;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;}
+  .cv-why{background:var(--purple-pale);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--purple-dark);margin-top:8px;}
+  /* Framework */
+  .framework{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .fw-item{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;}
+  .fw-letter{font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:var(--purple);min-width:28px;}
+  .fw-content h3{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:3px;}
+  .fw-content p{font-size:14px;line-height:1.6;color:var(--gray-text);margin:0;}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.3 · Customer Personas & Targeting</div>
+  <h1>How to Write Targeted Ad Copy for Different Personas</h1>
+  <p class="hero-sub">The same product, four completely different ads — each speaking directly to a different person's specific goals, fears, and language. This is the craft of persona-targeted copywriting.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Generic ad copy tries to speak to everyone — which means it resonates with almost no one. <mark>Persona-targeted copy identifies the specific pain point, goal, or emotional trigger most relevant to each persona and leads with that — making every ad feel like it was written specifically for the person seeing it.</mark> This is how the same product can have radically different, highly effective ads running simultaneously for different audience segments.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The PAIN Framework for Persona Copy</h2>
+    <div class="framework">
+      <div class="fw-item"><div class="fw-letter">P</div><div class="fw-content"><h3>Pain — Name their specific frustration</h3><p>Open with the exact problem this persona experiences. Not a generic problem — the specific, relatable frustration they'd recognize immediately. "Still building reports manually?" hits a marketing analyst differently than a generic "save time."</p></div></div>
+      <div class="fw-item"><div class="fw-letter">A</div><div class="fw-content"><h3>Amplify — Make the cost real</h3><p>Briefly escalate what this problem is costing them — in time, money, career impact, or stress. "6 hours every Friday, just on data that's already a week old." The specific number makes the cost concrete and personal.</p></div></div>
+      <div class="fw-item"><div class="fw-letter">I</div><div class="fw-content"><h3>Ideal — Paint the after-state</h3><p>Describe what life looks like without the problem — in terms of what matters to THIS persona specifically. For a career-focused persona: "Reports that make your CEO nod." For a time-pressed persona: "Your Friday afternoons back."</p></div></div>
+      <div class="fw-item"><div class="fw-letter">N</div><div class="fw-content"><h3>Next — One clear action</h3><p>A single, low-friction next step matched to where they are in the buyer journey. Cold audience? "See how it works." Warm? "Start your free trial." Hot? "Get set up today — takes 10 minutes."</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The best ad copy doesn't feel like an ad. It feels like someone read your mind, wrote down the thing you've been unable to articulate, and offered a way out. That requires knowing the person — deeply.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Same Product, Four Persona Ads — Compare Them</h2>
+    <p>A project management SaaS tool. Four distinct personas. Four completely different ads. Select each persona to see how the messaging shifts.</p>
+    <div class="copy-variants">
+      <div class="cv-label">✍️ Ad Copy Explorer</div>
+      <div class="cv-title">One Product, Four Personas</div>
+      <div class="cv-sub">See how copy shifts when written for different people's specific goals and frustrations.</div>
+      <div class="cv-nav">
+        <button class="cv-btn active" onclick="showPersona('marketing',this)">📊 Marketing Manager</button>
+        <button class="cv-btn" onclick="showPersona('founder',this)">🚀 Startup Founder</button>
+        <button class="cv-btn" onclick="showPersona('agency',this)">🎨 Agency PM</button>
+        <button class="cv-btn" onclick="showPersona('remote',this)">🌍 Remote Team Lead</button>
+      </div>
+      <div id="cvDisplay"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>How AI Generates Persona-Targeted Copy at Scale</h3>
+        <p>With four personas and five ad formats (headline, short body, long body, email subject, social caption), a single campaign requires 20 pieces of unique copy — before A/B testing. AI can generate all 20 variations in minutes rather than days. The human role shifts from writing all copy to providing the persona brief and editing AI output for authenticity, specificity, and brand voice. This is one of the highest-ROI uses of AI in marketing: massive copy volume at speed, with human quality control ensuring every piece genuinely resonates.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Generic copy tries to speak to everyone — persona copy speaks directly to one person's specific pain, goal, and language. Specificity is what makes copy feel relevant rather than like an ad.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The PAIN framework — Pain, Amplify, Ideal, Next — gives a structured approach to writing copy that names a frustration, makes the cost real, paints the solution's benefit, and provides a clear next step.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The same product can have radically different, simultaneously running ads for different personas — each using different pain points, language, social proof, and CTAs relevant to that specific audience.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI generates persona-targeted copy variants at scale — turning a one-week manual copywriting project into a same-day task, with humans providing the persona briefs and quality-checking the output.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const personas={
+    marketing:{name:'Marketing Manager (Maya, 32)',desc:'Mid-size company, needs to prove ROI to her CEO, spends too much time on manual reporting',ads:[{label:'LinkedIn Ad',headline:'Stop Building Reports. Start Showing Results.',body:'If you\'re spending Friday afternoons pulling together data that\'s already a week old, there\'s a better way. Marketing managers on [Product] cut reporting time by 67% — and spend that time on campaigns their CEO actually notices.',cta:'See the Dashboard',why:'Pain-first hook names her specific Friday frustration. Outcome-framed (CEO notices) speaks to her career goal, not just efficiency.'}]},
+    founder:{name:'Startup Founder (James, 38)',desc:'8-person company, wears all hats, wants systems that run without him, no time for complex tools',ads:[{label:'Facebook/Meta Ad',headline:'Run Your Business, Not Your Tools.',body:'When you\'re the CEO, head of sales, and unofficial IT department, you don\'t have time to onboard a complicated platform. [Product] sets up in 10 minutes, runs without training, and gives your team one place instead of six.',cta:'Start Free — No Setup Call Required',why:'Leads with his core constraint (time). "No setup call required" directly addresses his fear of long enterprise sales processes. "10 minutes" makes the commitment feel manageable.'}]},
+    agency:{name:'Agency Project Manager (Sofia, 27)',desc:'Manages 8–12 client projects simultaneously, needs visibility across accounts, hates context-switching',ads:[{label:'Google Search Ad',headline:'Manage 10 Client Projects Without Losing Your Mind',body:'When you\'re juggling client timelines, approvals, and revisions across 10 accounts, losing track isn\'t an option. [Product] gives you one dashboard for every client, every deadline, every status — without switching between 6 tabs.',cta:'See Multi-Client View',why:'The specific number "10" mirrors her real world. "Without losing your mind" is the emotional truth agencies never say in polite company — but everyone thinks. Speaks her language.'}]},
+    remote:{name:'Remote Team Lead (David, 34)',desc:'Leads a 12-person distributed team across 4 time zones, alignment and async communication is the constant challenge',ads:[{label:'LinkedIn Ad',headline:'When Your Team Is in 4 Time Zones, Alignment Is the Job.',body:'Async work means everyone has a different "version" of what\'s happening — until someone asks in a meeting and it\'s embarrassing. [Product] gives distributed teams a single source of truth, so morning standups feel optional, not mandatory.',cta:'See How Remote Teams Use It',why:'Opens with his exact reality (4 time zones). "Version of what\'s happening" is specific and painfully relatable. "Standups feel optional" speaks to a frustration common in remote-first culture.'}]}
+  };
+
+  function showPersona(key,btn){
+    document.querySelectorAll('.cv-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const p=personas[key];
+    document.getElementById('cvDisplay').innerHTML=`
+      <div class="cv-persona-name">${p.name}</div>
+      <div class="cv-persona-desc">${p.desc}</div>
+      ${p.ads.map(a=>`<div class="cv-ad"><div class="cv-ad-label">${a.label}</div><div class="cv-headline">${a.headline}</div><div class="cv-body">${a.body}</div><span class="cv-cta">${a.cta}</span><div class="cv-why">🎯 Why this works: ${a.why}</div></div>`).join('')}`;
+  }
+  showPersona('marketing',document.querySelector('.cv-btn'));
+</script>
+</body>
+</html>

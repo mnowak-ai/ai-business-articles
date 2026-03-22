@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Customer Journey Map: From Stranger to Loyal Fan — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Interactive journey map */
+  .journey-map{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .jm-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .jm-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .jm-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .jm-stages{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:20px;}
+  .jm-stage-btn{padding:10px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;}
+  .jm-stage-btn:hover,.jm-stage-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .jm-detail{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:24px;}
+  .jm-stage-name{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .jm-stage-tagline{font-size:14px;color:var(--purple);font-weight:600;margin-bottom:16px;}
+  .jm-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  @media(max-width:600px){.jm-row{grid-template-columns:1fr;}}
+  .jm-col h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray-muted);margin-bottom:8px;}
+  .jm-item{font-size:14px;color:var(--gray-text);padding:5px 0;border-bottom:1px solid var(--purple-mid);line-height:1.5;}
+  .jm-item:last-child{border-bottom:none;}
+  .jm-touchpoints{margin-top:14px;padding-top:14px;border-top:1px solid var(--purple-mid);}
+  .jm-tp-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:8px;}
+  .jm-tp-tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .jm-tp-tag{padding:4px 12px;background:var(--purple-pale);color:var(--purple-dark);border-radius:100px;font-size:13px;}
+
+  /* Journey cost/benefit */
+  .journey-funnel{display:flex;flex-direction:column;gap:4px;margin:24px 0;}
+  .jf-stage{border-radius:12px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;transition:all .2s;}
+  .jf-stage:hover{transform:translateX(4px);}
+  .jf-name{font-weight:600;font-size:15px;}
+  .jf-pct{font-family:'Fraunces',serif;font-size:22px;font-weight:900;}
+  .jf-note{font-size:13px;margin-top:2px;}
+
+  /* AI at each stage */
+  .ai-stages{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .ai-stage{display:flex;gap:14px;align-items:flex-start;padding:16px 20px;border:1.5px solid var(--purple-mid);border-radius:14px;background:var(--white);}
+  .ai-stage-dot{width:10px;height:10px;background:var(--purple);border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .ai-stage-text h3{font-size:15px;font-weight:600;color:var(--purple-dark);margin-bottom:4px;}
+  .ai-stage-text p{font-size:14px;line-height:1.65;color:var(--gray-text);margin:0;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.3 · Customer Personas & Targeting</div>
+  <h1>The Customer Journey Map: From Stranger to Loyal Fan</h1>
+  <p class="hero-sub">A customer journey map visualizes every step a customer takes from first discovering your brand to becoming a loyal advocate — and identifies where your marketing can make the biggest difference at each stage.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>Customers don't go from "never heard of you" to "buying from you again and again" in a single step. <mark>They move through a journey — a series of stages from awareness through consideration, purchase, retention, and eventually advocacy. A customer journey map makes this invisible process visible so marketers can design the right experience at each stage instead of blasting the same message to everyone.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Explore the Journey — Stage by Stage</h2>
+    <p>Click each stage to see what the customer is thinking and feeling, what they need, and which marketing channels are most effective there.</p>
+    <div class="journey-map">
+      <div class="jm-label">🗺️ Customer Journey Explorer</div>
+      <div class="jm-title">5 Stages, One Complete Journey</div>
+      <div class="jm-sub">Select a stage to explore what's happening — and what marketing should do about it.</div>
+      <div class="jm-stages">
+        <button class="jm-stage-btn active" onclick="showStage('awareness',this)">1. Awareness</button>
+        <button class="jm-stage-btn" onclick="showStage('consideration',this)">2. Consideration</button>
+        <button class="jm-stage-btn" onclick="showStage('purchase',this)">3. Purchase</button>
+        <button class="jm-stage-btn" onclick="showStage('retention',this)">4. Retention</button>
+        <button class="jm-stage-btn" onclick="showStage('advocacy',this)">5. Advocacy</button>
+      </div>
+      <div class="jm-detail" id="jmDetail"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>Most brands pour money into awareness and purchase — and almost nothing into retention and advocacy. The irony: a customer who becomes an advocate is worth exponentially more than one who buys once and leaves.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Funnel Reality: Where Customers Drop Off</h2>
+    <p>This is a realistic view of what percentage of people progress through each stage for a typical e-commerce or SaaS brand:</p>
+    <div class="journey-funnel">
+      <div class="jf-stage" style="background:#EDE9FE;width:100%"><div><div class="jf-name" style="color:#4C1D95">Awareness — People who hear about you</div><div class="jf-note" style="color:#6D28D9">Top of funnel: brand, content, ads, social</div></div><div class="jf-pct" style="color:#7C3AED">100%</div></div>
+      <div class="jf-stage" style="background:#DDD6FE;width:85%"><div><div class="jf-name" style="color:#4C1D95">Interest — Engage with content or visit site</div><div class="jf-note" style="color:#6D28D9">60–80% of aware audience takes next step</div></div><div class="jf-pct" style="color:#7C3AED">70%</div></div>
+      <div class="jf-stage" style="background:#C4B5FD;width:65%"><div><div class="jf-name" style="color:#4C1D95">Consideration — Actively compare options</div><div class="jf-note" style="color:#4C1D95">Many drop off to competitors or delay</div></div><div class="jf-pct" style="color:#4C1D95">30%</div></div>
+      <div class="jf-stage" style="background:var(--purple);width:40%"><div><div class="jf-name" style="color:white">Purchase — Complete a transaction</div><div class="jf-note" style="color:rgba(255,255,255,.75)">Average e-commerce conversion: 1–4% of visitors</div></div><div class="jf-pct" style="color:white">10%</div></div>
+      <div class="jf-stage" style="background:var(--purple-dark);width:25%"><div><div class="jf-name" style="color:white">Retention — Buy again</div><div class="jf-note" style="color:rgba(255,255,255,.75)">Loyal customers: 5–7× cheaper to keep than replace</div></div><div class="jf-pct" style="color:white">5%</div></div>
+      <div class="jf-stage" style="background:#1E1B4B;width:12%"><div><div class="jf-name" style="color:white">Advocacy — Refer others</div><div class="jf-note" style="color:rgba(255,255,255,.6)">Highest-value customers — referred buyers convert 4× better</div></div><div class="jf-pct" style="color:white">2%</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>How AI Improves Every Stage of the Journey</h2>
+    <div class="ai-stages">
+      <div class="ai-stage"><div class="ai-stage-dot"></div><div class="ai-stage-text"><h3>Awareness: Smarter audience targeting</h3><p>AI lookalike audiences find new prospects who share characteristics with your best existing customers — reaching cold audiences most likely to convert, not just anyone who matches broad demographics.</p></div></div>
+      <div class="ai-stage"><div class="ai-stage-dot"></div><div class="ai-stage-text"><h3>Consideration: Personalized content surfacing</h3><p>AI shows each visitor the content, testimonials, and product comparisons most relevant to their profile — someone from a tech company sees software integration case studies; a healthcare visitor sees HIPAA compliance documentation.</p></div></div>
+      <div class="ai-stage"><div class="ai-stage-dot"></div><div class="ai-stage-text"><h3>Purchase: Checkout optimization & recovery</h3><p>AI identifies cart abandonment patterns and triggers personalized recovery messages at the optimal time — not a generic email 24 hours later, but the right message for this customer at the moment they're most likely to return.</p></div></div>
+      <div class="ai-stage"><div class="ai-stage-dot"></div><div class="ai-stage-text"><h3>Retention: Predictive churn prevention</h3><p>AI spots the behavioral signals that precede churn — decreased login frequency, skipped renewals, support tickets — and triggers proactive outreach before the customer decides to leave.</p></div></div>
+      <div class="ai-stage"><div class="ai-stage-dot"></div><div class="ai-stage-text"><h3>Advocacy: Optimal review & referral timing</h3><p>AI identifies the exact moment each customer is most satisfied (peak engagement, positive support interaction, milestone achievement) and triggers review requests or referral offers at that precise moment — maximizing conversion.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h3>The Most Underinvested Stage: Retention</h3>
+        <p>Most marketing budgets are heavily weighted toward awareness (finding new customers) and almost nothing toward retention (keeping existing ones). But the math consistently favors retention: existing customers spend 67% more per order than new customers, cost 5–7× less to serve, and refer an average of 3 new customers over their lifetime. AI-powered retention marketing — churn prediction, personalized re-engagement, loyalty programs — often delivers the highest ROI of any marketing investment, yet remains one of the most underused tools in many businesses.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The customer journey has five stages — Awareness, Consideration, Purchase, Retention, and Advocacy — each requiring different marketing approaches, messages, and channels.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The funnel shrinks dramatically at each stage — most of the people who hear about you never buy, and most who buy once don't become loyal. Each drop-off point is an optimization opportunity.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Retention and advocacy are the most underinvested stages — but existing customers spend more, cost less to serve, and generate referrals, making them the highest-ROI marketing investment.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI improves every stage of the journey — from smarter lookalike audiences at awareness to predictive churn prevention at retention to optimal review timing for advocacy.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const stages={
+    awareness:{name:'Stage 1: Awareness',tagline:'"I\'ve never heard of this brand before"',thoughts:['What is this?','Is this relevant to me?','Can I trust this source?'],needs:['Clear, simple explanation of what you do','Immediate relevance to their situation','No pressure — just information'],goals:['Remember the brand name','Associate it with a relevant problem or solution','Be curious enough to learn more'],touchpoints:['Social media ads','Organic social content','SEO / Google search','Influencer mentions','Word of mouth','Podcast sponsorships']},
+    consideration:{name:'Stage 2: Consideration',tagline:'"I\'m researching my options"',thoughts:['How does this compare to alternatives?','Is the price fair?','Can I trust these reviews?'],needs:['Comparison information','Social proof (reviews, case studies)','Clear differentiation from competitors'],goals:['Understand if this solves their specific problem','Feel confident enough to try or buy','Overcome price and trust objections'],touchpoints:['Website & product pages','Customer reviews (G2, Trustpilot, Amazon)','YouTube reviews','Email sequences','Retargeting ads','Demo or free trial']},
+    purchase:{name:'Stage 3: Purchase',tagline:'"I\'m ready to buy — make it easy"',thoughts:['Is checkout easy?','Can I get a refund if I don\'t like it?','Am I getting the best deal?'],needs:['Frictionless checkout experience','Trust signals (security, guarantee)','No last-minute surprises (shipping cost, etc.)'],goals:['Complete the purchase without second-guessing','Feel confident they made the right choice','Know exactly what happens next'],touchpoints:['Checkout page','Order confirmation email','Cart abandonment recovery email','Live chat support','Payment options (BNPL, PayPal)']},
+    retention:{name:'Stage 4: Retention',tagline:'"I bought — was it worth it?"',thoughts:['Did I make the right decision?','Is this living up to my expectations?','Should I buy again?'],needs:['Onboarding support and guidance','Confirmation they made a good choice','Value beyond the initial purchase'],goals:['Use the product/service successfully','Build a habit or routine around it','Feel like a valued customer, not just a transaction'],touchpoints:['Onboarding emails','In-app guidance / tooltips','Loyalty programs','Customer success check-ins','Personalized recommendations','Re-engagement campaigns']},
+    advocacy:{name:'Stage 5: Advocacy',tagline:'"I love this — I want others to know"',thoughts:['How do I share this with others?','Will a referral benefit me too?','Is this brand worth staking my reputation on?'],needs:['Easy ways to share and refer','Recognition for their loyalty','A brand identity they\'re proud to be associated with'],goals:['Tell friends and family about the brand','Leave a review to help others','Become a recognized part of the brand community'],touchpoints:['Referral programs','Review request emails','Social sharing features','Ambassador / affiliate programs','Community / user groups','VIP loyalty tiers']}
+  };
+
+  function showStage(key,btn){
+    document.querySelectorAll('.jm-stage-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const s=stages[key];
+    document.getElementById('jmDetail').innerHTML=`
+      <div class="jm-stage-name">${s.name}</div>
+      <div class="jm-stage-tagline">${s.tagline}</div>
+      <div class="jm-row">
+        <div class="jm-col"><h4>💭 What They're Thinking</h4>${s.thoughts.map(t=>`<div class="jm-item">${t}</div>`).join('')}</div>
+        <div class="jm-col"><h4>🎯 What They Need</h4>${s.needs.map(t=>`<div class="jm-item">${t}</div>`).join('')}</div>
+        <div class="jm-col"><h4>✅ Marketing Goals</h4>${s.goals.map(t=>`<div class="jm-item">${t}</div>`).join('')}</div>
+      </div>
+      <div class="jm-touchpoints">
+        <div class="jm-tp-label">📍 Key Touchpoints at This Stage</div>
+        <div class="jm-tp-tags">${s.touchpoints.map(t=>`<span class="jm-tp-tag">${t}</span>`).join('')}</div>
+      </div>`;
+  }
+  showStage('awareness',document.querySelector('.jm-stage-btn'));
+</script>
+</body>
+</html>

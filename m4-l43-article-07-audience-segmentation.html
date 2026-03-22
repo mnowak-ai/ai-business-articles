@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audience Segmentation: Reaching the Right People — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+  .seg-types{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.seg-types{grid-template-columns:1fr;}}
+  .st{border:1.5px solid var(--purple-mid);border-radius:18px;padding:22px;}
+  .st-icon{font-size:30px;margin-bottom:10px;}
+  .st-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--purple-dark);margin-bottom:8px;}
+  .st-desc{font-size:14px;line-height:1.65;color:var(--gray-text);margin-bottom:10px;}
+  .st-example{background:var(--purple-pale);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--purple-dark);}
+  /* Segment builder */
+  .seg-builder{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sb2-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sb2-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sb2-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .sb2-selects{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;}
+  @media(max-width:580px){.sb2-selects{grid-template-columns:1fr;}}
+  .sb2-group{display:flex;flex-direction:column;gap:6px;}
+  .sb2-group label{font-size:13px;font-weight:600;color:var(--purple-dark);}
+  .sb2-select{border:1.5px solid var(--purple-mid);border-radius:10px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;width:100%;outline:none;background:var(--white);}
+  .sb2-btn{background:var(--purple);color:white;border:none;border-radius:12px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+  .sb2-output{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:16px;padding:22px;margin-top:16px;display:none;}
+  .sb2-output.show{display:block;animation:fadeIn .4s ease;}
+  .sb2-segment-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sb2-size{font-size:14px;color:var(--purple);font-weight:600;margin-bottom:12px;}
+  .sb2-rows{display:flex;flex-direction:column;gap:8px;}
+  .sb2-row{display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid var(--purple-mid);}
+  .sb2-row:last-child{border-bottom:none;}
+  .sb2-key{color:var(--gray-muted);}
+  .sb2-val{font-weight:600;color:var(--purple-dark);}
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.3 · Customer Personas & Targeting</div>
+  <h1>Audience Segmentation: Reaching the Right People</h1>
+  <p class="hero-sub">Knowing your personas is one thing. Reaching the actual people who match them — at the right time, on the right platform, with the right message — is the execution challenge that segmentation solves.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+  <div class="section fade-in">
+    <p>You've built your persona profiles. Now what? A persona is useless until it's connected to a targeting strategy — a specific plan for how to actually reach the people who match that profile. <mark>Audience segmentation in marketing means dividing your targetable audience into groups with shared characteristics so you can deliver the most relevant message to each group, on the platform where they're most reachable, at the moment they're most receptive.</mark></p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>The Four Ways to Reach Your Audience</h2>
+    <div class="seg-types">
+      <div class="st"><div class="st-icon">🎯</div><div class="st-name">First-Party Audiences</div><div class="st-desc">People you already have a relationship with — your email list, app users, past customers. The highest-quality audience because they've already opted in to hear from you.</div><div class="st-example">Upload your email list to Facebook to show ads only to existing customers. Use purchase history to trigger personalized reorder emails.</div></div>
+      <div class="st"><div class="st-icon">🪞</div><div class="st-name">Lookalike Audiences</div><div class="st-desc">AI finds new people who share characteristics with your best existing customers. You feed your best customer list; the platform finds millions who look behaviorally similar.</div><div class="st-example">Upload your top 1,000 customers → Meta builds a lookalike audience of 2M people who match their behavioral patterns. Dramatically improves cold-audience conversion rates.</div></div>
+      <div class="st"><div class="st-icon">🎯</div><div class="st-name">Interest & Behavioral Targeting</div><div class="st-desc">Platform-level targeting based on users' demonstrated interests, pages followed, content engaged with, and purchase behaviors tracked by the platform.</div><div class="st-example">Target people on Meta who follow yoga accounts, have bought fitness equipment online in the last 30 days, and live within 10 miles of your studio.</div></div>
+      <div class="st"><div class="st-icon">🔄</div><div class="st-name">Retargeting / Remarketing</div><div class="st-desc">Re-reaching people who have already shown interest — visited your site, viewed a product, started a checkout, or engaged with your content without converting.</div><div class="st-example">Someone who browsed your pricing page but didn't sign up sees a "Try free for 30 days — no credit card" ad on every platform they visit for the next 2 weeks.</div></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The old marketing model: cast a wide net and hope some fish swim into it. The new model: know exactly where the fish are, what they're hungry for, and show up there with exactly what they want.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Build an Audience Segment</h2>
+    <p>Configure targeting parameters and see what a real audience segment would look like — with estimated size, recommended channels, and messaging approach.</p>
+    <div class="seg-builder">
+      <div class="sb2-label">🎯 Segment Builder</div>
+      <div class="sb2-title">Design Your Target Audience</div>
+      <div class="sb2-sub">Configure your targeting and build a segment definition.</div>
+      <div class="sb2-selects">
+        <div class="sb2-group"><label>Product Type</label>
+          <select class="sb2-select" id="s-product">
+            <option value="saas">SaaS / Software</option>
+            <option value="ecom">E-commerce / Retail</option>
+            <option value="fitness">Fitness / Wellness</option>
+            <option value="food">Food & Beverage</option>
+          </select>
+        </div>
+        <div class="sb2-group"><label>Audience Stage</label>
+          <select class="sb2-select" id="s-stage">
+            <option value="cold">Cold (Never heard of you)</option>
+            <option value="warm">Warm (Site visitor / follower)</option>
+            <option value="hot">Hot (Added to cart / trialed)</option>
+            <option value="customer">Existing Customer</option>
+          </select>
+        </div>
+        <div class="sb2-group"><label>Primary Goal</label>
+          <select class="sb2-select" id="s-goal">
+            <option value="awareness">Build Awareness</option>
+            <option value="trial">Drive Trial / Sign-Up</option>
+            <option value="purchase">Drive Purchase</option>
+            <option value="retention">Retain / Upsell</option>
+          </select>
+        </div>
+      </div>
+      <button class="sb2-btn" onclick="buildSegment()">🎯 Build Segment</button>
+      <div class="sb2-output" id="sb2Output"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🤖</div>
+      <div>
+        <h3>AI and Audience Segmentation: The Key Advantages</h3>
+        <p>AI doesn't just execute audience segmentation — it continuously improves it. As campaigns run, AI learns which customer characteristics predict conversion for your specific product, automatically adjusting which signals are weighted most heavily in audience definitions. A human might set up targeting based on assumed characteristics; AI discovers which characteristics actually predict purchase in your data. Over time, AI-managed audiences consistently outperform manually-built ones because they're optimizing toward real outcome data, not assumptions.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>There are four main ways to build targetable audiences: first-party (your own customers), lookalike (AI-found people similar to your best customers), interest/behavioral (platform-based targeting), and retargeting (re-reaching interested non-converters).</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Effective audience segmentation matches the right message to the right audience type — cold audiences need awareness content; hot audiences need conversion-focused messages; existing customers need retention and upsell communication.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Lookalike audiences are one of AI's most powerful marketing contributions — finding millions of new prospects who behaviorally match your best customers, without you having to specify every characteristic manually.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI-managed audiences continuously improve over time by learning which characteristics actually predict conversion in your specific data — outperforming static, manually-built audience definitions.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const segments={
+    saas:{cold:{awareness:{name:'Tech-Adjacent Professional Lookalike',size:'~2.4M people on LinkedIn',ch:'LinkedIn Ads, Google Display',msg:'Educational content: "How top marketing teams cut reporting time by 60%"'},trial:{name:'Active SaaS Researcher Segment',size:'~180K high-intent visitors',ch:'Google Search, LinkedIn',msg:'Direct comparison: "See how we compare to [Competitor]"'},purchase:{name:'Trial-to-Paid Conversion Segment',size:'~12K active trial users',ch:'In-app, Email',msg:''"Your trial ends in 7 days — here\'s what happens if you upgrade today"'},retention:{name:'Power User Upsell Segment',size:'~3,400 customers (heavy usage)',ch:'In-app, Email, CSM',msg:'"You\'ve hit your monthly limit 3 times — you might be ready for Pro"'}},warm:{awareness:{name:'Site Visitor Re-Engagement',size:'~45K past visitors',ch:'Retargeting (Meta, Google)',msg:'"Still figuring out [problem]? Here\'s how others solved it"'},trial:{name:'Pricing Page Visitor Segment',size:'~8,200 people',ch:'Retargeting',msg:'"You\'ve seen our pricing — have questions? Talk to a human today"'},purchase:{name:'Cart Abandoner Recovery',size:'~1,100 people',ch:'Email, Retargeting',msg:'"You were close — your 30-day trial is still waiting"'},retention:{name:'Lapsed User Re-engagement',size:'~890 inactive customers',ch:'Email, In-app',msg:'"We noticed you haven\'t logged in — here\'s what changed since your last visit"'}}},
+    ecom:{cold:{awareness:{name:'Fashion-Forward Lifestyle Audience',size:'~3.8M on Meta/Instagram',ch:'Instagram Reels, TikTok',msg:'Brand story content: behind the scenes, sustainability story'},trial:{name:'Category Interest Lookalike',size:'~920K people',ch:'Meta, Pinterest',msg:'"New arrivals — free shipping on first order"'},purchase:{name:'High-Intent Product Viewer Lookalike',size:'~340K people',ch:'Meta, Google Shopping',msg:'Product-specific ads with social proof overlay'},retention:{name:'Loyal Customer VIP Segment',size:'~8,400 customers (3+ orders)',ch:'Email, SMS',msg:'"Early access: new collection drops Thursday — just for you"'}},warm:{awareness:{name:'Brand Content Engager Segment',size:'~28K social engagers',ch:'Instagram, TikTok',msg:'UGC-style content, community stories'},trial:{name:'Wishlist Abandoner Segment',size:'~4,200 people',ch:'Email, Retargeting',msg:'"Your wishlist is waiting — and one item is almost sold out"'},purchase:{name:'Add-to-Cart Abandoner',size:'~1,800 people',ch:'Email (automated), SMS',msg:'"Still thinking? Here\'s 10% off to help you decide"'},retention:{name:'90-Day Lapsed Customer',size:'~5,600 people',ch:'Email, Retargeting',msg:'"We miss you — here\'s what\'s new + a little welcome-back treat"'}}}
+  };
+
+  function buildSegment(){
+    const p=document.getElementById('s-product').value;
+    const stage=document.getElementById('s-stage').value;
+    const goal=document.getElementById('s-goal').value;
+    const key=stage==='customer'?'warm':stage==='hot'?'warm':stage;
+    const goalKey=goal==='trial'?'trial':goal==='purchase'?'purchase':goal==='retention'?'retention':'awareness';
+    const data=segments[p]?.[key]?.[goalKey];
+    if(!data){document.getElementById('sb2Output').innerHTML='<p style="color:var(--gray-muted);font-size:14px">Configuration not yet available. Try SaaS or E-commerce.</p>';document.getElementById('sb2Output').className='sb2-output show';return;}
+    document.getElementById('sb2Output').innerHTML=`
+      <div class="sb2-segment-name">${data.name}</div>
+      <div class="sb2-size">Estimated audience: ${data.size}</div>
+      <div class="sb2-rows">
+        <div class="sb2-row"><span class="sb2-key">Best Channels</span><span class="sb2-val">${data.ch}</span></div>
+        <div class="sb2-row"><span class="sb2-key">Message Angle</span><span class="sb2-val" style="max-width:340px;text-align:right">${data.msg}</span></div>
+        <div class="sb2-row"><span class="sb2-key">Audience Type</span><span class="sb2-val">${stage==='cold'?'Lookalike / Interest':'Retargeting / First-Party'}</span></div>
+      </div>`;
+    document.getElementById('sb2Output').className='sb2-output show';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Segmentation Methods: Geographic, Demographic, Psychographic, Behavioral — AI in Business Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--purple:#7B2FBE;--purple-pale:#F3EAFF;--purple-mid:#E8D5FF;--purple-dark:#4A1580;--white:#FFFFFF;--gray-soft:#F8F7FA;--gray-text:#3D3547;--gray-muted:#8B7FA0;--accent:#C084FC;--red:#E53E3E;--red-pale:#FFF1F1;--green:#276749;--green-pale:#F0FFF4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--gray-text);overflow-x:hidden;}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;z-index:100;transition:width .1s ease;}
+  .hero{padding:80px 40px 0;max-width:860px;margin:0 auto;}
+  .lesson-tag{display:inline-flex;align-items:center;gap:8px;background:var(--purple-pale);color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;margin-bottom:32px;border:1.5px solid var(--purple-mid);}
+  .lesson-tag::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,60px);font-weight:900;line-height:1.05;color:var(--purple-dark);margin-bottom:24px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;line-height:1.7;color:var(--gray-muted);max-width:620px;}
+  .hero-divider{width:60px;height:4px;background:var(--purple);border-radius:2px;margin:32px 0;}
+  .content{max-width:860px;margin:0 auto;padding:0 40px 60px;}
+  .section{padding:32px 0 0;}
+  h2{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--purple-dark);margin-bottom:18px;line-height:1.2;}
+  p{font-size:17px;line-height:1.8;color:var(--gray-text);margin-bottom:16px;}
+  mark{background:var(--purple-mid);color:var(--purple-dark);border-radius:3px;padding:1px 4px;font-weight:500;}
+  .pull-quote{margin:20px 0;padding:28px 36px;background:var(--purple-pale);border-left:5px solid var(--purple);border-radius:0 16px 16px 0;position:relative;overflow:hidden;}
+  .pull-quote::before{content:'"';position:absolute;top:-10px;left:20px;font-family:'Fraunces',serif;font-size:100px;color:var(--purple-mid);line-height:1;pointer-events:none;}
+  .pull-quote p{font-family:'Fraunces',serif;font-size:21px;font-style:italic;font-weight:300;color:var(--purple-dark);margin:0;position:relative;z-index:1;line-height:1.55;}
+
+  /* Segment explorer tabs */
+  .seg-explorer{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .se-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .se-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:22px;}
+  .se-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .se-tab{padding:12px 22px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;}
+  .se-tab:hover,.se-tab.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .se-panel{display:none;}
+  .se-panel.active{display:block;animation:fadeIn .3s ease;}
+  .se-panel-name{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .se-panel-def{font-size:15px;color:var(--gray-muted);margin-bottom:18px;line-height:1.6;}
+  .se-vars{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+  @media(max-width:540px){.se-vars{grid-template-columns:1fr;}}
+  .se-var{background:var(--white);border:1.5px solid var(--purple-mid);border-radius:12px;padding:14px 16px;}
+  .se-var-name{font-size:13px;font-weight:700;color:var(--purple-dark);margin-bottom:4px;}
+  .se-var-ex{font-size:13px;color:var(--gray-muted);}
+  .se-use-case{background:var(--purple);border-radius:14px;padding:18px 22px;color:white;}
+  .se-use-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;}
+  .se-use-text{font-size:15px;color:rgba(255,255,255,.9);line-height:1.65;}
+
+  /* Segment identifier game */
+  .seg-game{background:var(--gray-soft);border:1.5px solid var(--purple-mid);border-radius:24px;padding:32px;margin:24px 0;}
+  .sg-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .sg-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--purple-dark);margin-bottom:6px;}
+  .sg-sub{font-size:15px;color:var(--gray-muted);margin-bottom:20px;}
+  .sg-cards{display:flex;flex-direction:column;gap:12px;}
+  .sg-card{background:var(--white);border:2px solid var(--purple-mid);border-radius:16px;padding:20px;}
+  .sg-scenario{font-size:16px;font-weight:500;color:var(--gray-text);margin-bottom:14px;line-height:1.5;}
+  .sg-opts{display:flex;gap:8px;flex-wrap:wrap;}
+  .sg-opt{padding:8px 18px;border:1.5px solid var(--purple-mid);border-radius:100px;background:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
+  .sg-opt:hover{background:var(--purple-pale);border-color:var(--purple);}
+  .sg-opt.correct{background:var(--green-pale);border-color:var(--green);color:var(--green);font-weight:600;}
+  .sg-opt.wrong{background:var(--red-pale);border-color:var(--red);color:var(--red);}
+  .sg-fb{margin-top:10px;padding:10px 14px;border-radius:10px;font-size:14px;line-height:1.6;display:none;}
+  .sg-fb.show{display:block;animation:fadeIn .3s ease;}
+  .sg-fb.c{background:var(--green-pale);color:var(--green);}
+  .sg-fb.w{background:var(--red-pale);color:var(--red);}
+
+  /* AI + segmentation */
+  .ai-seg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+  @media(max-width:540px){.ai-seg{grid-template-columns:1fr;}}
+  .as-card{border-radius:16px;padding:22px;border:1.5px solid;}
+  .as-card.before{background:var(--red-pale);border-color:#FCA5A5;}
+  .as-card.after{background:var(--green-pale);border-color:#6EE7B7;}
+  .as-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;}
+  .as-card.before .as-label{color:var(--red);}
+  .as-card.after .as-label{color:var(--green);}
+  .as-item{font-size:14px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.06);line-height:1.5;}
+  .as-item:last-child{border-bottom:none;}
+
+  .callout{background:var(--purple);border-radius:20px;padding:32px 36px;margin:24px 0;display:flex;gap:20px;align-items:flex-start;}
+  .callout-icon{font-size:32px;flex-shrink:0;}
+  .callout h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:8px;}
+  .callout p{font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.65;margin:0;}
+  .summary{background:var(--purple-pale);border-radius:24px;padding:40px;margin:24px 0 48px;}
+  .summary-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px;}
+  .summary h2{font-family:'Fraunces',serif;font-size:26px;color:var(--purple-dark);margin-bottom:20px;}
+  .summary-points{display:flex;flex-direction:column;gap:14px;}
+  .summary-point{display:flex;gap:14px;align-items:flex-start;}
+  .point-dot{width:24px;height:24px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .point-dot svg{width:12px;height:12px;}
+  .summary-point p{font-size:16px;line-height:1.65;margin:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:600px){.hero,.content{padding-left:24px;padding-right:24px;}.callout{flex-direction:column;}.summary{padding:28px 24px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="hero">
+  <div class="lesson-tag">Lesson 4.3 · Customer Personas & Targeting</div>
+  <h1>Market Segmentation Methods: Geographic, Demographic, Psychographic, Behavioral</h1>
+  <p class="hero-sub">Not every customer is the same — and trying to market the same way to everyone wastes time and money. Market segmentation is how you divide your audience into groups you can actually reach effectively.</p>
+  <div class="hero-divider"></div>
+</div>
+<div class="content">
+
+  <div class="section fade-in">
+    <p>A sneaker brand selling to 18-year-old skaters and 45-year-old executives needs completely different messages, channels, and offers — even if both groups technically "buy sneakers." <mark>Market segmentation is the practice of dividing a broad customer base into smaller groups that share meaningful characteristics — so you can tailor your marketing to each group rather than trying to say everything to everyone.</mark></p>
+    <p>There are four main segmentation methods, and the most powerful strategies combine all four. AI has made it possible to segment at a depth and scale that simply wasn't achievable before.</p>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Explore the Four Segmentation Methods</h2>
+    <div class="seg-explorer">
+      <div class="se-label">🔬 Segmentation Explorer</div>
+      <div class="se-title">Click Each Method to Learn How It Works</div>
+      <div class="se-tabs">
+        <button class="se-tab active" onclick="showSeg('geo',this)">🌍 Geographic</button>
+        <button class="se-tab" onclick="showSeg('demo',this)">👥 Demographic</button>
+        <button class="se-tab" onclick="showSeg('psycho',this)">🧠 Psychographic</button>
+        <button class="se-tab" onclick="showSeg('behav',this)">📊 Behavioral</button>
+      </div>
+      <div id="seg-display"></div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="pull-quote"><p>The shift from demographic segmentation to behavioral segmentation is one of the most important changes AI has enabled in marketing. Behavioral data doesn't ask who you are — it reveals what you actually do. And what you do is almost always more predictive than who you are on paper.</p></div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Spot the Segmentation Type</h2>
+    <p>Read each marketing scenario and identify which segmentation method is being used.</p>
+    <div class="seg-game">
+      <div class="sg-label">🎯 Identifier Game</div>
+      <div class="sg-title">Which Type of Segmentation Is This?</div>
+      <div class="sg-sub">Click the segmentation method that best describes each scenario.</div>
+      <div class="sg-cards">
+        <div class="sg-card" id="gc1">
+          <div class="sg-scenario">A hot sauce brand runs extra-spicy product ads only in states where hot sauce consumption is highest — Texas, Louisiana, and New Mexico — and milder-flavor ads everywhere else.</div>
+          <div class="sg-opts">
+            <button class="sg-opt" onclick="sgAnswer('gc1',this,true,'gc1-fb','Geographic')">Geographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc1',this,false,'gc1-fb','Geographic')">Demographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc1',this,false,'gc1-fb','Geographic')">Psychographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc1',this,false,'gc1-fb','Geographic')">Behavioral</button>
+          </div>
+          <div class="sg-fb" id="gc1-fb"></div>
+        </div>
+        <div class="sg-card" id="gc2">
+          <div class="sg-scenario">Spotify creates a "Productivity Playlist" persona — targeting users who listen to instrumental music between 9am–12pm on weekdays — and shows them ads for focus-enhancing supplements.</div>
+          <div class="sg-opts">
+            <button class="sg-opt" onclick="sgAnswer('gc2',this,false,'gc2-fb','Behavioral')">Geographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc2',this,false,'gc2-fb','Behavioral')">Demographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc2',this,false,'gc2-fb','Behavioral')">Psychographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc2',this,true,'gc2-fb','Behavioral')">Behavioral</button>
+          </div>
+          <div class="sg-fb" id="gc2-fb"></div>
+        </div>
+        <div class="sg-card" id="gc3">
+          <div class="sg-scenario">A car insurance company shows ads for family coverage plans to users aged 28–40 with children, and sports car coverage to users aged 22–30 without children.</div>
+          <div class="sg-opts">
+            <button class="sg-opt" onclick="sgAnswer('gc3',this,false,'gc3-fb','Demographic')">Geographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc3',this,true,'gc3-fb','Demographic')">Demographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc3',this,false,'gc3-fb','Demographic')">Psychographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc3',this,false,'gc3-fb','Demographic')">Behavioral</button>
+          </div>
+          <div class="sg-fb" id="gc3-fb"></div>
+        </div>
+        <div class="sg-card" id="gc4">
+          <div class="sg-scenario">A sustainable clothing brand targets customers who describe themselves as "environmentally conscious" and "minimalist" in their profile — not based on age or location, but on stated values.</div>
+          <div class="sg-opts">
+            <button class="sg-opt" onclick="sgAnswer('gc4',this,false,'gc4-fb','Psychographic')">Geographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc4',this,false,'gc4-fb','Psychographic')">Demographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc4',this,true,'gc4-fb','Psychographic')">Psychographic</button>
+            <button class="sg-opt" onclick="sgAnswer('gc4',this,false,'gc4-fb','Psychographic')">Behavioral</button>
+          </div>
+          <div class="sg-fb" id="gc4-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <h2>Traditional vs. AI-Powered Segmentation</h2>
+    <div class="ai-seg">
+      <div class="as-card before">
+        <div class="as-label">⏳ Traditional Segmentation</div>
+        <div class="as-item">5–10 broad segments maximum</div>
+        <div class="as-item">Based primarily on demographics</div>
+        <div class="as-item">Updated quarterly or annually</div>
+        <div class="as-item">Requires manual data analysis</div>
+        <div class="as-item">Static — doesn't adapt to behavior</div>
+        <div class="as-item">Same segment for everyone who fits</div>
+      </div>
+      <div class="as-card after">
+        <div class="as-label">🤖 AI-Powered Segmentation</div>
+        <div class="as-item">Hundreds of micro-segments possible</div>
+        <div class="as-item">Combines all four methods simultaneously</div>
+        <div class="as-item">Updates in real time as behavior changes</div>
+        <div class="as-item">Automatic pattern detection at scale</div>
+        <div class="as-item">Dynamic — adapts as customers evolve</div>
+        <div class="as-item">Predictive — anticipates next segment move</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="callout">
+      <div class="callout-icon">🎯</div>
+      <div>
+        <h3>The Most Powerful Combination: All Four Together</h3>
+        <p>The best marketing campaigns layer all four segmentation types. "Women aged 28–35 (demographic) in coastal cities (geographic) who value sustainability (psychographic) and have browsed eco-friendly products in the last 30 days (behavioral)" is an infinitely more precise target than any single segmentation method alone. AI makes this multi-dimensional segmentation practical at scale — something that was impossible when marketers had to do it manually.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section fade-in">
+    <div class="summary">
+      <div class="summary-label">📌 What You Just Learned</div>
+      <h2>Article Summary</h2>
+      <div class="summary-points">
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Market segmentation divides a broad audience into groups with shared characteristics — so you can tailor messaging rather than trying to say everything to everyone.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>The four methods: Geographic (where they are), Demographic (who they are on paper), Psychographic (what they believe and value), and Behavioral (what they actually do) — each captures a different dimension of customer identity.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>Behavioral segmentation is often the most predictive because behavior reflects actual intent — what someone does is more revealing than what demographic box they fall into.</p></div>
+        <div class="summary-point"><div class="point-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>AI enables layering all four methods simultaneously into hundreds of micro-segments that update in real time — a level of precision impossible with traditional manual segmentation.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(s/t*100)+'%';});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+  const segs={
+    geo:{name:'Geographic Segmentation',def:'Dividing the market based on physical location — country, region, city, climate, or even neighborhood. This matters because location affects needs, culture, purchasing power, and context.',vars:[{n:'Country / Region',ex:'US vs. Europe vs. Asia — different regulations, currencies, cultures'},{ n:'City size',ex:'Urban, suburban, rural — very different lifestyle and purchasing contexts'},{n:'Climate',ex:'Sunscreen brand ads in Florida vs. Minnesota in January'},{n:'Neighborhood / ZIP',ex:'Premium brands targeting high-income zip codes'}],use:'A coffee brand promotes hot drinks in cold regions and iced drinks in warm ones. A ride-share app adjusts pricing by city density. A retailer localizes product selection by neighborhood income level.'},
+    demo:{name:'Demographic Segmentation',def:'The most traditional method — dividing customers by measurable characteristics like age, gender, income, education, occupation, and family status. Easy to collect but often less predictive than behavioral data alone.',vars:[{n:'Age / Generation',ex:'Gen Z (10–25), Millennials (26–41), Gen X (42–57), Boomers (58–76)'},{n:'Income',ex:'Budget, mid-market, and premium segments need completely different pricing and messaging'},{n:'Occupation',ex:'B2B marketing to doctors requires different content than to engineers'},{n:'Family status',ex:'Single, married with kids, empty nesters — all have wildly different priorities'}],use:'A financial services company markets retirement planning to 50+ and student loan resources to 22–28 year olds. A car brand targets family SUVs to households with children. A meal kit company targets dual-income households with limited cooking time.'},
+    psycho:{name:'Psychographic Segmentation',def:'Divides customers based on values, beliefs, lifestyle, personality, and interests. Unlike demographics (who you are), psychographics capture why people make the choices they do — making it far more actionable for messaging.',vars:[{n:'Values',ex:'Sustainability, family, status, adventure, security — these drive decisions'},{n:'Lifestyle',ex:'Fitness-obsessed, homebodies, world travelers, minimalists'},{n:'Personality',ex:'Risk-takers vs. risk-averse, introverts vs. extroverts'},{n:'Attitudes',ex:'Tech-forward vs. tech-resistant, brand-loyal vs. deal-seeking'}],use:'A travel brand targets "experience seekers" vs. "luxury travelers" with completely different campaigns — same product, different values being appealed to. A bank differentiates "security-focused savers" from "aggressive growth investors." A clothing brand speaks to "self-expression through fashion" vs. "practicality first."'},
+    behav:{name:'Behavioral Segmentation',def:'The most predictive method — divides customers based on their actual actions: purchase history, browsing behavior, engagement patterns, product usage, and responses to past campaigns. AI excels at this type because it requires analyzing massive amounts of behavioral data.',vars:[{n:'Purchase frequency',ex:'First-time buyers vs. loyal repeat customers vs. lapsed customers'},{n:'Browsing behavior',ex:'Visitors who viewed a product 3+ times but didn\'t buy (high intent)'},{n:'Engagement stage',ex:'Aware → Interested → Considering → Purchasing → Loyal → Advocate'},{n:'Product usage',ex:'Power users vs. casual users vs. dormant accounts — all need different outreach'}],use:'Amazon recommends products based on browsing history. Netflix surfaces shows based on viewing patterns. An e-commerce brand sends a "we miss you" email to anyone who hasn\'t purchased in 90 days. A SaaS company offers onboarding help to users who haven\'t completed setup after 7 days.'}
+  };
+
+  function showSeg(key,btn){
+    document.querySelectorAll('.se-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const s=segs[key];
+    document.getElementById('seg-display').innerHTML=`<div class="se-panel active"><div class="se-panel-name">${s.name}</div><div class="se-panel-def">${s.def}</div><div class="se-vars">${s.vars.map(v=>`<div class="se-var"><div class="se-var-name">${v.n}</div><div class="se-var-ex">${v.ex}</div></div>`).join('')}</div><div class="se-use-case"><div class="se-use-label">📋 Real Use Cases</div><div class="se-use-text">${s.use}</div></div></div>`;
+  }
+  showSeg('geo',document.querySelector('.se-tab'));
+
+  const sgDone={gc1:false,gc2:false,gc3:false,gc4:false};
+  const sgMsgs={Geographic:'Geographic segmentation — targeting based on where customers are located. This brand is making product decisions (spice level in ads) based purely on regional location data.',Demographic:'Demographic segmentation — targeting based on measurable characteristics like age and family status. Who you are on paper drives the product shown.',Psychographic:'Psychographic segmentation — targeting based on stated values and lifestyle identity, not where they live or how old they are.',Behavioral:'Behavioral segmentation — targeting based on actual actions (listening habits, timing, frequency). What users actually do reveals intent far more than who they are on paper.'};
+  function sgAnswer(id,btn,correct,fbId,type){
+    if(sgDone[id])return;sgDone[id]=true;
+    document.getElementById(id).querySelectorAll('.sg-opt').forEach(b=>b.style.pointerEvents='none');
+    const fb=document.getElementById(fbId);
+    if(correct){btn.classList.add('correct');fb.innerHTML=`✅ <strong>${type}!</strong> ${sgMsgs[type]}`;fb.className='sg-fb show c';}
+    else{btn.classList.add('wrong');fb.innerHTML=`❌ Not quite — this is <strong>${type}</strong> segmentation. ${sgMsgs[type]}`;fb.className='sg-fb show w';}
+  }
+</script>
+</body>
+</html>
