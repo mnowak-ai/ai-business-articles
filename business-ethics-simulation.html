@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Ethics in Business — Simulation</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--brand:#7B2FBE;--brand-dark:#5a1f8e;--brand-pale:#f3e8ff;--teal:#0d9488;--teal-pale:#e0f2f1;--red:#dc2626;--red-pale:#fef2f2;--amber:#d97706;--amber-pale:#fffbeb;--green:#16a34a;--green-pale:#f0fdf4;--text:#1a1023;--text-muted:#64537a;--border:#e5d9f7;--bg:#faf7ff;--white:#ffffff;--card-shadow:0 4px 24px rgba(123,47,190,0.10);--radius:16px;--radius-sm:10px;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  #hero{background:linear-gradient(135deg,#1a0533 0%,#2d1260 45%,#7B2FBE 100%);color:white;padding:60px 24px 52px;text-align:center;position:relative;overflow:hidden;}
+  #hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h52v52H0V0zm26 26h26v26H26V26zM0 26h26v26H0V26z' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/svg%3E");}
+  #hero .pill{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:999px;padding:6px 18px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;}
+  #hero h1{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,46px);font-weight:700;line-height:1.15;margin-bottom:14px;}
+  #hero p{font-size:16px;opacity:0.85;max-width:560px;margin:0 auto 28px;line-height:1.6;}
+  .progress-bar-wrap{max-width:500px;margin:0 auto;background:rgba(255,255,255,0.2);border-radius:999px;height:8px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:white;border-radius:999px;transition:width 0.5s ease;}
+  .progress-label{font-size:13px;opacity:0.75;margin-top:8px;}
+  main{max-width:860px;margin:0 auto;padding:40px 20px 80px;}
+  .screen{display:none;animation:fadeIn 0.4s ease;}.screen.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .card{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);padding:32px;margin-bottom:24px;box-shadow:var(--card-shadow);}
+  .scenario-badge{display:inline-flex;align-items:center;gap:8px;background:var(--brand-pale);color:var(--brand);border-radius:999px;padding:5px 14px;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:18px;}
+  .scenario-badge .dot{width:8px;height:8px;background:var(--brand);border-radius:50%;}
+  .difficulty-badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;margin-left:10px;}
+  .diff-easy{background:var(--green-pale);color:var(--green);}
+  .diff-medium{background:var(--amber-pale);color:var(--amber);}
+  .diff-hard{background:var(--red-pale);color:var(--red);}
+  .branch-banner{background:linear-gradient(135deg,#1a0533,#2d1260);color:white;border-radius:var(--radius-sm);padding:16px 20px;margin-bottom:22px;font-size:14px;line-height:1.6;display:flex;gap:12px;align-items:flex-start;}
+  .branch-banner .icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+  .branch-banner strong{display:block;font-size:15px;margin-bottom:3px;}
+  h2.scenario-title{font-family:'Fraunces',serif;font-size:clamp(20px,3vw,26px);font-weight:700;line-height:1.25;margin-bottom:8px;color:var(--text);}
+  .scene-text{font-size:15px;line-height:1.75;color:#2d2040;margin-bottom:16px;}
+  .def-box{background:linear-gradient(135deg,var(--teal-pale),#e0f7f4);border-left:4px solid var(--teal);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:20px;font-size:14px;line-height:1.65;color:#0f4038;}
+  .def-box strong{color:var(--teal);}
+  .data-table{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:14px;border-radius:var(--radius-sm);overflow:hidden;border:1.5px solid var(--border);}
+  .data-table th{background:#1a0533;color:white;padding:10px 14px;text-align:left;font-weight:600;font-size:13px;}
+  .data-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);}
+  .data-table tr:last-child td{border-bottom:none;}
+  .data-table tr:nth-child(even) td{background:var(--brand-pale);}
+  .data-table .flag{color:var(--red);font-weight:700;}
+  .data-table .ok{color:var(--green);font-weight:700;}
+  .quote-box{background:var(--brand-pale);border-left:4px solid var(--brand);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:16px;font-size:14px;line-height:1.65;font-style:italic;color:#5a1f8e;}
+  .choices{display:flex;flex-direction:column;gap:12px;}
+  .choice-btn{background:var(--white);border:2px solid var(--border);border-radius:var(--radius-sm);padding:18px 22px;text-align:left;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text);cursor:pointer;transition:all 0.2s ease;display:flex;align-items:flex-start;gap:14px;line-height:1.55;}
+  .choice-btn:hover{border-color:var(--brand);background:var(--brand-pale);transform:translateX(3px);}
+  .choice-btn .letter{flex-shrink:0;width:30px;height:30px;background:var(--brand-pale);color:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+  .consequence{display:none;animation:fadeIn 0.35s ease;}.consequence.show{display:block;}
+  .consequence-box{border-radius:var(--radius-sm);padding:22px 24px;margin-bottom:20px;font-size:15px;line-height:1.7;}
+  .consequence-box.good{background:var(--green-pale);border:2px solid #86efac;}
+  .consequence-box.okay{background:var(--amber-pale);border:2px solid #fcd34d;}
+  .consequence-box.bad{background:var(--red-pale);border:2px solid #fca5a5;}
+  .consequence-box .verdict{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .consequence-box.good .verdict{color:var(--green);}
+  .consequence-box.okay .verdict{color:var(--amber);}
+  .consequence-box.bad .verdict{color:var(--red);}
+  .lesson-callout{background:var(--brand-pale);border:1.5px solid #c4b5fd;border-radius:var(--radius-sm);padding:16px 20px;margin-top:16px;font-size:14px;line-height:1.65;color:#5a1f8e;}
+  .lesson-callout strong{color:var(--brand);}
+  .branch-preview{background:#1a0533;color:#e9d5ff;border-radius:var(--radius-sm);padding:20px 22px;margin-top:18px;font-size:14px;line-height:1.7;display:none;}
+  .branch-preview strong{color:#c4b5fd;display:block;margin-bottom:6px;font-size:15px;}
+  .next-btn{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:white;border:none;border-radius:999px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background 0.2s,transform 0.15s;margin-top:20px;}
+  .next-btn:hover{background:var(--brand-dark);transform:translateY(-1px);}
+  .score-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+  .score-chip{display:flex;align-items:center;gap:6px;background:var(--white);border:1.5px solid var(--border);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--text-muted);}
+  .intro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0;}
+  .intro-tile{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:18px 16px;text-align:center;font-size:13px;line-height:1.55;color:var(--text-muted);}
+  .intro-tile .icon{font-size:28px;margin-bottom:8px;}
+  .intro-tile strong{display:block;color:var(--text);font-size:14px;margin-bottom:4px;}
+  .start-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#2d1260,#7B2FBE);color:white;border:none;border-radius:999px;padding:16px 36px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 20px rgba(123,47,190,0.35);margin-top:8px;}
+  .start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(123,47,190,0.45);}
+  #results-screen .big-score{text-align:center;padding:40px 24px;}
+  .score-ring{width:130px;height:130px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Fraunces',serif;font-size:42px;font-weight:700;color:white;}
+  .score-ring.excellent{background:linear-gradient(135deg,#16a34a,#15803d);}
+  .score-ring.good{background:linear-gradient(135deg,#7B2FBE,#a855f7);}
+  .score-ring.okay{background:linear-gradient(135deg,#d97706,#f59e0b);}
+  .score-ring.needs-work{background:linear-gradient(135deg,#dc2626,#f87171);}
+  .results-title{font-family:'Fraunces',serif;font-size:clamp(22px,4vw,32px);font-weight:700;margin-bottom:8px;}
+  .results-subtitle{font-size:15px;color:var(--text-muted);margin-bottom:32px;line-height:1.6;}
+  .review-list{display:flex;flex-direction:column;gap:14px;}
+  .review-item{display:flex;align-items:flex-start;gap:14px;background:var(--white);border-radius:var(--radius-sm);border:1.5px solid var(--border);padding:16px 18px;font-size:14px;line-height:1.6;}
+  .review-item .icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+  .branch-result-note{background:#1a0533;color:#e9d5ff;border-radius:var(--radius-sm);padding:16px 20px;margin-bottom:24px;font-size:14px;line-height:1.7;display:none;}
+  .branch-result-note strong{color:#c4b5fd;}
+  .restart-btn{display:inline-flex;align-items:center;gap:8px;background:white;color:var(--brand);border:2px solid var(--brand);border-radius:999px;padding:13px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;margin-top:12px;}
+  .restart-btn:hover{background:var(--brand-pale);}
+  @media(max-width:600px){.card{padding:20px 16px;}main{padding:24px 14px 60px;}}
+</style>
+</head>
+<body>
+<div id="hero">
+  <div class="pill">💼 AI Ethics Simulation</div>
+  <h1>You're the AI Ethics Advisor<br>at a Growing Business</h1>
+  <p>Navigate real-world situations where AI is being used to make business decisions — and you have to decide what's fair, what's private, and what crosses the line.</p>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="heroProgress" style="width:0%"></div></div>
+  <div class="progress-label" id="progressLabel">0 of 6 scenarios complete</div>
+</div>
+<main>
+
+<!-- INTRO -->
+<div class="screen active" id="intro-screen">
+  <div class="card">
+    <h2 class="scenario-title">Welcome to the Simulation</h2>
+    <p class="scene-text">You've just joined <strong>Apex Solutions</strong> — a mid-sized business that uses AI tools to help with marketing, hiring, customer service, and financial decisions. Your role is AI Ethics Advisor. When someone has a question about whether an AI tool is being used fairly and responsibly, they come to you.</p>
+    <p class="scene-text">You'll work through 6 real situations involving bias, fairness, and privacy in business AI. They get harder as you go. <strong>A decision you make in Scenario 3 will directly change what you face in Scenario 6.</strong></p>
+    <div class="intro-grid">
+      <div class="intro-tile"><div class="icon">⚖️</div><strong>Bias in Business AI</strong>Spotting unfair patterns in decisions</div>
+      <div class="intro-tile"><div class="icon">🔒</div><strong>Privacy</strong>Knowing what data is off-limits</div>
+      <div class="intro-tile"><div class="icon">🎯</div><strong>Fairness</strong>Treating all customers and employees equally</div>
+      <div class="intro-tile"><div class="icon">🔀</div><strong>Branching Story</strong>Your choices shape what comes next</div>
+    </div>
+    <div class="def-box"><strong>📘 Key Term — AI Ethics in Business:</strong> AI ethics in business means making sure that when a company uses AI to make decisions — about customers, employees, or money — those decisions are fair, honest, and don't harm people. It also means protecting private information and being honest about how AI is being used.</div>
+    <button class="start-btn" onclick="goTo('s1')">Start the Simulation →</button>
+  </div>
+</div>
+
+<!-- S1: Privacy — correct = C -->
+<div class="screen" id="s1">
+  <div class="score-row" id="scoreRow1"></div>
+  <div class="card">
+    <div><span class="scenario-badge"><span class="dot"></span>Scenario 1 of 6</span><span class="difficulty-badge diff-easy">⬤ Easier</span></div>
+    <h2 class="scenario-title">The AI That Knows Your Shopping Habits</h2>
+    <div class="def-box"><strong>📘 Key Term — Consumer Privacy:</strong> Consumer privacy means that customers have the right to control what personal information a company collects about them and how it's used. When a business uses AI to collect or analyze customer data, customers should know about it — and agree to it — before it happens.</div>
+    <p class="scene-text">Apex Solutions runs an online store. The marketing team wants to use a new AI tool that tracks every customer's browsing behavior and uses that data to automatically send personalized text messages and emails.</p>
+    <p class="scene-text">The marketing manager says: <em>"We already have a clause that says we may use data to improve the customer experience. That covers it."</em></p>
+    <p class="scene-text">You review the current privacy policy. The clause is vague — it mentions "improving the experience" but says nothing about tracking browsing behavior or using it for AI-generated messaging. <strong>What do you recommend?</strong></p>
+    <div class="choices">
+      <button class="choice-btn" onclick="answer(1,'A')"><span class="letter">A</span>Agree with the manager — the existing clause is close enough. Launch the tool and move on.</button>
+      <button class="choice-btn" onclick="answer(1,'B')"><span class="letter">B</span>Launch the tool but add a small note in the next email newsletter mentioning the new AI feature — that gives customers notice without slowing things down.</button>
+      <button class="choice-btn" onclick="answer(1,'C')"><span class="letter">C</span>Recommend updating the privacy policy first to clearly describe what data is being collected and how it will be used. Customers should know before the tool goes live.</button>
+      <button class="choice-btn" onclick="answer(1,'D')"><span class="letter">D</span>Allow the tool to launch for 30 days as a test, then update the privacy policy based on what the AI actually ends up doing.</button>
+    </div>
+    <div class="consequence" id="s1-result">
+      <div class="consequence-box" id="s1-box"><div class="verdict" id="s1-verdict"></div><div id="s1-text"></div></div>
+      <div class="lesson-callout" id="s1-lesson"></div>
+      <button class="next-btn" onclick="goTo('s2')">Next Scenario →</button>
+    </div>
+  </div>
+</div>
+
+<!-- S2: Fairness / Pricing — correct = D -->
+<div class="screen" id="s2">
+  <div class="score-row" id="scoreRow2"></div>
+  <div class="card">
+    <div><span class="scenario-badge"><span class="dot"></span>Scenario 2 of 6</span><span class="difficulty-badge diff-medium">⬤ Medium</span></div>
+    <h2 class="scenario-title">The AI That Charges Different Prices</h2>
+    <div class="def-box"><strong>📘 Key Term — Dynamic Pricing:</strong> Dynamic pricing is when a business uses data to charge different customers different prices for the same product or service. When AI uses personal data — like someone's neighborhood or browsing history — to decide how much to charge them, it can become unfair or discriminatory.</div>
+    <p class="scene-text">Apex Solutions is testing an AI pricing tool for its online services. The tool adjusts the price each customer sees based on their location, device type, and estimated income based on zip code.</p>
+    <p class="scene-text">During a review, you find the following pattern:</p>
+    <table class="data-table">
+      <thead><tr><th>Customer Profile</th><th>Price Shown</th><th>Actual Cost to Apex</th></tr></thead>
+      <tbody>
+        <tr><td>Urban, high-income zip code, iPhone</td><td class="ok">$49/month</td><td>$12</td></tr>
+        <tr><td>Suburban, mid-income zip code, Android</td><td class="ok">$49/month</td><td>$12</td></tr>
+        <tr><td>Rural, lower-income zip code, Android</td><td class="flag">$79/month</td><td>$12</td></tr>
+        <tr><td>Rural, lower-income zip code, older browser</td><td class="flag">$89/month</td><td>$12</td></tr>
+      </tbody>
+    </table>
+    <p class="scene-text">The AI's logic: customers in lower-income areas are "less likely to comparison shop." Customers in rural, lower-income areas are being charged up to $40 more per month for the exact same service. <strong>What do you do?</strong></p>
+    <div class="choices">
+      <button class="choice-btn" onclick="answer(2,'A')"><span class="letter">A</span>This is standard dynamic pricing — businesses do this all the time. The AI is just maximizing revenue. Approve it.</button>
+      <button class="choice-btn" onclick="answer(2,'B')"><span class="letter">B</span>Cap the price difference at $10 instead of $40 — a smaller gap is more defensible. Allow it to run with that limit.</button>
+      <button class="choice-btn" onclick="answer(2,'C')"><span class="letter">C</span>Allow the pricing model for now but require the legal team to review it within 90 days to confirm it doesn't violate consumer protection laws.</button>
+      <button class="choice-btn" onclick="answer(2,'D')"><span class="letter">D</span>Reject this pricing model. Charging customers more because they live in a lower-income area or use older technology is exploitative and could violate consumer protection laws. Recommend a flat, fair pricing structure.</button>
+    </div>
+    <div class="consequence" id="s2-result">
+      <div class="consequence-box" id="s2-box"><div class="verdict" id="s2-verdict"></div><div id="s2-text"></div></div>
+      <div class="lesson-callout" id="s2-lesson"></div>
+      <button class="next-btn" onclick="goTo('s3')">Next Scenario →</button>
+    </div>
+  </div>
+</div>
+
+<!-- S3: Bias / Lending — BRANCHING — correct = A -->
+<div class="screen" id="s3">
+  <div class="score-row" id="scoreRow3"></div>
+  <div class="card">
+    <div><span class="scenario-badge"><span class="dot"></span>Scenario 3 of 6</span><span class="difficulty-badge diff-medium">⬤ Medium</span></div>
+    <h2 class="scenario-title">The AI Loan Advisor</h2>
+    <div class="def-box"><strong>📘 Key Term — Algorithmic Fairness:</strong> Algorithmic fairness means an AI tool should make decisions that treat people equally — regardless of their age, gender, neighborhood, or background — when those factors have nothing to do with the actual decision. In lending, fairness means loan decisions should be based on financial ability to repay, not on who you are or where you live.</div>
+    <p class="scene-text">Apex Solutions has a financial services division that uses an AI tool to recommend whether small business loan applicants should be approved or denied. The AI was trained on five years of past loan decisions made by human loan officers at the company.</p>
+    <p class="scene-text">During a routine audit, you discover a troubling pattern in the AI's decisions over the past year:</p>
+    <table class="data-table">
+      <thead><tr><th>Applicant Group</th><th>Approval Rate</th><th>Default Rate</th></tr></thead>
+      <tbody>
+        <tr><td>Applicants from high-income zip codes</td><td class="ok">71%</td><td>8%</td></tr>
+        <tr><td>Applicants from low-income zip codes</td><td class="flag">34%</td><td>7%</td></tr>
+        <tr><td>Applicants under age 35</td><td class="flag">29%</td><td>6%</td></tr>
+        <tr><td>Applicants over age 50</td><td class="ok">68%</td><td>9%</td></tr>
+      </tbody>
+    </table>
+    <p class="scene-text">Applicants from low-income zip codes and younger applicants are being denied at much higher rates — even though their actual default rates are <em>lower</em> than the groups being approved. The AI is denying people who are statistically <em>more likely</em> to repay their loans. <strong>What do you do?</strong></p>
+    <div class="choices">
+      <button class="choice-btn" onclick="answer(3,'A')"><span class="letter">A</span>Suspend the AI loan tool immediately. The data shows it is denying creditworthy applicants based on zip code and age — not repayment ability. Escalate to leadership and legal. This may violate fair lending laws.</button>
+      <button class="choice-btn" onclick="answer(3,'B')"><span class="letter">B</span>The AI learned from real loan data — trust the model. The differences in approval rates might reflect other factors we're not seeing.</button>
+      <button class="choice-btn" onclick="answer(3,'C')"><span class="letter">C</span>Quietly adjust the approval threshold for low-income zip codes so more applicants get through. Don't escalate — just fix the number and move on.</button>
+      <button class="choice-btn" onclick="answer(3,'D')"><span class="letter">D</span>Flag the finding internally and schedule a formal review for next quarter's planning cycle — it's important but not urgent enough to interrupt current operations.</button>
+    </div>
+    <div class="consequence" id="s3-result">
+      <div class="consequence-box" id="s3-box"><div class="verdict" id="s3-verdict"></div><div id="s3-text"></div></div>
+      <div class="lesson-callout" id="s3-lesson"></div>
+      <div class="branch-preview" id="s3-branch-preview"></div>
+      <button class="next-btn" onclick="goTo('s4')">Next Scenario →</button>
+    </div>
+  </div>
+</div>
+
+<!-- S4: Privacy / Workplace Monitoring — correct = B -->
+<div class="screen" id="s4">
+  <div class="score-row" id="scoreRow4"></div>
+  <div class="card">
+    <div><span class="scenario-badge"><span class="dot"></span>Scenario 4 of 6</span><span class="difficulty-badge diff-hard">⬤ Harder</span></div>
+    <h2 class="scenario-title">The Employee Monitoring AI</h2>
+    <div class="def-box"><strong>📘 Key Term — Workplace Privacy:</strong> Workplace privacy means employees have some right to privacy even while working — especially regarding their health, personal conversations, and activities outside of work. Using AI to secretly monitor employees' personal behavior crosses an ethical and often legal line.</div>
+    <p class="scene-text">Apex Solutions has deployed an AI productivity monitoring tool that tracks keystrokes, measures time spent on each application, and flags anyone who drops below a "productivity score" of 70.</p>
+    <p class="scene-text">You receive a complaint from an employee named Marcus. He was called into a meeting because his score dropped — his manager confronted him with data showing he was taking longer bathroom breaks and spending time in a wellness app during work hours.</p>
+    <p class="scene-text">You investigate further and discover the AI is also flagging employees who visit union information websites — it categorizes these visits as "non-work activity." Three employees who were flagged for this were later denied promotions. <strong>What do you do with these findings?</strong></p>
+    <div class="choices">
+      <button class="choice-btn" onclick="answer(4,'A')"><span class="letter">A</span>The company owns the computers and the network — monitoring is legal. The productivity tool is working as intended. No action needed.</button>
+      <button class="choice-btn" onclick="answer(4,'B')"><span class="letter">B</span>Escalate immediately. The AI is tracking bathroom breaks and wellness app usage — which intrudes on personal health privacy. And flagging union-related website visits as "non-work" creates serious legal exposure around workers' rights. Recommend suspending the tool pending a legal and ethics review.</button>
+      <button class="choice-btn" onclick="answer(4,'C')"><span class="letter">C</span>Remove the union website flag from the tool — that's the most legally risky part. Leave the rest of the monitoring in place.</button>
+      <button class="choice-btn" onclick="answer(4,'D')"><span class="letter">D</span>Inform employees that they are being monitored and give them a chance to review their productivity data — transparency should be enough to address the concern.</button>
+    </div>
+    <div class="consequence" id="s4-result">
+      <div class="consequence-box" id="s4-box"><div class="verdict" id="s4-verdict"></div><div id="s4-text"></div></div>
+      <div class="lesson-callout" id="s4-lesson"></div>
+      <button class="next-btn" onclick="goTo('s5')">Next Scenario →</button>
+    </div>
+  </div>
+</div>
+
+<!-- S5: Fairness / Customer Service — correct = C -->
+<div class="screen" id="s5">
+  <div class="score-row" id="scoreRow5"></div>
+  <div class="card">
+    <div><span class="scenario-badge"><span class="dot"></span>Scenario 5 of 6</span><span class="difficulty-badge diff-hard">⬤ Harder</span></div>
+    <h2 class="scenario-title">The AI That Decides Who Gets Help First</h2>
+    <div class="def-box"><strong>📘 Key Term — Customer Equity:</strong> Customer equity means treating all of your customers fairly — giving everyone a reasonable level of service regardless of how much money they spend. When AI tools prioritize some customers over others based on their predicted value, people who spend less money may receive worse service even when they have urgent problems.</div>
+    <p class="scene-text">Apex Solutions runs a customer service center. The new AI triage tool automatically scores each incoming customer request and decides how quickly it gets routed to a human agent. Higher-value customers get connected within 2 minutes. Lower-value customers wait in an automated queue that averages 47 minutes.</p>
+    <p class="scene-text">You review recent cases and find this example:</p>
+    <div class="quote-box">"A single mother reported a fraudulent charge on her account. Her case sat in the automated queue for 51 minutes while the charge continued to process. A higher-value customer with a similar fraud report was connected to an agent in 90 seconds."</div>
+    <p class="scene-text">The COO says: <em>"Premium customers drive 80% of our revenue. It makes business sense to prioritize them."</em> <strong>What do you recommend?</strong></p>
+    <div class="choices">
+      <button class="choice-btn" onclick="answer(5,'A')"><span class="letter">A</span>Agree with the COO — revenue-based prioritization is standard business practice. The AI is doing exactly what it was designed to do.</button>
+      <button class="choice-btn" onclick="answer(5,'B')"><span class="letter">B</span>Reduce the wait time for lower-value customers to 20 minutes. That's a better experience without changing the core prioritization model.</button>
+      <button class="choice-btn" onclick="answer(5,'C')"><span class="letter">C</span>Recommend a hybrid model: all customers get fast routing for urgent issues — fraud, safety, account access. Revenue-based prioritization only applies to non-urgent requests. No customer should wait 47 minutes while a fraud charge processes.</button>
+      <button class="choice-btn" onclick="answer(5,'D')"><span class="letter">D</span>Add a fraud detection tag to all incoming requests so fraud cases bypass the queue entirely — but leave all other prioritization unchanged.</button>
+    </div>
+    <div class="consequence" id="s5-result">
+      <div class="consequence-box" id="s5-box"><div class="verdict" id="s5-verdict"></div><div id="s5-text"></div></div>
+      <div class="lesson-callout" id="s5-lesson"></div>
+      <button class="next-btn" onclick="goTo('s6')">Next Scenario →</button>
+    </div>
+  </div>
+</div>
+
+<!-- S6: BRANCHED Final Challenge — good correct = B, bad correct = B -->
+<div class="screen" id="s6">
+  <div class="score-row" id="scoreRow6"></div>
+  <div class="card">
+    <div id="s6-branch-banner"></div>
+    <div><span class="scenario-badge"><span class="dot"></span>Scenario 6 of 6 — Final Challenge</span><span class="difficulty-badge diff-hard">⬤ Hardest</span></div>
+    <h2 class="scenario-title" id="s6-title"></h2>
+    <div class="def-box"><strong>📘 Key Term — Regulatory Compliance:</strong> Regulatory compliance means following the laws and rules that apply to your industry. In business AI, this includes fair lending laws, consumer protection laws, and data privacy regulations. When a company breaks these rules — even accidentally through an AI tool — the legal and financial consequences can be severe.</div>
+    <div id="s6-scene"></div>
+    <div class="choices" id="s6-choices"></div>
+    <div class="consequence" id="s6-result">
+      <div class="consequence-box" id="s6-box"><div class="verdict" id="s6-verdict"></div><div id="s6-text"></div></div>
+      <div class="lesson-callout" id="s6-lesson"></div>
+      <button class="next-btn" onclick="showResults()">See My Results →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="results-screen">
+  <div class="card">
+    <div class="big-score">
+      <div class="score-ring" id="scoreRing">0/6</div>
+      <h2 class="results-title" id="resultsTitle"></h2>
+      <p class="results-subtitle" id="resultsSubtitle"></p>
+    </div>
+    <div class="branch-result-note" id="branchResultNote"></div>
+    <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin:0 0 16px;">Your Decision Review</h3>
+    <div class="review-list" id="reviewList"></div>
+    <div style="margin-top:30px;"><button class="restart-btn" onclick="restartSim()">↺ Try Again</button></div>
+  </div>
+</div>
+</main>
+
+<script>
+const scenarios = {
+  1:{correct:'C',title:'The AI That Knows Your Shopping Habits',answers:{
+    A:{type:'bad',verdict:'❌ Launching without updating the policy violated customer trust.',text:"Regulators and courts have consistently ruled that vague privacy clauses don't cover specific new uses of customer data — especially AI-driven tracking and automated messaging. Within weeks of launch, customers complained they never agreed to have their browsing behavior tracked. A regulatory complaint followed. The cost of the fine and reputational damage far exceeded the cost of updating the policy first.",lesson:'<strong>What this teaches us (1.4 Privacy):</strong> Privacy policies must be specific about how AI is being used to collect and act on customer data. A vague clause is not consent. Getting this right before launch is always the better path.'},
+    B:{type:'okay',verdict:'⚠️ A newsletter mention is not the same as proper consent.',text:"A small note buried in an email newsletter is not meaningful notice to customers about a significant change in how their data is being used. Many customers won't read it. Those who do may not understand what it means. Privacy law requires clear, specific notice — not a mention in the middle of a promotional email.",lesson:'<strong>What this teaches us (1.4 Privacy):</strong> Notice must be meaningful to count. Customers should be told clearly, specifically, and before the data collection begins — not after, and not buried in a newsletter.'},
+    C:{type:'good',verdict:'✅ You protected customers and the company.',text:"Updating the privacy policy before launch was the right call — ethically and legally. Customers have a right to know when an AI tool is tracking their browsing behavior and using it to send them automated messages. A clear, updated policy also protects Apex from regulatory action. Taking a few extra days saved the company from a much bigger problem.",lesson:'<strong>What this teaches us (1.4 Privacy):</strong> Privacy policies must clearly describe what data AI tools collect, how it is used, and who can opt out. Informed consent is the foundation of ethical data use in business.'},
+    D:{type:'bad',verdict:'❌ Testing first, then writing the policy, gets the order backwards.',text:"A privacy policy is not something you write to describe what already happened — it is a commitment to customers about what you will do before you do it. Running the AI for 30 days without proper disclosure means 30 days of collecting and using data that customers never agreed to share.",lesson:"<strong>What this teaches us (1.4 Privacy):</strong> Consent must come before data collection — not after you've already seen how the tool behaves. Writing the policy retroactively is not a substitute for getting agreement upfront."}
+  }},
+  2:{correct:'D',title:'The AI That Charges Different Prices',answers:{
+    A:{type:'bad',verdict:'❌ This pricing model exploited the customers least able to push back.',text:"The AI was specifically targeting customers in lower-income areas with higher prices because it predicted they were less likely to shop around. That is not competitive pricing — it is exploitation. Several U.S. states have consumer protection laws that prohibit this kind of income-based price discrimination. When the pricing pattern was later discovered, the resulting story damaged Apex's reputation significantly.",lesson:'<strong>What this teaches us (1.4 Bias & Fairness):</strong> Dynamic pricing becomes unfair when it targets people based on their economic vulnerability rather than legitimate market factors. Using AI to charge people more because they "won\'t notice" is exploitative — and increasingly illegal.'},
+    B:{type:'okay',verdict:'⚠️ A smaller gap is still an unfair gap.',text:"Reducing the price difference from $40 to $10 is better than nothing — but the underlying logic is the same: charging customers in lower-income areas more because the AI predicts they won't notice. A $10 unfair charge is still an unfair charge. And the discriminatory logic is still running inside the model.",lesson:'<strong>What this teaches us (1.4 Fairness):</strong> Reducing the size of an unfair practice doesn\'t make it fair. If the AI\'s decision logic is built on exploiting economic vulnerability, the fix is to change the logic — not adjust the margin of exploitation.'},
+    C:{type:'bad',verdict:"❌ Running it now and reviewing later means 90 days of harm.",text:"Allowing a potentially illegal pricing model to run for 90 days while legal reviews it means customers are being overcharged in the meantime. By the time legal concludes the review, hundreds of customers will have already paid unfair prices. The review should happen before launch — not after.",lesson:"<strong>What this teaches us (1.4 Fairness):</strong> Legal review is not something you schedule after a questionable tool is already running. When a pricing model raises fairness and legal concerns, those concerns must be resolved before the tool goes live — not 90 days later."},
+    D:{type:'good',verdict:"✅ You rejected a pricing model that was exploiting vulnerable customers.",text:"The data was clear: customers in rural, lower-income areas were being charged up to 60% more for the exact same service, specifically because the AI predicted they were less likely to fight back. Recommending a flat pricing structure protected customers and protected Apex from the legal and reputational exposure that comes with income-based price discrimination.",lesson:'<strong>What this teaches us (1.4 Bias & Fairness):</strong> AI-driven pricing must be based on fair, transparent criteria. When an AI charges some customers more because of their zip code or device type — not because of real cost differences — it is encoding economic discrimination into business practice.'}
+  }},
+  3:{correct:'A',title:'The AI Loan Advisor',answers:{
+    A:{type:'good',branch:'good',verdict:'✅ You identified illegal bias and stopped it before it got worse.',text:"Suspending the tool and escalating was exactly right. The Equal Credit Opportunity Act prohibits lending decisions that discriminate based on age or effectively based on neighborhood — a practice called redlining. The audit data showed both patterns clearly. By acting quickly, you gave Apex the chance to correct course, review affected applications, and get ahead of regulatory scrutiny.",lesson:'<strong>What this teaches us (1.4 Bias):</strong> In financial services, biased AI doesn\'t just raise ethical concerns — it can violate federal law. When loan data shows that creditworthy applicants are being denied at disproportionate rates based on age or location, the tool must be suspended and reviewed immediately.'},
+    B:{type:'bad',branch:'bad',verdict:"❌ Trusting the model meant trusting its bias.",text:"The data showed something unambiguous: applicants from low-income zip codes and younger applicants were being denied at twice the rate of other groups — despite having lower default rates. By trusting the model anyway, you allowed a tool that may violate the Equal Credit Opportunity Act to keep making decisions about real people's financial futures.",lesson:'<strong>What this teaches us (1.4 Bias):</strong> "The model learned from real data" is not the same as "the model is fair." Historical loan data often reflects historical discrimination. When an AI denies creditworthy people at disproportionate rates based on zip code or age, that is bias — not insight.'},
+    C:{type:'okay',branch:'bad',verdict:"⚠️ A quiet fix left a legal problem running.",text:"Adjusting one threshold helps some applicants today. But the biased logic is still running in the model. Tomorrow's applicants are still being evaluated by a system that may violate fair lending law. And because you didn't escalate, leadership and legal are unaware of the exposure.",lesson:'<strong>What this teaches us (1.4 Bias):</strong> Threshold adjustments don\'t fix biased models — they paper over them. When an AI shows clear patterns of discriminatory decision-making, the answer is a full audit and formal escalation, not a quiet tweak.'},
+    D:{type:'bad',branch:'bad',verdict:"❌ Waiting a full quarter meant hundreds more harmful decisions.",text:"Every day the biased AI kept running, it denied creditworthy loan applicants based on their zip code and age. 'Next quarter' is not an acceptable timeline when an AI tool is actively making potentially illegal decisions. The harm continued with every application processed while you waited.",lesson:"<strong>What this teaches us (1.4 Bias):</strong> When an AI is producing potentially discriminatory outcomes in a regulated industry, it is urgent — not a future planning item. Waiting a full quarter to act means weeks of continued harm and mounting legal exposure."}
+  }},
+  4:{correct:'B',title:'The Employee Monitoring AI',answers:{
+    A:{type:'bad',verdict:'❌ "Legal" and "ethical" are not the same thing.',text:"Even if the company legally owns its computers, using AI to track bathroom break frequency and flag wellness app usage crosses into health privacy territory. More critically, flagging union-related website visits as 'non-work activity' and linking that to promotion decisions likely violates the National Labor Relations Act, which protects employees' right to seek information about organizing.",lesson:'<strong>What this teaches us (1.4 Privacy):</strong> Legality is the floor, not the ceiling, of ethical AI use. An AI monitoring tool can be technically legal in some ways while still violating employee privacy and labor rights. Workplace AI must be reviewed for what it tracks and what decisions it feeds into.'},
+    B:{type:'good',verdict:'✅ You caught both a privacy problem and a labor rights issue.',text:"The combination of health-adjacent tracking (bathroom breaks, wellness apps) and union activity flagging made this tool a serious legal and ethical liability. Flagging union research as non-work activity and connecting it to promotion decisions is a potential violation of the National Labor Relations Act — a federal law. Suspending the tool and getting legal review was the right and responsible call.",lesson:'<strong>What this teaches us (1.4 Privacy):</strong> AI monitoring tools require careful review of exactly what they track and what decisions they feed into. Tracking bathroom breaks intrudes on personal health privacy. Flagging union activity intrudes on protected legal rights. Both require immediate escalation.'},
+    C:{type:'okay',verdict:"⚠️ You removed the biggest legal risk but left the others running.",text:"Removing the union website flag was the most urgent fix — that feature was likely illegal. But the AI is still tracking bathroom breaks and wellness app usage and feeding that into productivity scores. That data can still be used to discipline employees for health-related breaks they're entitled to take.",lesson:"<strong>What this teaches us (1.4 Privacy):</strong> Fixing the most obvious problem in a flawed AI tool doesn't make the rest of it ethical. Workplace monitoring AI needs a full review of every data point it tracks and every decision it informs — not a partial fix of the feature that looks worst on paper."},
+    D:{type:'bad',verdict:"❌ Transparency about illegal monitoring doesn't make it legal.",text:"Telling employees they're being monitored is better than hiding it. But it doesn't fix the core problems: tracking bathroom breaks intrudes on health privacy, and flagging union website visits as non-work activity is still a potential violation of federal labor law regardless of whether employees know about it.",lesson:"<strong>What this teaches us (1.4 Privacy):</strong> Disclosure doesn't make a harmful monitoring practice acceptable. If an AI is tracking data it shouldn't have access to — or feeding that data into decisions that harm employees — the tool must be reviewed and changed, not just disclosed."}
+  }},
+  5:{correct:'C',title:'The AI That Decides Who Gets Help First',answers:{
+    A:{type:'bad',verdict:"❌ Revenue logic failed a fraud victim.",text:"The single mother's fraud charge kept processing for 51 minutes while she waited in an automated queue. By the time she reached an agent, additional charges had posted to her account. She filed a complaint with the Consumer Financial Protection Bureau. Apex was cited for inadequate fraud response procedures. The cost of the regulatory response exceeded a year of the 'premium customer' revenue gains.",lesson:"<strong>What this teaches us (1.4 Fairness):</strong> Revenue-based prioritization becomes unethical when it allows serious harm — like fraud — to continue longer for lower-value customers. Fairness in customer service requires that all customers get timely help when they face real harm."},
+    B:{type:'okay',verdict:"⚠️ 20 minutes is better — but still too long for a fraud victim.",text:"Reducing the wait from 47 to 20 minutes is a meaningful improvement. But the underlying problem — that urgency is not being distinguished from routine requests — isn't fixed. A fraud victim waiting 20 minutes while charges process is still a customer being failed by a system that should treat financial harm as urgent regardless of account value.",lesson:"<strong>What this teaches us (1.4 Fairness):</strong> Time-based adjustments don't fix flawed prioritization logic. The issue isn't exactly how long people wait — it's that the AI is treating all requests the same when some are urgent and some are not. The fix is urgency-based routing, not a shorter clock."},
+    C:{type:'good',verdict:'✅ You built a system that is both fair and smart.',text:"The hybrid model was the right answer. Revenue-based prioritization for routine requests is defensible business logic. But no customer — regardless of how much they spend — should wait 47 minutes while fraud processes on their account. Carving out urgent issues for fast routing regardless of customer value was both ethically sound and legally protective.",lesson:"<strong>What this teaches us (1.4 Fairness):</strong> Fairness in business AI doesn't always mean everyone gets the same treatment — but it does mean everyone gets a baseline of protection when something serious is at stake. Urgency determines speed for critical issues; customer value can inform prioritization for routine ones."},
+    D:{type:'okay',verdict:"⚠️ Fixing fraud routing was the right call — but the broader fairness problem remains.",text:"Routing fraud cases faster is a meaningful improvement that directly helps people in your most urgent category. But the system still leaves non-fraud urgent issues — account lockouts, safety concerns — in the 47-minute queue based solely on customer value. A broader urgency framework would be more comprehensive.",lesson:"<strong>What this teaches us (1.4 Fairness):</strong> Fixing one category of urgent requests is a step in the right direction, but a full solution addresses urgency as a category — not just one type of urgent issue. Partial fixes can create false confidence that the problem is solved."}
+  }}
+};
+
+const s6Branches = {
+  good:{
+    title:"The Regulator Calls — You Have a Choice About What to Say",
+    bannerText:"<strong>⚡ Your Scenario 3 choice changed this scenario.</strong> Because you suspended the AI loan tool and escalated properly, Apex launched an internal audit. The audit confirmed the bias. Leadership has already begun reviewing affected applications. Now the Consumer Financial Protection Bureau is calling.",
+    scene:`<p class="scene-text">It's been six weeks since you flagged the loan AI bias. Apex's legal team has been working with an outside firm to audit three years of loan decisions. The preliminary results show approximately 340 applicants were likely denied loans they would have been approved for under a fair model.</p>
+<p class="scene-text">The CFPB — the government agency that enforces fair lending laws — has contacted Apex. They are conducting a routine review and have asked whether Apex uses any automated decision-making tools in its lending process.</p>
+<p class="scene-text">Your General Counsel presents two options to leadership:</p>
+<div class="quote-box">"Option 1: Disclose proactively — tell the CFPB what we found, what we've done to fix it, and offer remediation to affected applicants. Option 2: Answer narrowly — confirm we use automation but don't volunteer the audit findings unless they ask directly."</div>
+<p class="scene-text">You are asked for your recommendation. <strong>What do you advise?</strong></p>`,
+    choices:[
+      {key:'A',text:"Recommend waiting until the full audit is complete before saying anything — you want complete numbers before making any statements to a regulator."},
+      {key:'B',text:"Recommend Option 1. Apex found the problem, stopped it, and is actively making it right. Proactive disclosure — with a clear remediation plan — is both ethically required and strategically the best path."},
+      {key:'C',text:"Recommend Option 2. Answer what they ask and nothing more. The audit isn't finished yet, and volunteering information could create more problems than it solves."},
+      {key:'D',text:"Recommend having legal draft a detailed response only if the CFPB asks follow-up questions — no need to volunteer anything on the first call."}
+    ],
+    correct:'B',
+    answers:{
+      A:{type:'okay',verdict:"⚠️ Waiting for complete data cost precious time — and 340 people kept waiting.",text:"The instinct to have complete information before speaking to a regulator is understandable. But the 340 affected applicants were still waiting while the full audit ran. The CFPB doesn't expect perfection — they expect honesty. Disclosing preliminary findings, the corrective actions already taken, and a commitment to full audit results would have been more credible than silence.",lesson:"<strong>What this teaches us (1.4 Ethics & Responsible Use):</strong> In regulatory situations involving ongoing harm, waiting for perfect information is not the safe choice — it is a choice to let harm continue. Responsible disclosure doesn't require certainty. It requires honesty about what you know, what you've done, and what you're still finding out."},
+      B:{type:'good',verdict:'✅ Proactive disclosure turned a liability into a credibility moment.',text:"The CFPB's response to Apex's proactive disclosure was notably positive. The agency acknowledged the company's self-correcting action, worked collaboratively on the remediation plan, and publicly noted Apex as an example of responsible AI governance. The 340 affected applicants received outreach, and many were offered reconsideration. Your Scenario 3 decision made this moment possible.",lesson:'<strong>What this teaches us (1.4 Ethics & Responsible Use):</strong> Ethical AI use in business includes being honest with regulators when something goes wrong. When a company finds bias, fixes it, and communicates proactively, it demonstrates responsible AI governance that builds long-term trust.'},
+      C:{type:'bad',verdict:"❌ Narrow disclosure created a much bigger problem.",text:"The CFPB followed up with specific data requests two weeks later. When the audit findings surfaced through those requests, the fact that Apex had already known and chose not to volunteer the information became the central story. What could have been a case study in responsible self-correction became a case study in regulatory evasion. The fine was three times larger than it would have been.",lesson:"<strong>What this teaches us (1.4 Ethics & Responsible Use):</strong> 'We answered what they asked' is not a defense when you know there is more to say. Proactive accountability almost always has better outcomes than strategic silence."},
+      D:{type:'bad',verdict:"❌ Staying reactive kept 340 people waiting and gave up control of the story.",text:"Taking a wait-and-see approach on the first call meant Apex missed the opportunity to frame its own corrective action. When the CFPB followed up with pointed questions, Apex appeared reactive rather than proactive. The narrative shifted from 'company that fixed a problem' to 'company that needed to be pressured into disclosure.'",lesson:"<strong>What this teaches us (1.4 Ethics & Responsible Use):</strong> In regulatory interactions around AI harm, proactive disclosure is almost always the better path. Waiting to be asked — when you already know the answer — is a form of strategic silence that regulators recognize and penalize."}
+    }
+  },
+  bad:{
+    title:"The Lawsuit — Your Quiet Fix Becomes Exhibit A",
+    bannerText:"<strong>⚡ Your Scenario 3 choice changed this scenario.</strong> Because the AI loan tool was never formally suspended or audited, it kept running. The quiet adjustment you made helped some applicants — but hundreds of others were still affected. Now, two years later, a class-action lawsuit has been filed.",
+    scene:`<p class="scene-text">A law firm representing 280 rejected loan applicants has filed a class-action lawsuit against Apex Solutions, alleging violations of the Equal Credit Opportunity Act. The plaintiffs include small business owners from lower-income zip codes who were denied loans, went without capital they needed, and in some cases lost their businesses.</p>
+<p class="scene-text">During discovery — the legal process where both sides share documents — your records are subpoenaed. They show that two years ago, you identified the bias pattern and made a quiet adjustment without escalating to leadership or legal.</p>
+<p class="scene-text">Apex's outside counsel calls you directly: <em>"These records show you knew about a potential fair lending violation two years ago and chose not to report it internally. What happened, and why didn't you escalate?"</em></p>
+<p class="scene-text"><strong>What do you do now?</strong></p>`,
+    choices:[
+      {key:'A',text:"Say as little as possible until you've spoken to your own personal attorney — this situation has implications for you personally, not just for Apex."},
+      {key:'B',text:"Be fully honest with counsel. Acknowledge that you identified the bias, made a partial fix, and did not escalate as you should have. Cooperate completely and recommend that Apex reach out proactively to affected applicants regardless of the legal outcome."},
+      {key:'C',text:"Tell counsel you made a reasonable judgment call at the time. Emphasize the threshold fix you did make. Try to minimize the significance of not escalating."},
+      {key:'D',text:"Suggest the company settle quickly and quietly to avoid more publicity. Frame it internally as a data quality issue, not a bias issue."}
+    ],
+    correct:'B',
+    answers:{
+      A:{type:'okay',verdict:"⚠️ Protecting yourself was understandable — but it slowed down justice for 280 people.",text:"Consulting a personal attorney when you're personally implicated in litigation is a reasonable instinct. But delaying full cooperation means weeks pass before Apex's legal team has the full picture they need. Every week of delay is another week that 280 affected applicants wait for any acknowledgment that they were wronged.",lesson:"<strong>What this teaches us (1.4 Ethics & Responsible Use):</strong> Professional responsibility requires balancing personal caution against the urgency of the harm. The sooner the truth is on the table, the sooner affected people can begin to get justice."},
+      B:{type:'good',verdict:"✅ Full honesty was the hardest and most responsible path.",text:"Being fully honest with counsel — including acknowledging the failure to escalate — gave Apex's legal team the complete picture they needed. It also opened the door to the only outcome that could partially repair the harm: proactive outreach to the 280 affected applicants, offers of reconsideration, and a public commitment to AI fairness auditing. Your Scenario 3 decision caused harm that couldn't be undone — but your Scenario 6 decision determined whether any of those 280 people got justice.",lesson:"<strong>What this teaches us (1.4 Ethics & Responsible Use):</strong> Professional responsibility includes being honest about past mistakes — especially when those mistakes caused harm to others. Full disclosure and genuine accountability, even when personally costly, is the foundation of ethical conduct in business AI."},
+      C:{type:'bad',verdict:"❌ Minimizing your prior knowledge made things worse.",text:"Outside counsel already had the documents. The timeline was clear. Attempting to minimize the significance of not escalating — when records showed a two-year gap between discovery and any formal action — undermined your credibility with the legal team and with the court. The framing of the case shifted from 'AI bias' to 'AI bias that was knowingly suppressed.'",lesson:"<strong>What this teaches us (1.4 Ethics & Responsible Use):</strong> When you have prior knowledge of harm and documentation of it, minimizing that knowledge in a legal context is both strategically and ethically wrong. Owning what happened fully — not minimizing it — is the only path that leads somewhere better."},
+      D:{type:'bad',verdict:"❌ Framing a bias problem as a data issue made things worse.",text:"Courts, journalists, and the public are increasingly familiar with the difference between 'data issue' and 'discriminatory AI outcome.' 280 applicants had documented businesses and careers proving their creditworthiness. Calling their rejection a 'data issue' while settling quietly would likely have made the story bigger and left the underlying AI problem unfixed.",lesson:"<strong>What this teaches us (1.4 Ethics & Responsible Use):</strong> Language choices matter in AI accountability. Minimizing harm through corporate framing erodes trust and rarely prevents legal or reputational consequences. Real accountability requires naming the problem accurately and fixing it genuinely."}
+    }
+  }
+};
+
+let score=0,answers={},currentScenario=0;
+const total=6;
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='s6')buildS6();
+  updateScoreRow(id);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+  const pct=(currentScenario/total)*100;
+  document.getElementById('heroProgress').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=currentScenario+' of '+total+' scenarios complete';
+}
+function getBranch(){return answers[3]==='A'?'good':'bad';}
+function updateScoreRow(screenId){
+  const num=parseInt(screenId.replace('s',''));
+  if(isNaN(num))return;
+  const row=document.getElementById('scoreRow'+num);
+  if(!row)return;
+  let html='';
+  for(let i=1;i<num;i++){
+    const a=answers[i];if(!a)continue;
+    const correct=i<6?scenarios[i].correct.includes(a):s6Branches[getBranch()].correct.includes(a);
+    html+=`<div class="score-chip">${correct?'✅':'⚠️'} Scenario ${i}</div>`;
+  }
+  row.innerHTML=html;
+}
+function buildS6(){
+  const b=getBranch(),d=s6Branches[b];
+  document.getElementById('s6-branch-banner').innerHTML=`<div class="branch-banner"><span class="icon">🔀</span><div>${d.bannerText}</div></div>`;
+  document.getElementById('s6-title').textContent=d.title;
+  document.getElementById('s6-scene').innerHTML=d.scene;
+  if(!answers[6]){
+    document.getElementById('s6-choices').innerHTML=d.choices.map(c=>
+      `<button class="choice-btn" onclick="answer(6,'${c.key}')"><span class="letter">${c.key}</span>${c.text}</button>`
+    ).join('');
+  }
+}
+function answer(n,choice){
+  answers[n]=choice;
+  currentScenario=Math.max(currentScenario,n);
+  updateProgress();
+  let data,isCorrect;
+  if(n===6){const b=getBranch();data=s6Branches[b].answers[choice];isCorrect=s6Branches[b].correct.includes(choice);}
+  else{data=scenarios[n].answers[choice];isCorrect=scenarios[n].correct.includes(choice);}
+  if(isCorrect)score++;
+  const btns=document.querySelectorAll(`#s${n} .choice-btn`);
+  btns.forEach(b=>{b.disabled=true;b.style.opacity='0.5';b.style.cursor='default';});
+  const idx=['A','B','C','D'].indexOf(choice);
+  if(btns[idx]){btns[idx].style.opacity='1';btns[idx].style.borderColor=data.type==='good'?'var(--green)':data.type==='bad'?'var(--red)':'var(--amber)';}
+  document.getElementById(`s${n}-box`).className='consequence-box '+data.type;
+  document.getElementById(`s${n}-verdict`).textContent=data.verdict;
+  document.getElementById(`s${n}-text`).innerHTML=data.text;
+  document.getElementById(`s${n}-lesson`).innerHTML=data.lesson;
+  if(n===3){
+    const bp=document.getElementById('s3-branch-preview');
+    bp.innerHTML=choice==='A'
+      ?'<strong>🔀 Your choice will affect Scenario 6.</strong> You suspended the loan AI and escalated to leadership and legal. A formal audit has been launched. That paper trail is going to matter when regulators come calling.'
+      :'<strong>🔀 Your choice will affect Scenario 6.</strong> The loan AI kept running. Without a formal escalation, hundreds more applicants were evaluated by a potentially discriminatory model. That decision will resurface in Scenario 6 — in a courtroom.';
+    bp.style.display='block';
+  }
+  document.getElementById(`s${n}-result`).classList.add('show');
+  setTimeout(()=>document.getElementById(`s${n}-result`).scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+function showResults(){
+  currentScenario=total;updateProgress();goTo('results-screen');
+  const ring=document.getElementById('scoreRing');
+  ring.textContent=score+'/6';
+  const rm=['needs-work','needs-work','okay','okay','good','good','excellent'];
+  ring.className='score-ring '+(rm[score]||'needs-work');
+  const msgs=[
+    ["Let's Review — These Concepts Are Critical","Bias, fairness, and privacy in business AI have real consequences. Revisit the lessons and try again."],
+    ["Let's Review — These Concepts Are Critical","Bias, fairness, and privacy in business AI have real consequences. Revisit the lessons and try again."],
+    ["Keep Going — Some Key Concepts to Revisit","You made some strong calls, but a few scenarios revealed gaps. Try again — these decisions matter."],
+    ["Keep Going — Some Key Concepts to Revisit","You made some strong calls, but a few scenarios revealed gaps. Try again — these decisions matter."],
+    ["Strong Work — You're Thinking Like a Responsible AI Business Advisor","You got most of the hard calls right. Review the ones you missed."],
+    ["Strong Work — You're Thinking Like a Responsible AI Business Advisor","You got most of the hard calls right. Review the ones you missed."],
+    ["Outstanding — You're an AI Ethics Leader in Business","You made the right call in every scenario, including the branching final challenge."]
+  ];
+  document.getElementById('resultsTitle').textContent=msgs[score][0];
+  document.getElementById('resultsSubtitle').textContent=msgs[score][1];
+  const b=getBranch();
+  const noteEl=document.getElementById('branchResultNote');
+  noteEl.innerHTML=b==='good'
+    ?"<strong>🔀 Your Scenario 3 decision gave Apex a chance to lead with integrity.</strong> Because you escalated the loan AI bias and triggered a formal audit, the company had a real corrective story to tell when the CFPB called. 340 affected applicants got outreach and a second look. One decision to do the hard right thing created a trail that protected both the company and the people it had wronged."
+    :"<strong>🔀 Your Scenario 3 decision led to a class-action lawsuit two years later.</strong> Because the loan AI was never formally suspended or audited, 280 small business owners were denied loans they should have received. Some lost their businesses. When discovery surfaced your quiet adjustment, the case became about knowing concealment — not just algorithmic bias.";
+  noteEl.style.display='block';
+  const names={1:'The AI That Knows Your Shopping Habits',2:'The AI That Charges Different Prices',3:'The AI Loan Advisor',4:'The Employee Monitoring AI',5:'The AI That Decides Who Gets Help First',6:s6Branches[b].title};
+  let html='';
+  for(let i=1;i<=6;i++){
+    const a=answers[i];if(!a)continue;
+    const d=i===6?s6Branches[b].answers[a]:scenarios[i].answers[a];
+    const correct=i===6?s6Branches[b].correct.includes(a):scenarios[i].correct.includes(a);
+    html+=`<div class="review-item"><span class="icon">${correct?'✅':d.type==='okay'?'⚠️':'❌'}</span><div><strong style="display:block;margin-bottom:4px;">Scenario ${i}: ${names[i]}</strong><span style="color:var(--text-muted);">You chose <strong>Option ${a}</strong> — ${d.verdict.replace(/[✅❌⚠️]\s*/,'')}</span></div></div>`;
+  }
+  document.getElementById('reviewList').innerHTML=html;
+}
+function restartSim(){
+  score=0;answers={};currentScenario=0;updateProgress();
+  for(let i=1;i<=6;i++){
+    const r=document.getElementById(`s${i}-result`);if(r)r.classList.remove('show');
+    document.querySelectorAll(`#s${i} .choice-btn`).forEach(b=>{b.disabled=false;b.style.opacity='1';b.style.cursor='pointer';b.style.borderColor='';});
+    const row=document.getElementById('scoreRow'+i);if(row)row.innerHTML='';
+  }
+  const bp=document.getElementById('s3-branch-preview');
+  if(bp){bp.innerHTML='';bp.style.display='none';}
+  document.getElementById('s6-branch-banner').innerHTML='';
+  document.getElementById('s6-title').textContent='';
+  document.getElementById('s6-scene').innerHTML='';
+  document.getElementById('s6-choices').innerHTML='';
+  document.getElementById('branchResultNote').style.display='none';
+  goTo('intro-screen');
+}
+</script>
+</body>
+</html>
