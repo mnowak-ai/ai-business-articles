@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Platform Decision | Module 2 Activity | AI Essentials</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────── */
+:root {
+  --purple:       #7B2FBE;
+  --purple-dark:  #5a1f8f;
+  --purple-light: #9d4fd4;
+  --purple-xlight:#f3eafd;
+  --purple-mid:   #ede0fa;
+  --white:        #ffffff;
+  --gray-100:     #f8f6fb;
+  --gray-200:     #ede8f5;
+  --gray-600:     #6b7280;
+  --gray-800:     #1f1235;
+  --max:          860px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 52px; }
+.section-block { scroll-margin-top: 52px; }
+body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--gray-800); line-height: 1.7; }
+
+/* ─────────────────────────────────────────
+   STICKY TOP NAV
+───────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 0;
+  height: 52px;
+  box-shadow: 0 1px 6px rgba(123,47,190,0.07);
+}
+.topbar-brand {
+  font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 700;
+  color: var(--purple); text-decoration: none; margin-right: 24px; flex-shrink: 0;
+}
+.topbar-links {
+  display: flex; gap: 2px; overflow-x: auto; flex: 1;
+  scrollbar-width: none;
+}
+.topbar-links::-webkit-scrollbar { display: none; }
+.nav-pill {
+  font-size: 0.78rem; font-weight: 600; white-space: nowrap;
+  padding: 5px 14px; border-radius: 100px; text-decoration: none;
+  color: var(--gray-600); transition: all 0.2s;
+  border: 1px solid transparent;
+  font-family: 'DM Sans', sans-serif;
+}
+.nav-pill:hover { color: var(--purple); background: var(--purple-xlight); }
+.nav-pill.active { color: var(--purple); background: var(--purple-xlight); border-color: var(--purple-mid); }
+
+/* ─────────────────────────────────────────
+   SECTION WRAPPERS
+───────────────────────────────────────── */
+.section-block {
+  border-bottom: 2px solid var(--gray-200);
+}
+.section-content {
+  max-width: var(--max); margin: 0 auto; padding: 52px 24px 64px;
+}
+
+/* ─────────────────────────────────────────
+   HERO (Overview)
+───────────────────────────────────────── */
+.hero {
+  background: var(--purple); color: white;
+  padding: 72px 24px 60px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 100%, #9d4fd480 0%, transparent 70%);
+}
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase; color: #d5b8f5;
+  margin-bottom: 18px; position: relative;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif; font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900; line-height: 1.15; margin-bottom: 20px; position: relative;
+}
+.hero h1 em { font-style: italic; color: #d5b8f5; }
+.hero-sub {
+  font-size: 1.05rem; color: #e2d0f8; max-width: 560px;
+  margin: 0 auto 36px; position: relative;
+}
+.badge-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; position: relative; }
+.badge {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 100px; padding: 6px 18px; font-size: 13px;
+  font-weight: 500; color: white; display: flex; align-items: center; gap: 6px;
+}
+
+/* ─────────────────────────────────────────
+   SECTION HERO BANNERS
+───────────────────────────────────────── */
+.section-hero {
+  background: var(--purple); color: white;
+  padding: 48px 24px 40px; text-align: center; position: relative; overflow: hidden;
+}
+.section-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(157,79,212,0.45) 0%, transparent 65%);
+}
+.section-num {
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  letter-spacing: 3px; color: #d5b8f5; margin-bottom: 10px; position: relative;
+}
+.section-hero h2 {
+  font-family: 'Fraunces', serif; font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+  font-weight: 900; margin-bottom: 12px; position: relative;
+}
+.section-hero p { color: #ddc7f8; font-size: 0.97rem; max-width: 500px; margin: 0 auto; position: relative; }
+.time-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 100px; padding: 5px 14px; font-size: 12px;
+  color: white; margin-top: 14px; position: relative;
+}
+
+/* ─────────────────────────────────────────
+   SHARED COMPONENTS
+───────────────────────────────────────── */
+.scenario-card {
+  background: var(--purple-xlight); border-left: 4px solid var(--purple);
+  border-radius: 12px; padding: 28px 32px; margin-bottom: 32px;
+}
+.scenario-card h3 {
+  font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--purple-dark);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+}
+.scenario-card p { color: #3d2260; font-size: 0.95rem; margin-bottom: 8px; }
+.scenario-card p:last-child { margin-bottom: 0; }
+
+.company-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px; margin: 0 0 36px;
+}
+.company-stat {
+  background: white; border: 1px solid var(--gray-200); border-radius: 12px;
+  padding: 20px 16px; text-align: center; box-shadow: 0 2px 8px rgba(123,47,190,0.07);
+}
+.company-stat .icon { font-size: 26px; margin-bottom: 6px; }
+.company-stat .num {
+  font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 700;
+  color: var(--purple); display: block;
+}
+.company-stat .label { font-size: 0.78rem; color: var(--gray-600); margin-top: 2px; }
+
+.role-card {
+  background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%);
+  color: white; border-radius: 16px; padding: 32px; margin-bottom: 36px;
+  display: flex; gap: 20px; align-items: flex-start;
+}
+.role-icon { font-size: 40px; flex-shrink: 0; }
+.role-card h4 { font-family: 'Fraunces', serif; font-size: 1rem; color: #e2d0f8; font-weight: 300; font-style: italic; margin-bottom: 6px; }
+.role-card h3 { font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+.role-card p { font-size: 0.95rem; color: #ddc7f8; line-height: 1.7; }
+
+.section-label {
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--purple);
+  margin-bottom: 12px; margin-top: 40px;
+}
+.section-title {
+  font-family: 'Fraunces', serif; font-size: 1.55rem; font-weight: 700;
+  color: var(--gray-800); margin-bottom: 20px;
+}
+
+.outcomes-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+.outcomes-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: white; border: 1px solid var(--gray-200); border-radius: 10px;
+  padding: 14px 18px; font-size: 0.93rem; box-shadow: 0 1px 4px rgba(123,47,190,0.05);
+}
+.outcome-check {
+  width: 26px; height: 26px; background: var(--purple); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 12px; flex-shrink: 0;
+}
+
+.constraints-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px; margin-bottom: 32px;
+}
+.constraint-card { background: var(--gray-100); border-radius: 12px; padding: 20px 22px; border: 1px solid var(--gray-200); }
+.constraint-card .ct-icon { font-size: 20px; margin-bottom: 8px; }
+.constraint-card h4 { font-size: 0.82rem; font-weight: 600; color: var(--purple); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+.constraint-card p { font-size: 0.88rem; color: #4a3060; }
+
+.alert {
+  background: #fff8e8; border: 1.5px solid #f5c842; border-radius: 10px;
+  padding: 14px 18px; font-size: 0.88rem; color: #7a5c00;
+  margin: 20px 0; display: flex; gap: 10px; align-items: flex-start;
+}
+
+/* Overview nav cards - NOT links, just preview */
+.overview-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;
+}
+.overview-card {
+  background: white; border: 2px solid var(--gray-200); border-radius: 14px;
+  padding: 22px; display: flex; flex-direction: column; gap: 8px;
+}
+.overview-card .ov-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--purple-light); letter-spacing: 2px; }
+.overview-card .ov-title { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700; }
+.overview-card .ov-desc { font-size: 0.83rem; color: var(--gray-600); line-height: 1.6; flex: 1; }
+.overview-card .ov-output { font-size: 0.75rem; color: var(--purple); font-weight: 600; font-family: 'Space Mono', monospace; border-top: 1px solid var(--gray-200); padding-top: 10px; margin-top: 4px; }
+
+/* Step headers */
+.step-block { margin-bottom: 36px; }
+.step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.step-num {
+  width: 36px; height: 36px; background: var(--purple); border-radius: 50%;
+  color: white; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.step-header h3 { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 700; }
+.step-time { margin-left: auto; font-size: 0.75rem; color: var(--gray-600); font-family: 'Space Mono', monospace; white-space: nowrap; }
+
+/* Read grid */
+.read-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 16px 0; }
+.read-col { background: var(--gray-100); border-radius: 12px; padding: 20px; border-top: 3px solid var(--purple); }
+.read-col h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--purple); font-weight: 600; margin-bottom: 10px; }
+.read-col ul { list-style: none; }
+.read-col ul li { font-size: 0.87rem; color: #4a3060; padding: 6px 0; border-bottom: 1px solid var(--gray-200); display: flex; gap: 6px; }
+.read-col ul li:last-child { border-bottom: none; }
+.read-col ul li::before { content: '·'; color: var(--purple); font-weight: 700; flex-shrink: 0; }
+
+/* Platform compare */
+.compare-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+.platform-card { border-radius: 12px; padding: 20px; border: 2px solid var(--gray-200); }
+.platform-card.ms { border-color: #0078d4; background: #f0f8ff; }
+.platform-card.goog { border-color: #34a853; background: #f0fbf4; }
+.platform-card h4 { font-family: 'Fraunces', serif; font-size: 0.97rem; font-weight: 700; margin-bottom: 8px; }
+.platform-card.ms h4 { color: #005ba1; }
+.platform-card.goog h4 { color: #1a7a3d; }
+.platform-card ul { list-style: none; }
+.platform-card ul li { font-size: 0.83rem; padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.07); color: #333; display: flex; gap: 5px; }
+.platform-card ul li:last-child { border-bottom: none; }
+
+/* Input card */
+.input-card { background: white; border: 2px solid var(--gray-200); border-radius: 14px; padding: 24px 28px; margin-top: 14px; }
+.input-card h4 { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--gray-800); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.question-block { margin-bottom: 20px; }
+.question-block:last-of-type { margin-bottom: 0; }
+.question-block label { display: block; font-size: 0.87rem; font-weight: 600; color: var(--purple-dark); margin-bottom: 7px; }
+.question-block textarea {
+  width: 100%; padding: 11px 15px;
+  border: 1.5px solid var(--gray-200); border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+  color: var(--gray-800); resize: vertical; transition: border-color 0.2s;
+  background: var(--gray-100); min-height: 85px;
+}
+.question-block textarea:focus { outline: none; border-color: var(--purple); background: white; }
+.question-block input[type="text"] {
+  width: 100%; padding: 10px 15px;
+  border: 1.5px solid var(--gray-200); border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+  background: var(--gray-100); transition: border-color 0.2s;
+}
+.question-block input[type="text"]:focus { outline: none; border-color: var(--purple); background: white; }
+.question-block .hint { font-size: 0.76rem; color: var(--gray-600); margin-top: 4px; font-style: italic; }
+.char-counter { font-size: 0.74rem; color: var(--gray-600); text-align: right; margin-top: 3px; }
+
+/* Prompt box */
+.prompt-box {
+  background: var(--gray-800); color: #e2d0f8; border-radius: 14px;
+  padding: 26px 28px; margin: 16px 0; font-family: 'Space Mono', monospace;
+  font-size: 0.85rem; line-height: 1.8; position: relative;
+}
+.prompt-box::before {
+  content: attr(data-label);
+  position: absolute; top: -10px; left: 18px;
+  background: var(--purple); color: white; font-size: 9px;
+  letter-spacing: 2px; padding: 3px 12px; border-radius: 100px;
+}
+.prompt-box.green::before { background: #27ae60; }
+.prompt-highlight { color: #a8e6c0; }
+.copy-btn {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(123,47,190,0.3); border: 1px solid rgba(179,125,232,0.4);
+  color: #d5b8f5; padding: 4px 11px; border-radius: 6px;
+  font-size: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+}
+.copy-btn:hover { background: rgba(123,47,190,0.5); }
+
+/* Warning card */
+.warning-card { background: #fff8e8; border: 1.5px solid #f5c842; border-radius: 12px; padding: 18px 22px; margin: 14px 0; }
+.warning-card h4 { color: #7a5c00; font-size: 0.87rem; font-weight: 700; margin-bottom: 8px; display: flex; gap: 8px; }
+.warning-card ul { list-style: none; }
+.warning-card ul li { font-size: 0.85rem; color: #7a5c00; padding: 4px 0; display: flex; gap: 8px; }
+.warning-card ul li::before { content: '→'; flex-shrink: 0; }
+
+/* Follow-up options */
+.followup-options { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+.followup-opt {
+  background: var(--gray-100); border: 1.5px solid var(--gray-200); border-radius: 10px;
+  padding: 12px 16px; cursor: pointer; font-family: 'Space Mono', monospace;
+  font-size: 0.8rem; color: #3d2260; transition: all 0.2s; line-height: 1.6;
+}
+.followup-opt:hover, .followup-opt.selected { background: var(--purple-xlight); border-color: var(--purple); color: var(--purple-dark); }
+
+/* Before/after */
+.compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+.before-box, .after-box { border-radius: 12px; padding: 20px; font-family: 'Space Mono', monospace; font-size: 0.8rem; line-height: 1.7; }
+.before-box { background: #fff3f3; border: 1.5px solid #f5b8b8; color: #8b3030; }
+.after-box  { background: #f0fbf4; border: 1.5px solid #7de8a0; color: #1a5c35; }
+.box-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; display: block; }
+.before-box .box-label { color: #c0392b; }
+.after-box .box-label  { color: #1a8a48; }
+
+/* Ingredient tags */
+.ingredient-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.ingredient {
+  background: var(--purple-xlight); border: 1.5px solid var(--purple-mid);
+  border-radius: 100px; padding: 6px 14px; font-size: 0.83rem; color: var(--purple-dark); font-weight: 500;
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* Checklist */
+.checklist { list-style: none; margin: 12px 0; }
+.checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--gray-200); font-size: 0.9rem; }
+.checklist li:last-child { border-bottom: none; }
+.check-box {
+  width: 20px; height: 20px; border: 2px solid var(--purple); border-radius: 4px;
+  cursor: pointer; flex-shrink: 0; display: flex; align-items: center;
+  justify-content: center; transition: all 0.2s; margin-top: 2px; font-size: 11px;
+}
+.check-box.checked { background: var(--purple); color: white; }
+
+/* Quality opts */
+.quality-card { background: var(--gray-100); border-radius: 12px; padding: 20px; margin: 14px 0; }
+.quality-card h4 { font-family: 'Fraunces', serif; font-size: 0.97rem; margin-bottom: 14px; }
+.quality-q { margin-bottom: 12px; }
+.quality-q p { font-size: 0.87rem; font-weight: 600; color: var(--purple-dark); margin-bottom: 7px; }
+.quality-opts { display: flex; gap: 7px; flex-wrap: wrap; }
+.quality-opt {
+  padding: 5px 14px; border-radius: 100px; border: 1.5px solid var(--gray-200);
+  background: white; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; color: var(--gray-800);
+}
+.quality-opt:hover, .quality-opt.selected { background: var(--purple); color: white; border-color: var(--purple); }
+
+/* Decision picker */
+.decision-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+.decision-opt {
+  border: 2.5px solid var(--gray-200); border-radius: 16px; padding: 24px 20px;
+  text-align: center; cursor: pointer; transition: all 0.25s; background: white;
+}
+.decision-opt.ms-opt:hover, .decision-opt.ms-opt.selected { border-color: #0078d4; background: #f0f8ff; }
+.decision-opt.goog-opt:hover, .decision-opt.goog-opt.selected { border-color: #34a853; background: #f0fbf4; }
+.decision-opt .d-icon { font-size: 36px; margin-bottom: 10px; }
+.decision-opt .d-name { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.decision-opt.ms-opt .d-name { color: #005ba1; }
+.decision-opt.goog-opt .d-name { color: #1a7a3d; }
+.decision-opt .d-sub { font-size: 0.78rem; color: var(--gray-600); }
+.decision-opt .sel-badge { display: none; background: var(--purple); color: white; font-size: 10px; padding: 2px 10px; border-radius: 100px; margin-top: 6px; }
+.decision-opt.selected .sel-badge { display: inline-block; }
+
+/* AI vs Human */
+.ai-human-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; margin: 20px 0; align-items: stretch; }
+.ai-col  { background: #f0f8ff; border: 1.5px solid #b8d9f5; border-radius: 12px 0 0 12px; padding: 18px; }
+.vs-col  { background: var(--gray-800); color: white; display: flex; align-items: center; justify-content: center; width: 40px; font-family: 'Fraunces', serif; font-size: 0.85rem; font-weight: 700; }
+.human-col { background: var(--purple-xlight); border: 1.5px solid var(--purple-mid); border-radius: 0 12px 12px 0; padding: 18px; }
+.ai-col h4 { color: #005ba1; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.human-col h4 { color: var(--purple-dark); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.strength-list { list-style: none; }
+.strength-list li { font-size: 0.83rem; padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.07); display: flex; gap: 5px; color: #2c2c2c; }
+.strength-list li:last-child { border-bottom: none; }
+.strength-list li::before { content: '•'; color: var(--purple); }
+
+/* Agree row */
+.agree-row { display: flex; gap: 10px; margin: 10px 0; }
+.agree-opt { flex: 1; padding: 12px 8px; border: 2px solid var(--gray-200); border-radius: 10px; text-align: center; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; background: white; }
+.agree-opt:hover { border-color: var(--purple); }
+.agree-opt.agree.selected   { background: #edfaf2; border-color: #34a853; color: #1a7a3d; }
+.agree-opt.disagree.selected { background: #fff3f3; border-color: #e53935; color: #a31515; }
+.agree-opt.partial.selected  { background: var(--purple-xlight); border-color: var(--purple); color: var(--purple-dark); }
+
+/* Brief builder */
+.brief-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.brief-num {
+  background: var(--purple); color: white; width: 30px; height: 30px; border-radius: 50%;
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.brief-header h4 { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 700; }
+.brief-tag { margin-left: auto; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--purple); background: var(--purple-xlight); padding: 3px 10px; border-radius: 100px; font-weight: 600; }
+.brief-tag.req { background: #fff0f0; color: #c0392b; }
+
+.rec-card { border: 2.5px solid var(--gray-200); border-radius: 14px; overflow: hidden; margin: 14px 0; }
+.rec-options { display: grid; grid-template-columns: 1fr 1fr; }
+.rec-opt { padding: 22px; cursor: pointer; transition: all 0.2s; text-align: center; border-bottom: 3px solid transparent; }
+.rec-opt:first-child { border-right: 1px solid var(--gray-200); }
+.rec-opt:hover { background: var(--gray-100); }
+.rec-opt.ms.selected  { background: #f0f8ff; border-bottom-color: #0078d4; }
+.rec-opt.goog.selected { background: #f0fbf4; border-bottom-color: #34a853; }
+.rec-opt .ro-icon { font-size: 32px; margin-bottom: 6px; }
+.rec-opt .ro-name { font-family: 'Fraunces', serif; font-size: 0.97rem; font-weight: 700; }
+.rec-opt.ms .ro-name { color: #005ba1; }
+.rec-opt.goog .ro-name { color: #1a7a3d; }
+.rec-opt .ro-status { font-size: 0.75rem; color: var(--gray-600); margin-top: 3px; }
+.rec-opt.ms.selected .ro-status, .rec-opt.goog.selected .ro-status { font-weight: 700; color: var(--purple); }
+.rec-warning { background: #fff8e8; padding: 10px 18px; font-size: 0.8rem; color: #7a5c00; border-top: 1px solid #f5c842; }
+
+.reasons-grid { display: flex; flex-direction: column; gap: 12px; }
+.reason-item { display: flex; gap: 12px; align-items: flex-start; }
+.reason-num {
+  width: 28px; height: 28px; background: var(--purple-xlight); border: 1.5px solid var(--purple-mid);
+  border-radius: 50%; color: var(--purple); font-family: 'Space Mono', monospace; font-size: 10px;
+  font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+}
+.reason-item textarea { flex: 1; min-height: 72px; padding: 10px 13px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; resize: vertical; background: var(--gray-100); }
+.reason-item textarea:focus { outline: none; border-color: var(--purple); background: white; }
+
+/* Confidence scale */
+.confidence-scale { display: flex; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+.conf-opt {
+  flex: 1; min-width: 130px; padding: 12px 10px; border: 2px solid var(--gray-200);
+  border-radius: 10px; text-align: center; cursor: pointer; font-size: 0.78rem;
+  font-weight: 600; transition: all 0.2s; background: white;
+}
+.conf-opt .conf-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+.conf-opt:hover { border-color: var(--purple); }
+.conf-opt.selected { background: var(--purple); color: white; border-color: var(--purple); }
+
+/* Output reminder */
+.output-reminder {
+  background: var(--purple-xlight); border-left: 4px solid var(--purple);
+  border-radius: 0 10px 10px 0; padding: 14px 18px; font-size: 0.88rem;
+  color: #3d2260; margin-top: 18px; display: flex; gap: 10px; align-items: flex-start;
+}
+.output-list { list-style: none; margin-top: 6px; }
+.output-list li { padding: 2px 0; font-size: 0.85rem; display: flex; gap: 7px; }
+.output-list li::before { content: '→'; color: var(--purple); }
+
+/* Save / buttons */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 14px; }
+.save-btn {
+  display: inline-flex; align-items: center; gap: 7px; background: var(--purple); color: white;
+  border: none; padding: 11px 26px; border-radius: 100px; font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.save-btn:hover { background: var(--purple-dark); transform: translateY(-1px); }
+.preview-btn {
+  display: inline-flex; align-items: center; gap: 7px; background: var(--gray-100);
+  color: var(--gray-800); border: 2px solid var(--gray-200); padding: 10px 20px;
+  border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.preview-btn:hover { border-color: var(--purple); color: var(--purple); }
+.save-confirm { display: none; color: var(--purple); font-size: 0.83rem; font-weight: 600; }
+
+/* Section nav arrows */
+.section-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--gray-200);
+}
+.snav-btn {
+  display: inline-flex; align-items: center; gap: 7px; padding: 11px 22px;
+  border-radius: 100px; font-size: 0.88rem; font-weight: 600; text-decoration: none;
+  transition: all 0.2s; border: 1.5px solid var(--gray-200); color: var(--gray-600);
+}
+.snav-btn:hover { border-color: var(--purple); color: var(--purple); }
+.snav-btn.primary { background: var(--purple); color: white; border-color: var(--purple); }
+.snav-btn.primary:hover { background: var(--purple-dark); }
+.snav-btn.disabled { opacity: 0.35; pointer-events: none; }
+
+/* Divider */
+.divider { border: none; border-top: 1px solid var(--gray-200); margin: 28px 0; }
+
+/* Preview modal */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: white; max-width: 680px; width: 90%; max-height: 85vh; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); display: flex; flex-direction: column; }
+.modal-header { background: var(--purple); color: white; padding: 18px 26px; display: flex; align-items: center; justify-content: space-between; }
+.modal-header h3 { font-family: 'Fraunces', serif; font-size: 1.05rem; }
+.modal-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; line-height: 1; }
+.modal-body { padding: 26px; overflow-y: auto; font-size: 0.9rem; line-height: 1.8; }
+.modal-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--gray-200); }
+.modal-section:last-child { border-bottom: none; margin-bottom: 0; }
+.modal-section h4 { font-family: 'Fraunces', serif; font-size: 0.92rem; color: var(--purple); margin-bottom: 6px; }
+.modal-section p { color: #3d2260; margin-top: 5px; }
+
+/* Completion */
+.completion-card {
+  background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%);
+  color: white; border-radius: 20px; padding: 44px 36px; text-align: center; margin-top: 40px;
+  position: relative; overflow: hidden;
+}
+.completion-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle 300px at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 70%); }
+.completion-card h3 { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 900; margin-bottom: 10px; position: relative; }
+.completion-card p { color: #ddc7f8; font-size: 0.97rem; max-width: 480px; margin: 0 auto 24px; position: relative; }
+.skills-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; position: relative; }
+.skill-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 100px; padding: 6px 16px; font-size: 0.8rem; color: white; }
+
+/* Writing tips */
+.writing-tips { background: var(--purple-xlight); border-radius: 12px; padding: 18px 22px; margin: 16px 0; }
+.writing-tips h4 { font-size: 0.82rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.writing-tips ul { list-style: none; }
+.writing-tips ul li { font-size: 0.85rem; color: #3d2260; padding: 3px 0; display: flex; gap: 7px; }
+.writing-tips ul li::before { content: '✓'; color: var(--purple); font-weight: 700; flex-shrink: 0; }
+
+/* Reflection */
+.rq-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+.rq-icon { width: 42px; height: 42px; background: var(--purple-xlight); border: 2px solid var(--purple-mid); border-radius: 12px; font-size: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rq-header h4 { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 700; line-height: 1.4; padding-top: 5px; }
+
+/* Intro block */
+.intro-block { background: var(--gray-800); color: white; border-radius: 16px; padding: 28px 32px; margin-bottom: 28px; }
+.intro-block h3 { font-family: 'Fraunces', serif; font-size: 1.15rem; color: #d5b8f5; margin-bottom: 10px; }
+.intro-block p { font-size: 0.9rem; color: #c5b3e0; margin-bottom: 8px; }
+.intro-block p:last-child { margin-bottom: 0; }
+.intro-block strong { color: #e2d0f8; }
+
+/* Footer */
+footer { background: var(--gray-100); border-top: 1px solid var(--gray-200); text-align: center; padding: 24px; font-size: 0.8rem; color: var(--gray-600); }
+footer strong { color: var(--purple); }
+
+/* Animations */
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+.fade-in { opacity: 0; transform: translateY(16px); animation: fadeUp 0.5s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     STICKY TOP NAV
+══════════════════════════════════════ -->
+<nav class="topbar">
+  <span class="topbar-brand">AI Essentials</span>
+  <div class="topbar-links">
+    <a class="nav-pill" href="#overview">Overview</a>
+    <a class="nav-pill" href="#section1">1 · Understand</a>
+    <a class="nav-pill" href="#section2">2 · AI Analysis</a>
+    <a class="nav-pill" href="#section3">3 · Refine Prompt</a>
+    <a class="nav-pill" href="#section4">4 · Your Judgment</a>
+    <a class="nav-pill" href="#section5">5 · CEO Brief</a>
+    <a class="nav-pill" href="#section6">6 · Reflect</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════
+     OVERVIEW
+══════════════════════════════════════ -->
+<div id="overview" class="section-block">
+  <div class="hero">
+    <div class="hero-eyebrow">Advanced AI in Business Certification · Module 2 Activity</div>
+    <h1>The AI Platform Decision:<br><em>Advise the CEO Under Pressure</em></h1>
+    <p class="hero-sub">You're an intern. The clock is ticking. The CEO needs one answer. Can you use AI wisely to help them decide?</p>
+    <div class="badge-row">
+      <div class="badge">⏱ ~60 minutes total</div>
+      <div class="badge">📄 6 Sections</div>
+      <div class="badge">🎯 1 Final Deliverable</div>
+      <div class="badge">🤖 AI-Assisted</div>
+    </div>
+  </div>
+
+  <div class="section-content">
+
+    <div class="scenario-card fade-in">
+      <h3>🏢 Meet the Company: StrideX Global</h3>
+      <p>StrideX Global is a big athletic shoe company — think sneakers, running shoes, and sports gear — sold in stores and online across the world.</p>
+      <p>Right now, they have a problem: their teams are split between two different tech systems. Leadership has decided it's time to pick just <strong>ONE AI tool</strong> for the entire company — in 90 days.</p>
+    </div>
+
+    <div class="company-grid fade-in">
+      <div class="company-stat"><div class="icon">🌍</div><span class="num">42</span><div class="label">Countries they operate in</div></div>
+      <div class="company-stat"><div class="icon">👥</div><span class="num">3,200</span><div class="label">Employees worldwide</div></div>
+      <div class="company-stat"><div class="icon">👟</div><span class="num">2</span><div class="label">Platforms in use (Microsoft & Google)</div></div>
+      <div class="company-stat"><div class="icon">📅</div><span class="num">90</span><div class="label">Days to make a decision</div></div>
+    </div>
+
+    <div class="role-card fade-in">
+      <div class="role-icon">🧑‍💼</div>
+      <div>
+        <h4>Your role in this activity</h4>
+        <h3>You Are an AI Strategy Intern</h3>
+        <p>Your job is to help the CEO choose between two AI tools: <strong>Microsoft Copilot</strong> or <strong>Google Gemini</strong>. You'll use AI to help you think — but you'll also have to think for yourself. The CEO needs a clear recommendation, not a "maybe."</p>
+      </div>
+    </div>
+
+    <div class="section-label">What You'll Learn</div>
+    <div class="section-title">Learning Outcomes</div>
+    <ul class="outcomes-list fade-in">
+      <li><div class="outcome-check">✓</div><span>Use AI tools to dig into a complex business problem and summarize what matters most</span></li>
+      <li><div class="outcome-check">✓</div><span>Spot when AI is being too generic, missing context, or making assumptions you didn't ask for</span></li>
+      <li><div class="outcome-check">✓</div><span>Make a real recommendation — and explain your reasoning with confidence</span></li>
+      <li><div class="outcome-check">✓</div><span>Compare two enterprise AI tools and understand their trade-offs</span></li>
+      <li><div class="outcome-check">✓</div><span>Write a short, sharp business brief that a real CEO could actually use</span></li>
+    </ul>
+
+    <div class="section-label" style="margin-top:36px;">The Challenge</div>
+    <div class="section-title">Key Pressures & Constraints</div>
+    <div class="constraints-grid fade-in">
+      <div class="constraint-card"><div class="ct-icon">💰</div><h4>Budget Limit</h4><p>They can only afford a mid-tier enterprise plan — not the most expensive option.</p></div>
+      <div class="constraint-card"><div class="ct-icon">⚔️</div><h4>Team Disagreement</h4><p>IT likes Microsoft tools. Marketing prefers Google. The CEO has to pick one anyway.</p></div>
+      <div class="constraint-card"><div class="ct-icon">🎯</div><h4>Top Goals</h4><p>They want to improve online sales performance and marketing effectiveness above all else.</p></div>
+      <div class="constraint-card"><div class="ct-icon">🔒</div><h4>Security Worries</h4><p>Operating in 42 countries means different data privacy rules. That's a serious concern.</p></div>
+      <div class="constraint-card"><div class="ct-icon">⏰</div><h4>One Week Deadline</h4><p>The CEO needs to present to the board in 7 days. No time to overthink it.</p></div>
+      <div class="constraint-card"><div class="ct-icon">📄</div><h4>One Document to Work From</h4><p>You'll use a product comparison document as your main source of truth throughout.</p></div>
+    </div>
+
+    <div class="alert fade-in">⚠️ <div><strong>Important:</strong> There is no perfect answer here. The point is to think clearly, use AI as a tool (not a crutch), and make a decision you can defend. That's a real-world business skill.</div></div>
+
+    <div class="section-label" style="margin-top:36px;">What's Ahead</div>
+    <div class="section-title" style="margin-top:0;">Activity at a Glance</div>
+    <div class="overview-grid fade-in">
+      <div class="overview-card"><div class="ov-num">SECTION 01 · 5–7 min</div><div class="ov-title">Understand the Decision</div><div class="ov-desc">Read the comparison doc with purpose. Categorize what you find. Put yourself in the CEO's shoes.</div><div class="ov-output">📌 Output: your notes + CEO thinking</div></div>
+      <div class="overview-card"><div class="ov-num">SECTION 02 · 10–12 min</div><div class="ov-title">AI-Assisted Analysis</div><div class="ov-desc">Run a prompt. Get the AI's take. Then evaluate it critically and push back with a follow-up question.</div><div class="ov-output">📌 Output: prompt + AI response + your critique</div></div>
+      <div class="overview-card"><div class="ov-num">SECTION 03 · 10–12 min</div><div class="ov-title">Prompt Refinement</div><div class="ov-desc">Rewrite your prompt to be sharper — force the AI to pick a side and explain trade-offs. Compare the difference.</div><div class="ov-output">📌 Output: refined prompt + quality rating</div></div>
+      <div class="overview-card"><div class="ov-num">SECTION 04 · 10–12 min</div><div class="ov-title">Human Judgment vs. AI</div><div class="ov-desc">Make your own call first. Then compare it to the AI's recommendation and spot what it missed.</div><div class="ov-output">📌 Output: your pick + 150–250 word reflection</div></div>
+      <div class="overview-card"><div class="ov-num">SECTION 05 · 15–20 min</div><div class="ov-title">Executive Decision Brief</div><div class="ov-desc">Write the real deliverable: one page, CEO-ready. Recommendation, reasons, risks, AI limitations. No "it depends."</div><div class="ov-output">📌 Output: your completed CEO brief</div></div>
+      <div class="overview-card"><div class="ov-num">SECTION 06 · 5–8 min</div><div class="ov-title">Final Reflection</div><div class="ov-desc">Zoom out. Would you send this to a CEO? Did AI make you think better — or just faster?</div><div class="ov-output">📌 Output: written reflection</div></div>
+    </div>
+
+    <div class="section-nav">
+      <span class="snav-btn disabled">← Previous</span>
+      <a class="snav-btn primary" href="#section1">Start Section 1 →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 1 — UNDERSTAND THE DECISION
+══════════════════════════════════════ -->
+<div id="section1" class="section-block">
+  <div class="section-hero">
+    <div class="section-num">SECTION 01 OF 06</div>
+    <h2>Understand the Decision</h2>
+    <p>Before you ask AI anything, you need to understand the problem yourself. That's what makes your prompts — and your thinking — much sharper.</p>
+    <div class="time-badge">⏱ 5–7 minutes</div>
+  </div>
+
+  <div class="section-content">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <h3>Read the Comparison Document with a Purpose</h3>
+        <div class="step-time">~3–4 min</div>
+      </div>
+      <p style="font-size:0.93rem; margin-bottom:14px;">Your instructor will give you a document called <strong>"Product Comparison: Microsoft Copilot vs Google Gemini for Enterprise Use."</strong> As you read, organize your thinking into 3 buckets:</p>
+
+      <div class="read-grid">
+        <div class="read-col">
+          <h4>✅ Clear Advantages</h4>
+          <ul>
+            <li>What does each platform do really well?</li>
+            <li>Where is one clearly better than the other?</li>
+            <li>Any standout features?</li>
+          </ul>
+        </div>
+        <div class="read-col">
+          <h4>⚠️ Concerns or Risks</h4>
+          <ul>
+            <li>What could go wrong with each option?</li>
+            <li>Are there security issues?</li>
+            <li>Any limitations or weaknesses?</li>
+          </ul>
+        </div>
+        <div class="read-col">
+          <h4>🔁 It Depends Factors</h4>
+          <ul>
+            <li>Where the best answer changes based on company needs</li>
+            <li>Things that matter more for some businesses</li>
+            <li>Context-specific considerations</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="font-size:0.85rem; font-weight:600; color:var(--gray-800); margin: 18px 0 8px;">Quick reference — the two platforms you're comparing:</p>
+      <div class="compare-strip">
+        <div class="platform-card ms">
+          <h4>🔵 Microsoft Copilot</h4>
+          <ul>
+            <li>Built into Microsoft 365 (Word, Excel, Teams, Outlook)</li>
+            <li>Strong security certifications</li>
+            <li>Better for data-heavy and finance tasks</li>
+            <li>Preferred by IT teams</li>
+          </ul>
+        </div>
+        <div class="platform-card goog">
+          <h4>🟢 Google Gemini</h4>
+          <ul>
+            <li>Built into Google Workspace (Gmail, Docs, Slides)</li>
+            <li>Strong for creative and marketing tasks</li>
+            <li>Excellent web search integration</li>
+            <li>Preferred by marketing teams</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <h3>Think Like the CEO</h3>
+        <div class="step-time">~2–3 min</div>
+      </div>
+      <p style="font-size:0.93rem; margin-bottom:14px;">A CEO doesn't just pick the fanciest option — they think about what the company actually needs and what the biggest risks are. Try to think like them before you touch any AI tool.</p>
+
+      <div class="input-card">
+        <h4>🧠 Your Thinking Space</h4>
+        <div class="question-block">
+          <label>What matters most in this decision? (2–3 sentences)</label>
+          <textarea id="s1q1" placeholder="Think about StrideX's top goals: e-commerce performance, marketing effectiveness, and global operations. What should the CEO care about most?"></textarea>
+          <div class="hint">Tip: Look back at the Key Pressures in the Overview. Which ones feel most important to you?</div>
+        </div>
+        <div class="question-block">
+          <label>What would be the most costly mistake the company could make? (2–3 sentences)</label>
+          <textarea id="s1q2" placeholder="Think about what could go wrong — not just today, but over the next year. What decision would be hardest to undo?"></textarea>
+          <div class="hint">Tip: Consider the 42-country operation, the team disagreement, and the tight 90-day rollout timeline.</div>
+        </div>
+        <div class="btn-row">
+          <button class="save-btn" onclick="saveSection('s1')">💾 Save Notes</button>
+          <span class="save-confirm" id="s1-confirm">✅ Saved!</span>
+        </div>
+      </div>
+
+      <div class="output-reminder" style="margin-top:16px;">
+        📌 <div><strong>Section 1 Output:</strong> Informal notes — these don't need to be perfect. They're just for you to think out loud before Section 2.</div>
+      </div>
+    </div>
+
+    <div class="section-nav">
+      <a class="snav-btn" href="#overview">← Overview</a>
+      <a class="snav-btn primary" href="#section2">Next: AI Analysis →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 2 — AI-ASSISTED ANALYSIS
+══════════════════════════════════════ -->
+<div id="section2" class="section-block">
+  <div class="section-hero">
+    <div class="section-num">SECTION 02 OF 06</div>
+    <h2>AI-Assisted Analysis</h2>
+    <p>Time to use AI — but use it like a smart person, not like someone who just copies and pastes whatever it says.</p>
+    <div class="time-badge">⏱ 10–12 minutes</div>
+  </div>
+
+  <div class="section-content">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <h3>Generate Your First AI Analysis</h3>
+        <div class="step-time">~3–4 min</div>
+      </div>
+      <p style="font-size:0.93rem; margin-bottom:14px;">Open an AI tool (Perplexity AI, Claude, or ChatGPT all work). Use the prompt below. The goal isn't to get a perfect answer — it's to get a starting point you can think critically about.</p>
+
+      <div class="prompt-box" data-label="EXAMPLE PROMPT">
+        <button class="copy-btn" onclick="copyText(this,'p1text')">📋 Copy</button>
+        <span id="p1text">"Summarize the key differences between Microsoft Copilot and Google Gemini for a CEO. Focus on integrations, security, scalability, and business use cases."</span>
+      </div>
+
+      <div class="input-card">
+        <h4>📋 Paste Your AI Output Here</h4>
+        <div class="question-block">
+          <label>Copy and paste the AI's full response — don't edit it yet:</label>
+          <textarea id="s2q1" style="min-height:140px;" placeholder="Paste the AI's response here exactly as it appeared. You'll evaluate it in the next step."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <h3>Evaluate Before You Trust It</h3>
+        <div class="step-time">~3–4 min</div>
+      </div>
+
+      <div class="warning-card">
+        <h4>⚠️ Watch Out For These Common AI Problems</h4>
+        <ul>
+          <li>Answers that sound smart but could apply to any company — not StrideX specifically</li>
+          <li>Missing the context you gave (42 countries, mixed tech teams, tight deadline)</li>
+          <li>Recommendations that don't mention risks or downsides</li>
+          <li>Treating one platform as obviously better without explaining why</li>
+          <li>Using confident language that hides how uncertain the answer actually is</li>
+        </ul>
+      </div>
+
+      <div class="input-card">
+        <h4>🔍 Critical Evaluation</h4>
+        <div class="question-block">
+          <label>What feels too generic or vague about the AI's response?</label>
+          <textarea id="s2q2" placeholder="Example: It said to 'consider your company's existing infrastructure' but didn't address the fact that StrideX uses BOTH Microsoft and Google already."></textarea>
+        </div>
+        <div class="question-block">
+          <label>What important context did the AI seem to ignore or not know?</label>
+          <textarea id="s2q3" placeholder="Think about: the 90-day deadline, the internal team disagreement, the 42-country security concerns, the e-commerce priority..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <h3>Challenge the AI</h3>
+        <div class="step-time">~3–4 min</div>
+      </div>
+      <p style="font-size:0.93rem; margin-bottom:12px;">Now push back. Ask the AI one follow-up question that challenges its response. Pick one of these or write your own:</p>
+
+      <div class="followup-options">
+        <div class="followup-opt" onclick="selectFollowup(this, 's2q4')">"What might this analysis be missing about a company that already uses both Microsoft and Google tools?"</div>
+        <div class="followup-opt" onclick="selectFollowup(this, 's2q4')">"Where could this recommendation fail? What are the most likely ways this goes wrong?"</div>
+        <div class="followup-opt" onclick="selectFollowup(this, 's2q4')">"What assumptions are you making about StrideX that might not be true?"</div>
+      </div>
+
+      <div class="input-card" style="margin-top:14px;">
+        <h4>🤖 Your Follow-Up Exchange</h4>
+        <div class="question-block">
+          <label>Which follow-up question did you ask?</label>
+          <input type="text" id="s2q4" placeholder="Paste the exact question you typed into the AI...">
+        </div>
+        <div class="question-block">
+          <label>Paste the AI's follow-up response:</label>
+          <textarea id="s2q5" style="min-height:120px;" placeholder="Paste the full AI response to your follow-up question."></textarea>
+        </div>
+        <div class="question-block">
+          <label>2–3 things you noticed: gaps, improvements, or new concerns from the follow-up:</label>
+          <textarea id="s2q6" placeholder="Example: It acknowledged the mixed environment is a real challenge, but still didn't give a clear recommendation. It also raised a data residency issue I hadn't thought of."></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="save-btn" onclick="saveSection('s2')">💾 Save Notes</button>
+          <span class="save-confirm" id="s2-confirm">✅ Saved!</span>
+        </div>
+      </div>
+
+      <div class="output-reminder" style="margin-top:16px;">
+        📌 <strong>Section 2 Output:</strong>
+        <ul class="output-list">
+          <li>Your initial prompt + AI response</li>
+          <li>Your follow-up question + AI's second response</li>
+          <li>2–3 notes on gaps or weaknesses you spotted</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-nav">
+      <a class="snav-btn" href="#section1">← Section 1</a>
+      <a class="snav-btn primary" href="#section3">Next: Refine Prompt →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 3 — PROMPT REFINEMENT
+══════════════════════════════════════ -->
+<div id="section3" class="section-block">
+  <div class="section-hero">
+    <div class="section-num">SECTION 03 OF 06</div>
+    <h2>Prompt Refinement</h2>
+    <p>A better prompt = a better answer. Rewrite your original prompt to force the AI to give you something actually useful.</p>
+    <div class="time-badge">⏱ 10–12 minutes</div>
+  </div>
+
+  <div class="section-content">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <h3>Upgrade Your Prompt</h3>
+        <div class="step-time">~5–6 min</div>
+      </div>
+      <p style="font-size:0.93rem; margin-bottom:14px;">A strong business prompt does three things:</p>
+      <div class="ingredient-list">
+        <div class="ingredient">🎯 Forces a clear recommendation</div>
+        <div class="ingredient">🏢 Includes specific business context</div>
+        <div class="ingredient">⚖️ Asks for trade-offs and risks</div>
+      </div>
+
+      <p style="font-size:0.85rem; color:var(--gray-600); margin-bottom:8px; margin-top:18px;">See the difference:</p>
+      <div class="compare-row">
+        <div class="before-box"><span class="box-label">❌ Weak Prompt</span>"What is better, Microsoft Copilot or Google Gemini for a company?"</div>
+        <div class="after-box"><span class="box-label">✅ Strong Prompt</span>"You are advising the CEO of a global athletic shoe company with mixed Microsoft and Google teams. Recommend ONE platform based on their priorities: e-commerce, marketing, and 42-country security. Include risks."</div>
+      </div>
+
+      <div class="prompt-box green" data-label="EXAMPLE REFINED PROMPT" style="margin-top:18px;">
+        <button class="copy-btn" onclick="copyText(this,'p2text')">📋 Copy</button>
+        <span id="p2text">"You are advising the CEO of a global company choosing between Microsoft Copilot and Google Gemini.
+
+<span class="prompt-highlight">Company context:</span> StrideX Global — 3,200 employees, 42 countries, mixed Microsoft and Google tool usage. Top priorities: e-commerce performance and marketing effectiveness. Budget: mid-tier enterprise plan. Deadline: board presentation in one week.
+
+<span class="prompt-highlight">Your task:</span> Recommend ONE platform. Give your top 3 reasons. Then tell me the biggest risk of your recommendation and one thing that could make you change your mind."</span>
+      </div>
+
+      <p style="font-size:0.88rem; margin: 16px 0 8px; font-weight:600;">Before running it — check all 5 boxes:</p>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Forces the AI to pick ONE platform (not "it depends")</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Includes the company's name and size</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Mentions StrideX's top business priorities</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Asks for at least one risk or downside</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Has specific context (42 countries, mixed teams, deadline)</span></li>
+      </ul>
+
+      <div class="input-card">
+        <h4>✏️ Your Refined Prompt</h4>
+        <div class="question-block">
+          <label>Write or paste your upgraded prompt here — customize it based on what you noticed in Section 2:</label>
+          <textarea id="s3q1" style="min-height:130px;" placeholder="Type or paste your upgraded prompt. Feel free to add details that seem important based on your Section 2 evaluation."></textarea>
+          <div class="hint">The best prompts sound like you're briefing a smart consultant who knows nothing about StrideX yet.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <h3>Run It & Evaluate the Quality</h3>
+        <div class="step-time">~4–5 min</div>
+      </div>
+
+      <div class="input-card">
+        <h4>📊 Evaluate the Refined Response</h4>
+        <div class="question-block">
+          <label>Paste the AI's response to your refined prompt:</label>
+          <textarea id="s3q2" style="min-height:130px;" placeholder="Paste the full AI response here."></textarea>
+        </div>
+
+        <div class="quality-card">
+          <h4>Rate the quality of this response:</h4>
+          <div class="quality-q">
+            <p>Did the AI take a clear position (pick one platform)?</p>
+            <div class="quality-opts">
+              <div class="quality-opt" onclick="selectOpt(this)">Yes, clearly</div>
+              <div class="quality-opt" onclick="selectOpt(this)">Sort of</div>
+              <div class="quality-opt" onclick="selectOpt(this)">No, still vague</div>
+            </div>
+          </div>
+          <div class="quality-q">
+            <p>Is the reasoning specific to StrideX (not just generic)?</p>
+            <div class="quality-opts">
+              <div class="quality-opt" onclick="selectOpt(this)">Very specific</div>
+              <div class="quality-opt" onclick="selectOpt(this)">Somewhat</div>
+              <div class="quality-opt" onclick="selectOpt(this)">Still generic</div>
+            </div>
+          </div>
+          <div class="quality-q">
+            <p>Would this help a real CEO make a decision?</p>
+            <div class="quality-opts">
+              <div class="quality-opt" onclick="selectOpt(this)">Yes, very helpful</div>
+              <div class="quality-opt" onclick="selectOpt(this)">Partially</div>
+              <div class="quality-opt" onclick="selectOpt(this)">Not really</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <label>2–3 sentence evaluation: how did the refined prompt change the AI's response?</label>
+          <textarea id="s3q3" placeholder="Compare this to your first response. Was it more specific? Did it take a position? Did it mention risks you hadn't thought of?"></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="save-btn" onclick="saveSection('s3')">💾 Save Notes</button>
+          <span class="save-confirm" id="s3-confirm">✅ Saved!</span>
+        </div>
+      </div>
+
+      <div class="output-reminder" style="margin-top:16px;">
+        📌 <strong>Section 3 Output:</strong>
+        <ul class="output-list">
+          <li>Your refined prompt (all 5 boxes checked)</li>
+          <li>AI's refined response</li>
+          <li>2–3 sentence quality evaluation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-nav">
+      <a class="snav-btn" href="#section2">← Section 2</a>
+      <a class="snav-btn primary" href="#section4">Next: Your Judgment →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 4 — HUMAN JUDGMENT VS AI
+══════════════════════════════════════ -->
+<div id="section4" class="section-block">
+  <div class="section-hero">
+    <div class="section-num">SECTION 04 OF 06</div>
+    <h2>Human Judgment vs. AI</h2>
+    <p>AI can research and summarize. But the final call? That's on you. Form your own opinion — then compare it to what the AI said.</p>
+    <div class="time-badge">⏱ 10–12 minutes</div>
+  </div>
+
+  <div class="section-content">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <h3>Make Your Own Decision First</h3>
+        <div class="step-time">~4–5 min</div>
+      </div>
+      <p style="font-size:0.93rem; margin-bottom:14px;">Before you look at the AI's recommendation again — make your own call. Which platform would you choose for StrideX?</p>
+
+      <div class="decision-picker">
+        <div class="decision-opt ms-opt" onclick="selectDecision(this,'ms')">
+          <div class="d-icon">🔵</div>
+          <div class="d-name">Microsoft Copilot</div>
+          <div class="d-sub">Integrated with Microsoft 365</div>
+          <div class="sel-badge">✓ My Pick</div>
+        </div>
+        <div class="decision-opt goog-opt" onclick="selectDecision(this,'goog')">
+          <div class="d-icon">🟢</div>
+          <div class="d-name">Google Gemini</div>
+          <div class="d-sub">Integrated with Google Workspace</div>
+          <div class="sel-badge">✓ My Pick</div>
+        </div>
+      </div>
+
+      <div class="input-card">
+        <h4>💭 Your Reasoning</h4>
+        <div class="question-block">
+          <label>In 1–2 sentences, why did you pick that platform?</label>
+          <textarea id="s4q1" placeholder="Don't overthink it. What feels right based on what you know about StrideX? Why does this choice fit better than the other one?"></textarea>
+          <div class="hint">There's no wrong answer here — as long as you can defend your reasoning.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <h3>Compare Your Decision With the AI's</h3>
+        <div class="step-time">~5–6 min</div>
+      </div>
+
+      <div class="ai-human-row">
+        <div class="ai-col">
+          <h4>🤖 AI Strengths</h4>
+          <ul class="strength-list">
+            <li>Processing large amounts of text quickly</li>
+            <li>Summarizing features and comparisons</li>
+            <li>Generating multiple options fast</li>
+            <li>Identifying patterns in structured data</li>
+          </ul>
+        </div>
+        <div class="vs-col">VS</div>
+        <div class="human-col">
+          <h4>🧠 Human Strengths</h4>
+          <ul class="strength-list">
+            <li>Understanding team dynamics and politics</li>
+            <li>Reading between the lines of what a CEO really needs</li>
+            <li>Knowing when a "right" answer is the wrong move</li>
+            <li>Being accountable for a decision</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="font-size:0.85rem; font-weight:600; margin: 16px 0 8px;">Do you agree with the AI's recommendation?</p>
+      <div class="agree-row">
+        <div class="agree-opt agree" onclick="selectAgree(this)">✅ Yes, I agree</div>
+        <div class="agree-opt partial" onclick="selectAgree(this)">🤔 Partially agree</div>
+        <div class="agree-opt disagree" onclick="selectAgree(this)">❌ No, I disagree</div>
+      </div>
+
+      <div class="input-card" style="margin-top:14px;">
+        <h4>✍️ Your Reflection (150–250 words)</h4>
+        <div class="question-block">
+          <label>Answer all 3: Do you agree with the AI? Where is it overconfident or oversimplifying? What trade-offs did it miss?</label>
+          <textarea id="s4q2" style="min-height:160px;" placeholder="1. Do you agree with the AI? Why or why not?&#10;&#10;2. Where is the AI oversimplifying or overconfident?&#10;&#10;3. What trade-offs did it miss — things that matter to StrideX that it glossed over?" oninput="countWords(this,'s4wc')"></textarea>
+          <div class="char-counter" id="s4wc">0 words (aim for 150–250)</div>
+        </div>
+        <div class="btn-row">
+          <button class="save-btn" onclick="saveSection('s4')">💾 Save Notes</button>
+          <span class="save-confirm" id="s4-confirm">✅ Saved!</span>
+        </div>
+      </div>
+
+      <div class="output-reminder" style="margin-top:16px;">
+        📌 <strong>Section 4 Output:</strong> Your platform pick + a 150–250 word reflection comparing your thinking to the AI's. This feeds directly into your CEO Brief in Section 5.
+      </div>
+    </div>
+
+    <div class="section-nav">
+      <a class="snav-btn" href="#section3">← Section 3</a>
+      <a class="snav-btn primary" href="#section5">Next: CEO Brief →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 5 — EXECUTIVE DECISION BRIEF
+══════════════════════════════════════ -->
+<div id="section5" class="section-block">
+  <div class="section-hero">
+    <div class="section-num">SECTION 05 OF 06</div>
+    <h2>Executive Decision Brief</h2>
+    <p>This is your final deliverable. Write a one-page brief the CEO can actually use — clear, sharp, and honest about what you know and don't know.</p>
+    <div class="time-badge">⏱ 15–20 minutes</div>
+  </div>
+
+  <div class="section-content">
+
+    <div class="intro-block">
+      <h3>🧾 What Is an Executive Decision Brief?</h3>
+      <p>A short document for a busy leader who doesn't have time to read pages of analysis. It gives them: <strong>the recommendation, the reasons, the risks, and the honest caveats</strong> — all in one page or less.</p>
+      <p>Think of it like a text message to a CEO: get to the point, be honest, make it easy to act on. No fluff. No "it depends." Just your best, clearest thinking.</p>
+    </div>
+
+    <div class="writing-tips">
+      <h4>✍️ Executive Writing Rules</h4>
+      <ul>
+        <li>Short sentences. Active voice. ("We recommend X" not "It is recommended that X be considered.")</li>
+        <li>No filler phrases like "In today's fast-paced business world..." — just say what you mean</li>
+        <li>Every claim should be tied to something specific about StrideX</li>
+        <li>Include bad news too — CEOs don't trust advisors who hide the downsides</li>
+      </ul>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="margin-bottom:28px;">
+      <div class="brief-header">
+        <div class="brief-num">1</div>
+        <h4>Final Recommendation</h4>
+        <span class="brief-tag req">Required</span>
+      </div>
+      <div class="rec-card">
+        <div class="rec-options">
+          <div class="rec-opt ms" onclick="selectRec(this,'ms')">
+            <div class="ro-icon">🔵</div>
+            <div class="ro-name">Microsoft Copilot</div>
+            <div class="ro-status" id="ms-status">Click to select</div>
+          </div>
+          <div class="rec-opt goog" onclick="selectRec(this,'goog')">
+            <div class="ro-icon">🟢</div>
+            <div class="ro-name">Google Gemini</div>
+            <div class="ro-status" id="goog-status">Click to select</div>
+          </div>
+        </div>
+        <div class="rec-warning">⚠️ No "it depends" answers allowed. Pick one and defend it.</div>
+      </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="margin-bottom:28px;">
+      <div class="brief-header">
+        <div class="brief-num">2</div>
+        <h4>Top 3 Business Reasons</h4>
+        <span class="brief-tag req">Required</span>
+      </div>
+      <p style="font-size:0.9rem; margin-bottom:14px;">Focus on business impact, operational fit, and strategic alignment — not just features.</p>
+      <div class="reasons-grid">
+        <div class="reason-item"><div class="reason-num">1</div><textarea id="s5r1" placeholder="Reason 1: Business impact — what does this platform do that will actually help StrideX sell more or run better?"></textarea></div>
+        <div class="reason-item"><div class="reason-num">2</div><textarea id="s5r2" placeholder="Reason 2: Operational fit — how does this match what StrideX's teams already use? Will it cause major disruption?"></textarea></div>
+        <div class="reason-item"><div class="reason-num">3</div><textarea id="s5r3" placeholder="Reason 3: Strategic alignment — how does this support StrideX's biggest priority (e-commerce + marketing + global scale)?"></textarea></div>
+      </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="margin-bottom:28px;">
+      <div class="brief-header">
+        <div class="brief-num">3</div>
+        <h4>Key Risks</h4>
+        <span class="brief-tag req">Required</span>
+      </div>
+      <div class="input-card">
+        <div class="question-block">
+          <label>What could go wrong with your recommendation? (Be specific to StrideX)</label>
+          <textarea id="s5q1" style="min-height:90px;" placeholder="Example: The Marketing and EMEA teams who rely on Google Workspace may resist the transition. This could slow rollout in key markets..."></textarea>
+          <div class="hint">Think about the team disagreement, the 90-day deadline, and the 42-country security complexity.</div>
+        </div>
+        <div class="question-block">
+          <label>Under what circumstances would you change your recommendation?</label>
+          <textarea id="s5q2" style="min-height:75px;" placeholder="Example: If StrideX's Finance team is the largest and fully standardized on Microsoft 365, that would shift the equation significantly..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="margin-bottom:28px;">
+      <div class="brief-header">
+        <div class="brief-num">4</div>
+        <h4>AI Limitations</h4>
+        <span class="brief-tag req">Required</span>
+      </div>
+      <div class="input-card">
+        <div class="question-block">
+          <label>What did the AI miss, oversimplify, or get wrong in its analysis?</label>
+          <textarea id="s5q3" style="min-height:90px;" placeholder="Example: The AI treated StrideX as if it runs on a single tech ecosystem. It didn't account for the fact that the company already uses both Microsoft and Google — meaning either choice will create disruption for someone."></textarea>
+          <div class="hint">Go back to your Section 2 and 3 notes. What did you notice the AI glossing over or assuming?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PART 5 -->
+    <div style="margin-bottom:28px;">
+      <div class="brief-header">
+        <div class="brief-num">5</div>
+        <h4>Additional Information Needed</h4>
+        <span class="brief-tag req">Required</span>
+      </div>
+      <div class="input-card">
+        <div class="question-block">
+          <label>What would you verify before making this a firm, final decision?</label>
+          <textarea id="s5q4" style="min-height:110px;" placeholder="Examples:&#10;• What % of employees currently use Microsoft vs Google tools?&#10;• What do their top e-commerce platforms integrate with better?&#10;• Have they already paid for licenses with either platform?&#10;• What do data privacy laws in their top markets require?"></textarea>
+          <div class="hint">Think like a detective. What data is still missing from your analysis?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="preview-btn" onclick="openPreview()">👁 Preview My Brief</button>
+      <button class="save-btn" onclick="saveSection('s5')">💾 Save All Sections</button>
+      <span class="save-confirm" id="s5-confirm">✅ Saved!</span>
+    </div>
+
+    <div class="section-nav">
+      <a class="snav-btn" href="#section4">← Section 4</a>
+      <a class="snav-btn primary" href="#section6">Next: Reflect →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 6 — FINAL REFLECTION
+══════════════════════════════════════ -->
+<div id="section6" class="section-block">
+  <div class="section-hero" style="background: linear-gradient(135deg, #5a1f8f 0%, #7B2FBE 60%, #a855f7 100%);">
+    <div class="section-num">SECTION 06 OF 06 · FINAL</div>
+    <h2>Final Reflection</h2>
+    <p>Take a breath. You've done the hard work. Now zoom out and think about what this whole experience taught you about AI, decision-making, and your own thinking.</p>
+    <div class="time-badge">⏱ 5–8 minutes</div>
+  </div>
+
+  <div class="section-content">
+
+    <div class="step-block">
+      <div class="rq-header">
+        <div class="rq-icon">📤</div>
+        <h4>Would you confidently send your brief to a CEO? Why or why not?</h4>
+      </div>
+      <div class="input-card">
+        <div class="question-block">
+          <textarea id="s6q1" style="min-height:90px;" placeholder="Be honest. Did your brief feel sharp and clear? Or are there parts that feel thin or uncertain? It's okay to say 'not quite yet, because...' — that's a real skill too." oninput="countWords(this,'s6wc1')"></textarea>
+          <div class="char-counter" id="s6wc1">0 words</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-block">
+      <div class="rq-header">
+        <div class="rq-icon">⚠️</div>
+        <h4>What is the biggest risk if your recommendation turns out to be wrong?</h4>
+      </div>
+      <div class="input-card">
+        <div class="question-block">
+          <textarea id="s6q2" style="min-height:90px;" placeholder="Think about what would happen at StrideX if they followed your advice and it didn't work. Disrupted teams? Wasted money? Missed opportunities? What's the worst realistic outcome?" oninput="countWords(this,'s6wc2')"></textarea>
+          <div class="char-counter" id="s6wc2">0 words</div>
+          <div class="hint">The goal isn't to scare yourself — it's to show you've thought seriously about accountability.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-block">
+      <div class="rq-header">
+        <div class="rq-icon">🔍</div>
+        <h4>What would you double-check before finalizing this recommendation?</h4>
+      </div>
+      <div class="input-card">
+        <div class="question-block">
+          <textarea id="s6q3" style="min-height:90px;" placeholder="What one or two pieces of information — if you knew them — would most change your answer? Who would you talk to? What data would you request?" oninput="countWords(this,'s6wc3')"></textarea>
+          <div class="char-counter" id="s6wc3">0 words</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="step-block">
+      <div class="rq-header">
+        <div class="rq-icon">🤖</div>
+        <h4>Did AI increase your confidence — or create false confidence?</h4>
+      </div>
+      <p style="font-size:0.85rem; font-weight:600; color:var(--gray-800); margin-bottom:8px;">How would you describe your experience?</p>
+      <div class="confidence-scale">
+        <div class="conf-opt" onclick="selectConf(this)"><span class="conf-icon">🚀</span>Genuinely more confident — it gave me useful structure</div>
+        <div class="conf-opt" onclick="selectConf(this)"><span class="conf-icon">⚖️</span>Mixed — helpful in some places, misleading in others</div>
+        <div class="conf-opt" onclick="selectConf(this)"><span class="conf-icon">⚠️</span>Worried — it made me feel sure about things I shouldn't be</div>
+        <div class="conf-opt" onclick="selectConf(this)"><span class="conf-icon">🧐</span>Neutral — I evaluated it critically throughout</div>
+      </div>
+      <div class="input-card" style="margin-top:12px;">
+        <div class="question-block">
+          <label>Did AI help you think better — or just think faster?</label>
+          <textarea id="s6q4" style="min-height:110px;" placeholder="Using AI to think faster (just grab the answer) is very different from using AI to think better (challenge it, compare it, make a smarter decision). Which did you do? Which do you want to do next time?" oninput="countWords(this,'s6wc4')"></textarea>
+          <div class="char-counter" id="s6wc4">0 words</div>
+          <div class="hint">There's no wrong answer — the point is that you noticed which one happened.</div>
+        </div>
+        <div class="btn-row">
+          <button class="save-btn" onclick="saveSection('s6')">💾 Save Reflection</button>
+          <span class="save-confirm" id="s6-confirm">✅ Saved!</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="completion-card">
+      <h3>🎉 Activity Complete!</h3>
+      <p>You used AI, questioned it, then made your own call. That's the real skill — and you just practiced it.</p>
+      <div class="skills-row">
+        <div class="skill-badge">✅ AI Analysis</div>
+        <div class="skill-badge">✅ Prompt Refinement</div>
+        <div class="skill-badge">✅ Critical Thinking</div>
+        <div class="skill-badge">✅ Executive Communication</div>
+        <div class="skill-badge">✅ Risk Assessment</div>
+      </div>
+    </div>
+
+    <div class="section-nav">
+      <a class="snav-btn" href="#section5">← Section 5</a>
+      <a class="snav-btn" href="#overview">↩ Back to Top</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     PREVIEW MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🧾 Your Executive Brief Preview</h3>
+      <button class="modal-close" onclick="closePreview()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+
+<footer>
+  <strong>AI Essentials</strong> · Advanced AI in Business Certification · Module 2 Activity<br>
+  © 2025 AI Essentials. All rights reserved.
+</footer>
+
+
+<script>
+/* ── ACTIVE NAV PILL ── */
+const sections = ['overview','section1','section2','section3','section4','section5','section6'];
+const pills = document.querySelectorAll('.nav-pill');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      pills.forEach(p => p.classList.remove('active'));
+      const id = e.target.id;
+      const pill = document.querySelector(`.nav-pill[href="#${id}"]`);
+      if (pill) pill.classList.add('active');
+    }
+  });
+}, { threshold: 0.25 });
+sections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+
+/* ── COPY BUTTON ── */
+function copyText(btn, id) {
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+/* ── FOLLOW-UP SELECTOR ── */
+function selectFollowup(el, inputId) {
+  document.querySelectorAll('.followup-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  const inp = document.getElementById(inputId);
+  if (inp) inp.value = el.textContent.trim();
+}
+
+/* ── TOGGLE CHECKLIST ── */
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  el.textContent = el.classList.contains('checked') ? '✓' : '';
+}
+
+/* ── QUALITY OPTS ── */
+function selectOpt(el) {
+  const siblings = el.parentElement.querySelectorAll('.quality-opt');
+  siblings.forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ── DECISION PICKER ── */
+function selectDecision(el, type) {
+  document.querySelectorAll('.decision-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  sessionStorage.setItem('decision', type);
+}
+
+/* ── AGREE TOGGLE ── */
+function selectAgree(el) {
+  document.querySelectorAll('.agree-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ── CONFIDENCE ── */
+function selectConf(el) {
+  document.querySelectorAll('.conf-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ── RECOMMENDATION ── */
+let selectedRec = null;
+function selectRec(el, type) {
+  document.querySelectorAll('.rec-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedRec = type;
+  document.getElementById('ms-status').textContent   = type === 'ms'   ? '✓ Selected' : 'Click to select';
+  document.getElementById('goog-status').textContent = type === 'goog' ? '✓ Selected' : 'Click to select';
+}
+
+/* ── WORD COUNT ── */
+function countWords(el, counterId) {
+  const words = el.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+  const el2 = document.getElementById(counterId);
+  if (!el2) return;
+  el2.textContent = words + ' words' + (counterId.startsWith('s4') ? ' (aim for 150–250)' : '');
+  if (counterId.startsWith('s4')) {
+    el2.style.color = words >= 150 && words <= 250 ? '#1a7a3d' : words > 250 ? '#c0392b' : '#6b7280';
+  }
+}
+
+/* ── SAVE NOTES (localStorage) ── */
+const fieldIds = {
+  s1: ['s1q1','s1q2'],
+  s2: ['s2q1','s2q2','s2q3','s2q4','s2q5','s2q6'],
+  s3: ['s3q1','s3q2','s3q3'],
+  s4: ['s4q1','s4q2'],
+  s5: ['s5r1','s5r2','s5r3','s5q1','s5q2','s5q3','s5q4'],
+  s6: ['s6q1','s6q2','s6q3','s6q4'],
+};
+function saveSection(sec) {
+  const data = {};
+  (fieldIds[sec] || []).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data[id] = el.value;
+  });
+  localStorage.setItem('ae_' + sec, JSON.stringify(data));
+  const conf = document.getElementById(sec + '-confirm');
+  if (conf) { conf.style.display = 'inline'; setTimeout(() => conf.style.display = 'none', 2500); }
+}
+function loadAll() {
+  Object.entries(fieldIds).forEach(([sec, ids]) => {
+    const saved = localStorage.getItem('ae_' + sec);
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id]) el.value = data[id];
+    });
+  });
+}
+window.addEventListener('load', loadAll);
+
+/* ── PREVIEW MODAL ── */
+function openPreview() {
+  const rec = selectedRec === 'ms' ? 'Microsoft Copilot' : selectedRec === 'goog' ? 'Google Gemini' : '(not yet selected)';
+  const g = id => { const el = document.getElementById(id); return el ? el.value || '<em style="color:#aaa">not yet filled in</em>' : ''; };
+  document.getElementById('modalBody').innerHTML = `
+    <p style="font-size:0.75rem;color:#6b7280;margin-bottom:18px;font-family:'Space Mono',monospace;">TO: CEO, StrideX Global &nbsp;|&nbsp; FROM: AI Strategy Intern &nbsp;|&nbsp; RE: AI Platform Recommendation</p>
+    <div class="modal-section"><h4>1. Final Recommendation</h4><p><strong>${rec}</strong></p></div>
+    <div class="modal-section"><h4>2. Top 3 Business Reasons</h4><p><strong>1.</strong> ${g('s5r1')}</p><p style="margin-top:8px"><strong>2.</strong> ${g('s5r2')}</p><p style="margin-top:8px"><strong>3.</strong> ${g('s5r3')}</p></div>
+    <div class="modal-section"><h4>3. Key Risks</h4><p>${g('s5q1')}</p><p style="margin-top:8px"><em>I would change this recommendation if:</em> ${g('s5q2')}</p></div>
+    <div class="modal-section"><h4>4. AI Limitations</h4><p>${g('s5q3')}</p></div>
+    <div class="modal-section"><h4>5. Additional Information Needed</h4><p>${g('s5q4')}</p></div>
+    <button onclick="window.print()" style="margin-top:18px;display:inline-flex;align-items:center;gap:6px;background:var(--purple);color:white;border:none;padding:10px 20px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.87rem;cursor:pointer;">🖨 Print Brief</button>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closePreview() { document.getElementById('modalOverlay').classList.remove('open'); }
+document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closePreview(); });
+</script>
+
+</body>
+</html>
