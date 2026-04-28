@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Would You Implement This? — AI Decision Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.22);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+  --green: #15803d;
+  --green-bg: rgba(21,128,61,0.08);
+  --green-bdr: rgba(21,128,61,0.25);
+  --red: #dc2626;
+  --red-bg: rgba(220,38,38,0.07);
+  --red-bdr: rgba(220,38,38,0.22);
+  --amber: #b45309;
+  --amber-bg: rgba(180,83,9,0.08);
+  --amber-bdr: rgba(180,83,9,0.25);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar {
+  background:var(--accent); padding:13px 28px;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+.top-bar-right  { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.75); }
+
+/* Round pips */
+.round-pips { display:flex; gap:6px; align-items:center; }
+.rpip {
+  width:28px; height:6px; border-radius:3px;
+  background:rgba(255,255,255,0.25); transition:all 0.4s;
+}
+.rpip.done   { background:rgba(255,255,255,0.9); }
+.rpip.active { background:#fff; box-shadow:0 0 8px rgba(255,255,255,0.5); }
+
+/* SHARED */
+.page-body { flex:1; overflow-y:auto; padding:36px 24px 52px; }
+.page-inner { max-width:680px; margin:0 auto; width:100%; }
+
+.intro-badge {
+  display:inline-block; background:rgba(123,47,190,0.1); border:1px solid var(--border2);
+  color:var(--accent); font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px;
+  border-radius:20px; margin-bottom:18px;
+}
+
+.page-title {
+  font-family:'Syne',sans-serif; font-size:clamp(32px,5vw,54px);
+  font-weight:800; line-height:1.05; margin-bottom:12px;
+}
+.page-title em { font-style:normal; color:var(--accent); }
+.page-desc { font-size:15px; color:var(--muted); line-height:1.7; max-width:520px; margin-bottom:28px; }
+
+.btn-primary {
+  background:var(--accent); color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:13px 32px; border-radius:10px; border:none; cursor:pointer;
+  box-shadow:0 4px 16px rgba(123,47,190,0.28); transition:all 0.15s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 7px 22px rgba(123,47,190,0.38); }
+
+.btn-secondary {
+  background:transparent; color:var(--accent);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:11px 26px; border-radius:10px; border:2px solid var(--border2);
+  cursor:pointer; transition:all 0.15s;
+}
+.btn-secondary:hover { background:var(--surface); }
+
+/* ── INTRO ── */
+#intro { align-items:center; justify-content:center; }
+
+.preview-scenarios { display:flex; flex-direction:column; gap:8px; margin-bottom:32px; }
+.preview-item {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-radius:10px;
+  background:var(--surface); border:1px solid var(--border);
+  font-size:13px; color:var(--text);
+}
+.preview-num {
+  width:24px; height:24px; border-radius:7px;
+  background:rgba(123,47,190,0.1); border:1px solid rgba(123,47,190,0.2);
+  color:var(--accent); font-family:'DM Mono',monospace; font-size:11px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.preview-label { font-weight:600; }
+.preview-dept  { font-size:11px; color:var(--muted); margin-top:1px; }
+
+.twist-callout {
+  background:rgba(123,47,190,0.07); border:1px solid var(--border2);
+  border-radius:12px; padding:16px 20px; margin-bottom:32px;
+  display:flex; gap:12px; align-items:flex-start;
+}
+.twist-callout-icon { font-size:20px; flex-shrink:0; }
+.twist-callout-text { font-size:13px; color:var(--muted); line-height:1.6; }
+.twist-callout-text strong { color:var(--text); }
+
+/* ── SCENARIO SCREEN ── */
+#scenario { flex-direction:column; }
+
+.scenario-kicker {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:10px;
+  display:flex; align-items:center; gap:8px;
+}
+.scenario-kicker::before { content:''; width:20px; height:1px; background:var(--accent); }
+
+.scenario-title {
+  font-family:'Syne',sans-serif; font-size:clamp(22px,4vw,34px); font-weight:800;
+  line-height:1.1; margin-bottom:10px;
+}
+
+.scenario-context {
+  font-size:14px; color:var(--muted); line-height:1.7;
+  margin-bottom:20px; max-width:580px;
+}
+
+/* AI recommendation card */
+.ai-rec-card {
+  background:#fff; border:1.5px solid var(--border2); border-radius:16px;
+  overflow:hidden; margin-bottom:24px;
+  box-shadow:0 4px 20px rgba(123,47,190,0.08);
+}
+
+.ai-rec-header {
+  background:var(--accent); padding:14px 20px;
+  display:flex; align-items:center; gap:10px;
+}
+.ai-rec-logo {
+  width:32px; height:32px; border-radius:8px;
+  background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center;
+  font-size:16px; flex-shrink:0;
+}
+.ai-rec-meta {}
+.ai-rec-label { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.7); }
+.ai-rec-name  { font-size:13px; font-weight:700; color:#fff; }
+
+.ai-rec-body { padding:20px 22px; }
+.ai-rec-action {
+  font-family:'Syne',sans-serif; font-size:16px; font-weight:800;
+  color:var(--text); margin-bottom:12px; line-height:1.3;
+}
+
+.ai-data-points { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+.ai-dp {
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:13px; line-height:1.5; color:var(--text);
+}
+.ai-dp-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+.ai-dp-val  { font-weight:600; color:var(--accent); }
+
+.ai-confidence {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 14px; background:rgba(123,47,190,0.06);
+  border-radius:8px; border:1px solid var(--border);
+}
+.ai-conf-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:600; }
+.ai-conf-bar   { flex:1; height:6px; background:rgba(123,47,190,0.12); border-radius:3px; overflow:hidden; }
+.ai-conf-fill  { height:100%; background:var(--accent); border-radius:3px; transition:width 1s ease; }
+.ai-conf-pct   { font-family:'DM Mono',monospace; font-size:12px; font-weight:700; color:var(--accent); }
+
+/* Decision buttons */
+.decision-section { margin-bottom:20px; }
+.decision-label {
+  font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--muted); font-weight:600; margin-bottom:14px;
+}
+
+.decision-btns { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+.decision-btn {
+  padding:20px 16px; border-radius:14px; border:2px solid;
+  cursor:pointer; transition:all 0.2s; text-align:center;
+  font-family:'DM Sans',sans-serif;
+}
+
+.decision-yes {
+  background:var(--green-bg); border-color:var(--green-bdr); color:var(--green);
+}
+.decision-yes:hover { background:rgba(21,128,61,0.14); transform:translateY(-2px); box-shadow:0 6px 20px rgba(21,128,61,0.15); }
+.decision-yes.chosen { background:rgba(21,128,61,0.18); border-color:var(--green); box-shadow:0 0 0 4px rgba(21,128,61,0.12); }
+
+.decision-no {
+  background:var(--red-bg); border-color:var(--red-bdr); color:var(--red);
+}
+.decision-no:hover { background:rgba(220,38,38,0.12); transform:translateY(-2px); box-shadow:0 6px 20px rgba(220,38,38,0.12); }
+.decision-no.chosen { background:rgba(220,38,38,0.14); border-color:var(--red); box-shadow:0 0 0 4px rgba(220,38,38,0.1); }
+
+.decision-btn-icon { font-size:32px; margin-bottom:8px; }
+.decision-btn-label { font-size:16px; font-weight:800; font-family:'Syne',sans-serif; }
+.decision-btn-sub   { font-size:12px; margin-top:4px; opacity:0.8; }
+
+/* Reason picker */
+.reason-section {
+  display:none; animation:slide-up 0.3s ease;
+  margin-bottom:20px;
+}
+.reason-section.show { display:block; }
+@keyframes slide-up { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.reason-label {
+  font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--muted); font-weight:600; margin-bottom:10px;
+}
+.reason-options { display:flex; flex-direction:column; gap:7px; }
+.reason-opt {
+  display:flex; align-items:center; gap:10px;
+  padding:11px 14px; border-radius:9px;
+  border:1.5px solid var(--border); background:#fff;
+  cursor:pointer; transition:all 0.15s; font-size:13px; color:var(--text);
+}
+.reason-opt:hover { border-color:var(--border2); background:var(--surface); }
+.reason-opt.selected { border-color:var(--accent); background:rgba(123,47,190,0.06); }
+.reason-opt.disabled-opt { opacity:0.35; pointer-events:none; }
+.reason-check {
+  width:18px; height:18px; border-radius:5px;
+  border:2px solid var(--border); background:#fff; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:10px;
+  transition:all 0.15s;
+}
+.reason-opt.selected .reason-check { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+.see-what-happened-btn {
+  display:none; width:100%;
+  background:var(--accent); color:#fff;
+  font-family:'Syne',sans-serif; font-size:16px; font-weight:800;
+  padding:16px; border-radius:12px; border:none; cursor:pointer;
+  box-shadow:0 4px 16px rgba(123,47,190,0.3);
+  transition:all 0.15s; animation:slide-up 0.35s ease;
+  letter-spacing:0.01em;
+}
+.see-what-happened-btn.show { display:block; }
+.see-what-happened-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(123,47,190,0.4); }
+
+/* ── CONSEQUENCE SCREEN ── */
+#consequence { flex-direction:column; }
+
+.consequence-body { flex:1; overflow-y:auto; padding:36px 24px 52px; }
+.consequence-inner { max-width:680px; margin:0 auto; }
+
+/* Drama header */
+.drama-header {
+  border-radius:16px; padding:28px 28px 24px;
+  margin-bottom:24px; position:relative; overflow:hidden;
+  animation:drama-in 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes drama-in {
+  from { opacity:0; transform:scale(0.95) translateY(10px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+
+.drama-header.twist-bad  { background:linear-gradient(135deg,rgba(220,38,38,0.08),rgba(220,38,38,0.04)); border:1.5px solid var(--red-bdr); }
+.drama-header.twist-good { background:linear-gradient(135deg,rgba(21,128,61,0.08),rgba(21,128,61,0.04)); border:1.5px solid var(--green-bdr); }
+.drama-header.twist-mixed{ background:linear-gradient(135deg,rgba(180,83,9,0.08),rgba(180,83,9,0.04)); border:1.5px solid var(--amber-bdr); }
+
+.drama-twist-label {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px;
+  display:flex; align-items:center; gap:7px;
+}
+.twist-bad  .drama-twist-label { color:var(--red); }
+.twist-good .drama-twist-label { color:var(--green); }
+.twist-mixed.drama-twist-label { color:var(--amber); }
+.twist-mixed .drama-twist-label { color:var(--amber); }
+
+.drama-twist-dot {
+  width:8px; height:8px; border-radius:50%;
+  animation:twist-pulse 1.5s infinite;
+}
+.twist-bad  .drama-twist-dot { background:var(--red); box-shadow:0 0 8px var(--red); }
+.twist-good .drama-twist-dot { background:var(--green); box-shadow:0 0 8px var(--green); }
+.twist-mixed .drama-twist-dot { background:var(--amber); box-shadow:0 0 8px var(--amber); }
+@keyframes twist-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
+
+.drama-headline {
+  font-family:'Syne',sans-serif; font-size:clamp(22px,4vw,34px); font-weight:800;
+  line-height:1.1; margin-bottom:10px;
+}
+.twist-bad  .drama-headline { color:var(--red); }
+.twist-good .drama-headline { color:var(--green); }
+.twist-mixed .drama-headline { color:var(--amber); }
+
+.drama-story {
+  font-size:14px; line-height:1.75; color:var(--text);
+}
+
+/* Your choice recap */
+.choice-recap {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:14px 18px; margin-bottom:20px;
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+}
+.recap-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:600; }
+.recap-choice {
+  font-size:13px; font-weight:700; padding:4px 12px; border-radius:6px;
+}
+.recap-yes   { background:var(--green-bg); color:var(--green); border:1px solid var(--green-bdr); }
+.recap-no    { background:var(--red-bg);   color:var(--red);   border:1px solid var(--red-bdr); }
+.recap-reason { font-size:13px; color:var(--muted); font-style:italic; }
+
+/* What actually happened */
+.what-happened-box {
+  background:#fff; border:1px solid var(--border2); border-radius:14px;
+  padding:20px 22px; margin-bottom:20px;
+}
+.whb-title {
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:700;
+  margin-bottom:12px; display:flex; align-items:center; gap:8px;
+}
+.whb-items { display:flex; flex-direction:column; gap:8px; }
+.whb-item {
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:13px; line-height:1.55; color:var(--text);
+  padding:9px 12px; border-radius:8px;
+}
+.whb-item.good  { background:var(--green-bg); border:1px solid var(--green-bdr); }
+.whb-item.bad   { background:var(--red-bg);   border:1px solid var(--red-bdr); }
+.whb-item.mixed { background:var(--amber-bg); border:1px solid var(--amber-bdr); }
+
+/* The lesson */
+.lesson-card {
+  background:rgba(123,47,190,0.06); border:1px solid var(--border2);
+  border-radius:14px; padding:18px 22px; margin-bottom:24px;
+}
+.lesson-card-title {
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:700;
+  margin-bottom:8px; display:flex; align-items:center; gap:7px;
+}
+.lesson-card-text { font-size:13px; color:var(--muted); line-height:1.7; }
+.lesson-card-text strong { color:var(--text); }
+
+.next-round-btn {
+  width:100%; background:var(--accent); color:#fff;
+  font-family:'Syne',sans-serif; font-size:15px; font-weight:800;
+  padding:15px; border-radius:12px; border:none; cursor:pointer;
+  box-shadow:0 4px 16px rgba(123,47,190,0.28); transition:all 0.15s;
+}
+.next-round-btn:hover { transform:translateY(-2px); box-shadow:0 7px 22px rgba(123,47,190,0.38); }
+
+/* ── FINAL SCREEN ── */
+#final-screen { align-items:center; justify-content:center; overflow-y:auto; }
+
+.final-inner { max-width:620px; width:100%; padding:40px 24px; }
+.final-inner h1 { font-family:'Syne',sans-serif; font-size:clamp(28px,5vw,46px); font-weight:800; margin-bottom:10px; }
+.final-inner p  { font-size:15px; color:var(--muted); line-height:1.7; margin-bottom:28px; }
+
+.decision-log { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.log-item {
+  background:#fff; border:1px solid var(--border); border-radius:12px;
+  padding:14px 18px; display:flex; align-items:flex-start; gap:12px;
+}
+.log-num {
+  width:26px; height:26px; border-radius:7px; flex-shrink:0;
+  background:rgba(123,47,190,0.1); color:var(--accent);
+  font-family:'DM Mono',monospace; font-size:11px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+.log-text { flex:1; }
+.log-scenario { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.log-outcome  { font-size:12px; color:var(--muted); line-height:1.4; }
+.log-badge {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.06em; padding:3px 8px; border-radius:4px; flex-shrink:0;
+}
+.lb-yes { background:var(--green-bg); color:var(--green); border:1px solid var(--green-bdr); }
+.lb-no  { background:var(--red-bg);   color:var(--red);   border:1px solid var(--red-bdr); }
+
+.big-lesson {
+  background:var(--surface); border:1px solid var(--border2);
+  border-radius:14px; padding:22px 26px; margin-bottom:28px;
+}
+.big-lesson h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:9px; }
+.big-lesson p  { font-size:14px; color:var(--muted); line-height:1.7; }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">🤔 Would You Implement This?</div>
+    <div class="top-bar-right">AI in Business · Activity</div>
+  </div>
+  <div class="page-body" style="display:flex;align-items:center;justify-content:center;">
+  <div class="page-inner">
+    <div class="intro-badge">⚡ Decision Simulator · 3 Rounds</div>
+    <h1 class="page-title">AI made a<br>recommendation.<br><em>You decide.</em></h1>
+    <p class="page-desc">In 3 rounds, you will read a real-feeling AI recommendation and vote Yes or No. Then — no matter what you chose — you will see what actually happened. Some decisions backfire. Some refusals miss big opportunities. That is the point.</p>
+
+    <div class="preview-scenarios">
+      <div class="preview-item">
+        <div class="preview-num">1</div>
+        <div><div class="preview-label">Cut the email newsletter</div><div class="preview-dept">Marketing Department</div></div>
+      </div>
+      <div class="preview-item">
+        <div class="preview-num">2</div>
+        <div><div class="preview-label">Switch to a cheaper supplier</div><div class="preview-dept">Operations Department</div></div>
+      </div>
+      <div class="preview-item">
+        <div class="preview-num">3</div>
+        <div><div class="preview-label">Reduce customer support staff</div><div class="preview-dept">HR &amp; Customer Experience</div></div>
+      </div>
+    </div>
+
+    <div class="twist-callout">
+      <div class="twist-callout-icon">⚠️</div>
+      <div class="twist-callout-text"><strong>Fair warning:</strong> The AI is not always wrong — and you are not always right. This simulator is designed to surprise you. The goal is to see why human judgment plus AI data is better than either one alone.</div>
+    </div>
+
+    <button class="btn-primary" onclick="startRound(0)">Start Round 1 →</button>
+  </div>
+  </div>
+</div>
+
+<!-- SCENARIO -->
+<div id="scenario" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title" id="scenario-top-title">Round 1 of 3</div>
+    <div class="round-pips">
+      <div class="rpip" id="rp0"></div>
+      <div class="rpip" id="rp1"></div>
+      <div class="rpip" id="rp2"></div>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="page-inner" id="scenario-content"></div>
+  </div>
+</div>
+
+<!-- CONSEQUENCE -->
+<div id="consequence" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title" id="consequence-top-title">What Actually Happened</div>
+    <div class="top-bar-right" id="consequence-top-right"></div>
+  </div>
+  <div class="consequence-body">
+    <div class="consequence-inner" id="consequence-content"></div>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div id="final-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🤔 Simulation Complete</div>
+    <div class="top-bar-right">All 3 Rounds Done</div>
+  </div>
+  <div class="final-inner" style="margin:auto;">
+    <div class="intro-badge" style="display:inline-block;margin-bottom:16px;">✅ All Rounds Complete</div>
+    <h1>Here is what<br>you decided.</h1>
+    <p>Look back at your three choices and the outcomes. What patterns do you notice in how you think about AI recommendations?</p>
+    <div class="decision-log" id="decision-log"></div>
+    <div class="big-lesson">
+      <h3>🧠 The Core Lesson</h3>
+      <p>AI recommendations are built on data patterns — but data does not capture everything. It misses context, relationships, timing, and the human factors that make or break a business decision. <strong>The best decision-makers use AI as their first draft</strong> — a strong starting point that still needs your judgment, your experience, and your knowledge of things the data cannot see.</p>
+    </div>
+    <button class="btn-secondary" style="display:block;margin:0;" onclick="resetAll()">↺ Try Again</button>
+  </div>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    id: 0,
+    dept: 'Marketing · Round 1 of 3',
+    title: 'Cut the company\'s email newsletter',
+    context: 'Your marketing team has been sending a weekly newsletter for 3 years. The AI analysis tool reviewed performance data from the last 6 months and flagged a problem.',
+    rec: {
+      icon: '📧',
+      tool: 'MarketingAI Pro',
+      action: 'Recommendation: Discontinue the weekly email newsletter',
+      dataPoints: [
+        { icon:'📉', text:'Average open rate: ', val:'14%', rest:' — well below the industry average of 21%' },
+        { icon:'⏱️', text:'Average time spent reading: ', val:'8 seconds', rest:' — most subscribers are not engaging with content' },
+        { icon:'💰', text:'Estimated annual cost to produce: ', val:'$18,400', rest:' in staff time and platform fees' },
+        { icon:'📊', text:'Email-attributed revenue last quarter: ', val:'$2,100', rest:' — a negative ROI on investment' },
+      ],
+      confidence: 82,
+    },
+    reasons: {
+      yes: ['The numbers clearly show it is not working', 'The cost outweighs the revenue it generates', 'We can reinvest that time into social media instead'],
+      no:  ['Open rates alone do not tell the full story', 'Email builds long-term loyalty, not just immediate clicks', 'Cutting it feels like a short-term fix for a strategy problem']
+    },
+    consequences: {
+      yes: {
+        twist: 'bad',
+        headline: 'The newsletter was your most valuable sales channel — you just did not know it.',
+        story: 'After cutting the newsletter, sales dropped by 22% over the next two months. A post-mortem analysis revealed something the AI missed: the 14% of subscribers who DID open the newsletter were your most loyal customers — they purchased 4x more than average. The AI saw low open rates. It did not see who was opening them.',
+        items: [
+          { type:'bad',  text:'Sales dropped 22% in 60 days after cutting the newsletter' },
+          { type:'bad',  text:'Top customers reported feeling "out of touch" with the brand' },
+          { type:'mixed',text:'The AI\'s data was accurate — the conclusion was incomplete' },
+          { type:'good', text:'You restarted the newsletter with a targeted segment strategy 3 months later' }
+        ],
+        lesson: 'The AI analyzed the metric it was given — open rates. It had no data about the spending behavior of the people who opened. <strong>AI sees patterns in the data it has, not patterns in the data it was never given.</strong> This is why human context is irreplaceable.'
+      },
+      no: {
+        twist: 'mixed',
+        headline: 'You kept the newsletter — but the AI was mostly right.',
+        story: 'You kept sending the newsletter, but over the next year the numbers continued to decline. A deeper look revealed the real issue: the content strategy was stale, not the channel itself. The AI flagged a real problem — it just recommended the wrong fix. You eventually redesigned the newsletter and open rates climbed to 28%.',
+        items: [
+          { type:'good', text:'You did not lose your loyal customer segment by cutting it abruptly' },
+          { type:'bad',  text:'The poor performance continued for another 8 months before action was taken' },
+          { type:'mixed',text:'The AI correctly identified the problem — declining engagement — but proposed the wrong solution' },
+          { type:'good', text:'A content redesign eventually brought open rates from 14% to 28%' }
+        ],
+        lesson: '<strong>Saying No to an AI recommendation is not the same as having a better plan.</strong> The AI correctly diagnosed declining engagement. The right response was to investigate WHY before deciding whether to cut or fix. Rejecting recommendations without a counter-strategy just delays the problem.'
+      }
+    }
+  },
+  {
+    id: 1,
+    dept: 'Operations · Round 2 of 3',
+    title: 'Switch to a cheaper overseas supplier',
+    context: 'Your company manufactures branded merchandise. Your operations AI tool has been analyzing your supply chain costs and found a significant savings opportunity.',
+    rec: {
+      icon: '🏭',
+      tool: 'SupplyChain AI',
+      action: 'Recommendation: Replace current supplier with lower-cost overseas alternative',
+      dataPoints: [
+        { icon:'💵', text:'Projected annual savings: ', val:'$240,000', rest:' — a 15% reduction in cost of goods' },
+        { icon:'📋', text:'New supplier quality score: ', val:'87/100', rest:' — meets minimum acceptable standards' },
+        { icon:'🚚', text:'Lead time increase: ', val:'+6 days', rest:' — from 12 days to 18 days per order cycle' },
+        { icon:'📈', text:'Similar companies that switched: ', val:'73% reported net savings', rest:' after accounting for transition costs' },
+      ],
+      confidence: 76,
+    },
+    reasons: {
+      yes: ['$240,000 in savings is too significant to ignore', 'An 87/100 quality score meets our standards', 'Other companies have done it successfully'],
+      no:  ['Quality score concerns me — we built our brand on product quality', 'Lead time increase could hurt seasonal sales windows', 'The relationship with our current supplier has hidden value']
+    },
+    consequences: {
+      yes: {
+        twist: 'bad',
+        headline: 'The savings were real. So were the returns.',
+        story: 'You switched suppliers and the $240,000 in savings materialized in the first year. But by month 8, customer return rates had climbed from 3% to 11%. The AI\'s quality score of 87/100 was based on standard tests — it did not account for how the products held up after 3 months of real use. Handling returns and customer complaints wiped out most of the savings.',
+        items: [
+          { type:'good', text:'$240,000 in projected savings did arrive in year one' },
+          { type:'bad',  text:'Customer return rates climbed from 3% to 11% by month 8' },
+          { type:'bad',  text:'Return processing and replacements cost $190,000 — nearly wiping out the gain' },
+          { type:'bad',  text:'Three major retail partners flagged quality concerns in quarterly reviews' }
+        ],
+        lesson: 'The AI\'s quality score was technically accurate — but it measured the wrong thing. Lab quality scores do not predict real-world durability over time. <strong>AI models can only measure what they are designed to measure.</strong> The hidden variable — long-term product performance — was invisible to the model.'
+      },
+      no: {
+        twist: 'mixed',
+        headline: 'You kept your supplier — and your competitor gained a 15% price advantage.',
+        story: 'You stayed with your current supplier. Quality stayed high and customers were happy. But a direct competitor made the switch, passed the savings to customers as a 12% price reduction, and grew their market share by 8% over the next year. Your loyalty to quality was real — but it came with a competitive cost that the AI had correctly identified.',
+        items: [
+          { type:'good', text:'Product quality remained high — zero increase in return rates' },
+          { type:'good', text:'Your brand reputation stayed intact' },
+          { type:'bad',  text:'A competitor made the switch and undercut your prices by 12%' },
+          { type:'bad',  text:'Competitor grew market share 8% — partly at your expense' }
+        ],
+        lesson: 'Your concern about quality was legitimate and the AI underweighted it. But <strong>every No decision has a cost too</strong> — the AI correctly identified a real competitive risk. The ideal move was neither a full Yes nor a full No — it was to negotiate better terms with your existing supplier using the competing offer as leverage.'
+      }
+    }
+  },
+  {
+    id: 2,
+    dept: 'HR & Customer Experience · Round 3 of 3',
+    title: 'Reduce customer support staff by 20%',
+    context: 'Your company recently implemented an AI-powered customer support chatbot. Six months in, your HR analytics tool has reviewed the data and made a staffing recommendation.',
+    rec: {
+      icon: '👥',
+      tool: 'Workforce Analytics AI',
+      action: 'Recommendation: Reduce customer support headcount by 20% (4 of 20 staff)',
+      dataPoints: [
+        { icon:'🤖', text:'Chatbot resolution rate: ', val:'68%', rest:' — resolving most common issues without human involvement' },
+        { icon:'📞', text:'Human agent ticket volume: ', val:'down 31%', rest:' since chatbot launch 6 months ago' },
+        { icon:'💰', text:'Estimated annual payroll savings: ', val:'$280,000', rest:' from reducing 4 full-time positions' },
+        { icon:'⭐', text:'Customer satisfaction score: ', val:'4.2 / 5.0', rest:' — stable since chatbot was introduced' },
+      ],
+      confidence: 71,
+    },
+    reasons: {
+      yes: ['The numbers show the chatbot is genuinely handling the workload', 'The customer satisfaction score has not dropped', 'The savings would fund two new product roles we badly need'],
+      no:  ['A satisfaction score of 4.2 during easy months is not a stress test', 'We cannot easily rehire trained support staff if something goes wrong', 'Human support is still needed for complex and sensitive cases']
+    },
+    consequences: {
+      yes: {
+        twist: 'bad',
+        headline: 'Three months later, a product bug created a support crisis — and you were understaffed.',
+        story: 'You reduced the team by 4 people. For 10 weeks, everything ran smoothly. Then a software update introduced a billing error that affected 3,000 customers. The chatbot could not handle complex billing disputes. Your remaining 16 agents were completely overwhelmed. Average wait times hit 4+ hours. Two of your three largest enterprise clients escalated to their account managers threatening to cancel.',
+        items: [
+          { type:'good', text:'$280,000 in savings materialized during the first 10 weeks' },
+          { type:'bad',  text:'A billing bug affected 3,000 customers simultaneously' },
+          { type:'bad',  text:'Average support wait times hit 4+ hours during the crisis' },
+          { type:'bad',  text:'Two enterprise clients threatened to cancel over the response time' },
+          { type:'bad',  text:'Emergency contractor hiring cost $95,000 to manage the backlog' }
+        ],
+        lesson: 'The AI analyzed 6 months of smooth operations. It had never seen a crisis — because there had not been one. <strong>AI models trained on normal conditions are often overconfident when predicting outcomes during abnormal ones.</strong> Support capacity is not just for everyday volume — it is insurance for when things go wrong.'
+      },
+      no: {
+        twist: 'mixed',
+        headline: 'You kept the team — but the AI\'s analysis was more right than you realized.',
+        story: 'You kept all 20 support staff. Morale was high and the team felt valued. But 8 months later, a benchmarking study revealed your support cost per customer was 40% higher than industry average — and the gap was growing as competitors automated more aggressively. The chatbot continued resolving 68% of issues, while 16 idle agents handled the remaining 32%. You eventually had to restructure anyway, but this time you also lost the trust of two team members who felt the delay was unfair.',
+        items: [
+          { type:'good', text:'Team morale was high — people felt their jobs were secure' },
+          { type:'good', text:'When a small product issue arose 4 months later, you had capacity to handle it smoothly' },
+          { type:'bad',  text:'Support cost per customer was 40% above industry average' },
+          { type:'bad',  text:'You had to restructure 8 months later anyway, under worse conditions' }
+        ],
+        lesson: 'Your instinct to protect your team was not wrong — your reasons were valid. But <strong>delaying a necessary change does not make it go away.</strong> The AI identified a real inefficiency. The better answer was to transition affected staff to new roles rather than simply saying No and returning to business as usual.'
+      }
+    }
+  }
+];
+
+// ─── STATE ───
+let currentRound   = 0;
+let playerDecisions = []; // { round, choice, reasonText }
+let playerChoice   = null;
+let playerReason   = null;
+
+// ─── ROUND PIPS ───
+function updatePips(activeIdx) {
+  for (let i = 0; i < 3; i++) {
+    const pip = document.getElementById('rp' + i);
+    pip.className = 'rpip';
+    if (i < activeIdx) pip.classList.add('done');
+    else if (i === activeIdx) pip.classList.add('active');
+  }
+}
+
+// ─── START ROUND ───
+function startRound(roundIdx) {
+  currentRound = roundIdx;
+  playerChoice = null;
+  playerReason = null;
+  const sc = SCENARIOS[roundIdx];
+
+  show('scenario');
+  updatePips(roundIdx);
+  document.getElementById('scenario-top-title').textContent = sc.dept;
+
+  const content = document.getElementById('scenario-content');
+  content.innerHTML = `
+    <div class="scenario-kicker">${sc.dept}</div>
+    <h2 class="scenario-title">${sc.title}</h2>
+    <p class="scenario-context">${sc.context}</p>
+
+    <div class="ai-rec-card">
+      <div class="ai-rec-header">
+        <div class="ai-rec-logo">${sc.rec.icon}</div>
+        <div class="ai-rec-meta">
+          <div class="ai-rec-label">AI Recommendation</div>
+          <div class="ai-rec-name">${sc.rec.tool}</div>
+        </div>
+      </div>
+      <div class="ai-rec-body">
+        <div class="ai-rec-action">${sc.rec.action}</div>
+        <div class="ai-data-points">
+          ${sc.rec.dataPoints.map(d => `
+            <div class="ai-dp">
+              <span class="ai-dp-icon">${d.icon}</span>
+              <span>${d.text}<span class="ai-dp-val">${d.val}</span>${d.rest}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="ai-confidence">
+          <span class="ai-conf-label">AI Confidence</span>
+          <div class="ai-conf-bar"><div class="ai-conf-fill" id="conf-fill" style="width:0%"></div></div>
+          <span class="ai-conf-pct">${sc.rec.confidence}%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="decision-section">
+      <div class="decision-label">What would you do?</div>
+      <div class="decision-btns">
+        <div class="decision-btn decision-yes" id="btn-yes" onclick="chooseDecision('yes')">
+          <div class="decision-btn-icon">👍</div>
+          <div class="decision-btn-label">Yes, implement it</div>
+          <div class="decision-btn-sub">I trust the AI recommendation</div>
+        </div>
+        <div class="decision-btn decision-no" id="btn-no" onclick="chooseDecision('no')">
+          <div class="decision-btn-icon">👎</div>
+          <div class="decision-btn-label">No, don't do it</div>
+          <div class="decision-btn-sub">My judgment says otherwise</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reason-section" id="reason-section">
+      <div class="reason-label">What is your main reason?</div>
+      <div class="reason-options" id="reason-options"></div>
+    </div>
+
+    <button class="see-what-happened-btn" id="see-btn" onclick="showConsequence()">
+      See What Actually Happened →
+    </button>
+  `;
+
+  // Animate confidence bar
+  setTimeout(() => {
+    const fill = document.getElementById('conf-fill');
+    if (fill) fill.style.width = sc.rec.confidence + '%';
+  }, 400);
+}
+
+function chooseDecision(choice) {
+  playerChoice = choice;
+  const sc = SCENARIOS[currentRound];
+
+  document.getElementById('btn-yes').classList.toggle('chosen', choice === 'yes');
+  document.getElementById('btn-no').classList.toggle('chosen',  choice === 'no');
+
+  // Show reasons
+  const reasons = choice === 'yes' ? sc.reasons.yes : sc.reasons.no;
+  const rsec = document.getElementById('reason-section');
+  const ropts = document.getElementById('reason-options');
+  rsec.classList.add('show');
+  ropts.innerHTML = reasons.map((r, i) => `
+    <div class="reason-opt" id="ropt-${i}" onclick="chooseReason(${i}, '${r.replace(/'/g,"\\'")}')">
+      <div class="reason-check">✓</div>
+      <span>${r}</span>
+    </div>
+  `).join('');
+
+  setTimeout(() => rsec.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+}
+
+function chooseReason(idx, text) {
+  playerReason = text;
+  document.querySelectorAll('.reason-opt').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  const btn = document.getElementById('see-btn');
+  btn.classList.add('show');
+  setTimeout(() => btn.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+}
+
+function showConsequence() {
+  const sc = SCENARIOS[currentRound];
+  const cons = sc.consequences[playerChoice];
+
+  // Save decision
+  playerDecisions.push({
+    round: currentRound,
+    title: sc.title,
+    choice: playerChoice,
+    reason: playerReason || '',
+    twistType: cons.twist
+  });
+
+  show('consequence');
+  document.getElementById('consequence-top-title').textContent = `Round ${currentRound + 1} — What Happened`;
+  document.getElementById('consequence-top-right').textContent = playerChoice === 'yes' ? '👍 You said Yes' : '👎 You said No';
+
+  const content = document.getElementById('consequence-content');
+  const twistClass = `twist-${cons.twist}`;
+
+  content.innerHTML = `
+    <div class="choice-recap">
+      <span class="recap-label">Your decision:</span>
+      <span class="recap-choice recap-${playerChoice}">${playerChoice === 'yes' ? '👍 Yes — Implement it' : '👎 No — Don\'t do it'}</span>
+      ${playerReason ? `<span class="recap-reason">"${playerReason}"</span>` : ''}
+    </div>
+
+    <div class="drama-header ${twistClass}">
+      <div class="drama-twist-label"><div class="drama-twist-dot"></div>${cons.twist === 'bad' ? '⚡ Unexpected Outcome' : cons.twist === 'good' ? '✓ Good Outcome' : '↕ Mixed Outcome'}</div>
+      <div class="drama-headline">${cons.headline}</div>
+      <div class="drama-story">${cons.story}</div>
+    </div>
+
+    <div class="what-happened-box">
+      <div class="whb-title">📊 What the data showed later</div>
+      <div class="whb-items">
+        ${cons.items.map(item => `<div class="whb-item ${item.type}">${item.type === 'good' ? '✓' : item.type === 'bad' ? '✗' : '~'} ${item.text}</div>`).join('')}
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-card-title">🧠 What This Teaches Us</div>
+      <div class="lesson-card-text">${cons.lesson}</div>
+    </div>
+
+    <button class="next-round-btn" onclick="nextRound()">
+      ${currentRound < 2 ? `Continue to Round ${currentRound + 2} →` : 'See My Full Summary →'}
+    </button>
+  `;
+}
+
+function nextRound() {
+  if (currentRound < 2) {
+    startRound(currentRound + 1);
+  } else {
+    showFinal();
+  }
+}
+
+function showFinal() {
+  show('final-screen');
+  const log = document.getElementById('decision-log');
+  log.innerHTML = '';
+  playerDecisions.forEach((d, i) => {
+    const sc = SCENARIOS[d.round];
+    const el = document.createElement('div');
+    el.className = 'log-item';
+    const twistEmoji = d.twistType === 'bad' ? '⚠️ Backfired' : d.twistType === 'good' ? '✓ Good call' : '↕ Mixed result';
+    el.innerHTML = `
+      <div class="log-num">${i + 1}</div>
+      <div class="log-text">
+        <div class="log-scenario">${sc.title}</div>
+        <div class="log-outcome">${d.choice === 'yes' ? 'You said Yes' : 'You said No'} — ${twistEmoji}</div>
+      </div>
+      <span class="log-badge lb-${d.choice}">${d.choice === 'yes' ? '👍 Yes' : '👎 No'}</span>
+    `;
+    log.appendChild(el);
+  });
+}
+
+function resetAll() {
+  currentRound = 0;
+  playerDecisions = [];
+  playerChoice = null;
+  playerReason = null;
+  show('intro');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
