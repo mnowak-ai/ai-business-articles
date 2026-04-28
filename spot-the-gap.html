@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spot the Gap — AI Notes Reviewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.22);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+  --green: #15803d;
+  --green-bg: rgba(21,128,61,0.08);
+  --amber: #b45309;
+  --amber-bg: rgba(180,83,9,0.08);
+  --red: #dc2626;
+  --red-bg: rgba(220,38,38,0.08);
+  --flag-color: #f59e0b;
+  --flag-bg: rgba(245,158,11,0.12);
+  --flag-border: rgba(245,158,11,0.35);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  background: var(--accent);
+  padding: 13px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.top-bar-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.flags-counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+}
+
+.flag-pips {
+  display: flex;
+  gap: 5px;
+}
+
+.flag-pip {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  transition: all 0.3s;
+}
+
+.flag-pip.found { background: var(--flag-color); }
+
+/* ── INTRO ── */
+#intro {
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+#intro::before {
+  content: '';
+  position: absolute;
+  top: -160px; right: -160px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(123,47,190,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.intro-inner {
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.intro-badge {
+  display: inline-block;
+  background: rgba(123,47,190,0.1);
+  border: 1px solid var(--border2);
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 22px;
+}
+
+.intro-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(34px, 6vw, 58px);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+
+.intro-title em { font-style: normal; color: var(--accent); }
+
+.intro-desc {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 500px;
+  margin-bottom: 32px;
+}
+
+.scenario-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 26px;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.scenario-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.scenario-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.scenario-card p:last-child { margin-bottom: 0; }
+
+.error-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.error-type-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.error-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--flag-color);
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 13px 34px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(123,47,190,0.28);
+  transition: all 0.15s;
+}
+
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 7px 22px rgba(123,47,190,0.38); }
+
+/* ── ACTIVITY SCREEN ── */
+#activity { flex-direction: column; }
+
+.activity-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  min-height: 0;
+}
+
+@media (max-width: 700px) {
+  .activity-body { grid-template-columns: 1fr; overflow: visible; }
+}
+
+/* Left: transcript */
+.transcript-col {
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.col-icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.col-icon.transcript-icon { background: rgba(123,47,190,0.1); }
+.col-icon.summary-icon    { background: rgba(245,158,11,0.12); }
+
+.col-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.col-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+/* Meeting transcript lines */
+.meeting-line {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  animation: fadein 0.4s ease both;
+}
+
+@keyframes fadein {
+  from { opacity:0; transform: translateY(6px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+.speaker-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-family: 'DM Mono', monospace;
+}
+
+.av-jordan { background: rgba(123,47,190,0.15); color: var(--accent); }
+.av-priya  { background: rgba(21,128,61,0.12); color: var(--green); }
+.av-marcus { background: rgba(245,158,11,0.14); color: var(--amber); }
+.av-tanya  { background: rgba(220,38,38,0.1); color: var(--red); }
+.av-leo    { background: rgba(59,130,246,0.12); color: #2563eb; }
+
+.line-content {}
+.speaker-name {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+
+.line-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.line-text.highlight {
+  background: rgba(123,47,190,0.07);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border-left: 3px solid var(--accent);
+  padding-left: 9px;
+}
+
+/* Right: AI summary */
+.summary-col {
+  overflow-y: auto;
+  padding: 24px;
+  background: #fefcff;
+}
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.28);
+  color: var(--amber);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.ai-dot-small {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  animation: glow-amber 2s infinite;
+}
+
+@keyframes glow-amber {
+  0%,100% { opacity:1; } 50% { opacity:0.4; }
+}
+
+.summary-section {
+  margin-bottom: 22px;
+}
+
+.summary-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Flaggable chunks */
+.flaggable {
+  position: relative;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1.5px solid transparent;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.flaggable:hover {
+  border-color: var(--flag-border);
+  background: var(--flag-bg);
+}
+
+.flaggable.flagged {
+  border-color: var(--flag-color);
+  background: var(--flag-bg);
+}
+
+.flaggable.confirmed-error {
+  border-color: var(--red);
+  background: var(--red-bg);
+}
+
+.flaggable.confirmed-ok {
+  border-color: rgba(21,128,61,0.3);
+  background: var(--green-bg);
+  cursor: default;
+}
+
+.flaggable.confirmed-ok:hover { border-color: rgba(21,128,61,0.3); background: var(--green-bg); }
+
+.flag-icon {
+  position: absolute;
+  top: 8px; right: 10px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.flaggable:hover .flag-icon { opacity: 0.5; }
+.flaggable.flagged .flag-icon { opacity: 1; }
+.flaggable.confirmed-error .flag-icon { opacity: 1; }
+
+.flag-label {
+  display: none;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(220,38,38,0.2);
+}
+
+.flaggable.confirmed-error .flag-label { display: block; color: var(--red); }
+.flaggable.confirmed-ok .flag-label { display: block; color: var(--green); }
+
+.plain-item {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+}
+
+.hint-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.hint-text {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.btn-reveal {
+  background: var(--accent);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-reveal:hover { background: #6822a8; }
+
+/* ── RESULTS SCREEN ── */
+#results {
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.results-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 36px 24px 48px;
+  width: 100%;
+}
+
+.results-hero {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.results-hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(26px, 5vw, 42px);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.big-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 68px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin: 8px 0 6px;
+}
+
+.score-sub { color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 420px; margin: 0 auto; }
+
+.breakdown-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.breakdown-card {
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border: 1px solid transparent;
+}
+
+.breakdown-card.found {
+  background: var(--green-bg);
+  border-color: rgba(21,128,61,0.25);
+}
+
+.breakdown-card.missed {
+  background: var(--red-bg);
+  border-color: rgba(220,38,38,0.2);
+}
+
+.breakdown-card.false-flag {
+  background: var(--amber-bg);
+  border-color: rgba(180,83,9,0.2);
+}
+
+.bc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.bc-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.lbl-found       { background: var(--green-bg); color: var(--green); }
+.lbl-missed      { background: var(--red-bg); color: var(--red); }
+.lbl-false-flag  { background: var(--amber-bg); color: var(--amber); }
+
+.bc-error-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 5px;
+  flex: 1;
+}
+
+.bc-explain {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.lesson-box {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin: 24px 0;
+}
+
+.lesson-box h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lesson-box p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.results-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 26px;
+  border-radius: 10px;
+  border: 2px solid var(--border2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-secondary:hover { background: var(--surface); }
+</style>
+</head>
+<body>
+
+<!-- ══════════ INTRO ══════════ -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">🔍 Spot the Gap</div>
+    <div style="font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.7);">AI in Business · Activity</div>
+  </div>
+  <div class="intro-inner" style="margin: auto; padding: 40px 24px;">
+    <div class="intro-badge">📋 Activity · AI Meeting Notes</div>
+    <h1 class="intro-title">The AI made<br><em>mistakes.</em> Can you<br>find them?</h1>
+    <p class="intro-desc">AI tools can summarize meetings in seconds — but they don't always get it right. In this activity, you'll read a real meeting conversation and review what the AI wrote about it. Your job is to find the errors the AI made.</p>
+
+    <div class="scenario-card">
+      <div class="scenario-label">📍 Your Scenario</div>
+      <p>You work at <strong>Brightline Creative</strong>, a marketing agency. Your team just finished their weekly product launch check-in meeting. You ran the AI note-taking tool during the call — and now the summary is ready.</p>
+      <p>Before you share it with the whole team, your manager asks you to double-check it. She says: <em>"AI tools are helpful, but they make mistakes. Always review before you send."</em></p>
+      <div class="error-preview">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:4px;">There are 4 errors hidden in the AI summary:</div>
+        <div class="error-type-row"><div class="error-dot"></div><span>A task assigned to the wrong person</span></div>
+        <div class="error-type-row"><div class="error-dot"></div><span>A deadline the AI made up — it was never mentioned</span></div>
+        <div class="error-type-row"><div class="error-dot"></div><span>An action item that was missed completely</span></div>
+        <div class="error-type-row"><div class="error-dot"></div><span>A vague commitment with no clear owner</span></div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="startActivity()">Start Reviewing →</button>
+  </div>
+</div>
+
+<!-- ══════════ ACTIVITY ══════════ -->
+<div id="activity" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🔍 Spot the Gap — Review the AI Summary</div>
+    <div class="flags-counter">
+      <span>Errors found:</span>
+      <div class="flag-pips">
+        <div class="flag-pip" id="pip1">🚩</div>
+        <div class="flag-pip" id="pip2">🚩</div>
+        <div class="flag-pip" id="pip3">🚩</div>
+        <div class="flag-pip" id="pip4">🚩</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity-body">
+
+    <!-- LEFT: Transcript -->
+    <div class="transcript-col">
+      <div class="col-header">
+        <div class="col-icon transcript-icon">🎙️</div>
+        <div>
+          <div class="col-title">Meeting Transcript</div>
+          <div class="col-sub">Brightline Creative · Weekly Launch Check-In · Tuesday 10AM</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.05s">
+        <div class="speaker-avatar av-jordan">JO</div>
+        <div class="line-content">
+          <div class="speaker-name">Jordan (Team Lead)</div>
+          <div class="line-text">Okay everyone, let's get started. We've got about 30 minutes. Main thing today is checking in on the Nova product launch — where are we on social content, the email campaign, and the client presentation?</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.1s">
+        <div class="speaker-avatar av-priya">PR</div>
+        <div class="line-content">
+          <div class="speaker-name">Priya (Social Media)</div>
+          <div class="line-text">Social is looking good. I've got the first week of posts drafted — 5 posts ready to go. I still need Marcus to send me the final product photos before I can schedule them. Can he get those to me by Thursday?</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.15s">
+        <div class="speaker-avatar av-marcus">MA</div>
+        <div class="line-content">
+          <div class="speaker-name">Marcus (Design)</div>
+          <div class="line-text">Yeah, Thursday works for me. I'll have the photos ready by end of day Thursday.</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.2s">
+        <div class="speaker-avatar av-tanya">TA</div>
+        <div class="line-content">
+          <div class="speaker-name">Tanya (Email Marketing)</div>
+          <div class="line-text highlight">The email campaign is mostly done. The subject lines are written, the layout is set. I just need someone to proofread the body copy — it's about 400 words. Jordan, can you do that today or tomorrow?</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.25s">
+        <div class="speaker-avatar av-jordan">JO</div>
+        <div class="line-content">
+          <div class="speaker-name">Jordan (Team Lead)</div>
+          <div class="line-text">I can do that — I'll proofread the email copy by tomorrow afternoon. Send it over after this call.</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.3s">
+        <div class="speaker-avatar av-leo">LE</div>
+        <div class="line-content">
+          <div class="speaker-name">Leo (Account Manager)</div>
+          <div class="line-text highlight">Quick update on the client presentation — it's about 70% done. I'm presenting to the client next Friday. I need someone from the design team to build out slides 8 through 12. Marcus, would you be able to handle those?</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.35s">
+        <div class="speaker-avatar av-marcus">MA</div>
+        <div class="line-content">
+          <div class="speaker-name">Marcus (Design)</div>
+          <div class="line-text">Sure, I can do slides 8 through 12. Just share the deck with me and I'll get started.</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.4s">
+        <div class="speaker-avatar av-priya">PR</div>
+        <div class="line-content">
+          <div class="speaker-name">Priya (Social Media)</div>
+          <div class="line-text highlight">One more thing — we still haven't decided on the campaign hashtag. That needs to be locked in before we can finalize any of the social posts. Can we decide that today?</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.45s">
+        <div class="speaker-avatar av-jordan">JO</div>
+        <div class="line-content">
+          <div class="speaker-name">Jordan (Team Lead)</div>
+          <div class="line-text">Good catch, Priya. Let's not decide it right now — I don't want to rush it. Can everyone send me their top two hashtag ideas by end of day today? I'll pick the best one by tomorrow morning.</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.5s">
+        <div class="speaker-avatar av-tanya">TA</div>
+        <div class="line-content">
+          <div class="speaker-name">Tanya (Email Marketing)</div>
+          <div class="line-text">Works for me. I'll send my ideas over by 5.</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.55s">
+        <div class="speaker-avatar av-leo">LE</div>
+        <div class="line-content">
+          <div class="speaker-name">Leo (Account Manager)</div>
+          <div class="line-text">Same here. And Jordan — just a heads up, the client also asked about a printed one-pager to hand out at the meeting. We should probably figure out who's making that.</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.6s">
+        <div class="speaker-avatar av-jordan">JO</div>
+        <div class="line-content">
+          <div class="speaker-name">Jordan (Team Lead)</div>
+          <div class="line-text">Oh, good point. Let's put that on the list — we'll figure out who handles the one-pager after we get the hashtag sorted. Anything else before we wrap?</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.65s">
+        <div class="speaker-avatar av-marcus">MA</div>
+        <div class="line-content">
+          <div class="speaker-name">Marcus (Design)</div>
+          <div class="line-text">Nothing from me.</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.7s">
+        <div class="speaker-avatar av-priya">PR</div>
+        <div class="line-content">
+          <div class="speaker-name">Priya (Social Media)</div>
+          <div class="line-text">All good here. Thanks everyone.</div>
+        </div>
+      </div>
+
+      <div class="meeting-line" style="animation-delay:0.75s">
+        <div class="speaker-avatar av-jordan">JO</div>
+        <div class="line-content">
+          <div class="speaker-name">Jordan (Team Lead)</div>
+          <div class="line-text">Great. Talk soon.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: AI Summary -->
+    <div class="summary-col">
+      <div class="col-header">
+        <div class="col-icon summary-icon">🤖</div>
+        <div>
+          <div class="col-title">AI-Generated Meeting Summary</div>
+          <div class="col-sub">Click on anything that looks wrong to flag it</div>
+        </div>
+      </div>
+
+      <div class="ai-badge"><div class="ai-dot-small"></div> AI Summary · Auto-generated</div>
+
+      <!-- Section 1: Overview -->
+      <div class="summary-section">
+        <div class="summary-section-title">📋 Meeting Overview</div>
+        <div class="plain-item">
+          The Brightline Creative team held their weekly Nova product launch check-in. The meeting covered progress on social media content, the email campaign, and the upcoming client presentation.
+        </div>
+      </div>
+
+      <!-- Section 2: Key Updates -->
+      <div class="summary-section">
+        <div class="summary-section-title">📣 Key Updates</div>
+        <div class="plain-item">Priya has the first week of social media posts drafted (5 posts ready) and is waiting on final product photos from Marcus before scheduling.</div>
+        <div class="plain-item">Tanya's email campaign is nearly complete — subject lines and layout are finished. The body copy still needs to be proofread.</div>
+        <div class="plain-item">Leo's client presentation is 70% complete. Slides 8–12 still need to be built out before the client meeting next Friday.</div>
+      </div>
+
+      <!-- Section 3: Action Items — contains errors -->
+      <div class="summary-section">
+        <div class="summary-section-title">✅ Action Items</div>
+
+        <!-- ERROR 1: Wrong person assigned -->
+        <div class="flaggable" id="flag-1" onclick="flagItem(1)">
+          <span class="flag-icon">🚩</span>
+          <strong>Priya</strong> will send final product photos to Priya by end of day Thursday.
+          <div class="flag-label" id="flag-label-1"></div>
+        </div>
+
+        <!-- CORRECT item -->
+        <div class="flaggable confirmed-ok" id="flag-ok-1" style="pointer-events:none; cursor:default;">
+          <strong>Jordan</strong> will proofread the email body copy by tomorrow afternoon. Tanya will send the copy after the meeting.
+          <div class="flag-label" style="display:block; color:var(--green);">✓ This is correct</div>
+        </div>
+
+        <!-- ERROR 2: Hallucinated deadline -->
+        <div class="flaggable" id="flag-2" onclick="flagItem(2)">
+          <span class="flag-icon">🚩</span>
+          <strong>Marcus</strong> will complete slides 8–12 for the client presentation <strong>by Wednesday at noon.</strong>
+          <div class="flag-label" id="flag-label-2"></div>
+        </div>
+
+        <!-- ERROR 3: Vague, no owner -->
+        <div class="flaggable" id="flag-3" onclick="flagItem(3)">
+          <span class="flag-icon">🚩</span>
+          <strong>The team</strong> will decide on the campaign hashtag at some point before the launch.
+          <div class="flag-label" id="flag-label-3"></div>
+        </div>
+
+        <!-- ERROR 4: Missed action item entirely — shown as absent -->
+        <!-- We represent this as a note at the bottom that's vague/missing -->
+        <div class="flaggable" id="flag-4" onclick="flagItem(4)">
+          <span class="flag-icon">🚩</span>
+          <em style="color:var(--muted);">(No other action items were identified in this meeting.)</em>
+          <div class="flag-label" id="flag-label-4"></div>
+        </div>
+
+      </div>
+
+      <!-- Section 4: Decisions -->
+      <div class="summary-section">
+        <div class="summary-section-title">🧭 Decisions Made</div>
+        <div class="plain-item">The team agreed to finalize the campaign hashtag before locking in social media posts.</div>
+        <div class="plain-item">Leo will present to the client next Friday.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hint bar -->
+  <div class="hint-bar">
+    <div class="hint-text">
+      💡 <span id="hint-msg">Read the transcript carefully, then click anything in the AI summary that doesn't match what was actually said.</span>
+    </div>
+    <button class="btn-reveal" onclick="revealAll()">Give Up & Reveal All</button>
+  </div>
+</div>
+
+<!-- ══════════ RESULTS ══════════ -->
+<div id="results" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🔍 Spot the Gap — Results</div>
+    <div style="font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.7);">Review Complete</div>
+  </div>
+  <div class="results-wrap">
+    <div class="results-hero">
+      <div class="intro-badge" style="display:inline-block; margin-bottom:14px;">✅ Review Complete</div>
+      <h1 id="results-title">Nice detective work!</h1>
+      <div class="big-score" id="big-score">4/4</div>
+      <p class="score-sub" id="score-sub">errors found</p>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div class="breakdown-title">Error Breakdown</div>
+      <div id="breakdown-cards"></div>
+    </div>
+
+    <div class="lesson-box">
+      <h3>🧠 Why This Matters in the Real World</h3>
+      <p>AI note-taking tools can save a lot of time — but they make mistakes like these regularly. They sometimes <strong>assign tasks to the wrong person</strong>, <strong>invent deadlines</strong> that were never mentioned, <strong>miss action items</strong> that were brought up casually, and write <strong>vague commitments</strong> with no clear owner. In a real workplace, sending out notes with these errors can confuse your team, miss important follow-ups, or even damage client relationships. <strong>Always review AI output before sharing it.</strong></p>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-secondary" onclick="resetActivity()">↺ Try Again</button>
+      <button class="btn-primary" onclick="alert('Great work! Continue to the next lesson.')">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ERRORS = {
+  1: {
+    name: 'Wrong person assigned',
+    explain: 'The AI wrote that Priya would send photos to Priya — that makes no sense! In the transcript, Marcus said he would send the product photos to Priya by Thursday. The AI got the sender wrong.',
+    type: 'error'
+  },
+  2: {
+    name: 'Made-up deadline',
+    explain: 'The AI wrote "by Wednesday at noon" — but nobody in the meeting said that. Leo just said Marcus should build the slides before the client meeting on Friday. The AI invented a specific deadline that was never discussed.',
+    type: 'error'
+  },
+  3: {
+    name: 'Vague commitment, no clear owner or deadline',
+    explain: 'The AI wrote that "the team will decide on the hashtag at some point." But Jordan gave a clear process: everyone sends their top two hashtag ideas to Jordan by end of day today, and Jordan picks the best one by tomorrow morning. That\'s much more specific — and the AI lost all of it.',
+    type: 'error'
+  },
+  4: {
+    name: 'Missed action item entirely',
+    explain: 'Leo brought up that the client wants a printed one-pager for the meeting, and Jordan said the team needs to figure out who makes it. That\'s a real action item — but the AI completely skipped it. The notes saying "no other action items" is simply wrong.',
+    type: 'error'
+  }
+};
+
+let flagged = new Set();
+let revealed = false;
+let falseFlagCount = 0;
+
+function startActivity() {
+  document.getElementById('intro').classList.remove('active');
+  document.getElementById('activity').classList.add('active');
+}
+
+function flagItem(id) {
+  if (revealed) return;
+  const el = document.getElementById('flag-' + id);
+  if (!el || el.classList.contains('confirmed-ok')) return;
+
+  if (flagged.has(id)) {
+    // Unflag
+    flagged.delete(id);
+    el.classList.remove('flagged');
+  } else {
+    flagged.add(id);
+    el.classList.add('flagged');
+  }
+  updatePips();
+  updateHint();
+
+  // Auto-show results if all 4 found
+  if (flagged.size === 4) {
+    setTimeout(() => showResults(false), 700);
+  }
+}
+
+function updatePips() {
+  let count = 0;
+  flagged.forEach(() => count++);
+  for (let i = 1; i <= 4; i++) {
+    const pip = document.getElementById('pip' + i);
+    pip.classList.toggle('found', i <= count);
+  }
+}
+
+function updateHint() {
+  const msg = document.getElementById('hint-msg');
+  const n = flagged.size;
+  if (n === 0) msg.textContent = 'Read the transcript carefully, then click anything in the AI summary that doesn\'t match what was actually said.';
+  else if (n === 1) msg.textContent = 'Good start — you found 1 error. There are 3 more hiding in there.';
+  else if (n === 2) msg.textContent = 'Halfway there! 2 errors found. Keep reading closely.';
+  else if (n === 3) msg.textContent = 'So close — 3 errors found. One more to go!';
+  else msg.textContent = 'You found all 4 errors! Reviewing results…';
+}
+
+function revealAll() {
+  revealed = true;
+  // Mark all errors as confirmed
+  [1,2,3,4].forEach(id => {
+    const el = document.getElementById('flag-' + id);
+    el.classList.remove('flagged');
+    el.classList.add('confirmed-error');
+    el.style.cursor = 'default';
+  });
+  setTimeout(() => showResults(true), 600);
+}
+
+function showResults(wasRevealed) {
+  document.getElementById('activity').classList.remove('active');
+  document.getElementById('results').classList.add('active');
+
+  const foundCount = flagged.size;
+  const totalErrors = 4;
+
+  // Title + score
+  let title, sub;
+  if (foundCount === 4 && !wasRevealed) {
+    title = '🏆 Perfect Review!';
+    sub = 'You caught every single error the AI made. That\'s the kind of careful thinking that makes you a strong, reliable teammate.';
+  } else if (foundCount >= 3 && !wasRevealed) {
+    title = '👍 Really Sharp Eyes!';
+    sub = `You caught ${foundCount} out of 4 errors. Check below to see the one you missed.`;
+  } else if (foundCount >= 2 && !wasRevealed) {
+    title = '📚 Getting There';
+    sub = `You caught ${foundCount} out of 4 errors. The ones you missed are easy to overlook — that's exactly why reviewing AI output carefully matters.`;
+  } else if (wasRevealed) {
+    title = '💡 Good Learning Moment';
+    sub = 'Sometimes errors are tricky to spot. Read through the breakdown below — now that you know what to look for, you\'ll catch them next time.';
+  } else {
+    title = '💡 Keep Practicing';
+    sub = `You found ${foundCount} out of 4 errors. Reviewing AI output is a real skill — it takes practice. Read the breakdown carefully.`;
+  }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('big-score').textContent = wasRevealed ? `${foundCount}/4` : `${foundCount}/4`;
+
+  document.getElementById('score-sub').textContent = sub;
+
+  // Breakdown cards
+  const container = document.getElementById('breakdown-cards');
+  container.innerHTML = '';
+
+  Object.entries(ERRORS).forEach(([id, err]) => {
+    const numId = parseInt(id);
+    const wasFound = flagged.has(numId);
+    const card = document.createElement('div');
+    card.className = `breakdown-card ${wasFound ? 'found' : (wasRevealed ? 'missed' : 'missed')}`;
+    card.innerHTML = `
+      <div class="bc-header">
+        <div class="bc-error-name">${err.name}</div>
+        <span class="bc-label ${wasFound ? 'lbl-found' : 'lbl-missed'}">${wasFound ? '✓ You caught it' : '✗ Missed'}</span>
+      </div>
+      <div class="bc-explain">${err.explain}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function resetActivity() {
+  flagged = new Set();
+  revealed = false;
+  falseFlagCount = 0;
+
+  // Reset UI
+  [1,2,3,4].forEach(id => {
+    const el = document.getElementById('flag-' + id);
+    el.classList.remove('flagged','confirmed-error','confirmed-ok');
+    el.style.cursor = 'pointer';
+    document.getElementById('flag-label-' + id).textContent = '';
+  });
+
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('pip' + i).classList.remove('found');
+  }
+
+  document.getElementById('hint-msg').textContent = 'Read the transcript carefully, then click anything in the AI summary that doesn\'t match what was actually said.';
+
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('activity').classList.add('active');
+}
+</script>
+</body>
+</html>
