@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who Are They? — Customer Persona Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#ffffff; --surface:#f8f5ff; --surface2:#ede9fe;
+  --border:rgba(123,47,190,0.12); --border2:rgba(123,47,190,0.25);
+  --text:#1a0a2e; --muted:#6b5a85; --accent:#7B2FBE;
+  --green:#15803d; --green-bg:rgba(21,128,61,0.08); --green-border:rgba(21,128,61,0.25);
+  --red:#dc2626; --red-bg:rgba(220,38,38,0.07); --red-border:rgba(220,38,38,0.25);
+  --amber:#b45309; --amber-bg:rgba(180,83,9,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+.top-bar{background:var(--accent);padding:13px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.top-bar-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;}
+.top-bar-right{font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,0.7);}
+.persona-pills{display:flex;gap:8px;}
+.ppill{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);transition:all 0.3s;}
+.ppill.active{background:rgba(255,255,255,0.25);color:#fff;font-weight:600;}
+.ppill.done{background:rgba(255,255,255,0.9);color:var(--accent);font-weight:700;}
+.ppill-num{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all 0.3s;}
+.ppill.active .ppill-num{background:#fff;color:var(--accent);}
+.ppill.done .ppill-num{background:var(--accent);color:#fff;}
+.page-body{flex:1;overflow-y:auto;padding:32px 24px 48px;}
+.page-inner{max-width:680px;margin:0 auto;width:100%;}
+.intro-badge{display:inline-block;background:rgba(123,47,190,0.1);border:1px solid var(--border2);color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;}
+.page-title{font-family:'Syne',sans-serif;font-size:clamp(30px,5vw,50px);font-weight:800;line-height:1.06;margin-bottom:12px;}
+.page-title em{font-style:normal;color:var(--accent);}
+.page-desc{font-size:15px;color:var(--muted);line-height:1.7;max-width:520px;margin-bottom:28px;}
+.brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px;}
+@media(max-width:480px){.brand-grid{grid-template-columns:1fr;}}
+.brand-card{border:2px solid var(--border);border-radius:14px;padding:20px 14px;text-align:center;cursor:pointer;transition:all 0.18s;background:#fff;}
+.brand-card:hover{border-color:var(--border2);background:var(--surface);transform:translateY(-2px);}
+.brand-card.selected{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px rgba(123,47,190,0.1);}
+.bc-emoji{font-size:34px;margin-bottom:8px;}
+.bc-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;}
+.bc-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4;}
+.btn-primary{background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;padding:13px 32px;border-radius:10px;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(123,47,190,0.25);transition:all 0.15s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(123,47,190,0.35);}
+.btn-primary:disabled{opacity:0.35;cursor:default;transform:none;box-shadow:none;}
+.btn-secondary{background:transparent;color:var(--accent);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;padding:11px 26px;border-radius:10px;border:2px solid var(--border2);cursor:pointer;transition:all 0.15s;}
+.btn-secondary:hover{background:var(--surface);}
+.persona-tag{display:inline-flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:5px 13px;border-radius:20px;margin-bottom:12px;}
+.tag-p1{background:rgba(123,47,190,0.1);color:var(--accent);border:1px solid rgba(123,47,190,0.2);}
+.tag-p2{background:rgba(14,165,233,0.1);color:#0ea5e9;border:1px solid rgba(14,165,233,0.2);}
+.clue-intro{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;}
+.clues-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.clue-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;animation:fadein 0.4s ease both;}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.clue-icon{width:36px;height:36px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.clue-type{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:600;margin-bottom:4px;}
+.clue-text{font-size:13px;line-height:1.6;color:var(--text);}
+.section-block{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;transition:border-color 0.3s;}
+.section-block.graded-correct{border-color:var(--green-border);background:var(--green-bg);}
+.section-block.graded-wrong{border-color:var(--red-border);background:var(--red-bg);}
+.section-label{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px;}
+.section-question{font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.4;}
+.section-hint{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.name-input{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;outline:none;transition:border-color 0.2s;}
+.name-input:focus{border-color:var(--accent);}
+.name-input::placeholder{color:#c4b5d8;}
+.options-list{display:flex;flex-direction:column;gap:8px;}
+.option-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:all 0.18s;font-size:13px;line-height:1.5;color:var(--text);}
+.option-item:hover{border-color:var(--border2);background:var(--surface);}
+.option-item.selected{border-color:var(--accent);background:rgba(123,47,190,0.06);}
+.option-item.disabled-opt{pointer-events:none;}
+.option-item.correct-answer{border-color:var(--green-border) !important;background:var(--green-bg) !important;}
+.option-item.wrong-selected{border-color:var(--red-border) !important;background:var(--red-bg) !important;}
+.option-item.correct-answer .opt-marker{background:var(--green) !important;color:#fff !important;border-color:var(--green) !important;}
+.option-item.wrong-selected .opt-marker{background:var(--red) !important;color:#fff !important;border-color:var(--red) !important;}
+.opt-marker{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all 0.2s;margin-top:1px;}
+.option-item.selected .opt-marker{border-color:var(--accent);background:var(--accent);color:#fff;}
+.checkbox-option{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:all 0.18s;font-size:13px;line-height:1.5;color:var(--text);}
+.checkbox-option:hover{border-color:var(--border2);background:var(--surface);}
+.checkbox-option.selected{border-color:var(--accent);background:rgba(123,47,190,0.06);}
+.checkbox-option.disabled-opt{pointer-events:none;opacity:0.5;}
+.checkbox-option.correct-answer{border-color:var(--green-border) !important;background:var(--green-bg) !important;}
+.checkbox-option.wrong-selected{border-color:var(--red-border) !important;background:var(--red-bg) !important;}
+.checkbox-option.correct-answer .chk-marker{background:var(--green) !important;border-color:var(--green) !important;color:#fff !important;}
+.checkbox-option.wrong-selected .chk-marker{background:var(--red) !important;border-color:var(--red) !important;color:#fff !important;}
+.chk-marker{width:20px;height:20px;border-radius:5px;flex-shrink:0;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all 0.2s;margin-top:1px;}
+.checkbox-option.selected .chk-marker{border-color:var(--accent);background:var(--accent);color:#fff;}
+.section-feedback{display:none;margin-top:12px;padding:10px 13px;border-radius:8px;font-size:12px;line-height:1.6;}
+.section-feedback.show{display:block;}
+.section-feedback.fb-good{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.section-feedback.fb-bad{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+.section-feedback.fb-partial{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(180,83,9,0.2);}
+.score-summary{display:none;background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:20px 22px;margin-bottom:20px;animation:fadein 0.4s ease;}
+.score-summary.show{display:block;}
+.score-row{display:flex;align-items:center;gap:14px;}
+.score-big{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--accent);line-height:1;}
+.score-label{font-size:14px;color:var(--muted);line-height:1.6;}
+.score-label strong{color:var(--text);}
+.persona-card{border-radius:16px;overflow:hidden;border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(123,47,190,0.08);}
+.pcard-header{padding:20px 20px 16px;position:relative;overflow:hidden;}
+.pcard-header::before{content:'';position:absolute;inset:0;opacity:0.06;background-image:repeating-linear-gradient(45deg,currentColor 0,currentColor 1px,transparent 0,transparent 50%);background-size:8px 8px;}
+.pcard-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:8px;position:relative;z-index:1;border:3px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.2);color:#fff;}
+.pcard-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;position:relative;z-index:1;}
+.pcard-vibe{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-top:3px;position:relative;z-index:1;}
+.pcard-body{padding:14px 16px;background:#fff;}
+.pcard-section{margin-bottom:12px;}
+.pcard-section:last-child{margin-bottom:0;}
+.pcard-section-label{font-family:'DM Mono',monospace;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:5px;}
+.pcard-items{display:flex;flex-direction:column;gap:4px;}
+.pcard-item{display:flex;align-items:flex-start;gap:6px;font-size:12px;line-height:1.4;color:var(--text);padding:5px 9px;border-radius:6px;background:var(--surface);border:1px solid var(--border);}
+.pcard-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.final-body{max-width:820px;margin:0 auto;padding:36px 24px 48px;}
+.final-hero{text-align:center;margin-bottom:32px;}
+.final-hero h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:800;margin-bottom:6px;}
+.final-hero p{font-size:14px;color:var(--muted);line-height:1.6;}
+.personas-duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+@media(max-width:580px){.personas-duo{grid-template-columns:1fr;}}
+.compare-table{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;}
+.compare-row{display:grid;grid-template-columns:90px 1fr 1fr;border-bottom:1px solid var(--border);}
+.compare-row:last-child{border-bottom:none;}
+.compare-row.header{background:var(--surface);}
+.compare-cell{padding:11px 14px;font-size:13px;line-height:1.5;border-right:1px solid var(--border);}
+.compare-cell:last-child{border-right:none;}
+.compare-row.header .compare-cell{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:600;}
+.row-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);font-weight:600;display:flex;align-items:center;}
+.ai-callout{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:20px 24px;margin-bottom:24px;}
+.ai-callout h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.ai-callout p{font-size:13px;color:var(--muted);line-height:1.7;}
+.final-actions{display:flex;justify-content:center;}
+.total-score-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(123,47,190,0.08);border:1px solid var(--border2);border-radius:12px;padding:12px 20px;margin-bottom:20px;}
+.tsb-score{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--accent);}
+.tsb-label{font-size:13px;color:var(--muted);line-height:1.5;}
+.tsb-label strong{color:var(--text);display:block;}
+
+/* Sticky clues reference panel */
+.clues-reference {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  margin: -32px -24px 24px;
+  padding: 0 24px;
+}
+
+.clues-ref-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  cursor: pointer;
+  user-select: none;
+  gap: 12px;
+}
+
+.clues-ref-toggle-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clues-ref-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.clues-ref-hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.clues-ref-arrow {
+  font-size: 12px;
+  color: var(--muted);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.clues-reference.open .clues-ref-arrow { transform: rotate(180deg); }
+
+.clues-ref-body {
+  display: none;
+  padding-bottom: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.clues-reference.open .clues-ref-body { display: block; }
+
+.clues-ref-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.clue-ref-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.clue-ref-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+
+.clue-ref-type {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--muted);
+  font-weight: 600; margin-bottom: 3px;
+}
+
+.clue-ref-text { font-size: 12px; line-height: 1.55; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">👤 Who Are They?</div>
+    <div class="top-bar-right">AI in Business · Activity</div>
+  </div>
+  <div class="page-body"><div class="page-inner">
+    <div class="intro-badge">🎯 Activity · Customer Personas</div>
+    <h1 class="page-title">Figure out who<br>the <em>customer</em> really is.</h1>
+    <p class="page-desc">Before a marketing team creates any ad or campaign, they build "customer personas" — detailed profiles of the real people they want to reach. In this activity, you will read customer clues, then pick the correct goals, needs, and challenges for each persona.</p>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:10px;font-weight:600;">Pick a brand to work with</div>
+    <div class="brand-grid" id="brand-grid"></div>
+    <button class="btn-primary" id="start-btn" disabled onclick="startClues(1)">Start Building Personas →</button>
+  </div></div>
+</div>
+
+<!-- CLUES -->
+<div id="clues-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">👤 Who Are They?</div>
+    <div class="persona-pills">
+      <div class="ppill" id="pill1"><div class="ppill-num">1</div> Persona 1</div>
+      <div class="ppill" id="pill2"><div class="ppill-num">2</div> Persona 2</div>
+    </div>
+  </div>
+  <div class="page-body"><div class="page-inner">
+    <div class="persona-tag" id="clues-tag"></div>
+    <h2 id="clues-title" style="font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,32px);font-weight:800;margin-bottom:8px;"></h2>
+    <div class="clue-intro" id="clue-intro"></div>
+    <div class="clues-grid" id="clues-grid"></div>
+    <button class="btn-primary" onclick="goToBuild()">I understand this person — build the profile →</button>
+  </div></div>
+</div>
+
+<!-- BUILD -->
+<div id="build-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">👤 Who Are They?</div>
+    <div class="persona-pills">
+      <div class="ppill" id="bpill1"><div class="ppill-num">1</div> Persona 1</div>
+      <div class="ppill" id="bpill2"><div class="ppill-num">2</div> Persona 2</div>
+    </div>
+  </div>
+  <div class="page-body"><div class="page-inner" style="max-width:720px;">
+
+    <!-- Sticky clues reference -->
+    <div class="clues-reference" id="clues-reference">
+      <div class="clues-ref-toggle" onclick="toggleCluesRef()">
+        <div class="clues-ref-toggle-left">
+          <span style="font-size:16px;">🔍</span>
+          <span class="clues-ref-label">View Customer Clues</span>
+          <span class="clues-ref-hint">Tap to show/hide the clues while you answer</span>
+        </div>
+        <span class="clues-ref-arrow">▼</span>
+      </div>
+      <div class="clues-ref-body">
+        <div class="clues-ref-grid" id="clues-ref-grid"></div>
+      </div>
+    </div>
+    <div style="margin-bottom:24px;">
+      <div class="persona-tag" id="build-tag"></div>
+      <h2 id="build-title" style="font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,28px);font-weight:800;margin-bottom:6px;"></h2>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;">Use the clues you just read to answer each question. Only some answers are correct!</p>
+    </div>
+
+    <!-- Name -->
+    <div class="section-block" id="block-name">
+      <div class="section-label">Give this persona a name</div>
+      <div class="section-question">What would you call this person?</div>
+      <input class="name-input" id="f-name" type="text" placeholder="e.g. Marcus, Jada, Sofia…" oninput="checkAllAnswered()">
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;">Any realistic first name is fine — this one is just for fun.</div>
+    </div>
+
+    <!-- Vibe -->
+    <div class="section-block" id="block-vibe">
+      <div class="section-label">One-word description (pick 1)</div>
+      <div class="section-question">Which one word best describes this person's lifestyle based on the clues?</div>
+      <div class="options-list" id="vibe-options"></div>
+      <div class="section-feedback" id="fb-vibe"></div>
+    </div>
+
+    <!-- Goals -->
+    <div class="section-block" id="block-goals">
+      <div class="section-label">Goals — what do they want? (pick 2)</div>
+      <div class="section-question">Select the <strong>2 goals</strong> that best match this customer based on the clues.</div>
+      <div class="section-hint">Choose exactly 2.</div>
+      <div class="options-list" id="goals-options"></div>
+      <div class="section-feedback" id="fb-goals"></div>
+    </div>
+
+    <!-- Needs -->
+    <div class="section-block" id="block-needs">
+      <div class="section-label">Needs — what do they require? (pick 2)</div>
+      <div class="section-question">Select the <strong>2 needs</strong> that best match this customer based on the clues.</div>
+      <div class="section-hint">Choose exactly 2.</div>
+      <div class="options-list" id="needs-options"></div>
+      <div class="section-feedback" id="fb-needs"></div>
+    </div>
+
+    <!-- Challenges -->
+    <div class="section-block" id="block-chals">
+      <div class="section-label">Challenges — what holds them back? (pick 2)</div>
+      <div class="section-question">Select the <strong>2 challenges</strong> that best match this customer based on the clues.</div>
+      <div class="section-hint">Choose exactly 2.</div>
+      <div class="options-list" id="chals-options"></div>
+      <div class="section-feedback" id="fb-chals"></div>
+    </div>
+
+    <div class="score-summary" id="score-summary">
+      <div class="score-row">
+        <div class="score-big" id="score-big">0</div>
+        <div class="score-label" id="score-label"></div>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="grade-btn" disabled onclick="gradePersona()" style="width:100%;margin-bottom:12px;">Check My Answers →</button>
+    <button class="btn-primary" id="next-btn" style="display:none;width:100%;" onclick="afterGrade()"></button>
+  </div></div>
+</div>
+
+<!-- FINAL -->
+<div id="final-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">👤 Who Are They? — Complete!</div>
+    <div class="top-bar-right">Your Personas</div>
+  </div>
+  <div class="final-body">
+    <div class="final-hero">
+      <div class="intro-badge" style="display:inline-block;margin-bottom:14px;">✅ Both Personas Complete</div>
+      <h1 id="final-title">Meet your customers.</h1>
+      <div class="total-score-badge">
+        <div class="tsb-score" id="tsb-score">0/14</div>
+        <div class="tsb-label"><strong>Total score across both personas</strong>Combined correct answers</div>
+      </div>
+      <p>You built two customer personas by reading AI-style data clues. Here they are — and here is how a marketing team would reach each of them differently.</p>
+    </div>
+    <div class="personas-duo" id="personas-duo"></div>
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px;">How would you market to each of them differently?</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">AI tools use persona profiles to automatically adjust messaging, channel, and timing for each audience.</div>
+    <div class="compare-table" id="compare-table"></div>
+    <div class="ai-callout">
+      <h3>🧠 How AI Builds Personas in Real Life</h3>
+      <p>Real marketing AI tools — like <strong>HubSpot</strong> and <strong>Adobe Sensei</strong> — build personas by analyzing thousands of data points: purchase history, search terms, social media activity, and customer reviews. They look for patterns and group customers who behave similarly. But here is the key: <strong>AI spots the patterns, and humans decide what they mean.</strong> The judgment you practiced here — reading clues and deciding what a customer really cares about — is something AI cannot fully replace.</p>
+    </div>
+    <div class="final-actions">
+      <button class="btn-secondary" onclick="resetAll()">↺ Try Another Brand</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BRANDS = {
+  spotify:{
+    emoji:'🎵',name:'Spotify',desc:'Music & podcast streaming',
+    personas:[
+      {
+        tag:'Persona 1 of 2',tagClass:'tag-p1',color:'#7B2FBE',headerBg:'linear-gradient(135deg,#7B2FBE,#5a1f9a)',
+        title:'Customer A — Build the profile',
+        intro:'Your AI tool analyzed thousands of Spotify user reviews, listening habits, and survey responses. It found a pattern in one group of users. Read these clues carefully before building their profile.',
+        clues:[
+          {icon:'💬',type:'Customer Quote',color:'rgba(123,47,190,0.1)',text:'"I have Spotify Premium and honestly I could not live without it. I listen while I commute, at the gym, and when I am cooking. Music is just always on for me."'},
+          {icon:'📊',type:'Behavior Data',color:'rgba(14,165,233,0.1)',text:'This user streams over 4 hours of music per day. They skip ads immediately and have had a Premium subscription for 3+ years.'},
+          {icon:'⭐',type:'App Store Review',color:'rgba(245,158,11,0.1)',text:'"The personalized playlists like Discover Weekly are what keep me here. I love finding new artists I never would have found on my own."'},
+          {icon:'📱',type:'Device Data',color:'rgba(21,128,61,0.1)',text:'Primarily uses Spotify on a smartphone. Often connects to Bluetooth speakers at home and wireless earbuds on the go.'},
+          {icon:'💬',type:'Customer Quote',color:'rgba(220,38,38,0.08)',text:'"I wish the app had better social features. I want to see what my friends are listening to and share playlists more easily."'},
+        ],
+        answers:{
+          vibe:{correct:'Music-First',options:['Music-First','Budget-Conscious','Casual User','Podcast Fan'],feedback:{correct:'"Music-First" fits perfectly — this person streams 4+ hours a day and pays for Premium. Music is central to their daily life.',wrong:'Look at the clues again — this person streams music constantly and pays for Premium. Which word best captures that?'}},
+          goals:{correct:['Discover new music constantly','Have the perfect playlist for every mood'],options:['Discover new music constantly','Have the perfect playlist for every mood','Find free alternatives to paid streaming','Stay up to date on news podcasts','Share music publicly on social media'],feedback:{full:'Exactly right! The app review mentions loving new artist discovery, and the quote about always listening in every situation shows they want the right playlist everywhere.',partial:'You got one right. Re-read the clues — the review mentions discovering new artists, and the daily habits show they want music for every activity.',none:'Re-read the clues. The review mentions discovering new artists, and the data shows they listen in multiple situations every day.'}},
+          needs:{correct:['Ad-free listening experience','Smart personalized recommendations'],options:['Ad-free listening experience','Smart personalized recommendations','A cheaper monthly subscription','Better podcast episode tracking','The ability to download music offline'],feedback:{full:'Great work! The clue about skipping ads and paying Premium shows they need ad-free listening, and the Discover Weekly mention shows they rely on recommendations.',partial:'One is right. Think about what the data tells you — they paid to skip ads, and they love the app for its personalized playlists.',none:'Re-read the behavior data and the app review. One is about why they pay for Premium, and the other is about what feature they love most.'}},
+          chals:{correct:['Hard to share music with friends easily','Overwhelmed by too many choices sometimes'],options:['Hard to share music with friends easily','Overwhelmed by too many choices sometimes','Cannot afford the monthly subscription','Ads interrupt podcast episodes','App crashes during long sessions'],feedback:{full:'Perfect! The final quote directly mentions wanting better social features, and having 4+ hours of daily listening across many moods means too many choices can be a real issue.',partial:'One is right. The last quote is a direct clue — what does this person say they wish the app had? Then think about the challenge of someone who listens all day in many situations.',none:'Go back and read the last customer quote — it directly states a frustration. Then think about what challenges come with being a very heavy daily listener.'}}
+        }
+      },
+      {
+        tag:'Persona 2 of 2',tagClass:'tag-p2',color:'#0ea5e9',headerBg:'linear-gradient(135deg,#0ea5e9,#0284c7)',
+        title:'Customer B — Build the profile',
+        intro:'Your AI tool found a second very different group of Spotify users. This group behaves very differently from the first. Read these clues carefully — notice how their needs and challenges are different.',
+        clues:[
+          {icon:'💬',type:'Customer Quote',color:'rgba(123,47,190,0.1)',text:'"I mostly use Spotify for podcasts, not music. I listen to true crime and business podcasts during my lunch break and on long drives."'},
+          {icon:'📊',type:'Behavior Data',color:'rgba(14,165,233,0.1)',text:'This user is on the free plan and has never upgraded. They open the app 3-4 times per week, mostly on weekends or during commutes.'},
+          {icon:'⭐',type:'App Store Review',color:'rgba(245,158,11,0.1)',text:'"The ads are annoying but I am not sure it is worth paying $10 a month just to skip them. I only use it occasionally."'},
+          {icon:'📱',type:'Device Data',color:'rgba(21,128,61,0.1)',text:'Primarily uses Spotify on a laptop or tablet, not a phone. Often pauses and resumes the same episode over several days.'},
+          {icon:'💬',type:'Customer Quote',color:'rgba(220,38,38,0.08)',text:'"I wish it was easier to pick up where I left off in a podcast. Sometimes I lose my place and have to search for it again."'},
+        ],
+        answers:{
+          vibe:{correct:'Casual Listener',options:['Casual Listener','Power User','Music Lover','Deal Seeker'],feedback:{correct:'"Casual Listener" fits exactly — they only open the app a few times a week, are on the free plan, and do not feel the need to upgrade.',wrong:'Look at the behavior data — this person uses the app only a few times a week and has never paid for it. Which word fits that pattern?'}},
+          goals:{correct:['Stay informed and entertained on a budget','Finish long-form podcast episodes at their own pace'],options:['Stay informed and entertained on a budget','Finish long-form podcast episodes at their own pace','Discover new music every week','Build a large playlist library','Connect with other listeners socially'],feedback:{full:'Correct! The review shows they are price-sensitive, and the device data showing they pause and resume over days tells you they like to go at their own pace.',partial:'You got one. Think about what the review says about paying for Premium — and think about how this person actually listens to episodes (check the device data).',none:'Re-read the app review for a price clue, and look at the device data — it shows how this person uses the app over multiple days.'}},
+          needs:{correct:['Easy progress tracking across episodes','A free or low-cost option that still works well'],options:['Easy progress tracking across episodes','A free or low-cost option that still works well','The ability to download playlists offline','High-quality audio settings','An AI DJ that creates mixes automatically'],feedback:{full:'Great! The last quote is directly about losing their place in episodes, and the review is clear that they do not want to pay — they need a good free experience.',partial:'One is right. Read the last customer quote for one answer — and read the app review for the other.',none:'The last customer quote says exactly what feature they need. And the review tells you how they feel about the price. Read both again carefully.'}},
+          chals:{correct:['Ads interrupt long listening sessions','Hard to remember where they stopped in a podcast'],options:['Ads interrupt long listening sessions','Hard to remember where they stopped in a podcast','Cannot find enough new music','Subscription is too expensive for heavy use','App does not work offline'],feedback:{full:'Exactly right! The review mentions ads being annoying, and the last quote is directly about losing track of their place in an episode.',partial:'You got one. The review mentions one frustration clearly, and the last quote states another frustration directly. Re-read both.',none:'Two of the clues state frustrations directly. Re-read the app review and the last customer quote — they each describe a specific problem.'}}
+        }
+      }
+    ],
+    marketing:[
+      {label:'Message',p1:'Highlight new music discovery and personalized playlists',p2:'Emphasize podcast variety and easy progress tracking'},
+      {label:'Platform',p1:'Instagram Reels and TikTok — visual, music-driven content',p2:'Email newsletters and YouTube — longer, content-focused formats'},
+      {label:'Offer',p1:'Premium upgrade with family or student discount',p2:'Free trial of Premium focused on ad-free podcast listening'},
+      {label:'Timing',p1:'Friday afternoons (new music release day) and Monday mornings',p2:'Weekend mornings and long holiday weekends'},
+    ]
+  },
+  nike:{
+    emoji:'👟',name:'Nike',desc:'Athletic gear & footwear',
+    personas:[
+      {
+        tag:'Persona 1 of 2',tagClass:'tag-p1',color:'#111',headerBg:'linear-gradient(135deg,#1a1a2e,#16213e)',
+        title:'Customer A — Build the profile',
+        intro:'Your AI tool analyzed Nike customer reviews, purchase data, and social media behavior. It found a clear pattern in one group of buyers. Read these clues and figure out who this person is.',
+        clues:[
+          {icon:'💬',type:'Customer Quote',color:'rgba(123,47,190,0.1)',text:'"I train five days a week. I need shoes that actually perform, not just look good. I research every purchase carefully before buying."'},
+          {icon:'📊',type:'Behavior Data',color:'rgba(14,165,233,0.1)',text:'Buys new running or training shoes every 6 months. Reads product reviews extensively before purchasing. Filters by performance specs, not style.'},
+          {icon:'⭐',type:'App Store Review',color:'rgba(245,158,11,0.1)',text:'"The Nike Run Club app is incredible. Having training plans and tracking my progress makes a real difference in how I train."'},
+          {icon:'📱',type:'Device Data',color:'rgba(21,128,61,0.1)',text:'Uses the Nike Run Club app daily. Has purchase notifications turned on. Follows Nike athletes on social media.'},
+          {icon:'💬',type:'Customer Quote',color:'rgba(220,38,38,0.08)',text:'"I wish Nike made it easier to find shoes by sport type and foot shape. The website has so many options it is hard to find the right one fast."'},
+        ],
+        answers:{
+          vibe:{correct:'Dedicated Athlete',options:['Dedicated Athlete','Trendsetter','Bargain Hunter','Casual Walker'],feedback:{correct:'"Dedicated Athlete" is exactly right — this person trains 5 days a week, tracks progress daily, and buys based on performance, not looks.',wrong:'Look at the clues — this person trains five days a week and researches every purchase carefully. Which word fits that level of commitment?'}},
+          goals:{correct:['Hit personal best times and performance goals','Make smart research-backed gear choices'],options:['Hit personal best times and performance goals','Make smart research-backed gear choices','Buy limited edition shoes before they sell out','Look stylish while working out','Save money on athletic gear'],feedback:{full:'Correct! The quote about training 5 days a week and the app review about tracking progress show the performance goal. The research behavior shows they want to make smart purchases.',partial:'You got one. Think about what motivates this person — one clue is about how they train, another is about how they shop.',none:'Re-read the first quote and the behavior data. One tells you what they want from training. The other tells you how carefully they shop.'}},
+          needs:{correct:['High-performance shoes built for their specific sport','Detailed product specs and honest reviews'],options:['High-performance shoes built for their specific sport','Detailed product specs and honest reviews','Flash sale notifications for discounts','A shoe that matches their outfit','Social media-worthy product packaging'],feedback:{full:'Exactly right! The first quote says they need performance, not looks — and the behavior data says they read reviews extensively before buying.',partial:'One is correct. The first quote is a direct clue about what they need in a shoe. And the behavior data tells you what information they rely on before buying.',none:'Go back to the first quote — it tells you exactly what they need from a shoe. Then look at the behavior data for what information helps them decide.'}},
+          chals:{correct:['Too many options make choosing feel overwhelming','Hard to know if a new model is actually better'],options:['Too many options make choosing feel overwhelming','Hard to know if a new model is actually better','Cannot afford Nike prices','Shoes sell out before they can buy them','Nike does not make shoes for their sport'],feedback:{full:'Great work! The last quote directly mentions the website having too many options. And a careful researcher who buys every 6 months would wonder whether a new model is worth switching to.',partial:'You got one. The last quote mentions a frustration directly. And think about what challenges someone faces who researches carefully before every purchase.',none:'Read the last customer quote — it states a frustration clearly. Then think about what worries someone who researches every purchase and buys new shoes every 6 months.'}}
+        }
+      },
+      {
+        tag:'Persona 2 of 2',tagClass:'tag-p2',color:'#e63946',headerBg:'linear-gradient(135deg,#e63946,#c1121f)',
+        title:'Customer B — Build the profile',
+        intro:'Your AI tool found a second very different group of Nike buyers. This group shops very differently from the first. Read these clues carefully — notice what motivates them.',
+        clues:[
+          {icon:'💬',type:'Customer Quote',color:'rgba(123,47,190,0.1)',text:'"I buy Nike because it looks good. I wear my Air Maxes with everything — jeans, dresses, casual outfits. It is more of a style thing for me."'},
+          {icon:'📊',type:'Behavior Data',color:'rgba(14,165,233,0.1)',text:'Buys 3-4 Nike items per year, mostly shoes and hoodies. Heavily influenced by what influencers and celebrities are wearing. Impulse-purchases during sales.'},
+          {icon:'⭐',type:'App Store Review',color:'rgba(245,158,11,0.1)',text:'"I love the limited drops! I set alarms for new releases. Got the Panda Dunks last month and I am so happy. The SNKRS app is addicting."'},
+          {icon:'📱',type:'Device Data',color:'rgba(21,128,61,0.1)',text:'Very active on Instagram and TikTok. Follows streetwear and fashion accounts. Saves products to wishlists and waits for restocks.'},
+          {icon:'💬',type:'Customer Quote',color:'rgba(220,38,38,0.08)',text:'"Sometimes the limited drops sell out so fast I never get a chance. And resale prices are ridiculous. I just want to actually buy the shoes I like."'},
+        ],
+        answers:{
+          vibe:{correct:'Style-Driven',options:['Style-Driven','Performance-Focused','Budget-Savvy','Health-Conscious'],feedback:{correct:'"Style-Driven" is perfect — the first quote literally says "it is more of a style thing for me" and they buy based on what celebrities and influencers wear.',wrong:'Re-read the first quote — this person tells you directly what motivates their purchases. Which word matches that?'}},
+          goals:{correct:['Stay ahead of trends and wear what is popular','Express personal identity through fashion choices'],options:['Stay ahead of trends and wear what is popular','Express personal identity through fashion choices','Improve athletic performance','Find the most durable shoe for daily training','Save money by waiting for sales'],feedback:{full:'Correct! The behavior data about following influencers shows trend motivation, and wearing Air Maxes with every outfit is about expressing identity through fashion.',partial:'You got one. Think about why this person follows influencers and celebrities — and think about what it means that they wear Nike with all their outfits.',none:'Re-read the first quote and the behavior data. Why do they buy Nike? And what does wearing it with everything tell you about how they use it?'}},
+          needs:{correct:['Early access or notifications for limited releases','Outfit inspiration showing how to style products'],options:['Early access or notifications for limited releases','Outfit inspiration showing how to style products','Technical specs about shoe performance','A subscription box with surprise products','Loyalty points for repeat purchases'],feedback:{full:'Exactly right! The app review about setting alarms for drops shows they need early access. And a style-driven shopper who wears shoes with everything needs styling inspiration.',partial:'One is correct. The app review gives a direct clue about one need. And think about what a style-focused shopper would find helpful when deciding what to buy.',none:'Re-read the app review — it tells you exactly what this person does to get the shoes they want. And think about what a style-first shopper needs from a brand.'}},
+          chals:{correct:['Limited drops sell out before they can buy','Resale prices are too high for shoes they miss'],options:['Limited drops sell out before they can buy','Resale prices are too high for shoes they miss','Shoes are not built for serious training','Website has too many performance options','Hard to find their exact shoe size'],feedback:{full:'Perfect! The last quote states both of these frustrations directly — drops selling out too fast and resale prices being too high.',partial:'You got one. Read the last customer quote again — it mentions two specific frustrations clearly.',none:'The last customer quote is a direct answer. Read it again — it describes exactly what frustrates this person.'}}
+        }
+      }
+    ],
+    marketing:[
+      {label:'Message',p1:'Performance specs, training features, and athlete results',p2:'Style, cultural relevance, and exclusive limited drops'},
+      {label:'Platform',p1:'Nike Run Club app, YouTube training videos, Reddit running forums',p2:'Instagram, TikTok, and the SNKRS app for drop announcements'},
+      {label:'Offer',p1:'Member discount on performance gear and early access to tech models',p2:'Exclusive early access to limited drops for SNKRS app members'},
+      {label:'Timing',p1:'January (New Year fitness goals) and pre-race season',p2:'During cultural moments like holidays, music drops, and sports events'},
+    ]
+  },
+  airbnb:{
+    emoji:'🏡',name:'Airbnb',desc:'Travel stays & experiences',
+    personas:[
+      {
+        tag:'Persona 1 of 2',tagClass:'tag-p1',color:'#ff5a5f',headerBg:'linear-gradient(135deg,#ff5a5f,#c9373b)',
+        title:'Customer A — Build the profile',
+        intro:'Your AI tool analyzed Airbnb booking patterns, reviews, and user surveys. It found a clear pattern in one type of traveler. Read these clues and figure out who this person is.',
+        clues:[
+          {icon:'💬',type:'Customer Quote',color:'rgba(123,47,190,0.1)',text:'"We use Airbnb for our family vacations. Hotels feel cramped with three kids. We need a kitchen, a yard, enough beds — a real home away from home."'},
+          {icon:'📊',type:'Behavior Data',color:'rgba(14,165,233,0.1)',text:'Books 2-3 trips per year, always 5-10 nights. Filters heavily by number of bedrooms, kitchen availability, and family-friendly ratings. Books 2-3 months in advance.'},
+          {icon:'⭐',type:'App Store Review',color:'rgba(245,158,11,0.1)',text:'"The review system is what makes me trust it. I always read 20+ reviews before booking. One bad review about cleanliness and I move on immediately."'},
+          {icon:'📱',type:'Device Data',color:'rgba(21,128,61,0.1)',text:'Uses the app primarily for browsing and research. Makes final bookings on desktop. Shares listings with a partner before committing.'},
+          {icon:'💬',type:'Customer Quote',color:'rgba(220,38,38,0.08)',text:'"The price is always higher than it first looks after fees. I wish the total price was shown upfront. It is frustrating to get to checkout and see $400 in cleaning fees."'},
+        ],
+        answers:{
+          vibe:{correct:'Family Planner',options:['Family Planner','Solo Adventurer','Digital Nomad','Business Traveler'],feedback:{correct:'"Family Planner" is exactly right — they travel with three kids, plan months in advance, and need family-sized spaces with kitchens and yards.',wrong:'The first quote mentions three kids, and the behavior data shows they plan months in advance. Which word best describes this type of traveler?'}},
+          goals:{correct:['Find a comfortable home-like space for the whole family','Plan stress-free vacations everyone will enjoy'],options:['Find a comfortable home-like space for the whole family','Plan stress-free vacations everyone will enjoy','Work remotely from different cities each month','Find the cheapest possible place to stay','Experience local culture through unique stays'],feedback:{full:'Correct! The first quote is literally about wanting a "home away from home," and booking months in advance with lots of research shows they want vacations that go smoothly.',partial:'You got one. The first quote tells you exactly what kind of space they want. And think about why someone researches 20+ reviews and books months ahead.',none:'Re-read the first quote — it says exactly what they are looking for. Then think about what motivates someone who plans so far in advance and reads so many reviews.'}},
+          needs:{correct:['Multiple bedrooms, full kitchen, and outdoor space','Trustworthy reviews about cleanliness and safety'],options:['Multiple bedrooms, full kitchen, and outdoor space','Trustworthy reviews about cleanliness and safety','Fast internet for remote work video calls','Last-minute flexible cancellation options','A dedicated workspace away from the bedroom'],feedback:{full:'Exactly right! The first quote lists these physical needs directly. And the app review is entirely about trusting the review system for cleanliness.',partial:'One is correct. The first quote lists the physical features they need. The app review tells you what information they rely on.',none:'Re-read the first quote for physical needs, and read the app review for what trust signals matter to this person.'}},
+          chals:{correct:['Hidden fees make budgeting unpredictable','Hard to find large family-sized homes in popular areas'],options:['Hidden fees make budgeting unpredictable','Hard to find large family-sized homes in popular areas','Slow internet ruins remote work sessions','Hard to find pet-friendly listings','Properties look different from photos'],feedback:{full:'Great! The last quote complains about hidden fees directly. And someone needing multiple bedrooms in popular destinations will often struggle to find availability.',partial:'You got one. The last quote is a direct complaint. And think about the challenges of a family that needs multiple bedrooms in the most desirable vacation spots.',none:'The last quote states a frustration clearly. And think about what is hard about finding large family homes in places everyone wants to travel.'}}
+        }
+      },
+      {
+        tag:'Persona 2 of 2',tagClass:'tag-p2',color:'#00a699',headerBg:'linear-gradient(135deg,#00a699,#007f76)',
+        title:'Customer B — Build the profile',
+        intro:'Your AI tool found a second very different type of Airbnb user. This group travels very differently. Read these clues carefully — their motivations and challenges are very different from the first group.',
+        clues:[
+          {icon:'💬',type:'Customer Quote',color:'rgba(123,47,190,0.1)',text:'"I work remotely so I do month-long stays in different cities. Right now I am in Lisbon. Airbnb is basically my housing for the year."'},
+          {icon:'📊',type:'Behavior Data',color:'rgba(14,165,233,0.1)',text:'Books stays of 14-30 nights at a time. Filters for high-speed internet, dedicated workspace, and a full kitchen. Checks in on weekdays.'},
+          {icon:'⭐',type:'App Store Review',color:'rgba(245,158,11,0.1)',text:'"I need to know the internet speed before I book. Slow internet means I cannot work. I always message the host about this before confirming."'},
+          {icon:'📱',type:'Device Data',color:'rgba(21,128,61,0.1)',text:'Uses Airbnb on a laptop. Often has multiple tabs open comparing 5-6 listings. Relies heavily on the monthly discount pricing feature.'},
+          {icon:'💬',type:'Customer Quote',color:'rgba(220,38,38,0.08)',text:'"It is hard to find places that truly support remote workers. I wish there was a filter for verified fast internet. Some hosts just lie about the speed."'},
+        ],
+        answers:{
+          vibe:{correct:'Digital Nomad',options:['Digital Nomad','Vacation Planner','Budget Backpacker','Business Executive'],feedback:{correct:'"Digital Nomad" is exactly right — this person lives in Airbnbs year-round while working remotely, moving between cities each month.',wrong:'The first quote says this person uses Airbnb as their housing while working remotely across different cities. Which word best describes that lifestyle?'}},
+          goals:{correct:['Live and work comfortably from anywhere in the world','Keep monthly living costs lower than a traditional apartment'],options:['Live and work comfortably from anywhere in the world','Keep monthly living costs lower than a traditional apartment','Take relaxing vacations with family','Find Instagram-worthy locations to photograph','Book last-minute weekend getaways'],feedback:{full:'Correct! The first quote shows they want to work from anywhere. And the behavior data about using monthly discounts shows they are watching their costs carefully.',partial:'You got one. The first quote tells you what kind of life they want. The device data about the monthly discount feature hints at a financial goal.',none:'Re-read the first quote for their main life goal. Then look at the device data — what feature do they rely on that hints at a financial goal?'}},
+          needs:{correct:['Reliable fast internet for video calls and uploads','A proper workspace separate from the bedroom'],options:['Reliable fast internet for video calls and uploads','A proper workspace separate from the bedroom','Multiple bedrooms for a family','Early check-in for late flights','A pool or outdoor entertaining space'],feedback:{full:'Exactly right! The app review is entirely about internet speed being critical for work. And the behavior data filter for a dedicated workspace tells you they need to separate work from sleep.',partial:'One is correct. The app review tells you what they need most urgently. The behavior data filter list tells you what physical space feature they need.',none:'Re-read the app review — it is entirely about one specific need. Then look at what filters they use when searching for listings.'}},
+          chals:{correct:['Cannot verify internet speed until they arrive','Monthly stays are harder to find in desirable locations'],options:['Cannot verify internet speed until they arrive','Monthly stays are harder to find in desirable locations','Kids need separate bedrooms and outdoor space','Prices are too high for short weekend trips','Hard to find pet-friendly listings'],feedback:{full:'Perfect! The last quote is directly about not being able to trust internet speeds listed by hosts. And someone needing 30-night stays in popular cities will have fewer options.',partial:'You got one. The last quote states a frustration directly. And think about how hard it would be to find a month-long stay in a place like Lisbon or Paris.',none:'The last quote is a direct complaint — read it again. And think about what challenges come with needing very long stays (14-30 nights) in desirable cities.'}}
+        }
+      }
+    ],
+    marketing:[
+      {label:'Message',p1:'Space, comfort, and trust — a real home for your whole family',p2:'Work from anywhere — listings built for remote professionals'},
+      {label:'Platform',p1:'Facebook, Pinterest, and parenting blogs',p2:'LinkedIn, Twitter, and remote work newsletters'},
+      {label:'Offer',p1:'Family bundle discount for 7+ night stays',p2:'Monthly stay discount and a verified remote-work listing badge'},
+      {label:'Timing',p1:'January to March (summer vacation planning season)',p2:'Year-round — peaks when companies announce remote work policies'},
+    ]
+  }
+};
+
+let selectedBrand=null,currentPersona=1,savedPersonas={},totalScore=0,personaScores={},selections={};
+
+function renderBrands(){
+  const g=document.getElementById('brand-grid');g.innerHTML='';
+  Object.entries(BRANDS).forEach(([id,b])=>{
+    const el=document.createElement('div');el.className='brand-card';el.id='brand-'+id;
+    el.innerHTML=`<div class="bc-emoji">${b.emoji}</div><div class="bc-name">${b.name}</div><div class="bc-desc">${b.desc}</div>`;
+    el.onclick=()=>{selectedBrand=id;document.querySelectorAll('.brand-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');document.getElementById('start-btn').disabled=false;};
+    g.appendChild(el);
+  });
+}
+
+function startClues(pNum){
+  currentPersona=pNum;
+  const p=BRANDS[selectedBrand].personas[pNum-1];
+  selections={vibe:null,goals:[],needs:[],chals:[]};
+  show('clues-screen');setPills('pill1','pill2',pNum);
+  const tag=document.getElementById('clues-tag');tag.className='persona-tag '+p.tagClass;tag.textContent=p.tag;
+  document.getElementById('clues-title').textContent=p.title;
+  document.getElementById('clue-intro').innerHTML=p.intro;
+  const grid=document.getElementById('clues-grid');grid.innerHTML='';
+  p.clues.forEach((c,i)=>{
+    const el=document.createElement('div');el.className='clue-card';el.style.animationDelay=(i*0.08)+'s';
+    el.innerHTML=`<div class="clue-icon" style="background:${c.color}">${c.icon}</div><div><div class="clue-type">${c.type}</div><div class="clue-text">${c.text}</div></div>`;
+    grid.appendChild(el);
+  });
+}
+
+function toggleCluesRef(){
+  document.getElementById('clues-reference').classList.toggle('open');
+}
+
+function goToBuild(){
+  const p=BRANDS[selectedBrand].personas[currentPersona-1];
+  show('build-screen');setPills('bpill1','bpill2',currentPersona);
+  const tag=document.getElementById('build-tag');tag.className='persona-tag '+p.tagClass;tag.textContent=p.tag;
+  document.getElementById('build-title').textContent='Build the Persona Profile';
+  document.getElementById('f-name').value='';document.getElementById('f-name').disabled=false;
+
+  // Populate sticky clues reference
+  document.getElementById('clues-reference').classList.remove('open');
+  const refGrid = document.getElementById('clues-ref-grid');
+  refGrid.innerHTML = '';
+  p.clues.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'clue-ref-card';
+    el.innerHTML = `<div class="clue-ref-icon" style="background:${c.color}">${c.icon}</div><div><div class="clue-ref-type">${c.type}</div><div class="clue-ref-text">${c.text}</div></div>`;
+    refGrid.appendChild(el);
+  });
+  document.getElementById('score-summary').classList.remove('show');
+  document.getElementById('grade-btn').style.display='';document.getElementById('grade-btn').disabled=true;
+  document.getElementById('next-btn').style.display='none';
+  ['block-name','block-vibe','block-goals','block-needs','block-chals'].forEach(id=>{
+    document.getElementById(id).classList.remove('graded-correct','graded-wrong');
+  });
+  ['fb-vibe','fb-goals','fb-needs','fb-chals'].forEach(id=>{
+    const el=document.getElementById(id);el.className='section-feedback';el.innerHTML='';
+  });
+  renderRadios('vibe-options',p.answers.vibe.options,'vibe');
+  renderCheckboxes('goals-options',p.answers.goals.options,'goals',2);
+  renderCheckboxes('needs-options',p.answers.needs.options,'needs',2);
+  renderCheckboxes('chals-options',p.answers.chals.options,'chals',2);
+  shuffleChildren(document.getElementById('vibe-options'));
+  shuffleChildren(document.getElementById('goals-options'));
+  shuffleChildren(document.getElementById('needs-options'));
+  shuffleChildren(document.getElementById('chals-options'));
+}
+
+function shuffleChildren(parent){
+  const ch=Array.from(parent.children);ch.sort(()=>Math.random()-0.5);ch.forEach(c=>parent.appendChild(c));
+}
+
+function renderRadios(containerId,options,key){
+  const c=document.getElementById(containerId);c.innerHTML='';
+  options.forEach(opt=>{
+    const el=document.createElement('div');el.className='option-item';el.dataset.value=opt;
+    el.innerHTML=`<div class="opt-marker"></div><span>${opt}</span>`;
+    el.onclick=()=>{
+      if(el.classList.contains('disabled-opt'))return;
+      document.querySelectorAll('#'+containerId+' .option-item').forEach(o=>o.classList.remove('selected'));
+      el.classList.add('selected');selections[key]=opt;checkAllAnswered();
+    };
+    c.appendChild(el);
+  });
+}
+
+function renderCheckboxes(containerId,options,key,max){
+  const c=document.getElementById(containerId);c.innerHTML='';selections[key]=[];
+  options.forEach(opt=>{
+    const el=document.createElement('div');el.className='checkbox-option';el.dataset.value=opt;
+    el.innerHTML=`<div class="chk-marker"></div><span>${opt}</span>`;
+    el.onclick=()=>{
+      if(el.classList.contains('disabled-opt'))return;
+      const sel=selections[key];
+      if(el.classList.contains('selected')){el.classList.remove('selected');selections[key]=sel.filter(v=>v!==opt);}
+      else{if(sel.length>=max)return;el.classList.add('selected');selections[key].push(opt);}
+      document.querySelectorAll('#'+containerId+' .checkbox-option').forEach(o=>{
+        if(!o.classList.contains('selected')&&selections[key].length>=max)o.classList.add('disabled-opt');
+        else o.classList.remove('disabled-opt');
+      });
+      checkAllAnswered();
+    };
+    c.appendChild(el);
+  });
+}
+
+function checkAllAnswered(){
+  const ok=document.getElementById('f-name').value.trim().length>0&&selections.vibe!==null&&selections.goals.length===2&&selections.needs.length===2&&selections.chals.length===2;
+  document.getElementById('grade-btn').disabled=!ok;
+}
+
+function gradePersona(){
+  const p=BRANDS[selectedBrand].personas[currentPersona-1];const ans=p.answers;let score=0;
+  document.getElementById('f-name').disabled=true;
+  document.querySelectorAll('.option-item,.checkbox-option').forEach(el=>el.classList.add('disabled-opt'));
+  const vibeOk=selections.vibe===ans.vibe.correct;if(vibeOk)score++;
+  gradeRadio('vibe-options',ans.vibe.correct,selections.vibe);
+  showFb('fb-vibe',vibeOk?'good':'bad',(vibeOk?'✓ ':'✗ ')+ans.vibe.feedback[vibeOk?'correct':'wrong']);
+  document.getElementById('block-vibe').classList.add(vibeOk?'graded-correct':'graded-wrong');
+  const gs=gradeCheckboxes('goals-options',ans.goals.correct,selections.goals);score+=gs;
+  const gk=gs===2?'full':gs===1?'partial':'none';
+  showFb('fb-goals',gs===2?'good':gs===1?'partial':'bad',(gs===2?'✓ ':gs===1?'◑ ':'✗ ')+ans.goals.feedback[gk]);
+  document.getElementById('block-goals').classList.add(gs===2?'graded-correct':'graded-wrong');
+  const ns=gradeCheckboxes('needs-options',ans.needs.correct,selections.needs);score+=ns;
+  const nk=ns===2?'full':ns===1?'partial':'none';
+  showFb('fb-needs',ns===2?'good':ns===1?'partial':'bad',(ns===2?'✓ ':ns===1?'◑ ':'✗ ')+ans.needs.feedback[nk]);
+  document.getElementById('block-needs').classList.add(ns===2?'graded-correct':'graded-wrong');
+  const cs=gradeCheckboxes('chals-options',ans.chals.correct,selections.chals);score+=cs;
+  const ck=cs===2?'full':cs===1?'partial':'none';
+  showFb('fb-chals',cs===2?'good':cs===1?'partial':'bad',(cs===2?'✓ ':cs===1?'◑ ':'✗ ')+ans.chals.feedback[ck]);
+  document.getElementById('block-chals').classList.add(cs===2?'graded-correct':'graded-wrong');
+  personaScores[currentPersona]=score;
+  document.getElementById('score-big').textContent=score+'/7';
+  const msg=score===7?'<strong>Perfect score!</strong> You read the clues carefully and matched every answer correctly.':score>=5?`<strong>Great work!</strong> You got ${score} out of 7 right. Read the feedback below to see what you missed.`:score>=3?`<strong>Good effort!</strong> You got ${score} out of 7. The feedback below explains each answer.`:`<strong>Keep practicing!</strong> You got ${score} out of 7. The feedback below explains each correct answer.`;
+  document.getElementById('score-label').innerHTML=msg;
+  document.getElementById('score-summary').classList.add('show');
+  savedPersonas[currentPersona]={name:document.getElementById('f-name').value.trim()||'Persona '+currentPersona,vibe:selections.vibe,goals:[...selections.goals],needs:[...selections.needs],chals:[...selections.chals],color:p.color,headerBg:p.headerBg,score};
+  document.getElementById('grade-btn').style.display='none';
+  const nb=document.getElementById('next-btn');nb.style.display='';
+  nb.textContent=currentPersona===1?'Continue to Persona 2 →':'See Both Personas →';
+  setTimeout(()=>document.getElementById('score-summary').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+function gradeRadio(cid,correct,selected){
+  document.querySelectorAll('#'+cid+' .option-item').forEach(el=>{
+    const v=el.dataset.value;
+    if(v===correct)el.classList.add('correct-answer');
+    else if(v===selected&&v!==correct)el.classList.add('wrong-selected');
+  });
+}
+
+function gradeCheckboxes(cid,correct,selected){
+  let s=0;
+  document.querySelectorAll('#'+cid+' .checkbox-option').forEach(el=>{
+    const v=el.dataset.value,ic=correct.includes(v),ws=selected.includes(v);
+    if(ic)el.classList.add('correct-answer');
+    if(ws&&!ic)el.classList.add('wrong-selected');
+    if(ws&&ic)s++;
+  });
+  return s;
+}
+
+function showFb(id,type,text){
+  const el=document.getElementById(id);el.className='section-feedback show fb-'+type;el.innerHTML=text;
+}
+
+function afterGrade(){
+  if(currentPersona===1)startClues(2);else showFinal();
+}
+
+function showFinal(){
+  const b=BRANDS[selectedBrand];show('final-screen');
+  totalScore=(personaScores[1]||0)+(personaScores[2]||0);
+  document.getElementById('final-title').textContent='Meet '+savedPersonas[1].name+' and '+savedPersonas[2].name+'.';
+  document.getElementById('tsb-score').textContent=totalScore+'/14';
+  const duo=document.getElementById('personas-duo');duo.innerHTML='';
+  [1,2].forEach(n=>duo.appendChild(buildCard(savedPersonas[n])));
+  const tbl=document.getElementById('compare-table');
+  tbl.innerHTML=`<div class="compare-row header"><div class="compare-cell"></div><div class="compare-cell" style="color:${savedPersonas[1].color};font-family:'Syne',sans-serif;font-size:13px;font-weight:800;">${savedPersonas[1].name}</div><div class="compare-cell" style="color:${savedPersonas[2].color};font-family:'Syne',sans-serif;font-size:13px;font-weight:800;">${savedPersonas[2].name}</div></div>${b.marketing.map(r=>`<div class="compare-row"><div class="compare-cell row-label">${r.label}</div><div class="compare-cell">${r.p1}</div><div class="compare-cell">${r.p2}</div></div>`).join('')}`;
+}
+
+function buildCard(pr){
+  const wrap=document.createElement('div');wrap.className='persona-card';
+  const items=(arr,dot)=>arr.map(v=>`<div class="pcard-item"><div class="pcard-dot" style="background:${dot}"></div>${v}</div>`).join('');
+  wrap.innerHTML=`<div class="pcard-header" style="background:${pr.headerBg}"><div class="pcard-avatar">${pr.name[0].toUpperCase()}</div><div class="pcard-name">${pr.name}</div><div class="pcard-vibe">${pr.vibe||'—'}</div></div><div class="pcard-body"><div class="pcard-section"><div class="pcard-section-label" style="color:${pr.color}">🎯 Goals</div><div class="pcard-items">${items(pr.goals.length?pr.goals:['—'],pr.color)}</div></div><div class="pcard-section"><div class="pcard-section-label" style="color:#0ea5e9">💡 Needs</div><div class="pcard-items">${items(pr.needs.length?pr.needs:['—'],'#0ea5e9')}</div></div><div class="pcard-section"><div class="pcard-section-label" style="color:#dc2626">⚡ Challenges</div><div class="pcard-items">${items(pr.chals.length?pr.chals:['—'],'#dc2626')}</div></div></div>`;
+  return wrap;
+}
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function setPills(id1,id2,active){[id1,id2].forEach((id,i)=>{const el=document.getElementById(id);if(!el)return;el.className='ppill';if(i+1<active)el.classList.add('done');else if(i+1===active)el.classList.add('active');});}
+function resetAll(){selectedBrand=null;currentPersona=1;savedPersonas={};totalScore=0;personaScores={};selections={};renderBrands();show('intro');document.getElementById('start-btn').disabled=true;}
+
+renderBrands();
+</script>
+</body>
+</html>
