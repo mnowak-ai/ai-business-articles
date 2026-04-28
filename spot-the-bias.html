@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spot the Bias — AI Content Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.25);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+  --green: #15803d;
+  --green-bg: rgba(21,128,61,0.08);
+  --green-border: rgba(21,128,61,0.25);
+  --red: #dc2626;
+  --red-bg: rgba(220,38,38,0.07);
+  --red-border: rgba(220,38,38,0.22);
+  --amber: #b45309;
+  --amber-bg: rgba(245,158,11,0.1);
+  --amber-border: rgba(245,158,11,0.35);
+  --flag-color: #f59e0b;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; }
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar { background:var(--accent); padding:13px 28px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+.top-bar-right { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.75); }
+
+/* DOC PROGRESS */
+.doc-progress { display:flex; gap:6px; align-items:center; }
+.doc-pip { width:26px; height:26px; border-radius:6px; background:rgba(255,255,255,0.18); color:rgba(255,255,255,0.6); font-family:'DM Mono',monospace; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; transition:all 0.3s; }
+.doc-pip.active { background:#fff; color:var(--accent); }
+.doc-pip.done   { background:rgba(255,255,255,0.9); color:var(--accent); }
+
+/* SHARED */
+.page-body { flex:1; overflow-y:auto; padding:32px 24px 48px; }
+.page-inner { max-width:700px; margin:0 auto; width:100%; }
+
+.intro-badge { display:inline-block; background:rgba(123,47,190,0.1); border:1px solid var(--border2); color:var(--accent); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border-radius:20px; margin-bottom:18px; }
+.page-title { font-family:'Syne',sans-serif; font-size:clamp(30px,5vw,50px); font-weight:800; line-height:1.06; margin-bottom:12px; }
+.page-title em { font-style:normal; color:var(--accent); }
+.page-desc { font-size:15px; color:var(--muted); line-height:1.7; max-width:520px; margin-bottom:28px; }
+
+/* CONTENT PICKER */
+.content-grid { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+.content-card { border:2px solid var(--border); border-radius:14px; padding:18px 20px; cursor:pointer; transition:all 0.18s; background:#fff; display:flex; gap:14px; align-items:flex-start; }
+.content-card:hover { border-color:var(--border2); background:var(--surface); transform:translateY(-1px); }
+.content-card.done-card { border-color:var(--green-border); background:var(--green-bg); cursor:default; }
+.content-card.done-card:hover { transform:none; }
+.cc-icon { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.cc-meta {}
+.cc-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:600; margin-bottom:4px; }
+.cc-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:3px; }
+.cc-desc  { font-size:13px; color:var(--muted); line-height:1.4; }
+.cc-score { margin-left:auto; font-family:'DM Mono',monospace; font-size:12px; font-weight:700; color:var(--green); align-self:center; white-space:nowrap; padding-left:10px; }
+
+/* BTNS */
+.btn-primary { background:var(--accent); color:#fff; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; padding:13px 32px; border-radius:10px; border:none; cursor:pointer; box-shadow:0 4px 16px rgba(123,47,190,0.25); transition:all 0.15s; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 7px 22px rgba(123,47,190,0.35); }
+.btn-primary:disabled { opacity:0.35; cursor:default; transform:none; box-shadow:none; }
+.btn-secondary { background:transparent; color:var(--accent); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; padding:11px 26px; border-radius:10px; border:2px solid var(--border2); cursor:pointer; transition:all 0.15s; }
+.btn-secondary:hover { background:var(--surface); }
+
+/* REVIEW SCREEN */
+#review-screen .page-inner { max-width:800px; }
+
+.review-layout { display:grid; grid-template-columns:1fr 300px; gap:20px; align-items:start; }
+@media(max-width:720px){ .review-layout { grid-template-columns:1fr; } }
+
+/* Document panel */
+.doc-panel { background:#fff; border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.doc-panel-header { background:var(--surface); border-bottom:1px solid var(--border); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; }
+.doc-type-badge { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); font-weight:600; display:flex; align-items:center; gap:6px; }
+.ai-indicator { display:flex; align-items:center; gap:5px; font-family:'DM Mono',monospace; font-size:10px; color:var(--amber); font-weight:600; }
+.ai-dot { width:6px; height:6px; border-radius:50%; background:var(--amber); animation:blink-a 2s infinite; }
+@keyframes blink-a { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.doc-content { padding:20px 22px; font-size:14px; line-height:1.8; color:var(--text); }
+.doc-content .doc-subject { font-size:12px; font-family:'DM Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+
+/* Flaggable spans */
+.flaggable {
+  border-radius:3px;
+  padding:1px 2px;
+  cursor:pointer;
+  transition:background 0.15s, box-shadow 0.15s;
+  position:relative;
+}
+.flaggable:hover { background:rgba(245,158,11,0.15); box-shadow:0 0 0 2px rgba(245,158,11,0.3); }
+.flaggable.flagged { background:var(--amber-bg); box-shadow:0 0 0 2px var(--amber-border); border-radius:4px; }
+.flaggable.revealed-problem { background:var(--red-bg); box-shadow:0 0 0 2px var(--red-border); border-radius:4px; cursor:default; }
+.flaggable.revealed-ok      { background:var(--green-bg); box-shadow:0 0 0 2px var(--green-border); border-radius:4px; cursor:default; }
+.flaggable.revealed-false   { background:var(--amber-bg); box-shadow:0 0 0 2px var(--amber-border); border-radius:4px; cursor:default; }
+
+/* Right panel */
+.side-panel { display:flex; flex-direction:column; gap:14px; }
+
+.instructions-box { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; }
+.inst-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; margin-bottom:8px; }
+.inst-text  { font-size:12px; color:var(--muted); line-height:1.6; }
+
+/* Bias type menu */
+.bias-menu { background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; display:none; }
+.bias-menu.show { display:block; animation:pop-in 0.25s ease; }
+@keyframes pop-in { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.bias-menu-title { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:600; padding:10px 14px 6px; }
+.bias-option { display:flex; align-items:center; gap:10px; padding:10px 14px; cursor:pointer; border-top:1px solid var(--border); font-size:13px; transition:background 0.15s; }
+.bias-option:hover { background:var(--surface); }
+.bias-option-icon { font-size:16px; flex-shrink:0; }
+.bias-option-label { font-weight:600; color:var(--text); font-size:13px; }
+.bias-option-desc  { font-size:11px; color:var(--muted); margin-top:1px; }
+.bias-cancel { padding:10px 14px; font-size:12px; color:var(--muted); cursor:pointer; border-top:1px solid var(--border); text-align:center; }
+.bias-cancel:hover { color:var(--text); }
+
+/* Flags list */
+.flags-list { background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.flags-header { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:600; padding:10px 14px 8px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.flag-count { font-family:'DM Mono',monospace; font-size:11px; font-weight:700; color:var(--flag-color); }
+.flags-empty { padding:14px; font-size:12px; color:var(--muted); text-align:center; font-style:italic; }
+.flag-item { padding:10px 14px; border-top:1px solid var(--border); display:flex; align-items:flex-start; gap:8px; }
+.flag-snippet { font-size:12px; color:var(--text); line-height:1.4; flex:1; font-style:italic; }
+.flag-type    { font-family:'DM Mono',monospace; font-size:10px; font-weight:600; padding:2px 7px; border-radius:4px; background:var(--amber-bg); color:var(--amber); white-space:nowrap; flex-shrink:0; }
+.flag-remove  { font-size:14px; color:var(--muted); cursor:pointer; line-height:1; padding:2px; flex-shrink:0; }
+.flag-remove:hover { color:var(--red); }
+
+/* RESULTS */
+.result-item { border-radius:12px; padding:16px 18px; margin-bottom:12px; border:1px solid transparent; }
+.result-item.found   { background:var(--green-bg); border-color:var(--green-border); }
+.result-item.missed  { background:var(--red-bg); border-color:var(--red-border); }
+.result-item.false-f { background:var(--amber-bg); border-color:var(--amber-border); }
+.result-header { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:6px; }
+.result-label { font-family:'DM Mono',monospace; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; padding:3px 8px; border-radius:4px; flex-shrink:0; }
+.lbl-found  { background:var(--green-bg); color:var(--green); }
+.lbl-missed { background:var(--red-bg); color:var(--red); }
+.lbl-false  { background:var(--amber-bg); color:var(--amber); }
+.result-name { font-size:14px; font-weight:700; color:var(--text); }
+.result-text { font-size:13px; color:var(--muted); line-height:1.6; }
+.result-fix  { font-size:12px; color:var(--green); margin-top:6px; padding-top:6px; border-top:1px solid var(--green-border); font-weight:500; }
+
+.score-hero { text-align:center; padding:24px 0 20px; margin-bottom:24px; border-bottom:1px solid var(--border); }
+.score-hero h2 { font-family:'Syne',sans-serif; font-size:clamp(22px,4vw,34px); font-weight:800; margin-bottom:8px; }
+.score-num { font-family:'Syne',sans-serif; font-size:64px; font-weight:800; color:var(--accent); line-height:1; margin:6px 0; }
+.score-msg { font-size:14px; color:var(--muted); line-height:1.6; max-width:400px; margin:0 auto; }
+
+.lesson-strip { background:var(--surface); border:1px solid var(--border2); border-radius:12px; padding:16px 20px; margin-bottom:20px; }
+.lesson-strip h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:7px; }
+.lesson-strip p { font-size:13px; color:var(--muted); line-height:1.7; }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">🔎 Spot the Bias</div>
+    <div class="top-bar-right">AI in Business · Activity</div>
+  </div>
+  <div class="page-body"><div class="page-inner">
+    <div class="intro-badge">⚖️ Case Study · Ethics Review</div>
+    <h1 class="page-title">AI wrote it.<br>You <em>review</em> it.</h1>
+    <p class="page-desc">AI can write marketing content fast — but it can also produce content that is unfair, leaves people out, or reinforces harmful stereotypes without realizing it. In this activity, you will read AI-generated content and flag any bias or ethical problems you find.</p>
+
+    <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:12px;font-weight:600;">Choose a piece of content to review</div>
+
+    <div class="content-grid" id="content-grid"></div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);font-weight:600;margin-bottom:8px;">💡 How This Works</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;">Read each piece carefully. When you spot something that seems biased or unfair, click on that part of the text to flag it. You will be asked to choose what type of problem it is. After you submit your review, you will see which issues were real — and why they matter.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- REVIEW -->
+<div id="review-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🔎 Spot the Bias</div>
+    <div class="doc-progress">
+      <div class="doc-pip" id="dp1">1</div>
+      <div class="doc-pip" id="dp2">2</div>
+      <div class="doc-pip" id="dp3">3</div>
+    </div>
+  </div>
+  <div class="page-body"><div class="page-inner">
+
+    <div style="margin-bottom:16px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);font-weight:600;margin-bottom:4px;" id="review-label"></div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,28px);font-weight:800;margin-bottom:4px;" id="review-title"></h2>
+      <p style="font-size:13px;color:var(--muted);" id="review-desc"></p>
+    </div>
+
+    <div class="review-layout">
+      <!-- Document -->
+      <div class="doc-panel">
+        <div class="doc-panel-header">
+          <div class="doc-type-badge" id="doc-type-badge"></div>
+          <div class="ai-indicator"><div class="ai-dot"></div> AI-Generated</div>
+        </div>
+        <div class="doc-content" id="doc-content"></div>
+      </div>
+
+      <!-- Side panel -->
+      <div class="side-panel">
+        <div class="instructions-box">
+          <div class="inst-title">How to flag a problem</div>
+          <div class="inst-text">Click on any word or sentence in the document that you think has a bias or ethical issue. A menu will appear so you can describe what type of problem it is.</div>
+        </div>
+
+        <!-- Bias type menu -->
+        <div class="bias-menu" id="bias-menu">
+          <div class="bias-menu-title">What type of problem is this?</div>
+          <div class="bias-option" onclick="addFlag('stereotype')">
+            <div class="bias-option-icon">🎭</div>
+            <div><div class="bias-option-label">Stereotype</div><div class="bias-option-desc">Assumes all people in a group act or look the same</div></div>
+          </div>
+          <div class="bias-option" onclick="addFlag('exclusion')">
+            <div class="bias-option-icon">🚫</div>
+            <div><div class="bias-option-label">Leaves people out</div><div class="bias-option-desc">Ignores or excludes a group of people</div></div>
+          </div>
+          <div class="bias-option" onclick="addFlag('assumption')">
+            <div class="bias-option-icon">🤔</div>
+            <div><div class="bias-option-label">Unfair assumption</div><div class="bias-option-desc">Assumes something about people that may not be true</div></div>
+          </div>
+          <div class="bias-option" onclick="addFlag('language')">
+            <div class="bias-option-icon">💬</div>
+            <div><div class="bias-option-label">Biased language</div><div class="bias-option-desc">Word choice that favors or puts down a group</div></div>
+          </div>
+          <div class="bias-cancel" onclick="cancelFlag()">Cancel — nothing wrong here</div>
+        </div>
+
+        <!-- Flags list -->
+        <div class="flags-list">
+          <div class="flags-header">
+            <span>Your Flags</span>
+            <span class="flag-count" id="flag-count">0 flagged</span>
+          </div>
+          <div id="flags-body"><div class="flags-empty">Click on suspicious text to flag it</div></div>
+        </div>
+
+        <button class="btn-primary" id="submit-btn" onclick="submitReview()" style="width:100%;">Submit My Review →</button>
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- RESULTS -->
+<div id="results-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🔎 Spot the Bias — Results</div>
+    <div class="top-bar-right" id="results-top-label"></div>
+  </div>
+  <div class="page-body"><div class="page-inner">
+    <div class="score-hero">
+      <h2 id="results-title">Review Complete</h2>
+      <div class="score-num" id="results-score">0/3</div>
+      <p class="score-msg" id="results-msg"></p>
+    </div>
+
+    <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;">Issue Breakdown</div>
+    <div id="results-breakdown"></div>
+
+    <div class="lesson-strip">
+      <h3>🧠 Why Human Review of AI Content Matters</h3>
+      <p>AI systems learn from huge amounts of text and images created by humans — which means they can absorb and repeat the biases that exist in that data. AI does not understand fairness the way a person does. It cannot feel the impact of a stereotype or know when a group has historically been left out. <strong>That is why human reviewers like you are essential.</strong> Every piece of AI-generated marketing content should be checked before it reaches a real audience.</p>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-secondary" onclick="goBackToMenu()">← Review Another Piece</button>
+    </div>
+  </div></div>
+</div>
+
+<script>
+// ─────────── DATA ───────────
+const CONTENT_PIECES = [
+  {
+    id: 1,
+    icon: '📧',
+    iconBg: 'rgba(123,47,190,0.1)',
+    label: 'Email Campaign',
+    title: 'FitLife App — New Year Email',
+    desc: 'AI-generated promotional email for a fitness app',
+    docType: '📧 Email Campaign · FitLife App',
+    problems: [
+      { id:'p1', label:'Age bias', fix:'Remove age references entirely, or use inclusive language like "people of all fitness levels" or "anyone ready to take on a new challenge."' },
+      { id:'p2', label:'Body image assumption', fix:'Replace "get the body you have always wanted" with something like "feel stronger and more energized" — focusing on how people feel rather than how they look.' },
+      { id:'p3', label:'Gender stereotype', fix:'Replace "ladies" with "everyone" or simply remove the gendered callout entirely.' },
+    ],
+    content: [
+      { type:'subject', text:'New Year, New You — Start 2024 Right! 💪' },
+      { type:'para', text:'Happy New Year! Are you ready to finally get in shape and stop making excuses?' },
+      { type:'para', segs:[
+          { id:'p1', text:'Whether you are a young go-getter in your 20s or someone who has let themselves go over the years,' },
+          { text:' FitLife has a plan for you.' }
+        ]
+      },
+      { type:'para', segs:[
+          { text:'Our AI-powered workouts will help you ' },
+          { id:'p2', text:'get the body you have always wanted' },
+          { text:' — flat stomach, toned arms, and the confidence to show it off.' }
+        ]
+      },
+      { type:'para', segs:[
+          { text:'And ' },
+          { id:'p3', text:'ladies — we know how hard it is to stay motivated while juggling family and work.' },
+          { text:' That is why we built special "Mom Mode" workouts just for you.' }
+        ]
+      },
+      { type:'para', text:'Download FitLife today and join millions of people already transforming their lives. Your dream body is just one app away.' },
+      { type:'cta', text:'Download Free →' }
+    ]
+  },
+  {
+    id: 2,
+    icon: '📱',
+    iconBg: 'rgba(14,165,233,0.1)',
+    label: 'Social Media Ad',
+    title: 'Vertex Bank — "Build Your Future" Ad',
+    desc: 'AI-generated Facebook ad for a financial services company',
+    docType: '📱 Social Media Ad · Vertex Bank',
+    problems: [
+      { id:'p1', label:'Socioeconomic exclusion', fix:'Replace "everyone has the means" with "we meet you where you are" or "no matter where you are starting from." Acknowledge that not everyone starts from the same place.' },
+      { id:'p2', label:'Visual stereotype', fix:'Remove the specific description of who appears in the image. Instead, specify a diverse group of people representing different ages, backgrounds, and abilities.' },
+      { id:'p3', label:'Cultural assumption', fix:'Replace "just like your parents did" with something like "building lasting wealth on your terms" — not everyone has parents who owned homes or built savings.' },
+    ],
+    content: [
+      { type:'subject', text:'📣 Sponsored · Vertex Bank' },
+      { type:'para', text:'💼 Build Your Future. Start Today.' },
+      { type:'para', segs:[
+          { text:'At Vertex Bank, we believe that ' },
+          { id:'p1', text:'everyone has the means to build real wealth — you just need the right tools and the discipline to use them.' }
+        ]
+      },
+      { type:'para', text:'Open a Vertex savings account and watch your money grow with our industry-leading interest rates.' },
+      { type:'para', segs:[
+          { text:'[Image: ' },
+          { id:'p2', text:'A young professional white man in a suit smiling at his phone in a modern office.' },
+          { text:']' }
+        ]
+      },
+      { type:'para', segs:[
+          { text:'It is time to start building the life you deserve — ' },
+          { id:'p3', text:'buying a home, saving for retirement, and passing on wealth just like your parents did.' }
+        ]
+      },
+      { type:'para', text:'Open your account in 5 minutes. No minimum balance required.' },
+      { type:'cta', text:'Get Started →' }
+    ]
+  },
+  {
+    id: 3,
+    icon: '📋',
+    iconBg: 'rgba(21,128,61,0.1)',
+    label: 'Job Posting',
+    title: 'TechNova — Junior Developer Role',
+    desc: 'AI-generated job posting for a technology company',
+    docType: '📋 Job Posting · TechNova',
+    problems: [
+      { id:'p1', label:'Gender-coded language', fix:'Replace "rockstar" and "crushing it" with neutral professional language like "strong contributor" or "delivers excellent results." Research shows masculine-coded words discourage women from applying.' },
+      { id:'p2', label:'Age bias', fix:'Remove "recent graduate" and "young" entirely. These phrases can discourage older applicants and may be illegal in some places. Use "0-2 years of experience" instead.' },
+      { id:'p3', label:'Ability assumption', fix:'Remove "must be able to work long hours" or replace it with specific expectations like "some weeks may require up to 45 hours during product launches." Blanket stamina requirements can exclude people with disabilities.' },
+    ],
+    content: [
+      { type:'subject', text:'Junior Developer — TechNova (Full-Time)' },
+      { type:'para', text:'Are you a coding rockstar who loves crushing it every day? TechNova is looking for a passionate developer to join our fast-moving team.' },
+      { type:'para', segs:[
+          { text:'We are looking for a ' },
+          { id:'p2', text:'recent graduate or young professional' },
+          { text:' with 0-2 years of experience who is hungry to learn and grow fast.' }
+        ]
+      },
+      { type:'para', text:'Responsibilities:', style:'heading' },
+      { type:'para', text:'• Build and maintain web features using React and Node.js' },
+      { type:'para', text:'• Collaborate with designers and product managers on new features' },
+      { type:'para', segs:[
+          { id:'p1', text:'• Be a rockstar contributor who takes ownership and crushes goals' }
+        ]
+      },
+      { type:'para', text:'Requirements:', style:'heading' },
+      { type:'para', text:'• Proficiency in JavaScript, HTML, and CSS' },
+      { type:'para', segs:[
+          { text:'• ' },
+          { id:'p3', text:'Must be able to work long hours and handle the physical and mental demands of a fast-paced startup environment' }
+        ]
+      },
+      { type:'para', text:'• Strong communication skills and team spirit' },
+      { type:'para', text:'We offer competitive pay, health benefits, and a fun office culture. Apply today!' },
+      { type:'cta', text:'Apply Now →' }
+    ]
+  }
+];
+
+const BIAS_LABELS = {
+  stereotype: '🎭 Stereotype',
+  exclusion:  '🚫 Leaves people out',
+  assumption: '🤔 Unfair assumption',
+  language:   '💬 Biased language'
+};
+
+// ─────────── STATE ───────────
+let currentPieceId  = null;
+let pendingFlagEl   = null;
+let pendingFlagText = '';
+let flags           = [];  // { elId, text, type }
+let completedPieces = {};
+
+// ─────────── INTRO ───────────
+function renderMenu() {
+  const grid = document.getElementById('content-grid');
+  grid.innerHTML = '';
+  CONTENT_PIECES.forEach(p => {
+    const done = completedPieces[p.id];
+    const el = document.createElement('div');
+    el.className = 'content-card' + (done ? ' done-card' : '');
+    el.innerHTML = `
+      <div class="cc-icon" style="background:${p.iconBg}">${p.icon}</div>
+      <div class="cc-meta">
+        <div class="cc-label">${p.label}</div>
+        <div class="cc-title">${p.title}</div>
+        <div class="cc-desc">${p.desc}</div>
+      </div>
+      ${done ? `<div class="cc-score">✓ ${done}/3</div>` : ''}
+    `;
+    if (!done) el.onclick = () => startReview(p.id);
+    grid.appendChild(el);
+  });
+}
+
+// ─────────── REVIEW ───────────
+function startReview(pieceId) {
+  currentPieceId = pieceId;
+  flags = [];
+  pendingFlagEl = null;
+
+  const p = CONTENT_PIECES.find(x => x.id === pieceId);
+  show('review-screen');
+
+  // Progress pips
+  CONTENT_PIECES.forEach((cp, i) => {
+    const pip = document.getElementById('dp' + (i+1));
+    pip.className = 'doc-pip';
+    if (completedPieces[cp.id]) pip.classList.add('done');
+    else if (cp.id === pieceId) pip.classList.add('active');
+  });
+
+  document.getElementById('review-label').textContent = p.label + ' · ' + p.title;
+  document.getElementById('review-title').textContent = 'Find the bias in this ' + p.label.toLowerCase();
+  document.getElementById('review-desc').textContent  = 'Click on any part of the text below that you think has a bias or ethical problem.';
+  document.getElementById('doc-type-badge').textContent = p.docType;
+  document.getElementById('bias-menu').classList.remove('show');
+  renderDoc(p);
+  renderFlagsList();
+}
+
+function renderDoc(p) {
+  const container = document.getElementById('doc-content');
+  container.innerHTML = '';
+
+  p.content.forEach(block => {
+    if (block.type === 'subject') {
+      const div = document.createElement('div');
+      div.className = 'doc-subject';
+      div.textContent = block.text;
+      container.appendChild(div);
+      return;
+    }
+    if (block.type === 'cta') {
+      const div = document.createElement('div');
+      div.style.cssText = 'margin-top:14px;';
+      const btn = document.createElement('span');
+      btn.style.cssText = 'display:inline-block;background:var(--accent);color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;';
+      btn.textContent = block.text;
+      div.appendChild(btn);
+      container.appendChild(div);
+      return;
+    }
+
+    const para = document.createElement('p');
+    para.style.marginBottom = '12px';
+    if (block.style === 'heading') {
+      para.style.fontWeight = '700';
+      para.style.marginTop = '6px';
+    }
+
+    if (block.segs) {
+      block.segs.forEach(seg => {
+        if (seg.id) {
+          const span = document.createElement('span');
+          span.className = 'flaggable';
+          span.dataset.problemId = seg.id;
+          span.textContent = seg.text;
+          span.onclick = (e) => onFlaggableClick(e, span, seg.id, seg.text);
+          para.appendChild(span);
+        } else {
+          para.appendChild(document.createTextNode(seg.text));
+        }
+      });
+    } else {
+      para.textContent = block.text;
+    }
+    container.appendChild(para);
+  });
+}
+
+function onFlaggableClick(e, el, problemId, text) {
+  e.stopPropagation();
+  // If already flagged, remove flag
+  const existingIdx = flags.findIndex(f => f.elId === problemId);
+  if (existingIdx !== -1) {
+    flags.splice(existingIdx, 1);
+    el.classList.remove('flagged');
+    renderFlagsList();
+    document.getElementById('bias-menu').classList.remove('show');
+    return;
+  }
+  // Set as pending
+  pendingFlagEl   = { el, problemId };
+  pendingFlagText = text.trim().substring(0, 60) + (text.length > 60 ? '…' : '');
+  el.classList.add('flagged');
+  document.getElementById('bias-menu').classList.add('show');
+}
+
+function addFlag(type) {
+  if (!pendingFlagEl) return;
+  flags.push({ elId: pendingFlagEl.problemId, text: pendingFlagText, type });
+  document.getElementById('bias-menu').classList.remove('show');
+  pendingFlagEl = null;
+  renderFlagsList();
+}
+
+function cancelFlag() {
+  if (pendingFlagEl) {
+    pendingFlagEl.el.classList.remove('flagged');
+    pendingFlagEl = null;
+  }
+  document.getElementById('bias-menu').classList.remove('show');
+}
+
+function removeFlag(elId) {
+  flags = flags.filter(f => f.elId !== elId);
+  const span = document.querySelector(`[data-problem-id="${elId}"]`);
+  if (span) span.classList.remove('flagged');
+  renderFlagsList();
+}
+
+function renderFlagsList() {
+  const body = document.getElementById('flags-body');
+  document.getElementById('flag-count').textContent = flags.length + ' flagged';
+  if (flags.length === 0) {
+    body.innerHTML = '<div class="flags-empty">Click on suspicious text to flag it</div>';
+    return;
+  }
+  body.innerHTML = '';
+  flags.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'flag-item';
+    div.innerHTML = `
+      <div style="flex:1;">
+        <div class="flag-snippet">"${f.text}"</div>
+        <span class="flag-type">${BIAS_LABELS[f.type]}</span>
+      </div>
+      <div class="flag-remove" onclick="removeFlag('${f.elId}')">✕</div>
+    `;
+    body.appendChild(div);
+  });
+}
+
+// ─────────── SUBMIT ───────────
+function submitReview() {
+  const p = CONTENT_PIECES.find(x => x.id === currentPieceId);
+  const correctIds = new Set(p.problems.map(pr => pr.id));
+  const flaggedIds  = new Set(flags.map(f => f.elId));
+
+  let caught = 0;
+  const breakdown = [];
+
+  // Check each real problem
+  p.problems.forEach(pr => {
+    const wasFlagged = flaggedIds.has(pr.id);
+    if (wasFlagged) caught++;
+    breakdown.push({ type: wasFlagged ? 'found' : 'missed', name: pr.label, fix: pr.fix, wasFlagged });
+  });
+
+  // False flags
+  flags.forEach(f => {
+    if (!correctIds.has(f.elId)) {
+      breakdown.push({ type: 'false', name: 'This section was actually okay', text: f.text });
+    }
+  });
+
+  // Reveal highlights in doc
+  document.querySelectorAll('.flaggable').forEach(el => {
+    const pid = el.dataset.problemId;
+    el.classList.remove('flagged');
+    el.onclick = null;
+    el.style.cursor = 'default';
+    if (correctIds.has(pid)) {
+      el.classList.add(flaggedIds.has(pid) ? 'revealed-problem' : 'revealed-problem');
+    }
+  });
+
+  completedPieces[currentPieceId] = caught;
+
+  // Show results
+  show('results-screen');
+  document.getElementById('results-top-label').textContent = p.label + ' · ' + p.title;
+  document.getElementById('results-score').textContent = caught + '/3';
+
+  const scoreMsg = caught === 3 ? 'Excellent! You caught every bias in this piece. Strong ethical instincts.'
+    : caught === 2 ? 'Good work — you caught most of the issues. Review the one you missed below.'
+    : caught === 1 ? 'You found one issue. Read the breakdown to see what the other two were.'
+    : 'These are tricky to spot — that is the point. Read the breakdown carefully to learn what to look for.';
+
+  const title = caught === 3 ? '🏆 Perfect Review!' : caught >= 2 ? '👍 Good Eye!' : caught === 1 ? '📚 Keep Practicing' : '💡 Learning Moment';
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = scoreMsg;
+
+  const bd = document.getElementById('results-breakdown');
+  bd.innerHTML = '';
+  breakdown.forEach(item => {
+    const div = document.createElement('div');
+    if (item.type === 'found') {
+      div.className = 'result-item found';
+      div.innerHTML = `<div class="result-header"><div class="result-name">${item.name}</div><span class="result-label lbl-found">✓ You caught it</span></div><div class="result-text">This was a real bias problem in the content.</div><div class="result-fix">✏️ Better version: ${item.fix}</div>`;
+    } else if (item.type === 'missed') {
+      div.className = 'result-item missed';
+      div.innerHTML = `<div class="result-header"><div class="result-name">${item.name}</div><span class="result-label lbl-missed">✗ Missed</span></div><div class="result-text">This was a real problem — go back and look at the highlighted section in the document to see where it appeared.</div><div class="result-fix">✏️ Better version: ${item.fix}</div>`;
+    } else {
+      div.className = 'result-item false-f';
+      div.innerHTML = `<div class="result-header"><div class="result-name">False flag</div><span class="result-label lbl-false">⚠ Not a problem</span></div><div class="result-text">The section <em>"${item.text}"</em> was not actually biased. Being thorough is good — but learning to distinguish real issues from non-issues is also an important skill.</div>`;
+    }
+    bd.appendChild(div);
+  });
+}
+
+// ─────────── NAV ───────────
+function goBackToMenu() {
+  renderMenu();
+  show('intro');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// Close bias menu if clicking elsewhere
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('bias-menu');
+  if (menu.classList.contains('show') && !menu.contains(e.target)) {
+    cancelFlag();
+  }
+});
+
+renderMenu();
+</script>
+</body>
+</html>
