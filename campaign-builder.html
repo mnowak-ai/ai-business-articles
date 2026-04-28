@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campaign Builder — AI Marketing Activity</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.25);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+  --accent2: #9d4edd;
+  --green: #15803d;
+  --green-bg: rgba(21,128,61,0.08);
+  --amber: #b45309;
+  --amber-bg: rgba(180,83,9,0.08);
+  --step1: #7B2FBE;
+  --step2: #0ea5e9;
+  --step3: #f59e0b;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; }
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  background: var(--accent);
+  padding: 13px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+
+/* Step progress */
+.step-progress {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.step-pip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  padding: 4px 12px 4px 8px;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+.step-pip.done   { color: rgba(255,255,255,0.9); }
+.step-pip.active { background: rgba(255,255,255,0.18); color: #fff; font-weight:600; }
+.step-num {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+  transition: all 0.3s;
+}
+.step-pip.done .step-num   { background: rgba(255,255,255,0.9); color: var(--accent); }
+.step-pip.active .step-num { background: #fff; color: var(--accent); }
+.step-divider { width: 16px; height: 1px; background: rgba(255,255,255,0.2); }
+
+/* ── SHARED CONTENT ── */
+.page-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 24px 48px;
+}
+.page-inner { max-width: 720px; margin: 0 auto; width: 100%; }
+
+/* Intro badge */
+.intro-badge {
+  display: inline-block;
+  background: rgba(123,47,190,0.1);
+  border: 1px solid var(--border2);
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+}
+
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  line-height: 1.08;
+  margin-bottom: 12px;
+}
+.page-title em { font-style:normal; color:var(--accent); }
+
+.page-desc {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 540px;
+  margin-bottom: 32px;
+}
+
+/* Step badge */
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.step-badge.s1 { background: rgba(123,47,190,0.1); color: var(--step1); border: 1px solid rgba(123,47,190,0.2); }
+.step-badge.s2 { background: rgba(14,165,233,0.1); color: var(--step2); border: 1px solid rgba(14,165,233,0.2); }
+.step-badge.s3 { background: rgba(245,158,11,0.1); color: var(--step3); border: 1px solid rgba(245,158,11,0.2); }
+
+.step-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  max-width: 540px;
+}
+
+/* ── BTNs ── */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 13px 32px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(123,47,190,0.25);
+  transition: all 0.15s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow: 0 7px 22px rgba(123,47,190,0.35); }
+.btn-primary:disabled { opacity:0.35; cursor:default; transform:none; box-shadow:none; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 26px;
+  border-radius: 10px;
+  border: 2px solid var(--border2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-secondary:hover { background: var(--surface); }
+
+/* ── BRAND PICKER ── */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.brand-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s;
+  background: #fff;
+}
+.brand-card:hover { border-color: var(--border2); background: var(--surface); transform: translateY(-2px); }
+.brand-card.selected { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(123,47,190,0.1); }
+
+.brand-emoji { font-size: 28px; margin-bottom: 6px; }
+.brand-name  { font-size: 12px; font-weight: 700; color: var(--text); }
+.brand-type  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* Product picker */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.product-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 12px;
+  cursor: pointer;
+  transition: all 0.18s;
+  background: #fff;
+}
+.product-card:hover { border-color: var(--border2); background: var(--surface); }
+.product-card.selected { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(123,47,190,0.1); }
+
+.product-emoji { font-size: 24px; margin-bottom: 6px; }
+.product-name  { font-size: 13px; font-weight: 700; color: var(--text); }
+.product-desc  { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+/* ── STEP 1: Social Post ── */
+.post-workspace {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.post-context {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.post-context strong { color: var(--accent); }
+
+.platform-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.ptab {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.ptab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.post-textarea {
+  width: 100%;
+  min-height: 110px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  background: #fff;
+  resize: vertical;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.post-textarea:focus { border-color: var(--accent); }
+.post-textarea::placeholder { color: #b8a8d0; }
+
+.char-count {
+  text-align: right;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.char-count.over { color: #dc2626; }
+
+/* AI Feedback panel */
+.ai-feedback {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  display: none;
+  animation: slide-up 0.35s ease;
+}
+.ai-feedback.show { display: block; }
+
+@keyframes slide-up {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.ai-feedback-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.ai-pulse {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(123,47,190,0.15);
+  animation: pulse-glow 2s infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse-glow {
+  0%,100% { box-shadow: 0 0 0 3px rgba(123,47,190,0.15); }
+  50%      { box-shadow: 0 0 0 6px rgba(123,47,190,0.06); }
+}
+
+.ai-feedback-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.ai-feedback-text strong { color: var(--text); }
+
+.strength-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.stag {
+  font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 5px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.stag-good   { background: var(--green-bg); color: var(--green); }
+.stag-tip    { background: rgba(123,47,190,0.1); color: var(--accent); }
+.stag-warn   { background: var(--amber-bg); color: var(--amber); }
+
+/* ── STEP 2: Audience ── */
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.audience-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  background: #fff;
+  position: relative;
+}
+.audience-card:hover { border-color: rgba(14,165,233,0.4); background: rgba(14,165,233,0.04); }
+.audience-card.selected { border-color: var(--step2); background: rgba(14,165,233,0.07); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+.audience-card.disabled-card { opacity:0.45; pointer-events:none; }
+
+.aud-emoji { font-size: 26px; margin-bottom: 8px; }
+.aud-name  { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.aud-desc  { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+.aud-check {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--step2);
+  color: #fff;
+  font-size: 11px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.audience-card.selected .aud-check { display:flex; }
+
+.pick-counter {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.pick-counter span { color: var(--step2); font-weight: 700; }
+
+/* ── STEP 3: Ad Concepts ── */
+.ad-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (max-width:580px) { .ad-grid { grid-template-columns:1fr; } }
+
+.ad-card {
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 16px;
+  cursor: pointer;
+  transition: all 0.18s;
+  background: #fff;
+  position: relative;
+}
+.ad-card:hover { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); transform:translateY(-2px); }
+.ad-card.selected { border-color: var(--step3); background: rgba(245,158,11,0.06); box-shadow: 0 0 0 3px rgba(245,158,11,0.12); }
+
+.ad-type {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--step3);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.ad-title  { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+.ad-desc   { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+.reason-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  background: #fff;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 80px;
+  display: none;
+}
+.reason-input:focus { border-color: var(--step3); }
+.reason-input.show  { display: block; animation: slide-up 0.3s ease; }
+
+/* ── CAMPAIGN CARD (results) ── */
+#campaign-screen { background: var(--surface); }
+
+.campaign-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(123,47,190,0.1);
+  margin-bottom: 28px;
+}
+
+.campaign-header {
+  background: var(--accent);
+  padding: 28px 30px;
+  color: #fff;
+}
+
+.campaign-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  margin-bottom: 8px;
+}
+
+.campaign-header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(22px, 4vw, 36px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.campaign-header .sub {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.campaign-body { padding: 28px 30px; }
+
+.campaign-section {
+  margin-bottom: 26px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--border);
+}
+.campaign-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.cs-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cs-step-dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.dot-s1 { background: rgba(123,47,190,0.15); color: var(--step1); }
+.dot-s2 { background: rgba(14,165,233,0.15); color: var(--step2); }
+.dot-s3 { background: rgba(245,158,11,0.15); color: var(--step3); }
+
+.cs-content { font-size: 14px; line-height: 1.7; color: var(--text); }
+
+.audience-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+.aud-chip {
+  background: rgba(14,165,233,0.1);
+  color: var(--step2);
+  border: 1px solid rgba(14,165,233,0.25);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ad-chosen-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 4px;
+}
+.ad-chosen-type {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--step3);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.ad-chosen-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.ad-chosen-reason { font-size: 13px; color: var(--muted); font-style: italic; }
+
+.ai-insight-strip {
+  background: rgba(123,47,190,0.06);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+.ai-insight-strip strong { color: var(--text); }
+
+/* divider label */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.section-divider-line { flex:1; height:1px; background: var(--border); }
+.section-divider-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ INTRO / BRAND PICKER ══════════ -->
+<div id="intro-screen" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">📣 Campaign Builder</div>
+    <div style="font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.7);">AI in Business · Activity</div>
+  </div>
+  <div class="page-body">
+    <div class="page-inner">
+      <div class="intro-badge">🎯 Activity · AI Marketing</div>
+      <h1 class="page-title">Build a real<br><em>AI marketing</em><br>campaign.</h1>
+      <p class="page-desc">You're going to think like a marketing team that uses AI. Pick a brand and product, then build your campaign step by step — a social post, a target audience, and an ad idea. At the end, you'll have a complete campaign card you built yourself.</p>
+
+      <div class="section-divider">
+        <div class="section-divider-line"></div>
+        <div class="section-divider-text">Step 1 of 3 — Pick your brand & product</div>
+        <div class="section-divider-line"></div>
+      </div>
+
+      <div class="step-badge s1">🏢 First, choose a brand</div>
+      <p class="step-desc" style="margin-bottom:16px;">Pick any brand below — or think of it as the type of company you want to work with.</p>
+
+      <div class="brand-grid" id="brand-grid"></div>
+
+      <div id="product-area" style="display:none;">
+        <div class="step-badge s1" style="margin-top:8px;">📦 Now pick a product</div>
+        <p class="step-desc" style="margin-bottom:16px;" id="product-prompt">Choose which product you want to market.</p>
+        <div class="product-grid" id="product-grid"></div>
+      </div>
+
+      <button class="btn-primary" id="start-btn" disabled onclick="goToStep1()">Start Building My Campaign →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STEP 1: Social Post ══════════ -->
+<div id="step1-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">📣 Campaign Builder</div>
+    <div class="step-progress">
+      <div class="step-pip active" id="sp1"><div class="step-num">1</div> Social Post</div>
+      <div class="step-divider"></div>
+      <div class="step-pip" id="sp2"><div class="step-num">2</div> Audience</div>
+      <div class="step-divider"></div>
+      <div class="step-pip" id="sp3"><div class="step-num">3</div> Ad Idea</div>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="page-inner">
+      <div class="step-badge s1">✍️ Step 1 of 3 — Write a Social Media Post</div>
+      <h2 class="step-title" id="s1-title">Write a post for your product</h2>
+      <p class="step-desc">AI tools can help write social media posts in seconds. But first, try writing one yourself. Imagine you're a marketing person using AI to announce this product. What would you say? Keep it short and exciting — like something you'd actually see on Instagram or X.</p>
+
+      <div class="post-workspace">
+        <div class="post-context" id="post-context"></div>
+        <div class="platform-tabs">
+          <button class="ptab active" onclick="setPlatform('instagram',this)">📸 Instagram</button>
+          <button class="ptab" onclick="setPlatform('x',this)">𝕏 X (Twitter)</button>
+          <button class="ptab" onclick="setPlatform('tiktok',this)">🎵 TikTok</button>
+        </div>
+        <textarea class="post-textarea" id="post-input" placeholder="Write your post here… Be creative! You can use emojis, hashtags, and anything you'd see on social media." oninput="onPostInput()" maxlength="300"></textarea>
+        <div class="char-count" id="char-count">0 / 300 characters</div>
+      </div>
+
+      <div class="ai-feedback" id="post-feedback"></div>
+      <button class="btn-primary" id="s1-next-btn" disabled onclick="goToStep2()">Next: Choose Your Audience →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STEP 2: Audience ══════════ -->
+<div id="step2-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">📣 Campaign Builder</div>
+    <div class="step-progress">
+      <div class="step-pip done" id="sp1b"><div class="step-num">✓</div> Social Post</div>
+      <div class="step-divider"></div>
+      <div class="step-pip active" id="sp2b"><div class="step-num">2</div> Audience</div>
+      <div class="step-divider"></div>
+      <div class="step-pip" id="sp3b"><div class="step-num">3</div> Ad Idea</div>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="page-inner">
+      <div class="step-badge s2">🎯 Step 2 of 3 — Choose Your Target Audience</div>
+      <h2 class="step-title" id="s2-title">Who should see this ad?</h2>
+      <p class="step-desc">One of the most powerful things AI can do in marketing is figure out exactly who should see an ad. It looks at people's age, interests, online habits, and more. Pick the <strong>2 audience groups</strong> you think would be most likely to buy your product.</p>
+
+      <div class="pick-counter">Selected: <span id="aud-count">0</span> / 2</div>
+      <div class="audience-grid" id="audience-grid"></div>
+
+      <div class="ai-feedback" id="audience-feedback"></div>
+      <button class="btn-primary" id="s2-next-btn" disabled onclick="goToStep3()">Next: Pick an Ad Idea →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STEP 3: Ad Concept ══════════ -->
+<div id="step3-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">📣 Campaign Builder</div>
+    <div class="step-progress">
+      <div class="step-pip done"><div class="step-num">✓</div> Social Post</div>
+      <div class="step-divider"></div>
+      <div class="step-pip done"><div class="step-num">✓</div> Audience</div>
+      <div class="step-divider"></div>
+      <div class="step-pip active"><div class="step-num">3</div> Ad Idea</div>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="page-inner">
+      <div class="step-badge s3">💡 Step 3 of 3 — Pick the Best Ad Idea</div>
+      <h2 class="step-title" id="s3-title">Which ad concept fits best?</h2>
+      <p class="step-desc">AI can generate dozens of ad ideas in seconds. Below are 4 different concepts the AI created for your product. Read each one and pick the idea you think would work best — then tell us why in one or two sentences.</p>
+
+      <div class="ad-grid" id="ad-grid"></div>
+
+      <div id="reason-wrap" style="display:none; margin-bottom:20px;">
+        <p style="font-size:13px; color:var(--muted); margin-bottom:8px; font-weight:600;">Why did you pick that one? (Write 1–2 sentences)</p>
+        <textarea class="reason-input show" id="reason-input" placeholder="I chose this idea because…" oninput="onReasonInput()"></textarea>
+      </div>
+
+      <div class="ai-feedback" id="ad-feedback"></div>
+      <button class="btn-primary" id="s3-next-btn" disabled onclick="buildCampaign()">See My Campaign Card →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CAMPAIGN CARD ══════════ -->
+<div id="campaign-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">📣 Campaign Builder — Complete!</div>
+    <div style="font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.7);">Your Campaign Card</div>
+  </div>
+  <div class="page-body">
+    <div class="page-inner">
+      <div class="intro-badge" style="margin-bottom:20px;">🎉 Campaign Complete</div>
+
+      <div class="campaign-card" id="campaign-card">
+        <div class="campaign-header">
+          <div class="campaign-label">AI-Powered Marketing Campaign</div>
+          <h1 id="cc-title">Campaign Title</h1>
+          <div class="sub" id="cc-sub">Built by you · Powered by AI thinking</div>
+        </div>
+        <div class="campaign-body">
+
+          <div class="campaign-section">
+            <div class="cs-label"><div class="cs-step-dot dot-s1">1</div> Social Media Post</div>
+            <div class="cs-content" id="cc-post" style="font-style:italic; padding:12px 14px; background:var(--surface); border-radius:8px; border:1px solid var(--border);"></div>
+            <div class="ai-insight-strip" id="cc-post-insight" style="margin-top:10px;"></div>
+          </div>
+
+          <div class="campaign-section">
+            <div class="cs-label"><div class="cs-step-dot dot-s2">2</div> Target Audiences</div>
+            <div class="audience-chips" id="cc-audiences"></div>
+            <div class="ai-insight-strip" id="cc-aud-insight" style="margin-top:10px;"></div>
+          </div>
+
+          <div class="campaign-section">
+            <div class="cs-label"><div class="cs-step-dot dot-s3">3</div> Ad Concept</div>
+            <div class="ad-chosen-box" id="cc-ad-box">
+              <div class="ad-chosen-type" id="cc-ad-type"></div>
+              <div class="ad-chosen-title" id="cc-ad-title"></div>
+              <div class="ad-chosen-reason" id="cc-ad-reason"></div>
+            </div>
+            <div class="ai-insight-strip" id="cc-ad-insight" style="margin-top:10px;"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:center;">
+        <button class="btn-secondary" onclick="resetAll()">↺ Start Over</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────
+const BRANDS = [
+  { id:'nike',    emoji:'👟', name:'Nike',       type:'Sports & Fitness' },
+  { id:'apple',   emoji:'🍎', name:'Apple',      type:'Technology' },
+  { id:'starbucks',emoji:'☕', name:'Starbucks', type:'Food & Beverage' },
+  { id:'netflix', emoji:'🎬', name:'Netflix',    type:'Entertainment' },
+  { id:'adidas',  emoji:'🦅', name:'Adidas',     type:'Sports & Fashion' },
+  { id:'spotify', emoji:'🎵', name:'Spotify',    type:'Music & Audio' },
+  { id:'target',  emoji:'🎯', name:'Target',     type:'Retail' },
+  { id:'tesla',   emoji:'⚡', name:'Tesla',      type:'Electric Vehicles' },
+];
+
+const PRODUCTS = {
+  nike:     [{ emoji:'👟', name:'Air Max Sneakers',      desc:'Iconic cushioned running shoes' },
+             { emoji:'🧢', name:'Performance Cap',       desc:'Moisture-wicking athletic hat' },
+             { emoji:'🏃', name:'Dri-FIT Training Set',  desc:'Breathable workout clothes' }],
+  apple:    [{ emoji:'📱', name:'iPhone 16',             desc:'Latest smartphone model' },
+             { emoji:'🎧', name:'AirPods Pro',           desc:'Wireless noise-canceling earbuds' },
+             { emoji:'⌚', name:'Apple Watch',           desc:'Smartwatch with health tracking' }],
+  starbucks:[{ emoji:'🧋', name:'Pumpkin Spice Latte',   desc:'Seasonal fall coffee drink' },
+             { emoji:'🥤', name:'Mango Dragonfruit Drink',desc:'Colorful refreshing iced drink' },
+             { emoji:'🍫', name:'Chocolate Cake Pop',     desc:'Popular sweet snack item' }],
+  netflix:  [{ emoji:'🎬', name:'New Original Series',   desc:'Exclusive streaming show' },
+             { emoji:'🎮', name:'Netflix Games',          desc:'Mobile games included with plan' },
+             { emoji:'💳', name:'Premium Plan',           desc:'4K streaming for the whole family' }],
+  adidas:   [{ emoji:'⚽', name:'Predator Soccer Cleats', desc:'High-performance soccer shoes' },
+             { emoji:'🧥', name:'Originals Hoodie',       desc:'Classic streetwear sweatshirt' },
+             { emoji:'🏀', name:'Basketball Jersey',      desc:'Breathable game-day jersey' }],
+  spotify:  [{ emoji:'🎵', name:'Spotify Premium',        desc:'Ad-free music streaming' },
+             { emoji:'🎙️', name:'Spotify Podcasts',       desc:'Millions of podcasts, free' },
+             { emoji:'👨‍👩‍👧', name:'Family Plan',             desc:'6 accounts for one low price' }],
+  target:   [{ emoji:'🛍️', name:'Back to School Bundle',  desc:'All school supplies in one' },
+             { emoji:'🏠', name:'Home Decor Collection',  desc:'Stylish affordable home items' },
+             { emoji:'🐾', name:'Pet Essentials Line',    desc:'Food, toys, and grooming items' }],
+  tesla:    [{ emoji:'🚗', name:'Model 3',                desc:'Affordable electric sedan' },
+             { emoji:'☀️', name:'Solar Roof',             desc:'Solar panels built into roof tiles' },
+             { emoji:'🔋', name:'Powerwall Home Battery', desc:'Store solar energy for your home' }],
+};
+
+const AUDIENCES = [
+  { id:'gen-z',   emoji:'📱', name:'Gen Z (ages 13–26)',        desc:'Love social media, trends, and authentic brands' },
+  { id:'parents', emoji:'👨‍👩‍👦', name:'Parents (ages 30–45)',      desc:'Focused on value, safety, and family needs' },
+  { id:'athletes',emoji:'🏋️', name:'Student Athletes',          desc:'Active teens and young adults who train regularly' },
+  { id:'techies', emoji:'💻', name:'Tech Enthusiasts',          desc:'Early adopters who love new gadgets and innovation' },
+  { id:'budget',  emoji:'💰', name:'Budget Shoppers',           desc:'Looking for the best deal and value for money' },
+  { id:'fashion', emoji:'👗', name:'Fashion-Forward Shoppers',  desc:'Follow trends and care about style and aesthetics' },
+  { id:'outdoors',emoji:'🌲', name:'Outdoor & Nature Lovers',   desc:'Into hiking, camping, and active lifestyles' },
+  { id:'commuters',emoji:'🚌',name:'Daily Commuters',           desc:'On the go, listen to audio, value convenience' },
+];
+
+// Ad concepts are generated per brand+product combo — we use a template system
+function getAdConcepts(brandId, productName) {
+  return [
+    {
+      type: '📱 Social Media Takeover',
+      title: `"Real People, Real Results" Challenge`,
+      desc: `AI targets social media users who follow similar brands and serves them short videos of real customers using ${productName}. Anyone who shares their own video gets featured on the brand's page.`,
+    },
+    {
+      type: '🎯 Personalized Ads',
+      title: `"Made Just For You" Targeting`,
+      desc: `AI analyzes what people search for online and shows them a personalized ad for ${productName} that mentions their specific interests — like "perfect for runners" or "great for students."`,
+    },
+    {
+      type: '🤝 Influencer Match',
+      title: `Micro-Influencer Partnership`,
+      desc: `Instead of paying one big celebrity, AI finds 50 smaller social media creators whose followers match your target audience perfectly, and sends each one ${productName} to review.`,
+    },
+    {
+      type: '📧 Email Sequence',
+      title: `"Don't Miss Out" Email Campaign`,
+      desc: `AI sends a 3-part email series to people who visited the product page but didn't buy. Each email gets more personal — showing the exact item they looked at with a limited-time offer.`,
+    },
+  ];
+}
+
+// Audience AI insight
+function getAudienceInsight(audIds, brandId, productName) {
+  const combos = {
+    'gen-z+athletes':   `Gen Z and Student Athletes are a powerful combo for ${productName}. Both groups are highly active on social media and influenced by peers — they're also more likely to buy something if they see someone their age using it.`,
+    'gen-z+fashion':    `Gen Z and Fashion-Forward Shoppers overlap a lot — they both care about how things look and what's trending. ${productName} would spread fast in these communities through posts and shares.`,
+    'parents+budget':   `Parents and Budget Shoppers are a smart pick. Both groups research before they buy and respond well to messages about value and reliability. ${productName} should lead with those messages.`,
+    'techies+gen-z':    `Tech Enthusiasts and Gen Z are both early adopters who love being first. They'll talk about ${productName} online and create buzz — especially if there's something new or innovative to highlight.`,
+    'athletes+outdoors':`Student Athletes and Outdoor Lovers are both active and health-focused. They're a natural fit for ${productName} and will likely trust reviews from other active people like themselves.`,
+    'fashion+gen-z':    `Fashion-Forward Shoppers and Gen Z are extremely overlapping audiences — this is basically one strong community. ${productName} would do great with visual content like Instagram Reels or TikTok.`,
+    'commuters+budget': `Daily Commuters and Budget Shoppers both value convenience and price. For ${productName}, messaging around "saves you time" and "worth the price" would land really well.`,
+  };
+
+  const key = audIds.slice().sort().join('+');
+  return combos[key] || `These two groups are a good match for ${productName}. AI would analyze their browsing habits and online interests to serve them personalized ads at the right time and place — like while they're scrolling through their favorite apps.`;
+}
+
+// Post AI feedback
+function getPostFeedback(text, platform) {
+  const len = text.trim().length;
+  const hasEmoji = /\p{Emoji}/u.test(text);
+  const hasHashtag = /#\w+/.test(text);
+  const hasExclaim = /!/.test(text);
+  const tips = [];
+  const goods = [];
+
+  if (len > 10) goods.push('You wrote something — great start!');
+  if (len > 60) goods.push('Good length for a social post');
+  if (hasEmoji) goods.push('Emojis make posts more eye-catching');
+  if (hasHashtag) goods.push('Hashtags help more people find the post');
+  if (hasExclaim) goods.push('Exclamation points add energy');
+
+  if (!hasEmoji) tips.push('Try adding an emoji or two 🎉');
+  if (!hasHashtag) tips.push('Add a hashtag to help people discover it');
+  if (len < 30) tips.push('A bit more detail could make it stronger');
+  if (platform === 'x' && len > 280) tips.push('X posts work best under 280 characters');
+
+  const intro = `<strong>Nice work writing your post!</strong> Here's what AI would notice about it:`;
+  const goodHTML = goods.length ? `<div class="strength-tags">${goods.map(g => `<span class="stag stag-good">✓ ${g}</span>`).join('')}</div>` : '';
+  const tipHTML = tips.length ? `<div class="strength-tags" style="margin-top:6px;">${tips.map(t => `<span class="stag stag-tip">💡 ${t}</span>`).join('')}</div>` : '';
+  const lesson = `<div style="margin-top:10px; font-size:12px; color:var(--muted);">AI tools like <strong>Hootsuite AI</strong> or <strong>Jasper</strong> analyze thousands of top-performing posts to suggest improvements — better wording, ideal length, and the best time to post for your specific audience.</div>`;
+
+  return `<div class="ai-feedback-header"><div class="ai-pulse"></div> AI Post Feedback</div><div class="ai-feedback-text">${intro}${goodHTML}${tipHTML}${lesson}</div>`;
+}
+
+// ─────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────
+let selectedBrand = null;
+let selectedProduct = null;
+let selectedPlatform = 'instagram';
+let selectedAudiences = [];
+let selectedAd = null;
+let userPost = '';
+let userReason = '';
+
+// ─────────────────────────────────────────
+// BRAND / PRODUCT PICKER
+// ─────────────────────────────────────────
+function renderBrands() {
+  const grid = document.getElementById('brand-grid');
+  grid.innerHTML = '';
+  BRANDS.forEach(b => {
+    const el = document.createElement('div');
+    el.className = 'brand-card';
+    el.id = 'brand-' + b.id;
+    el.innerHTML = `<div class="brand-emoji">${b.emoji}</div><div class="brand-name">${b.name}</div><div class="brand-type">${b.type}</div>`;
+    el.onclick = () => selectBrand(b.id);
+    grid.appendChild(el);
+  });
+}
+
+function selectBrand(id) {
+  if (selectedBrand === id) return;
+  selectedBrand = id;
+  selectedProduct = null;
+  document.querySelectorAll('.brand-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('brand-' + id).classList.add('selected');
+
+  // Show product area
+  const b = BRANDS.find(x => x.id === id);
+  document.getElementById('product-prompt').textContent = `Great choice! Now pick a specific ${b.name} product you want to market.`;
+  renderProducts(id);
+  document.getElementById('product-area').style.display = 'block';
+  document.getElementById('start-btn').disabled = true;
+}
+
+function renderProducts(brandId) {
+  const grid = document.getElementById('product-grid');
+  grid.innerHTML = '';
+  PRODUCTS[brandId].forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'product-card';
+    el.id = 'prod-' + i;
+    el.innerHTML = `<div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-desc">${p.desc}</div>`;
+    el.onclick = () => selectProduct(i, p);
+    grid.appendChild(el);
+  });
+}
+
+function selectProduct(idx, p) {
+  selectedProduct = p;
+  document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('prod-' + idx).classList.add('selected');
+  document.getElementById('start-btn').disabled = false;
+}
+
+// ─────────────────────────────────────────
+// STEP 1: SOCIAL POST
+// ─────────────────────────────────────────
+function goToStep1() {
+  const b = BRANDS.find(x => x.id === selectedBrand);
+  document.getElementById('intro-screen').classList.remove('active');
+  document.getElementById('step1-screen').classList.add('active');
+  document.getElementById('s1-title').textContent = `Write a post for the ${b.name} ${selectedProduct.name}`;
+  document.getElementById('post-context').innerHTML = `Your AI assistant says: <strong>"I'm ready to help write a social post for the ${b.name} ${selectedProduct.name}. Give me your first draft and I'll polish it up!"</strong> Write your version below.`;
+}
+
+function setPlatform(platform, btn) {
+  selectedPlatform = platform;
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const limits = { instagram:300, x:280, tiktok:300 };
+  document.getElementById('post-input').maxLength = limits[platform];
+  onPostInput();
+}
+
+function onPostInput() {
+  const text = document.getElementById('post-input').value;
+  userPost = text;
+  const len = text.length;
+  const max = parseInt(document.getElementById('post-input').maxLength);
+  const cc = document.getElementById('char-count');
+  cc.textContent = `${len} / ${max} characters`;
+  cc.className = 'char-count' + (len > max * 0.95 ? ' over' : '');
+
+  const btn = document.getElementById('s1-next-btn');
+  const fb  = document.getElementById('post-feedback');
+
+  if (text.trim().length >= 15) {
+    fb.innerHTML = getPostFeedback(text, selectedPlatform);
+    fb.classList.add('show');
+    btn.disabled = false;
+  } else {
+    fb.classList.remove('show');
+    btn.disabled = true;
+  }
+}
+
+// ─────────────────────────────────────────
+// STEP 2: AUDIENCE
+// ─────────────────────────────────────────
+function goToStep2() {
+  document.getElementById('step1-screen').classList.remove('active');
+  document.getElementById('step2-screen').classList.add('active');
+  const b = BRANDS.find(x => x.id === selectedBrand);
+  document.getElementById('s2-title').textContent = `Who should see the ${b.name} ${selectedProduct.name} ad?`;
+  renderAudiences();
+}
+
+function renderAudiences() {
+  const grid = document.getElementById('audience-grid');
+  grid.innerHTML = '';
+  AUDIENCES.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'audience-card';
+    el.id = 'aud-' + a.id;
+    el.innerHTML = `<div class="aud-check">✓</div><div class="aud-emoji">${a.emoji}</div><div class="aud-name">${a.name}</div><div class="aud-desc">${a.desc}</div>`;
+    el.onclick = () => toggleAudience(a.id);
+    grid.appendChild(el);
+  });
+}
+
+function toggleAudience(id) {
+  const el = document.getElementById('aud-' + id);
+  if (selectedAudiences.includes(id)) {
+    selectedAudiences = selectedAudiences.filter(x => x !== id);
+    el.classList.remove('selected');
+  } else {
+    if (selectedAudiences.length >= 2) return;
+    selectedAudiences.push(id);
+    el.classList.add('selected');
+  }
+
+  const count = selectedAudiences.length;
+  document.getElementById('aud-count').textContent = count;
+
+  // Disable unselected if 2 picked
+  AUDIENCES.forEach(a => {
+    const card = document.getElementById('aud-' + a.id);
+    if (count >= 2 && !selectedAudiences.includes(a.id)) {
+      card.classList.add('disabled-card');
+    } else {
+      card.classList.remove('disabled-card');
+    }
+  });
+
+  const btn = document.getElementById('s2-next-btn');
+  const fb  = document.getElementById('audience-feedback');
+
+  if (count === 2) {
+    const insight = getAudienceInsight(selectedAudiences, selectedBrand, selectedProduct.name);
+    fb.innerHTML = `<div class="ai-feedback-header"><div class="ai-pulse"></div> AI Audience Analysis</div><div class="ai-feedback-text">${insight}</div>`;
+    fb.classList.add('show');
+    btn.disabled = false;
+  } else {
+    fb.classList.remove('show');
+    btn.disabled = true;
+  }
+}
+
+// ─────────────────────────────────────────
+// STEP 3: AD CONCEPT
+// ─────────────────────────────────────────
+function goToStep3() {
+  document.getElementById('step2-screen').classList.remove('active');
+  document.getElementById('step3-screen').classList.add('active');
+  const b = BRANDS.find(x => x.id === selectedBrand);
+  document.getElementById('s3-title').textContent = `Which ad idea fits ${b.name} ${selectedProduct.name} best?`;
+  renderAdConcepts();
+}
+
+function renderAdConcepts() {
+  const concepts = getAdConcepts(selectedBrand, selectedProduct.name);
+  const grid = document.getElementById('ad-grid');
+  grid.innerHTML = '';
+  concepts.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'ad-card';
+    el.id = 'ad-' + i;
+    el.innerHTML = `<div class="ad-type">${c.type}</div><div class="ad-title">${c.title}</div><div class="ad-desc">${c.desc}</div>`;
+    el.onclick = () => selectAd(i, c);
+    grid.appendChild(el);
+  });
+}
+
+function selectAd(idx, concept) {
+  selectedAd = concept;
+  document.querySelectorAll('.ad-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('ad-' + idx).classList.add('selected');
+  document.getElementById('reason-wrap').style.display = 'block';
+  document.getElementById('reason-wrap').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  checkStep3();
+}
+
+function onReasonInput() {
+  userReason = document.getElementById('reason-input').value;
+  checkStep3();
+}
+
+function checkStep3() {
+  const hasAd = selectedAd !== null;
+  const hasReason = userReason.trim().length >= 10;
+  const btn = document.getElementById('s3-next-btn');
+  const fb  = document.getElementById('ad-feedback');
+
+  if (hasAd && hasReason) {
+    fb.innerHTML = `<div class="ai-feedback-header"><div class="ai-pulse"></div> Great Thinking!</div><div class="ai-feedback-text">You picked <strong>${selectedAd.title}</strong> — a solid choice. AI marketing tools can generate hundreds of ad concepts like these in minutes, then test which one actually performs best by running small trials with real audiences before spending the full budget. Your reasoning shows you're already thinking like a strategist.</div>`;
+    fb.classList.add('show');
+    btn.disabled = false;
+  }
+}
+
+// ─────────────────────────────────────────
+// CAMPAIGN CARD
+// ─────────────────────────────────────────
+function buildCampaign() {
+  document.getElementById('step3-screen').classList.remove('active');
+  document.getElementById('campaign-screen').classList.add('active');
+
+  const b = BRANDS.find(x => x.id === selectedBrand);
+  const audNames = selectedAudiences.map(id => AUDIENCES.find(a => a.id === id));
+
+  // Header
+  document.getElementById('cc-title').textContent = `${b.name} ${selectedProduct.name} Campaign`;
+  document.getElementById('cc-sub').textContent = `Built by you · Powered by AI thinking`;
+
+  // Post
+  const platformLabels = { instagram:'📸 Instagram', x:'𝕏 X (Twitter)', tiktok:'🎵 TikTok' };
+  document.getElementById('cc-post').textContent = `"${userPost}"`;
+  document.getElementById('cc-post-insight').innerHTML = `<strong>Platform:</strong> ${platformLabels[selectedPlatform]} &nbsp;·&nbsp; <strong>AI tip:</strong> AI tools can auto-schedule this post for the time of day when your audience is most active online.`;
+
+  // Audiences
+  const chips = document.getElementById('cc-audiences');
+  chips.innerHTML = '';
+  audNames.forEach(a => {
+    const chip = document.createElement('div');
+    chip.className = 'aud-chip';
+    chip.textContent = `${a.emoji} ${a.name}`;
+    chips.appendChild(chip);
+  });
+  document.getElementById('cc-aud-insight').innerHTML = `<strong>Why this works:</strong> ${getAudienceInsight(selectedAudiences, selectedBrand, selectedProduct.name)}`;
+
+  // Ad
+  document.getElementById('cc-ad-type').textContent = selectedAd.type;
+  document.getElementById('cc-ad-title').textContent = selectedAd.title;
+  document.getElementById('cc-ad-reason').textContent = `Your reason: "${userReason}"`;
+  document.getElementById('cc-ad-insight').innerHTML = `<strong>AI advantage:</strong> AI can run this ad concept as a small test with 1,000 people before the full campaign launches — saving budget and proving the idea works before you spend big.`;
+}
+
+// ─────────────────────────────────────────
+// RESET
+// ─────────────────────────────────────────
+function resetAll() {
+  selectedBrand = null; selectedProduct = null;
+  selectedPlatform = 'instagram'; selectedAudiences = [];
+  selectedAd = null; userPost = ''; userReason = '';
+
+  document.getElementById('campaign-screen').classList.remove('active');
+  document.getElementById('product-area').style.display = 'none';
+  document.getElementById('start-btn').disabled = true;
+  document.getElementById('post-input').value = '';
+  document.getElementById('post-feedback').classList.remove('show');
+  document.getElementById('audience-feedback').classList.remove('show');
+  document.getElementById('ad-feedback').classList.remove('show');
+  document.getElementById('reason-wrap').style.display = 'none';
+  document.getElementById('reason-input').value = '';
+  document.getElementById('char-count').textContent = '0 / 300 characters';
+  document.querySelectorAll('.ptab').forEach((t,i) => t.classList.toggle('active', i===0));
+
+  renderBrands();
+  document.getElementById('intro-screen').classList.add('active');
+}
+
+// ─────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────
+renderBrands();
+</script>
+</body>
+</html>
