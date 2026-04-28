@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Match the Research Type</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+
+  --market-c:    #2563eb;
+  --market-bg:   rgba(37,99,235,0.07);
+  --market-bdr:  rgba(37,99,235,0.28);
+  --market-glow: rgba(37,99,235,0.12);
+
+  --comp-c:    #b45309;
+  --comp-bg:   rgba(180,83,9,0.07);
+  --comp-bdr:  rgba(180,83,9,0.28);
+  --comp-glow: rgba(180,83,9,0.12);
+
+  --cust-c:    #15803d;
+  --cust-bg:   rgba(21,128,61,0.07);
+  --cust-bdr:  rgba(21,128,61,0.28);
+  --cust-glow: rgba(21,128,61,0.12);
+
+  --correct-c: #15803d;
+  --wrong-c:   #dc2626;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* no background pattern */
+
+.screen { display:none; min-height:100vh; flex-direction:column; position:relative; z-index:1; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar {
+  padding: 13px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--accent);
+  flex-shrink:0;
+}
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px; }
+.top-bar-right  { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.75); }
+
+/* Progress dots */
+.progress-dots { display:flex; gap:5px; align-items:center; }
+.pdot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.3); transition:all 0.3s; }
+.pdot.correct  { background:#fff; box-shadow:0 0 6px rgba(255,255,255,0.6); }
+.pdot.wrong    { background:rgba(255,100,100,0.8); }
+
+/* INTRO */
+#intro {
+  align-items: center; justify-content: center;
+  padding: 40px 24px;
+}
+
+.intro-inner { max-width:580px; width:100%; text-align:center; }
+
+.intro-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(123,47,190,0.1); border:1px solid rgba(123,47,190,0.25);
+  color:var(--accent); font-family:'DM Mono',monospace;
+  font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+  padding:5px 14px; border-radius:20px; margin-bottom:24px;
+}
+
+.intro-title {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(34px,6vw,58px); font-weight:800; line-height:1.05;
+  margin-bottom:14px; color:var(--text);
+}
+.intro-title em { font-style:normal; color:var(--accent); }
+
+.intro-desc {
+  font-size:15px; color:var(--muted); line-height:1.7;
+  max-width:460px; margin:0 auto 32px;
+}
+
+/* Type preview pills */
+.type-pills { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:32px; }
+.type-pill {
+  display:flex; align-items:center; gap:8px;
+  padding:10px 18px; border-radius:12px;
+  font-size:13px; font-weight:600;
+}
+.pill-market { background:var(--market-bg); border:1px solid var(--market-bdr); color:var(--market-c); }
+.pill-comp   { background:var(--comp-bg);   border:1px solid var(--comp-bdr);   color:var(--comp-c); }
+.pill-cust   { background:var(--cust-bg);   border:1px solid var(--cust-bdr);   color:var(--cust-c); }
+
+.pill-desc { font-size:11px; color:var(--muted); font-weight:400; }
+
+.btn-primary {
+  background: var(--accent); color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:13px 36px; border-radius:10px; border:none; cursor:pointer;
+  box-shadow:0 4px 20px rgba(123,47,190,0.4); transition:all 0.15s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(123,47,190,0.5); }
+
+.btn-secondary {
+  background:transparent; color:var(--text);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:11px 28px; border-radius:10px; border:1px solid var(--border);
+  cursor:pointer; transition:all 0.15s;
+}
+.btn-secondary:hover { background:var(--surface); }
+
+/* GAME SCREEN */
+#game { flex-direction:column; }
+
+.game-body {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  padding:24px;
+  gap:20px;
+  max-width:960px;
+  margin:0 auto;
+  width:100%;
+}
+
+/* Score strip */
+.score-strip {
+  display:flex; align-items:center; gap:16px;
+  font-family:'DM Mono',monospace; font-size:12px; color:var(--muted);
+}
+.score-val { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:#fff; }
+.score-sep { flex:1; height:1px; background:var(--border); }
+
+/* Cards area */
+.cards-area {
+  display:flex; flex-wrap:wrap; gap:12px;
+  justify-content:center;
+  min-height:160px;
+  padding:16px;
+  border:1.5px dashed rgba(123,47,190,0.2);
+  border-radius:16px;
+  transition:border-color 0.3s;
+  background: var(--surface);
+}
+.cards-area.drag-over { border-color:rgba(123,47,190,0.4); background:rgba(123,47,190,0.04); }
+
+/* Scenario card */
+.card {
+  background: #fff;
+  border: 1.5px solid rgba(123,47,190,0.15);
+  border-radius: 12px;
+  padding: 14px 16px;
+  width: 200px;
+  cursor: grab;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  user-select: none;
+  position: relative;
+  animation: card-in 0.4s ease both;
+}
+
+@keyframes card-in {
+  from { opacity:0; transform:translateY(16px) scale(0.95); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(123,47,190,0.12); border-color:rgba(123,47,190,0.3); }
+.card.dragging { opacity:0.4; transform:scale(0.96); cursor:grabbing; }
+
+.card-icon { font-size:22px; margin-bottom:8px; }
+.card-text { font-size:13px; line-height:1.55; color:var(--text); }
+
+/* Correct animation */
+@keyframes snap-in {
+  0%   { transform:scale(1.08); }
+  50%  { transform:scale(0.96); }
+  100% { transform:scale(1); }
+}
+
+@keyframes shake {
+  0%,100% { transform:translateX(0); }
+  20%  { transform:translateX(-6px); }
+  40%  { transform:translateX(6px); }
+  60%  { transform:translateX(-4px); }
+  80%  { transform:translateX(4px); }
+}
+
+.card.snap { animation:snap-in 0.35s ease; }
+.card.shake { animation:shake 0.35s ease; }
+
+/* Buckets row */
+.buckets-row {
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:14px;
+}
+
+@media(max-width:600px) {
+  .buckets-row { grid-template-columns:1fr; }
+  .card { width:100%; }
+  .cards-area { min-height:100px; }
+}
+
+/* Bucket */
+.bucket {
+  border-radius:16px;
+  border:2px dashed;
+  padding:16px;
+  min-height:160px;
+  transition:all 0.2s;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.bucket-market { border-color:var(--market-bdr); background:rgba(59,130,246,0.04); }
+.bucket-comp   { border-color:var(--comp-bdr);   background:rgba(245,158,11,0.04); }
+.bucket-cust   { border-color:var(--cust-bdr);   background:rgba(16,185,129,0.04); }
+
+.bucket.drag-over-bucket {
+  transform:scale(1.02);
+}
+.bucket-market.drag-over-bucket { background:var(--market-bg); border-color:var(--market-c); box-shadow:0 0 20px var(--market-glow); }
+.bucket-comp.drag-over-bucket   { background:var(--comp-bg);   border-color:var(--comp-c);   box-shadow:0 0 20px var(--comp-glow); }
+.bucket-cust.drag-over-bucket   { background:var(--cust-bg);   border-color:var(--cust-c);   box-shadow:0 0 20px var(--cust-glow); }
+
+.bucket-header {
+  display:flex; align-items:center; gap:8px;
+  margin-bottom:4px;
+}
+.bucket-dot {
+  width:10px; height:10px; border-radius:50%;
+  flex-shrink:0;
+}
+.bucket-title {
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:800;
+}
+.bucket-sub {
+  font-size:11px; color:var(--muted); line-height:1.4;
+}
+.bucket-count {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  margin-left:auto; opacity:0.6;
+}
+
+.bucket-market .bucket-title { color:var(--market-c); }
+.bucket-comp   .bucket-title { color:var(--comp-c); }
+.bucket-cust   .bucket-title { color:var(--cust-c); }
+
+.bucket-market .bucket-dot { background:var(--market-c); }
+.bucket-comp   .bucket-dot { background:var(--comp-c); }
+.bucket-cust   .bucket-dot { background:var(--cust-c); }
+
+/* Placed card inside bucket */
+.placed-card {
+  border-radius:9px;
+  padding:10px 12px;
+  font-size:12px; line-height:1.5;
+  border:1px solid;
+  display:flex; align-items:flex-start; gap:8px;
+  animation:snap-in 0.3s ease;
+}
+.placed-card-icon { font-size:14px; flex-shrink:0; }
+
+.bucket-market .placed-card { background:rgba(37,99,235,0.07); border-color:rgba(37,99,235,0.2); color:var(--text); }
+.bucket-comp   .placed-card { background:rgba(180,83,9,0.07);  border-color:rgba(180,83,9,0.2);  color:var(--text); }
+.bucket-cust   .placed-card { background:rgba(21,128,61,0.07); border-color:rgba(21,128,61,0.2); color:var(--text); }
+
+/* Wrong feedback tooltip */
+.wrong-toast {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+  background:#ef4444; color:#fff;
+  font-size:13px; font-weight:600; padding:10px 20px;
+  border-radius:10px; z-index:100;
+  animation:toast-in 0.3s ease;
+  pointer-events:none;
+  max-width:320px; text-align:center;
+}
+@keyframes toast-in {
+  from { opacity:0; transform:translateX(-50%) translateY(10px); }
+  to   { opacity:1; transform:translateX(-50%) translateY(0); }
+}
+
+/* COMPLETE SCREEN */
+#complete {
+  align-items:center; justify-content:center;
+  padding:40px 24px;
+}
+
+.complete-inner { max-width:560px; width:100%; text-align:center; }
+
+.complete-emoji { font-size:72px; margin-bottom:20px; animation:bounce-in 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes bounce-in {
+  from { transform:scale(0.3); opacity:0; }
+  to   { transform:scale(1); opacity:1; }
+}
+
+.complete-title {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(32px,5vw,52px); font-weight:800; line-height:1.05;
+  margin-bottom:10px;
+}
+
+.complete-score {
+  font-family:'Syne',sans-serif; font-size:28px; font-weight:700;
+  color:var(--accent); margin-bottom:8px;
+}
+
+.complete-msg {
+  font-size:15px; color:var(--muted); line-height:1.7;
+  max-width:440px; margin:0 auto 32px;
+}
+
+.summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:32px; }
+
+.summary-card {
+  border-radius:14px; padding:16px 14px; text-align:center;
+}
+.summary-card.market { background:var(--market-bg); border:1px solid var(--market-bdr); }
+.summary-card.comp   { background:var(--comp-bg);   border:1px solid var(--comp-bdr); }
+.summary-card.cust   { background:var(--cust-bg);   border:1px solid var(--cust-bdr); }
+
+.summary-card-title {
+  font-family:'Syne',sans-serif; font-size:13px; font-weight:800;
+  margin-bottom:6px;
+}
+.summary-card.market .summary-card-title { color:var(--market-c); }
+.summary-card.comp   .summary-card-title { color:var(--comp-c); }
+.summary-card.cust   .summary-card-title { color:var(--cust-c); }
+
+.summary-card-desc {
+  font-size:11px; color:var(--muted); line-height:1.5;
+}
+
+.complete-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">🔬 Match the Research Type</div>
+    <div class="top-bar-right">AI in Business · Activity</div>
+  </div>
+  <div class="intro-inner" style="margin:auto; padding:40px 24px;">
+    <div class="intro-badge">🃏 Drag & Drop · Sorting Activity</div>
+    <h1 class="intro-title">Sort the<br><em>research</em> scenarios.</h1>
+    <p class="intro-desc">Businesses use three types of research to make smart decisions. Your job is to drag each scenario card into the correct research bucket. Read each card carefully — some are trickier than they look!</p>
+
+    <div class="type-pills">
+      <div class="type-pill pill-market">
+        <span>📊</span>
+        <div>
+          <div>Market Research</div>
+          <div class="pill-desc">Industry trends & opportunities</div>
+        </div>
+      </div>
+      <div class="type-pill pill-comp">
+        <span>🔭</span>
+        <div>
+          <div>Competitor Research</div>
+          <div class="pill-desc">What rivals are doing</div>
+        </div>
+      </div>
+      <div class="type-pill pill-cust">
+        <span>👥</span>
+        <div>
+          <div>Customer Research</div>
+          <div class="pill-desc">What customers need & feel</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="startGame()">Start Sorting →</button>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="game" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🔬 Match the Research Type</div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div class="progress-dots" id="progress-dots"></div>
+      <div class="top-bar-right" id="score-display">0 / 9</div>
+    </div>
+  </div>
+
+  <div class="game-body">
+
+    <!-- Cards pool -->
+    <div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:10px;font-weight:600;">Drag each card into the correct bucket below ↓</div>
+      <div class="cards-area" id="cards-area"></div>
+    </div>
+
+    <!-- Buckets -->
+    <div class="buckets-row">
+
+      <div class="bucket bucket-market" id="bucket-market"
+        ondragover="onDragOver(event,'market')" ondragleave="onDragLeave(event,'market')" ondrop="onDrop(event,'market')">
+        <div class="bucket-header">
+          <div class="bucket-dot"></div>
+          <div class="bucket-title">Market Research</div>
+          <div class="bucket-count" id="count-market">0/3</div>
+        </div>
+        <div class="bucket-sub">Industry trends, market size, economic conditions</div>
+      </div>
+
+      <div class="bucket bucket-comp" id="bucket-comp"
+        ondragover="onDragOver(event,'comp')" ondragleave="onDragLeave(event,'comp')" ondrop="onDrop(event,'comp')">
+        <div class="bucket-header">
+          <div class="bucket-dot"></div>
+          <div class="bucket-title">Competitor Research</div>
+          <div class="bucket-count" id="count-comp">0/3</div>
+        </div>
+        <div class="bucket-sub">What rivals offer, how they market, where they fall short</div>
+      </div>
+
+      <div class="bucket bucket-cust" id="bucket-cust"
+        ondragover="onDragOver(event,'cust')" ondragleave="onDragLeave(event,'cust')" ondrop="onDrop(event,'cust')">
+        <div class="bucket-header">
+          <div class="bucket-dot"></div>
+          <div class="bucket-title">Customer Research</div>
+          <div class="bucket-count" id="count-cust">0/3</div>
+        </div>
+        <div class="bucket-sub">What customers need, feel, and say about products</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- COMPLETE -->
+<div id="complete" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🔬 Match the Research Type</div>
+    <div class="top-bar-right">Activity Complete</div>
+  </div>
+  <div class="complete-inner" style="margin:auto; padding:40px 24px;">
+    <div class="complete-emoji" id="complete-emoji">🎉</div>
+    <h1 class="complete-title" id="complete-title">All Sorted!</h1>
+    <div class="complete-score" id="complete-score"></div>
+    <p class="complete-msg" id="complete-msg"></p>
+
+    <div class="summary-grid">
+      <div class="summary-card market">
+        <div class="summary-card-title">📊 Market Research</div>
+        <div class="summary-card-desc">Looks at the overall industry — trends, market size, pricing, and economic conditions. Helps businesses spot opportunities before competitors do.</div>
+      </div>
+      <div class="summary-card comp">
+        <div class="summary-card-title">🔭 Competitor Research</div>
+        <div class="summary-card-desc">Focuses on what rival companies are doing — their products, prices, marketing, and weaknesses. Helps businesses stay one step ahead.</div>
+      </div>
+      <div class="summary-card cust">
+        <div class="summary-card-title">👥 Customer Research</div>
+        <div class="summary-card-desc">Gathers information directly from customers — their needs, frustrations, and preferences. Helps businesses build products people actually want.</div>
+      </div>
+    </div>
+
+    <div class="complete-actions">
+      <button class="btn-secondary" onclick="resetGame()">↺ Play Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="wrong-toast" id="wrong-toast" style="display:none;"></div>
+
+<script>
+const CARDS = [
+  // Market
+  { id:'m1', type:'market', icon:'📈', text:'A company studies whether demand for electric bikes is growing across the country before launching its new product line.' },
+  { id:'m2', type:'market', icon:'⚖️', text:'A business looks into new laws and regulations being passed in its industry to decide if now is a safe time to expand.' },
+  { id:'m3', type:'market', icon:'💰', text:'A startup analyzes average pricing in its industry to figure out where it should position its own price point.' },
+  // Competitor
+  { id:'c1', type:'comp', icon:'📝', text:'A marketing team reads through hundreds of 1-star reviews of a rival product to find out what customers hate about it.' },
+  { id:'c2', type:'comp', icon:'🚀', text:'A product manager tracks a competing app\'s recent feature updates to understand where the industry is heading.' },
+  { id:'c3', type:'comp', icon:'📣', text:'A social media analyst studies how a rival brand runs its Instagram account — what they post, how often, and what gets the most likes.' },
+  // Customer
+  { id:'k1', type:'cust', icon:'📋', text:'A company sends a survey to 500 existing customers asking what features they wish the product had.' },
+  { id:'k2', type:'cust', icon:'🎙️', text:'A brand holds a focus group where 10 people react to three different logo designs and explain which one they prefer and why.' },
+  { id:'k3', type:'cust', icon:'🎧', text:'A support manager reads through the last 300 customer service tickets to find the most common complaint people have.' },
+];
+
+const BUCKET_LABELS = { market:'Market Research', comp:'Competitor Research', cust:'Customer Research' };
+const WRONG_HINTS = {
+  market: 'That scenario is not about overall industry trends. Think about whether it focuses on a specific company or on customers directly.',
+  comp:   'That does not match competitor research. Competitor research is about what rival companies are doing, not about the overall market or your own customers.',
+  cust:   'That is not customer research. Customer research comes directly from the people buying or using the product — surveys, feedback, or conversations.'
+};
+
+let dragCardId   = null;
+let correctCount = 0;
+let wrongCount   = 0;
+let placed       = new Set();
+let toastTimer   = null;
+
+function startGame() {
+  show('game');
+  correctCount = 0; wrongCount = 0; placed = new Set();
+  renderCards();
+  renderDots();
+  updateScoreDisplay();
+  ['market','comp','cust'].forEach(b => {
+    const el = document.getElementById('bucket-' + b);
+    // Remove placed cards
+    Array.from(el.querySelectorAll('.placed-card')).forEach(c => c.remove());
+    document.getElementById('count-' + b).textContent = '0/3';
+  });
+}
+
+function renderCards() {
+  const area = document.getElementById('cards-area');
+  area.innerHTML = '';
+  // Shuffle
+  const shuffled = [...CARDS].sort(() => Math.random() - 0.5);
+  shuffled.forEach((card, i) => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.id = 'card-' + card.id;
+    el.draggable = true;
+    el.style.animationDelay = (i * 0.06) + 's';
+    el.innerHTML = `<div class="card-icon">${card.icon}</div><div class="card-text">${card.text}</div>`;
+    el.addEventListener('dragstart', (e) => onDragStart(e, card.id));
+    el.addEventListener('dragend',   onDragEnd);
+    // Touch support
+    el.addEventListener('touchstart', onTouchStart, { passive:true });
+    el.addEventListener('touchmove',  onTouchMove,  { passive:false });
+    el.addEventListener('touchend',   onTouchEnd);
+    area.appendChild(el);
+  });
+
+  area.addEventListener('dragover',  (e) => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+  area.addEventListener('drop',      (e) => { e.preventDefault(); area.classList.remove('drag-over'); });
+}
+
+function renderDots() {
+  const dots = document.getElementById('progress-dots');
+  dots.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot';
+    d.id = 'dot-' + i;
+    dots.appendChild(d);
+  }
+}
+
+function updateScoreDisplay() {
+  document.getElementById('score-display').textContent = correctCount + ' / 9';
+}
+
+// ─── DRAG ───
+function onDragStart(e, cardId) {
+  dragCardId = cardId;
+  setTimeout(() => document.getElementById('card-' + cardId)?.classList.add('dragging'), 0);
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function onDragEnd() {
+  if (dragCardId) document.getElementById('card-' + dragCardId)?.classList.remove('dragging');
+}
+
+function onDragOver(e, bucketType) {
+  e.preventDefault();
+  document.getElementById('bucket-' + bucketType).classList.add('drag-over-bucket');
+}
+
+function onDragLeave(e, bucketType) {
+  document.getElementById('bucket-' + bucketType).classList.remove('drag-over-bucket');
+}
+
+function onDrop(e, bucketType) {
+  e.preventDefault();
+  document.getElementById('bucket-' + bucketType).classList.remove('drag-over-bucket');
+  if (!dragCardId || placed.has(dragCardId)) return;
+  handleDrop(dragCardId, bucketType);
+  dragCardId = null;
+}
+
+function handleDrop(cardId, bucketType) {
+  const card = CARDS.find(c => c.id === cardId);
+  if (!card || placed.has(cardId)) return;
+
+  const cardEl = document.getElementById('card-' + cardId);
+
+  if (card.type === bucketType) {
+    // Correct!
+    placed.add(cardId);
+    correctCount++;
+
+    // Animate card out
+    cardEl.classList.add('snap');
+    setTimeout(() => cardEl.remove(), 350);
+
+    // Add to bucket
+    const bucket = document.getElementById('bucket-' + bucketType);
+    const placed_card = document.createElement('div');
+    placed_card.className = 'placed-card';
+    placed_card.innerHTML = `<span class="placed-card-icon">${card.icon}</span><span>${card.text}</span>`;
+    bucket.appendChild(placed_card);
+
+    // Update count
+    const countEl = document.getElementById('count-' + bucketType);
+    const current = parseInt(countEl.textContent.split('/')[0]) + 1;
+    countEl.textContent = current + '/3';
+
+    // Update dots
+    const dotIdx = correctCount - 1;
+    document.getElementById('dot-' + dotIdx)?.classList.add('correct');
+    updateScoreDisplay();
+
+    if (correctCount === 9) {
+      setTimeout(() => showComplete(), 600);
+    }
+  } else {
+    // Wrong!
+    wrongCount++;
+    cardEl.classList.add('shake');
+    setTimeout(() => cardEl.classList.remove('shake'), 400);
+
+    // Mark dot wrong temporarily
+    const dotIdx = correctCount + wrongCount - 1 < 9 ? correctCount + wrongCount - 1 : 8;
+    const dot = document.getElementById('dot-' + dotIdx);
+    if (dot && !dot.classList.contains('correct')) {
+      dot.classList.add('wrong');
+      setTimeout(() => dot.classList.remove('wrong'), 1000);
+    }
+
+    showToast('Not quite! ' + WRONG_HINTS[bucketType]);
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('wrong-toast');
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.style.display = 'none', 3000);
+}
+
+// ─── TOUCH ───
+let touchCard   = null;
+let touchClone  = null;
+let touchCardId = null;
+let touchOffX   = 0;
+let touchOffY   = 0;
+
+function onTouchStart(e) {
+  const cardEl = e.currentTarget;
+  touchCard   = cardEl;
+  touchCardId = cardEl.id.replace('card-', '');
+  const rect = cardEl.getBoundingClientRect();
+  touchOffX = e.touches[0].clientX - rect.left;
+  touchOffY = e.touches[0].clientY - rect.top;
+
+  touchClone = cardEl.cloneNode(true);
+  touchClone.style.cssText = `position:fixed;width:${rect.width}px;opacity:0.85;pointer-events:none;z-index:999;border-radius:12px;transition:none;box-shadow:0 12px 32px rgba(0,0,0,0.5);`;
+  touchClone.style.left = (e.touches[0].clientX - touchOffX) + 'px';
+  touchClone.style.top  = (e.touches[0].clientY - touchOffY) + 'px';
+  document.body.appendChild(touchClone);
+  cardEl.style.opacity = '0.3';
+}
+
+function onTouchMove(e) {
+  e.preventDefault();
+  if (!touchClone) return;
+  touchClone.style.left = (e.touches[0].clientX - touchOffX) + 'px';
+  touchClone.style.top  = (e.touches[0].clientY - touchOffY) + 'px';
+
+  // Highlight buckets
+  const x = e.touches[0].clientX, y = e.touches[0].clientY;
+  ['market','comp','cust'].forEach(b => {
+    const bucket = document.getElementById('bucket-' + b);
+    const r = bucket.getBoundingClientRect();
+    if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+      bucket.classList.add('drag-over-bucket');
+    } else {
+      bucket.classList.remove('drag-over-bucket');
+    }
+  });
+}
+
+function onTouchEnd(e) {
+  if (!touchClone) return;
+  touchClone.remove(); touchClone = null;
+  if (touchCard) touchCard.style.opacity = '';
+
+  const x = e.changedTouches[0].clientX, y = e.changedTouches[0].clientY;
+  let dropped = false;
+  ['market','comp','cust'].forEach(b => {
+    const bucket = document.getElementById('bucket-' + b);
+    bucket.classList.remove('drag-over-bucket');
+    const r = bucket.getBoundingClientRect();
+    if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom && !dropped) {
+      dropped = true;
+      handleDrop(touchCardId, b);
+    }
+  });
+
+  touchCard = null; touchCardId = null;
+}
+
+// ─── COMPLETE ───
+function showComplete() {
+  show('complete');
+  const attempts = correctCount + wrongCount;
+  let emoji, title, msg;
+
+  if (wrongCount === 0) {
+    emoji = '🏆'; title = 'Perfect Sort!';
+    msg = 'You got every single card right on the first try. You clearly understand the difference between these three research types.';
+  } else if (wrongCount <= 3) {
+    emoji = '🎉'; title = 'Well Done!';
+    msg = `You sorted all 9 cards correctly with just ${wrongCount} wrong move${wrongCount > 1 ? 's' : ''}. Great understanding of the research types.`;
+  } else {
+    emoji = '✅'; title = 'All Sorted!';
+    msg = `You got there! It took a few tries, but you sorted all 9 cards correctly. Review the bucket definitions to lock in the differences.`;
+  }
+
+  document.getElementById('complete-emoji').textContent = emoji;
+  document.getElementById('complete-title').textContent = title;
+  document.getElementById('complete-score').textContent = wrongCount === 0 ? '9/9 — First try!' : `9/9 correct · ${wrongCount} wrong move${wrongCount !== 1 ? 's' : ''}`;
+  document.getElementById('complete-msg').textContent = msg;
+}
+
+function resetGame() {
+  startGame();
+  show('game');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
