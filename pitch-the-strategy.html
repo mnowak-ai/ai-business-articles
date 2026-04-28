@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitch the Strategy — Nike Competitor Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.22);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --nike: #7B2FBE;
+  --nike-glow: rgba(123,47,190,0.25);
+  --adidas: #2563eb;
+  --ua: #dc2626;
+  --accent: #7B2FBE;
+  --accent-light: #9d4edd;
+  --green: #15803d;
+  --green-bg: rgba(21,128,61,0.08);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.screen { display:none; min-height:100vh; flex-direction:column; position:relative; z-index:1; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar {
+  padding: 13px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--accent);
+  position: sticky; top:0; z-index:50; flex-shrink:0;
+}
+.tb-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: #fff;
+}
+.tb-brand-dot { width:8px; height:8px; border-radius:50%; background:#fff; box-shadow:0 0 8px rgba(255,255,255,0.5); animation:pulse-nike 2s infinite; }
+@keyframes pulse-nike { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.tb-right { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.7); }
+
+/* Q progress */
+.q-progress { display:flex; gap:6px; align-items:center; }
+.qpip { width:24px; height:4px; border-radius:2px; background:rgba(255,255,255,0.25); transition:all 0.4s; }
+.qpip.done   { background:#fff; }
+.qpip.active { background:rgba(255,255,255,0.85); box-shadow:0 0 6px rgba(255,255,255,0.4); }
+
+/* SHARED PAGE */
+.page-body { flex:1; overflow-y:auto; padding:40px 32px 56px; }
+.page-inner { max-width:840px; margin:0 auto; width:100%; }
+
+/* INTRO */
+#intro { position:relative; }
+
+.intro-kicker {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:20px;
+  display:flex; align-items:center; gap:8px;
+}
+.intro-kicker::before { content:''; flex:none; width:32px; height:1px; background:var(--accent); }
+
+.intro-title {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(42px,7vw,80px); font-weight:800; line-height:0.95;
+  margin-bottom:20px; letter-spacing:-0.02em;
+}
+.intro-title .line1 { display:block; color:var(--text); }
+.intro-title .line2 { display:block; color:var(--accent); }
+
+.intro-scenario {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  max-width: 560px;
+  font-size: 15px; line-height: 1.7; color: var(--text);
+}
+.intro-scenario strong { color: var(--accent); }
+
+.intro-steps { display:flex; flex-direction:column; gap:10px; margin-bottom:36px; max-width:480px; }
+.intro-step {
+  display:flex; align-items:flex-start; gap:14px;
+  font-size:14px; color:var(--muted); line-height:1.5;
+}
+.step-num {
+  width:24px; height:24px; border-radius:6px;
+  background:rgba(123,47,190,0.1); border:1px solid rgba(123,47,190,0.2);
+  color:var(--accent); font-family:'DM Mono',monospace; font-size:11px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+}
+
+.btn-start {
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 800;
+  padding: 14px 36px; border-radius: 10px; border: none; cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all 0.15s;
+  box-shadow: 0 4px 20px rgba(123,47,190,0.3);
+}
+.btn-start:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(123,47,190,0.4); }
+
+/* INTEL SCREEN */
+.intel-header { margin-bottom:28px; }
+.intel-label {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.16em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:10px;
+  display:flex; align-items:center; gap:8px;
+}
+.intel-label::before { content:''; width:20px; height:1px; background:var(--accent); }
+.intel-title { font-family:'Syne',sans-serif; font-size:clamp(24px,4vw,38px); font-weight:800; margin-bottom:6px; }
+.intel-sub { font-size:14px; color:var(--muted); line-height:1.6; }
+
+/* Comparison grid */
+.compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px; }
+@media(max-width:640px){ .compare-grid{grid-template-columns:1fr;} }
+
+.brand-panel { border-radius:14px; padding:22px; border:1px solid; }
+.brand-panel.adidas-panel { background:rgba(37,99,235,0.05); border-color:rgba(37,99,235,0.2); }
+.brand-panel.ua-panel     { background:rgba(220,38,38,0.04);  border-color:rgba(220,38,38,0.18); }
+
+.brand-panel-header {
+  display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  padding-bottom:14px; border-bottom:1px solid;
+}
+.adidas-panel .brand-panel-header { border-color:rgba(37,99,235,0.15); }
+.ua-panel     .brand-panel-header { border-color:rgba(220,38,38,0.15); }
+
+.brand-logo { font-size:26px; }
+.brand-name { font-family:'Syne',sans-serif; font-size:17px; font-weight:800; }
+.adidas-panel .brand-name { color:var(--adidas); }
+.ua-panel     .brand-name { color:var(--ua); }
+
+.intel-section { margin-bottom:14px; }
+.intel-section-label {
+  font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase;
+  letter-spacing:0.1em; font-weight:600; margin-bottom:6px;
+}
+.adidas-panel .intel-section-label { color:var(--adidas); opacity:0.85; }
+.ua-panel     .intel-section-label { color:var(--ua); opacity:0.85; }
+
+.intel-item { display:flex; align-items:flex-start; gap:8px; margin-bottom:5px; font-size:12px; line-height:1.5; color:var(--text); }
+.intel-dot  { width:5px; height:5px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.adidas-panel .intel-dot { background:var(--adidas); opacity:0.7; }
+.ua-panel     .intel-dot { background:var(--ua); opacity:0.7; }
+
+.intel-tag {
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:'DM Mono',monospace; font-size:9px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.06em;
+  padding:2px 7px; border-radius:4px; margin-right:4px; margin-bottom:4px;
+}
+.tag-strength { background:rgba(21,128,61,0.1); color:var(--green); }
+.tag-gap      { background:rgba(220,38,38,0.08); color:var(--ua); }
+.tag-neutral  { background:rgba(123,47,190,0.08); color:var(--muted); }
+
+.ai-note {
+  background:var(--surface); border:1px solid var(--border2);
+  border-radius:12px; padding:16px 20px; margin-bottom:28px;
+  display:flex; gap:12px; align-items:flex-start;
+  font-size:13px; color:var(--muted); line-height:1.6;
+}
+.ai-note-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+
+.btn-intel {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border2);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding: 12px 28px; border-radius:9px; cursor:pointer; transition:all 0.15s;
+}
+.btn-intel:hover { background:var(--surface); }
+
+/* QUESTION SCREEN */
+.q-kicker {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:12px;
+  display:flex; align-items:center; gap:8px;
+}
+.q-num-badge {
+  background:rgba(123,47,190,0.1); border:1px solid rgba(123,47,190,0.2);
+  color:var(--accent); padding:3px 10px; border-radius:5px;
+  font-weight:700;
+}
+
+.q-title {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(22px,4vw,36px); font-weight:800; line-height:1.1;
+  margin-bottom:10px;
+}
+
+.q-context {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:14px 18px; margin-bottom:28px;
+  font-size:13px; color:var(--muted); line-height:1.6;
+}
+.q-context strong { color:var(--text); }
+
+/* Answer cards */
+.answers-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+
+.answer-card {
+  background:#fff;
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  padding:18px 20px;
+  cursor:pointer;
+  transition:all 0.2s;
+  display:flex; gap:16px; align-items:flex-start;
+}
+.answer-card:hover { border-color:var(--border2); background:var(--surface); }
+.answer-card.selected { border-color:var(--accent); background:rgba(123,47,190,0.05); box-shadow:0 0 0 3px rgba(123,47,190,0.1); }
+.answer-card.correct  { border-color:rgba(21,128,61,0.4); background:var(--green-bg); box-shadow:0 0 0 3px rgba(21,128,61,0.1); pointer-events:none; }
+.answer-card.wrong    { border-color:rgba(220,38,38,0.35); background:rgba(220,38,38,0.05); pointer-events:none; }
+.answer-card.dim      { opacity:0.35; pointer-events:none; }
+
+.answer-letter {
+  width:30px; height:30px; border-radius:8px; flex-shrink:0;
+  background:var(--surface); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'DM Mono',monospace; font-size:12px; font-weight:700;
+  color:var(--muted); transition:all 0.2s;
+}
+.answer-card.selected .answer-letter { background:var(--accent); border-color:var(--accent); color:#fff; }
+.answer-card.correct  .answer-letter { background:var(--green); border-color:var(--green); color:#fff; }
+.answer-card.wrong    .answer-letter { background:var(--ua); border-color:var(--ua); color:#fff; }
+
+.answer-content {}
+.answer-title { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; line-height:1.3; }
+.answer-desc  { font-size:13px; color:var(--muted); line-height:1.55; }
+
+/* Reveal panel */
+.reveal-panel {
+  display:none;
+  background:var(--surface); border:1px solid var(--border2);
+  border-radius:12px; padding:18px 20px; margin-bottom:20px;
+  animation:slide-up 0.35s ease;
+}
+.reveal-panel.show { display:block; }
+@keyframes slide-up { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.reveal-correct { color:var(--green); font-weight:700; font-size:13px; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+.reveal-wrong   { color:var(--ua); font-weight:700; font-size:13px; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+.reveal-text    { font-size:13px; color:var(--muted); line-height:1.7; }
+.reveal-text strong { color:var(--text); }
+
+.btn-next {
+  background:var(--accent); color:#fff;
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:800;
+  padding:12px 28px; border-radius:9px; border:none; cursor:pointer;
+  letter-spacing:0.02em; transition:all 0.15s;
+  display:none;
+}
+.btn-next.show { display:inline-flex; align-items:center; gap:6px; }
+.btn-next:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(123,47,190,0.3); }
+
+/* BRIEF SCREEN */
+.brief-header { margin-bottom:32px; }
+.brief-kicker {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
+.brief-kicker::before { content:''; width:24px; height:1px; background:var(--accent); }
+
+.brief-title { font-family:'Syne',sans-serif; font-size:clamp(28px,5vw,50px); font-weight:800; line-height:1.05; margin-bottom:8px; }
+.brief-score { font-size:14px; color:var(--muted); }
+.brief-score span { color:var(--accent); font-weight:700; font-family:'DM Mono',monospace; }
+
+/* Brief document */
+.brief-doc {
+  background:#fff;
+  border:1px solid var(--border2);
+  border-radius:18px; overflow:hidden;
+  margin-bottom:28px;
+  box-shadow:0 8px 32px rgba(123,47,190,0.1);
+}
+
+.brief-doc-header {
+  background: var(--accent);
+  padding:28px 30px 24px;
+  border-bottom:1px solid rgba(255,255,255,0.15);
+  position:relative; overflow:hidden;
+}
+.brief-doc-header::before {
+  content:'';
+  position:absolute; top:-40px; right:-40px;
+  width:160px; height:160px; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.1),transparent 70%);
+}
+
+.brief-doc-logo {
+  font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em;
+  text-transform:uppercase; color:rgba(255,255,255,0.75); margin-bottom:10px;
+  display:flex; align-items:center; gap:6px;
+}
+.brief-doc-title {
+  font-family:'Syne',sans-serif; font-size:22px; font-weight:800;
+  color:#fff; margin-bottom:4px;
+}
+.brief-doc-sub {
+  font-size:12px; color:rgba(255,255,255,0.65);
+  font-family:'DM Mono',monospace;
+}
+
+.brief-doc-body { padding:28px 30px; }
+
+.brief-section { margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border); }
+.brief-section:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+
+.brief-section-label {
+  font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase;
+  letter-spacing:0.14em; color:var(--muted); font-weight:600; margin-bottom:8px;
+  display:flex; align-items:center; gap:8px;
+}
+.brief-section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.brief-section-content { font-size:14px; line-height:1.7; color:var(--text); }
+.brief-highlight { color:var(--accent); font-weight:700; }
+.brief-green     { color:var(--green); font-weight:600; }
+.brief-red       { color:var(--ua); font-weight:600; }
+
+.brief-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.brief-tag {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.06em;
+  padding:4px 10px; border-radius:5px;
+}
+.btag-nike   { background:rgba(123,47,190,0.1); color:var(--accent); }
+.btag-threat { background:rgba(37,99,235,0.1);  color:var(--adidas); }
+.btag-risk   { background:rgba(220,38,38,0.08); color:var(--ua); }
+.btag-win    { background:rgba(21,128,61,0.08); color:var(--green); }
+
+.score-banner {
+  background:rgba(123,47,190,0.06);
+  border:1px solid rgba(123,47,190,0.2);
+  border-radius:14px; padding:20px 24px;
+  display:flex; align-items:center; gap:20px;
+  margin-bottom:28px;
+}
+.score-big { font-family:'Syne',sans-serif; font-size:52px; font-weight:800; color:var(--accent); line-height:1; }
+.score-detail { }
+.score-detail-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:4px; color:var(--text); }
+.score-detail-msg   { font-size:13px; color:var(--muted); line-height:1.5; }
+
+.reset-btn {
+  background:transparent; color:var(--accent);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:11px 26px; border-radius:9px; border:2px solid var(--border2);
+  cursor:pointer; transition:all 0.15s;
+}
+.reset-btn:hover { background:var(--surface); }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="tb-brand"><div class="tb-brand-dot"></div> Nike Strategy Team</div>
+    <div class="tb-right">AI in Business · Activity</div>
+  </div>
+  <div class="page-body"><div class="page-inner">
+
+    <div class="intro-kicker">AI-Assisted Competitor Analysis</div>
+    <h1 class="intro-title">
+      <span class="line1">Pitch the</span>
+      <span class="line2">Strategy.</span>
+    </h1>
+
+    <div class="intro-scenario">
+      <strong>The situation:</strong> You work at Nike. Steph Curry — one of the biggest names in basketball — is deciding which shoe brand to sign with next. Your team needs to understand the competition fast. You have run an AI analysis on both Adidas and Under Armour. Now you need to turn that data into a winning pitch.
+    </div>
+
+    <div class="intro-steps">
+      <div class="intro-step"><div class="step-num">1</div><span>Read the AI-generated competitor intel on Adidas and Under Armour</span></div>
+      <div class="intro-step"><div class="step-num">2</div><span>Answer 4 strategic questions about the competitive landscape</span></div>
+      <div class="intro-step"><div class="step-num">3</div><span>Your answers build Nike's pitch strategy brief for Curry</span></div>
+    </div>
+
+    <button class="btn-start" onclick="showIntel()">Read the Intel →</button>
+
+  </div></div>
+</div>
+
+<!-- INTEL -->
+<div id="intel-screen" class="screen">
+  <div class="top-bar">
+    <div class="tb-brand"><div class="tb-brand-dot"></div> Nike Strategy Team</div>
+    <div class="tb-right">AI Intel Report</div>
+  </div>
+  <div class="page-body"><div class="page-inner">
+
+    <div class="intel-header">
+      <div class="intel-label">AI Competitor Report</div>
+      <h2 class="intel-title">Adidas vs. Under Armour</h2>
+      <p class="intel-sub">Your AI tool analyzed both brands across athletes, products, marketing reach, and financial performance. Here is what it found.</p>
+    </div>
+
+    <div class="compare-grid">
+
+      <!-- ADIDAS -->
+      <div class="brand-panel adidas-panel">
+        <div class="brand-panel-header">
+          <div class="brand-logo">🦓</div>
+          <div class="brand-name">Adidas</div>
+        </div>
+
+        <div class="intel-section">
+          <div class="intel-section-label">Athlete Roster</div>
+          <div class="intel-item"><div class="intel-dot"></div>Represents Candace Parker, Damian Lillard, and Donovan Mitchell in basketball</div>
+          <div class="intel-item"><div class="intel-dot"></div>Massive global soccer presence — Messi, Pogba, major clubs</div>
+          <div class="intel-item"><div class="intel-dot"></div>Kanye West Yeezy collab built massive lifestyle credibility</div>
+        </div>
+
+        <div class="intel-section">
+          <div class="intel-section-label">Strengths</div>
+          <div><span class="intel-tag tag-strength">Global Brand</span><span class="intel-tag tag-strength">Fashion + Sport</span><span class="intel-tag tag-strength">Europe Dominance</span></div>
+          <div class="intel-item" style="margin-top:6px;"><div class="intel-dot"></div>$22B+ annual revenue — second largest sportswear brand globally</div>
+          <div class="intel-item"><div class="intel-dot"></div>Strong streetwear crossover appeal with younger demographics</div>
+        </div>
+
+        <div class="intel-section">
+          <div class="intel-section-label">Gaps</div>
+          <div><span class="intel-tag tag-gap">Basketball Weak</span><span class="intel-tag tag-gap">US Market Loss</span></div>
+          <div class="intel-item" style="margin-top:6px;"><div class="intel-dot"></div>Basketball is not a top category — no signature shoe driving cultural conversation</div>
+          <div class="intel-item"><div class="intel-dot"></div>Lost significant US market share to Nike over past 3 years</div>
+          <div class="intel-item"><div class="intel-dot"></div>Yeezy partnership ended in controversy, damaging brand trust</div>
+        </div>
+      </div>
+
+      <!-- UNDER ARMOUR -->
+      <div class="brand-panel ua-panel">
+        <div class="brand-panel-header">
+          <div class="brand-logo">🛡️</div>
+          <div class="brand-name">Under Armour</div>
+        </div>
+
+        <div class="intel-section">
+          <div class="intel-section-label">Athlete Roster</div>
+          <div class="intel-item"><div class="intel-dot"></div>Steph Curry is Under Armour's biggest basketball star — and his deal is expiring</div>
+          <div class="intel-item"><div class="intel-dot"></div>Joel Embiid recently signed — but limited marketing support so far</div>
+          <div class="intel-item"><div class="intel-dot"></div>Lost Dwayne Johnson partnership in 2021, weakening lifestyle reach</div>
+        </div>
+
+        <div class="intel-section">
+          <div class="intel-section-label">Strengths</div>
+          <div><span class="intel-tag tag-strength">Performance Tech</span><span class="intel-tag tag-strength">US Loyalty</span></div>
+          <div class="intel-item" style="margin-top:6px;"><div class="intel-dot"></div>Strong performance technology story — used by serious athletes</div>
+          <div class="intel-item"><div class="intel-dot"></div>Curry 4 sold extremely well — showed real signature shoe potential</div>
+        </div>
+
+        <div class="intel-section">
+          <div class="intel-section-label">Gaps</div>
+          <div><span class="intel-tag tag-gap">Revenue Shrinking</span><span class="intel-tag tag-gap">Global Weak</span><span class="intel-tag tag-gap">Fashion Gap</span></div>
+          <div class="intel-item" style="margin-top:6px;"><div class="intel-dot"></div>Revenue declined 3 consecutive quarters — under financial pressure</div>
+          <div class="intel-item"><div class="intel-dot"></div>Minimal presence in Europe, Asia, and Latin America</div>
+          <div class="intel-item"><div class="intel-dot"></div>No crossover into lifestyle or streetwear — purely athletic image</div>
+          <div class="intel-item"><div class="intel-dot"></div>Marketing budget significantly smaller than Nike or Adidas</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-note">
+      <div class="ai-note-icon">🤖</div>
+      <div>This report was generated by an AI analysis tool using public financial data, sports news, and brand performance metrics. AI gives you the data fast — but your job as a strategist is to decide what it <strong>means</strong> and how to use it.</div>
+    </div>
+
+    <button class="btn-start" onclick="startQuestions()">I'm Ready — Start the Questions →</button>
+
+  </div></div>
+</div>
+
+<!-- QUESTION -->
+<div id="question-screen" class="screen">
+  <div class="top-bar">
+    <div class="tb-brand"><div class="tb-brand-dot"></div> Nike Strategy Team</div>
+    <div class="q-progress">
+      <div class="qpip" id="qp0"></div>
+      <div class="qpip" id="qp1"></div>
+      <div class="qpip" id="qp2"></div>
+      <div class="qpip" id="qp3"></div>
+    </div>
+  </div>
+  <div class="page-body"><div class="page-inner" id="q-content"></div></div>
+</div>
+
+<!-- BRIEF -->
+<div id="brief-screen" class="screen">
+  <div class="top-bar">
+    <div class="tb-brand"><div class="tb-brand-dot"></div> Nike Strategy Team</div>
+    <div class="tb-right">Strategy Brief Complete</div>
+  </div>
+  <div class="page-body"><div class="page-inner">
+
+    <div class="brief-header">
+      <div class="brief-kicker">Analysis Complete</div>
+      <h2 class="brief-title" id="brief-title">Your Nike Strategy Brief</h2>
+      <p class="brief-score">Score: <span id="brief-score-display">0/4</span> correct answers</p>
+    </div>
+
+    <div class="score-banner">
+      <div class="score-big" id="score-big-num">0</div>
+      <div class="score-detail">
+        <div class="score-detail-title" id="score-detail-title">Keep practicing</div>
+        <div class="score-detail-msg" id="score-detail-msg"></div>
+      </div>
+    </div>
+
+    <div class="brief-doc">
+      <div class="brief-doc-header">
+        <div class="brief-doc-logo">⚡ NIKE INC. — CONFIDENTIAL</div>
+        <div class="brief-doc-title">Steph Curry Opportunity Brief</div>
+        <div class="brief-doc-sub">AI-Assisted Competitor Analysis · Strategy Recommendations</div>
+      </div>
+      <div class="brief-doc-body" id="brief-doc-body"></div>
+    </div>
+
+    <button class="reset-btn" onclick="resetAll()">↺ Try Again</button>
+
+  </div></div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    id: 0,
+    kicker: 'Question 1 of 4',
+    title: 'Who is Nike\'s bigger threat for signing Curry?',
+    context: 'Curry\'s deal with Under Armour is expiring. Both Adidas and Under Armour could try to keep him or make a competing offer. Based on the AI intel, which brand presents the bigger challenge to Nike\'s pitch?',
+    answers: [
+      {
+        letter: 'A',
+        title: 'Adidas — their global reach and basketball roster make them the stronger competitor',
+        desc: 'Adidas has more money, more global presence, and a proven track record of signing major basketball talent.',
+        correct: false,
+        briefContrib: 'threat-adidas'
+      },
+      {
+        letter: 'B',
+        title: 'Under Armour — Curry already has brand equity there, making it hard for Nike to pull him away',
+        desc: 'Under Armour built its basketball identity around Curry. He has shoes, history, and loyal UA fans.',
+        correct: true,
+        briefContrib: 'threat-ua'
+      },
+      {
+        letter: 'C',
+        title: 'Neither — Curry needs Nike more than Nike needs him',
+        desc: 'Nike is the dominant brand. Curry should be eager to join regardless of competition.',
+        correct: false,
+        briefContrib: 'threat-neither'
+      }
+    ],
+    reveal: {
+      correct: 'Under Armour is the right answer. Even though they are financially weaker, Curry is their signature athlete — the Curry shoe line IS Under Armour basketball. He has real loyalty there. Nike\'s pitch needs to acknowledge this emotional connection and offer something UA simply cannot match.',
+      wrongA: 'Adidas is a strong global brand, but their basketball division is actually one of their weakest areas. They have no signature player driving basketball culture right now. The real threat is the existing relationship Curry has with Under Armour.',
+      wrongC: 'This underestimates the competition. Even a financially struggling brand like Under Armour still has years of history with Curry. A good strategist always takes competitor relationships seriously.'
+    }
+  },
+  {
+    id: 1,
+    kicker: 'Question 2 of 4',
+    title: 'What is Under Armour\'s biggest weakness Nike can exploit?',
+    context: 'Nike needs a compelling reason for Curry to leave Under Armour. Based on the AI data, what gap in Under Armour\'s offer can Nike use to make its pitch more attractive?',
+    answers: [
+      {
+        letter: 'A',
+        title: 'Their performance technology is behind Nike\'s',
+        desc: 'Nike has better shoe technology like React and Air, which outperforms UA\'s offerings.',
+        correct: false,
+        briefContrib: 'exploit-tech'
+      },
+      {
+        letter: 'B',
+        title: 'Their shrinking revenue and limited global reach means less support for Curry\'s brand',
+        desc: 'UA is losing money and has almost no presence in Europe, Asia, or Latin America — markets that matter for a global icon like Curry.',
+        correct: true,
+        briefContrib: 'exploit-reach'
+      },
+      {
+        letter: 'C',
+        title: 'They signed too many other basketball players, leaving Curry less spotlight',
+        desc: 'UA\'s expanded basketball roster means Curry is competing for marketing attention.',
+        correct: false,
+        briefContrib: 'exploit-roster'
+      }
+    ],
+    reveal: {
+      correct: 'Exactly right. Under Armour\'s financial decline and tiny global footprint is their most exploitable weakness. Curry has an off-court brand — media, business ventures, global fans. UA cannot support that growth. Nike can credibly promise Curry a global platform that Under Armour simply cannot offer.',
+      wrongA: 'Technology is a valid point, but it is not the most strategic angle. Curry already knows UA\'s tech and has stayed for years. Attacking technology alone would not be compelling enough to break a long-term relationship.',
+      wrongC: 'This is factually wrong — the intel shows UA\'s basketball roster is actually small. Joel Embiid is their only other significant signing, and that deal has received limited marketing support.'
+    }
+  },
+  {
+    id: 2,
+    kicker: 'Question 3 of 4',
+    title: 'What should Nike\'s pitch to Curry emphasize most?',
+    context: 'You need one central message for Nike\'s pitch. Based on what you know about Curry\'s value and the competitive gaps you\'ve identified, what is the most compelling thing Nike can offer?',
+    answers: [
+      {
+        letter: 'A',
+        title: 'Nike\'s heritage — the brand that built basketball culture with Jordan, LeBron, and Kobe',
+        desc: 'Position this as Curry joining the greatest basketball legacy in history.',
+        correct: false,
+        briefContrib: 'pitch-heritage'
+      },
+      {
+        letter: 'B',
+        title: 'A global platform that turns Curry from a basketball star into a worldwide icon',
+        desc: 'Leverage Nike\'s reach in Europe, Asia, and Latin America to make Curry bigger than any single sport.',
+        correct: true,
+        briefContrib: 'pitch-global'
+      },
+      {
+        letter: 'C',
+        title: 'The biggest contract offer in basketball shoe history — outbid everyone',
+        desc: 'Money talks. Offer Curry a deal so large that no competitor can match it.',
+        correct: false,
+        briefContrib: 'pitch-money'
+      }
+    ],
+    reveal: {
+      correct: 'The global platform angle is the strongest play. Curry is already a basketball legend — he does not need Nike\'s basketball legacy, he wants to grow beyond it. Nike\'s unique strength is its global infrastructure in markets where Under Armour barely exists. This directly exploits the gap you identified in Question 2.',
+      wrongA: 'Heritage is a strong story, but it is also a double-edged sword. Curry may not want to be in the shadow of Jordan and LeBron. He built his own identity at UA. Nike needs to offer him something additive, not just a legacy to join.',
+      wrongC: 'Money alone is a weak strategy. If Nike wins purely on price, Curry could leave as soon as someone offers more. A strategic pitch creates emotional and business reasons to stay, not just financial ones.'
+    }
+  },
+  {
+    id: 3,
+    kicker: 'Question 4 of 4',
+    title: 'What is the biggest risk Nike faces in this deal?',
+    context: 'Every strategy has risks. A good analyst does not just identify opportunities — they also flag what could go wrong. What is the most important risk Nike should plan for in pursuing Curry?',
+    answers: [
+      {
+        letter: 'A',
+        title: 'Curry signs with Adidas instead, giving them the basketball star they have been missing',
+        desc: 'If Nike misses, Adidas gets exactly the athlete they need to rebuild their basketball presence.',
+        correct: true,
+        briefContrib: 'risk-adidas'
+      },
+      {
+        letter: 'B',
+        title: 'Curry\'s best playing years may be behind him, making the investment too risky',
+        desc: 'Signing an aging star is a financial gamble if his on-court impact declines.',
+        correct: false,
+        briefContrib: 'risk-age'
+      },
+      {
+        letter: 'C',
+        title: 'Nike already has too many basketball athletes and Curry could get lost in the roster',
+        desc: 'LeBron, Kevin Durant, and others could overshadow Curry within Nike\'s lineup.',
+        correct: false,
+        briefContrib: 'risk-roster'
+      }
+    ],
+    reveal: {
+      correct: 'This is the right strategic risk to flag. Adidas desperately needs a signature basketball player — they lost momentum when basketball stopped being their priority. Curry would be the perfect athlete to rebuild their US basketball story. If Nike fails, they do not just miss an opportunity — they potentially hand their biggest weakness (no signature basketball star at Curry\'s level) to a global competitor.',
+      wrongB: 'Brand deals are not just about on-court performance. Curry\'s global business ventures, media presence, and cultural impact extend far beyond his playing career. Shoe deals are increasingly about off-court influence.',
+      wrongC: 'Nike could absolutely position Curry as his own signature tier — similar to how Jordan Brand operates semi-independently. Having multiple stars is an asset, not a risk, if managed well.'
+    }
+  }
+];
+
+const BRIEF_SECTIONS = {
+  threat: {
+    'threat-ua': {
+      label:'Primary Competitive Threat',
+      content:'<strong class="brief-highlight">Under Armour</strong> represents the most significant obstacle. Despite their financial weakness, Curry\'s signature shoe line IS their basketball identity — he has <span class="brief-green">years of brand loyalty</span> built there. Nike must make an offer compelling enough to break that emotional connection.',
+      tags:['btag-threat']
+    },
+    'threat-adidas': {
+      label:'Primary Competitive Threat',
+      content:'<strong>Adidas</strong> was identified as the main threat due to their global reach. However, their basketball division is actually underdeveloped — a more precise analysis would flag <span class="brief-red">Under Armour\'s existing relationship with Curry</span> as the harder obstacle to overcome.',
+      tags:['btag-risk']
+    },
+    'threat-neither': {
+      label:'Competitive Assessment',
+      content:'The analysis underestimated the competitive landscape. <span class="brief-red">Under Armour\'s existing relationship with Curry</span> is a significant obstacle that Nike must plan around carefully — never assume an athlete will sign without a compelling offer.',
+      tags:['btag-risk']
+    }
+  },
+  exploit: {
+    'exploit-reach': {
+      label:'Key Competitive Gap to Exploit',
+      content:'Under Armour\'s <strong class="brief-highlight">financial decline and minimal global footprint</strong> is Nike\'s primary opening. UA cannot support Curry\'s ambitions in Europe, Asia, or Latin America. Nike\'s global infrastructure directly addresses this gap and gives Curry a <span class="brief-green">credible path to becoming a worldwide icon</span>.',
+      tags:['btag-win']
+    },
+    'exploit-tech': {
+      label:'Competitive Gap Identified',
+      content:'Technology was flagged as the key gap. While Nike\'s shoe technology is strong, this alone <span class="brief-red">would not be enough</span> to move Curry away from an established relationship. The more strategic lever is UA\'s inability to support his global brand ambitions.',
+      tags:['btag-risk']
+    },
+    'exploit-roster': {
+      label:'Competitive Gap Identified',
+      content:'Roster crowding was flagged, but this was based on inaccurate intel. UA\'s basketball roster is actually quite small. The stronger gap to exploit is <span class="brief-red">UA\'s shrinking revenue and lack of global presence</span> — real structural weaknesses Nike can speak to.',
+      tags:['btag-risk']
+    }
+  },
+  pitch: {
+    'pitch-global': {
+      label:'Recommended Pitch Angle',
+      content:'<strong class="brief-highlight">"Global Icon" positioning</strong> — Nike\'s pitch should center on turning Curry into a worldwide brand far beyond basketball. This directly exploits UA\'s weakest point: their near-zero international presence. Nike offers Curry <span class="brief-green">access to 190+ countries and a marketing platform no other brand can match.</span>',
+      tags:['btag-nike','btag-win']
+    },
+    'pitch-heritage': {
+      label:'Recommended Pitch Angle',
+      content:'Heritage positioning was chosen. While powerful, this approach risks making Curry feel like he is joining a <span class="brief-red">legacy rather than building his own</span>. A stronger pitch would focus on what Nike can give Curry that UA cannot: global reach and a platform to grow beyond basketball.',
+      tags:['btag-nike']
+    },
+    'pitch-money': {
+      label:'Recommended Pitch Angle',
+      content:'Maximum contract value was selected. While competitive compensation is essential, <span class="brief-red">a money-only pitch creates no loyalty</span> — Curry could leave the moment a larger offer comes. The strongest pitch combines financial value with a strategic vision for his global brand.',
+      tags:['btag-risk']
+    }
+  },
+  risk: {
+    'risk-adidas': {
+      label:'Primary Risk Factor',
+      content:'<strong class="brief-highlight">Adidas acquiring Curry</strong> is correctly identified as the top risk. If Nike fails to sign him, Adidas gains the signature basketball athlete they have been missing for years — directly strengthening their weakest category with one of basketball\'s most beloved figures. <span class="brief-red">This outcome must be avoided at all costs.</span>',
+      tags:['btag-threat','btag-risk']
+    },
+    'risk-age': {
+      label:'Risk Assessment',
+      content:'On-court decline was flagged as the main risk. In modern athlete deals, however, <span class="brief-red">this is the wrong primary concern</span> — shoe deals are increasingly driven by off-court cultural impact. The real risk is a competitor like Adidas acquiring Curry and using him to rebuild their basketball credibility.',
+      tags:['btag-risk']
+    },
+    'risk-roster': {
+      label:'Risk Assessment',
+      content:'Internal roster competition was flagged. While talent management matters, <span class="brief-red">this misses the bigger strategic risk</span>: if Nike passes, Adidas gets exactly the athlete they need to challenge Nike\'s basketball dominance. That external threat outweighs any internal management concern.',
+      tags:['btag-risk']
+    }
+  }
+};
+
+// ─── STATE ───
+let currentQ = 0;
+let answers  = {};
+let score    = 0;
+let graded   = false;
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showIntel() { show('intel-screen'); }
+
+function startQuestions() {
+  currentQ = 0; answers = {}; score = 0; graded = false;
+  show('question-screen');
+  renderQuestion(0);
+}
+
+function updateQPips(qIdx) {
+  for (let i = 0; i < 4; i++) {
+    const pip = document.getElementById('qp' + i);
+    pip.className = 'qpip';
+    if (i < qIdx) pip.classList.add('done');
+    else if (i === qIdx) pip.classList.add('active');
+  }
+}
+
+function renderQuestion(qIdx) {
+  const q = QUESTIONS[qIdx];
+  updateQPips(qIdx);
+
+  const content = document.getElementById('q-content');
+  content.innerHTML = `
+    <div class="q-kicker">
+      <span class="q-num-badge">${q.kicker}</span>
+      <span>Nike Competitor Analysis</span>
+    </div>
+    <h2 class="q-title">${q.title}</h2>
+    <div class="q-context">${q.context}</div>
+
+    <div class="answers-grid" id="answers-grid">
+      ${q.answers.map((a, i) => `
+        <div class="answer-card" id="ans-${i}" onclick="selectAnswer(${qIdx}, ${i})">
+          <div class="answer-letter">${a.letter}</div>
+          <div class="answer-content">
+            <div class="answer-title">${a.title}</div>
+            <div class="answer-desc">${a.desc}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="reveal-panel" id="reveal-panel"></div>
+
+    <button class="btn-next" id="btn-next" onclick="nextQuestion(${qIdx})">
+      ${qIdx < 3 ? 'Next Question →' : 'Build My Strategy Brief →'}
+    </button>
+  `;
+}
+
+function selectAnswer(qIdx, ansIdx) {
+  if (answers[qIdx] !== undefined) return; // already answered
+
+  const q = QUESTIONS[qIdx];
+  const chosen = q.answers[ansIdx];
+  answers[qIdx] = { ansIdx, contrib: chosen.briefContrib, correct: chosen.correct };
+
+  if (chosen.correct) score++;
+
+  // Style cards
+  q.answers.forEach((a, i) => {
+    const el = document.getElementById('ans-' + i);
+    if (i === ansIdx) {
+      el.classList.add(chosen.correct ? 'correct' : 'wrong');
+    } else if (a.correct) {
+      el.classList.add('correct');
+    } else {
+      el.classList.add('dim');
+    }
+  });
+
+  // Reveal
+  const panel = document.getElementById('reveal-panel');
+  let revealHTML = '';
+  if (chosen.correct) {
+    revealHTML = `<div class="reveal-correct">✓ Correct strategic call</div><div class="reveal-text">${q.reveal.correct}</div>`;
+  } else {
+    const wrongKey = 'wrong' + chosen.letter;
+    const wrongText = q.reveal[wrongKey] || q.reveal.correct;
+    revealHTML = `<div class="reveal-wrong">✗ Not the strongest move</div><div class="reveal-text">${wrongText}<br><br><strong>The strongest answer:</strong> ${q.reveal.correct}</div>`;
+  }
+  panel.innerHTML = revealHTML;
+  panel.classList.add('show');
+
+  const btn = document.getElementById('btn-next');
+  btn.classList.add('show');
+  setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+}
+
+function nextQuestion(currentIdx) {
+  if (currentIdx < 3) {
+    currentQ = currentIdx + 1;
+    renderQuestion(currentQ);
+    document.getElementById('q-content').scrollIntoView({ behavior:'smooth', block:'start' });
+  } else {
+    buildBrief();
+  }
+}
+
+function buildBrief() {
+  show('brief-screen');
+
+  // Score display
+  document.getElementById('brief-score-display').textContent = score + '/4';
+  document.getElementById('score-big-num').textContent = score;
+
+  let dtitle, dmsg;
+  if (score === 4) { dtitle = 'Perfect Strategist!'; dmsg = 'You made every optimal call. This is exactly how experienced analysts use AI data to drive business decisions.'; }
+  else if (score >= 3) { dtitle = 'Strong Analyst'; dmsg = 'Solid strategic thinking. One call was off — review your brief to see which angle would have been stronger.'; }
+  else if (score >= 2) { dtitle = 'Good Start'; dmsg = 'You got the key insights right but missed some nuance. Read through your brief to see the stronger reasoning.'; }
+  else { dtitle = 'Keep Practicing'; dmsg = 'Strategic analysis takes practice. Read through your brief carefully — the explanations show how experienced analysts would approach each question.'; }
+
+  document.getElementById('score-detail-title').textContent = dtitle;
+  document.getElementById('score-detail-msg').textContent = dmsg;
+
+  // Build brief sections
+  const body = document.getElementById('brief-doc-body');
+  body.innerHTML = '';
+
+  const sectionKeys = ['threat','exploit','pitch','risk'];
+  sectionKeys.forEach(key => {
+    const contrib = answers[sectionKeys.indexOf(key)]?.contrib || Object.keys(BRIEF_SECTIONS[key])[0];
+    const section = BRIEF_SECTIONS[key][contrib];
+    if (!section) return;
+
+    const div = document.createElement('div');
+    div.className = 'brief-section';
+    div.innerHTML = `
+      <div class="brief-section-label">${section.label}</div>
+      <div class="brief-section-content">${section.content}</div>
+      <div class="brief-tags">${(section.tags || []).map(t => `<span class="brief-tag ${t}">${t.replace('btag-','').toUpperCase()}</span>`).join('')}</div>
+    `;
+    body.appendChild(div);
+  });
+
+  // Add recommendation footer
+  const rec = document.createElement('div');
+  rec.className = 'brief-section';
+  rec.innerHTML = `
+    <div class="brief-section-label">AI Tool Summary</div>
+    <div class="brief-section-content">This brief was assembled using AI-assisted competitor analysis. The AI provided fast, structured data on both Adidas and Under Armour — but <strong class="brief-highlight">the strategic judgment was yours.</strong> That is the correct relationship between AI and human decision-making: AI surfaces the facts, humans decide what to do with them.</div>
+  `;
+  body.appendChild(rec);
+}
+
+function resetAll() {
+  currentQ = 0; answers = {}; score = 0;
+  show('intro');
+}
+</script>
+</body>
+</html>
