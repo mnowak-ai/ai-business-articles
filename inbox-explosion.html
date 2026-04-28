@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inbox Explosion — AI Day Planner Activity</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f5f3ff;
+    --surface2: #ede9fe;
+    --border: rgba(123,47,190,0.12);
+    --text: #1a0a2e;
+    --muted: #6b5a85;
+    --accent: #7B2FBE;
+    --green: #16a34a;
+    --yellow: #b45309;
+    --red: #dc2626;
+    --purple: #7B2FBE;
+    --do-now: #16a34a;
+    --schedule: #7B2FBE;
+    --delegate: #b45309;
+    --ignore: #6b7280;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ── INTRO SCREEN ── */
+  #intro {
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #intro::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(123,47,190,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .intro-badge {
+    background: rgba(123,47,190,0.1);
+    border: 1px solid rgba(123,47,190,0.25);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  .intro-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.05;
+    text-align: center;
+    max-width: 700px;
+    margin-bottom: 20px;
+  }
+
+  .intro-title span { color: var(--accent); }
+
+  .intro-desc {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.7;
+    text-align: center;
+    max-width: 520px;
+    margin-bottom: 40px;
+  }
+
+  .intro-scene {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    max-width: 540px;
+    width: 100%;
+    margin-bottom: 36px;
+  }
+
+  .scene-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--yellow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .intro-scene p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 20px rgba(123,47,190,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(123,47,190,0.4);
+  }
+
+  /* ── ACTIVITY SCREEN ── */
+  #activity {
+    flex-direction: column;
+  }
+
+  .top-bar {
+    background: var(--accent);
+    border-bottom: 1px solid rgba(123,47,190,0.2);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .top-bar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .progress-bar {
+    width: 120px;
+    height: 6px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #fff;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .activity-body {
+    flex: 1;
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  /* Notification column */
+  .notif-col {
+    flex: 1;
+    padding: 28px 24px;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    max-width: 480px;
+  }
+
+  .notif-col h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .notif-col .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  /* Notification card */
+  .notif-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    opacity: 0;
+    transform: translateX(-24px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .notif-card.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .notif-card.sorted {
+    opacity: 0.35;
+    transform: scale(0.97);
+  }
+
+  .notif-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 3px 0 0 3px;
+  }
+
+  .notif-card.type-email::before { background: var(--accent); }
+  .notif-card.type-calendar::before { background: var(--green); }
+  .notif-card.type-slack::before { background: var(--purple); }
+  .notif-card.type-deadline::before { background: var(--red); }
+  .notif-card.type-task::before { background: var(--yellow); }
+
+  .notif-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .notif-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .type-email .notif-icon { background: rgba(123,47,190,0.1); }
+  .type-calendar .notif-icon { background: rgba(22,163,74,0.1); }
+  .type-slack .notif-icon { background: rgba(123,47,190,0.1); }
+  .type-deadline .notif-icon { background: rgba(220,38,38,0.1); }
+  .type-task .notif-icon { background: rgba(180,83,9,0.1); }
+
+  .notif-meta {
+    flex: 1;
+  }
+
+  .notif-source {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .notif-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .notif-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .notif-urgency {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .urgency-high { background: rgba(220,38,38,0.08); color: var(--red); }
+  .urgency-med  { background: rgba(180,83,9,0.08); color: var(--yellow); }
+  .urgency-low  { background: rgba(107,114,128,0.08); color: var(--muted); }
+
+  .sort-btns {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .sort-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .sort-btn:hover { transform: translateY(-1px); }
+
+  .sort-btn.do-now   { background: rgba(22,163,74,0.08); color: var(--do-now); border-color: rgba(22,163,74,0.3); }
+  .sort-btn.schedule { background: rgba(123,47,190,0.08); color: var(--schedule); border-color: rgba(123,47,190,0.3); }
+  .sort-btn.delegate { background: rgba(180,83,9,0.08); color: var(--delegate); border-color: rgba(180,83,9,0.3); }
+  .sort-btn.ignore   { background: rgba(107,114,128,0.08); color: var(--muted); border-color: rgba(107,114,128,0.2); }
+
+  .sort-btn:hover.do-now   { background: rgba(22,163,74,0.15); }
+  .sort-btn:hover.schedule { background: rgba(123,47,190,0.15); }
+  .sort-btn:hover.delegate { background: rgba(180,83,9,0.15); }
+  .sort-btn:hover.ignore   { background: rgba(107,114,128,0.15); }
+
+  /* Sorted badge */
+  .sorted-badge {
+    display: none;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .notif-card.sorted .sorted-badge { display: inline-block; }
+  .notif-card.sorted .sort-btns { display: none; }
+
+  .badge-do-now   { background: rgba(22,163,74,0.1); color: var(--do-now); }
+  .badge-schedule { background: rgba(123,47,190,0.1); color: var(--schedule); }
+  .badge-delegate { background: rgba(180,83,9,0.1); color: var(--delegate); }
+  .badge-ignore   { background: rgba(107,114,128,0.1); color: var(--muted); }
+
+  /* Waiting state */
+  .waiting-notif {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .dot-pulse {
+    display: flex; gap: 4px;
+  }
+
+  .dot-pulse span {
+    width: 6px; height: 6px;
+    background: var(--muted);
+    border-radius: 50%;
+    animation: pulse 1.2s infinite;
+  }
+
+  .dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+  .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes pulse {
+    0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  /* AI Coach column */
+  .coach-col {
+    width: 300px;
+    flex-shrink: 0;
+    padding: 28px 20px;
+    overflow-y: auto;
+  }
+
+  .coach-col h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ai-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(123,47,190,0.5);
+    animation: glow 2s infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .coach-empty {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .feedback-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .feedback-card.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .feedback-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .feedback-result {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  .result-perfect { background: rgba(22,163,74,0.1); color: var(--green); }
+  .result-good    { background: rgba(180,83,9,0.1); color: var(--yellow); }
+  .result-miss    { background: rgba(220,38,38,0.1); color: var(--red); }
+
+  .feedback-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .score-display {
+    background: linear-gradient(135deg, rgba(123,47,190,0.08), rgba(123,47,190,0.04));
+    border: 1px solid rgba(123,47,190,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .score-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .score-denom {
+    font-size: 18px;
+    color: var(--muted);
+  }
+
+  /* ── RESULTS SCREEN ── */
+  #results {
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 24px;
+    overflow-y: auto;
+  }
+
+  .results-inner {
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .results-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .results-score-big {
+    font-family: 'Syne', sans-serif;
+    font-size: 72px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin: 12px 0;
+  }
+
+  .score-message {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 600px) {
+    .results-grid { grid-template-columns: 1fr; }
+    .activity-body { flex-direction: column; }
+    .coach-col { width: 100%; border-top: 1px solid var(--border); border-right: none; }
+  }
+
+  .result-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .result-item-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .result-item-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .result-your-pick, .result-best-pick {
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 4px;
+  }
+
+  .result-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    width: 44px;
+    flex-shrink: 0;
+  }
+
+  .result-feedback {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .ai-tip-box {
+    background: var(--surface);
+    border: 1px solid rgba(123,47,190,0.2);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+
+  .ai-tip-box h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ai-tip-box p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 13px 32px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-right: 12px;
+  }
+
+  .btn-secondary:hover { background: var(--surface2); border-color: rgba(255,255,255,0.18); }
+
+  .results-actions { text-align: center; margin-top: 8px; }
+
+  /* Chip tag */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .chip-do-now   { background: rgba(22,163,74,0.1); color: var(--do-now); }
+  .chip-schedule { background: rgba(123,47,190,0.1); color: var(--schedule); }
+  .chip-delegate { background: rgba(180,83,9,0.1); color: var(--delegate); }
+  .chip-ignore   { background: rgba(107,114,128,0.1); color: var(--muted); }
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════ INTRO ════════════════════════════ -->
+<div id="intro" class="screen active">
+  <div class="intro-badge">📋 Activity · AI in Business</div>
+  <h1 class="intro-title">Inbox<br><span>Explosion</span></h1>
+  <p class="intro-desc">It's Monday morning. Notifications are flying in — emails, calendar alerts, Slack messages, and deadlines. You have to decide fast: what needs your attention right now?</p>
+  <div class="intro-scene">
+    <div class="scene-label">⚡ Your Situation</div>
+    <p>You're a business analyst at a mid-size company. It's 8:45 AM and your day is already filling up. Messages keep coming in — but you can't do everything at once. Your job is to sort each one: <strong>Do Now, Schedule, Delegate, or Ignore.</strong> After you sort everything, your AI assistant will review your choices and give feedback.</p>
+  </div>
+  <button class="btn-primary" onclick="startActivity()">Start the Simulation →</button>
+</div>
+
+<!-- ════════════════════════════ ACTIVITY ════════════════════════════ -->
+<div id="activity" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">📥 Inbox Explosion</div>
+    <div class="progress-wrap">
+      <span id="progress-text">0 / 8 sorted</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="activity-body">
+    <!-- Notifications -->
+    <div class="notif-col">
+      <h2>Incoming Notifications</h2>
+      <p class="subtitle">Sort each item as it arrives. Think quickly — this is how a real workday feels!</p>
+
+      <div id="notifs-container"></div>
+
+      <div class="waiting-notif" id="waiting-msg">
+        <div class="dot-pulse"><span></span><span></span><span></span></div>
+        <span>More incoming…</span>
+      </div>
+
+      <div id="all-done-msg" style="display:none; text-align:center; padding:20px 0;">
+        <p style="color:var(--green); font-weight:600; font-size:14px; margin-bottom:16px;">✓ All sorted! Ready for your AI review?</p>
+        <button class="btn-primary" onclick="showResults()">See AI Feedback →</button>
+      </div>
+    </div>
+
+    <!-- AI Coach -->
+    <div class="coach-col">
+      <h2><div class="ai-dot"></div> AI Assistant</h2>
+      <div id="coach-content">
+        <div class="coach-empty">Sort your first item and I'll start giving you feedback here in real time.</div>
+      </div>
+      <div id="score-area" style="display:none; margin-top:16px;">
+        <div class="score-display">
+          <div class="score-label">Your Score</div>
+          <div><span class="score-num" id="score-live">0</span><span class="score-denom"> / 8</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════ RESULTS ════════════════════════════ -->
+<div id="results" class="screen">
+  <div class="results-inner">
+    <div class="results-header">
+      <div class="intro-badge" style="display:inline-block; margin-bottom:16px;">🤖 AI Review Complete</div>
+      <h1 id="results-title">Nice Work!</h1>
+      <div class="results-score-big" id="results-score-big">0/8</div>
+      <p class="score-message" id="results-msg"></p>
+    </div>
+
+    <div class="ai-tip-box">
+      <h3>🧠 What AI Looks For When Planning Your Day</h3>
+      <p>A good AI day-planning tool doesn't just look at deadlines — it considers <strong>urgency</strong> (how soon does this need action?), <strong>importance</strong> (how much does this affect your goals?), and <strong>who else is involved</strong>. Tasks that block other people or are client-facing usually rise to the top. Low-impact interruptions get filtered out so you can stay focused.</p>
+    </div>
+
+    <div id="results-grid" class="results-grid"></div>
+
+    <div class="results-actions">
+      <button class="btn-secondary" onclick="resetActivity()">↺ Try Again</button>
+      <button class="btn-primary" onclick="alert('Great work! Continue to the next lesson.')">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const NOTIFICATIONS = [
+  {
+    id: 'n1',
+    type: 'email',
+    icon: '✉️',
+    source: 'Email · Lisa Chen (Client)',
+    title: 'RE: Proposal — Need changes by EOD',
+    body: 'Hi, we reviewed the proposal and have a few changes. Can you update the pricing section and send it back today? Our team meets at 4 PM.',
+    urgency: 'high',
+    urgencyLabel: '🔴 High urgency',
+    best: 'do-now',
+    feedback: {
+      'do-now':   { result: 'perfect', text: '✅ Right call! A client deadline of 4 PM today means this needs your attention first thing. Blocking this pushes back their whole team.' },
+      'schedule': { result: 'good',    text: '⚠️ Risky. Scheduling this for later could work, but you risk missing their 4 PM meeting. AI would flag the hard deadline.' },
+      'delegate': { result: 'miss',    text: '❌ Be careful. This is a client relationship — delegating a pricing change without context could create mistakes or confusion.' },
+      'ignore':   { result: 'miss',    text: '❌ This would seriously damage the client relationship. Never ignore a client deadline.' }
+    }
+  },
+  {
+    id: 'n2',
+    type: 'calendar',
+    icon: '📅',
+    source: 'Google Calendar',
+    title: 'Team standup in 15 minutes',
+    body: 'Daily standup with your team. Quick check-in on progress, blockers, and priorities. 15 minutes. Conference Room B.',
+    urgency: 'high',
+    urgencyLabel: '🔴 Starts soon',
+    best: 'do-now',
+    feedback: {
+      'do-now':   { result: 'perfect', text: '✅ Exactly right. Time-based commitments that start soon always get "Do Now" status. You can\'t reschedule a meeting 15 minutes away.' },
+      'schedule': { result: 'miss',    text: '❌ You can\'t schedule something that\'s already about to start. This is a live commitment.' },
+      'delegate': { result: 'good',    text: '⚠️ Sending someone in your place could work in a pinch, but AI would suggest you attend and delegate only if you have a conflict.' },
+      'ignore':   { result: 'miss',    text: '❌ No-showing a team standup without notice is a professionalism issue. Your team is counting on you.' }
+    }
+  },
+  {
+    id: 'n3',
+    type: 'slack',
+    icon: '💬',
+    source: 'Slack · #random',
+    title: 'Marcus: "Anyone tried that new lunch spot?"',
+    body: 'Hey team! Has anyone been to the new taco place on 5th? Thinking of going for lunch. Anyone in? 🌮',
+    urgency: 'low',
+    urgencyLabel: '⚪ Low urgency',
+    best: 'ignore',
+    feedback: {
+      'do-now':   { result: 'miss',    text: '❌ This would pull your focus for zero business value. Friendly chat is fine — but not when you\'re managing a full inbox.' },
+      'schedule': { result: 'good',    text: '⚠️ You could respond at lunch, but AI would suggest you simply ignore it for now. It doesn\'t need any action to keep work moving.' },
+      'delegate': { result: 'miss',    text: '❌ There\'s nothing to delegate here. It\'s casual conversation, not a task.' },
+      'ignore':   { result: 'perfect', text: '✅ Good thinking! This is social chat with no business impact. Ignoring it frees up your attention for what actually matters.' }
+    }
+  },
+  {
+    id: 'n4',
+    type: 'deadline',
+    icon: '🚨',
+    source: 'Project Tracker · Overdue',
+    title: 'Q3 Report — Submitted without your data',
+    body: 'Your section of the Q3 Analytics Report was due Friday. It was submitted without your data. Your manager has been notified.',
+    urgency: 'high',
+    urgencyLabel: '🔴 Already overdue',
+    best: 'do-now',
+    feedback: {
+      'do-now':   { result: 'perfect', text: '✅ Correct. This is already overdue and your manager knows — you need to address this immediately with context and a plan.' },
+      'schedule': { result: 'miss',    text: '❌ Scheduling this sends the wrong signal. An overdue item with manager visibility needs immediate response, not a calendar block.' },
+      'delegate': { result: 'miss',    text: '❌ You shouldn\'t delegate accountability for your own missed deadline. Own it and solve it.' },
+      'ignore':   { result: 'miss',    text: '❌ Ignoring an overdue item with manager visibility is a serious mistake. This needs immediate attention.' }
+    }
+  },
+  {
+    id: 'n5',
+    type: 'email',
+    icon: '✉️',
+    source: 'Email · Newsletter',
+    title: '10 Productivity Tips for Busy Professionals',
+    body: 'Boost your efficiency this quarter! Check out our latest roundup of top tools, strategies, and apps that successful professionals swear by…',
+    urgency: 'low',
+    urgencyLabel: '⚪ Newsletter',
+    best: 'ignore',
+    feedback: {
+      'do-now':   { result: 'miss',    text: '❌ Reading a newsletter when your inbox is exploding? This is a classic distraction. Your time has better uses right now.' },
+      'schedule': { result: 'good',    text: '⚠️ Scheduling it for later is reasonable, but AI would likely just filter this out. Newsletters rarely contain time-sensitive information.' },
+      'delegate': { result: 'miss',    text: '❌ There\'s nothing actionable to delegate in a newsletter.' },
+      'ignore':   { result: 'perfect', text: '✅ Perfect. Newsletters are low-priority by default. Ignoring (or unsubscribing) keeps your focus on real work.' }
+    }
+  },
+  {
+    id: 'n6',
+    type: 'task',
+    icon: '📋',
+    source: 'Task Manager · Assigned to you',
+    title: 'Update the team\'s shared resource tracker',
+    body: 'Routine weekly update of the shared resource allocation spreadsheet. No urgent deadline, but keeps the team\'s planning accurate.',
+    urgency: 'med',
+    urgencyLabel: '🟡 Routine task',
+    best: 'schedule',
+    feedback: {
+      'do-now':   { result: 'good',    text: '⚠️ You could do it now, but with higher-priority items pending, AI would hold this until the afternoon when urgent tasks are done.' },
+      'schedule': { result: 'perfect', text: '✅ Smart move. This is important but not urgent. Blocking time this afternoon keeps it from getting forgotten without disrupting your morning.' },
+      'delegate': { result: 'good',    text: '⚠️ If someone else can do this accurately, delegation works. AI might suggest it depending on your team\'s capacity.' },
+      'ignore':   { result: 'miss',    text: '❌ Ignoring recurring team tasks causes downstream problems. It needs to get done — just not necessarily right now.' }
+    }
+  },
+  {
+    id: 'n7',
+    type: 'slack',
+    icon: '💬',
+    source: 'Slack · Jordan (Intern)',
+    title: '"Quick question about the slide format"',
+    body: 'Hey! Do you have a minute? I\'m working on the deck for Friday\'s presentation and wasn\'t sure about the slide template we\'re supposed to use.',
+    urgency: 'med',
+    urgencyLabel: '🟡 Teammate needs help',
+    best: 'delegate',
+    feedback: {
+      'do-now':   { result: 'good',    text: '⚠️ A quick answer is fine if it\'s truly 30 seconds, but with your morning packed, AI would route this differently to protect your focus.' },
+      'schedule': { result: 'good',    text: '⚠️ Scheduling a time to respond works, but the intern might be blocked until then. Delegation is usually faster here.' },
+      'delegate': { result: 'perfect', text: '✅ Great call! This is a template question — a teammate or team lead can answer it in seconds. Delegating frees you without leaving Jordan stuck.' },
+      'ignore':   { result: 'miss',    text: '❌ Leaving a teammate blocked without any response affects team output. Route it to someone who can help.' }
+    }
+  },
+  {
+    id: 'n8',
+    type: 'calendar',
+    icon: '📅',
+    source: 'Google Calendar · Invite',
+    title: 'Optional: Webinar — "Future of BI Tools"',
+    body: 'You\'ve been invited to an optional industry webinar this afternoon. 90 minutes. No attendance required. Related to a future project you might work on.',
+    urgency: 'low',
+    urgencyLabel: '⚪ Optional',
+    best: 'schedule',
+    feedback: {
+      'do-now':   { result: 'miss',    text: '❌ With urgent tasks on your plate, a 90-minute optional webinar isn\'t a good use of morning time.' },
+      'schedule': { result: 'perfect', text: '✅ Exactly right. It\'s optional and future-focused — worth noting for later but shouldn\'t interrupt your day until the real work is done.' },
+      'delegate': { result: 'good',    text: '⚠️ You could ask a colleague to attend and share notes, especially if it\'s relevant to their work too. A reasonable option.' },
+      'ignore':   { result: 'good',    text: '⚠️ Ignoring it is fine too, since it\'s optional. But scheduling it gives you the choice later — don\'t burn the bridge if it\'s relevant.' }
+    }
+  }
+];
+
+let sorted = {};
+let sortedCount = 0;
+let feedbackCards = 0;
+let currentNotifIndex = 0;
+let notifTimer = null;
+
+function startActivity() {
+  document.getElementById('intro').classList.remove('active');
+  document.getElementById('activity').classList.add('active');
+  showNextNotif();
+}
+
+function showNextNotif() {
+  if (currentNotifIndex >= NOTIFICATIONS.length) {
+    document.getElementById('waiting-msg').style.display = 'none';
+    return;
+  }
+  const notif = NOTIFICATIONS[currentNotifIndex];
+  currentNotifIndex++;
+
+  const container = document.getElementById('notifs-container');
+  const card = document.createElement('div');
+  card.className = `notif-card type-${notif.type}`;
+  card.id = notif.id;
+
+  const urgencyClass = notif.urgency === 'high' ? 'urgency-high' : notif.urgency === 'med' ? 'urgency-med' : 'urgency-low';
+
+  card.innerHTML = `
+    <div class="notif-header">
+      <div class="notif-icon">${notif.icon}</div>
+      <div class="notif-meta">
+        <div class="notif-source">${notif.source}</div>
+        <div class="notif-title">${notif.title}</div>
+      </div>
+    </div>
+    <div class="notif-body">${notif.body}</div>
+    <div class="notif-urgency ${urgencyClass}">${notif.urgencyLabel}</div>
+    <div class="sort-btns">
+      <button class="sort-btn do-now"   onclick="sortItem('${notif.id}','do-now')">⚡ Do Now</button>
+      <button class="sort-btn schedule" onclick="sortItem('${notif.id}','schedule')">🗓 Schedule</button>
+      <button class="sort-btn delegate" onclick="sortItem('${notif.id}','delegate')">👋 Delegate</button>
+      <button class="sort-btn ignore"   onclick="sortItem('${notif.id}','ignore')">✕ Ignore</button>
+    </div>
+    <div class="sorted-badge" id="badge-${notif.id}"></div>
+  `;
+  container.appendChild(card);
+
+  requestAnimationFrame(() => {
+    setTimeout(() => card.classList.add('visible'), 50);
+  });
+
+  // Queue next one
+  if (currentNotifIndex < NOTIFICATIONS.length) {
+    notifTimer = setTimeout(showNextNotif, 2800);
+  } else {
+    setTimeout(() => {
+      document.getElementById('waiting-msg').style.display = 'none';
+    }, 2800);
+  }
+}
+
+function sortItem(id, choice) {
+  if (sorted[id]) return;
+  sorted[id] = choice;
+  sortedCount++;
+
+  const notif = NOTIFICATIONS.find(n => n.id === id);
+  const card = document.getElementById(id);
+  card.classList.add('sorted');
+
+  const badge = document.getElementById(`badge-${id}`);
+  const labels = { 'do-now': '⚡ Do Now', 'schedule': '🗓 Schedule', 'delegate': '👋 Delegate', 'ignore': '✕ Ignore' };
+  const badgeClasses = { 'do-now': 'badge-do-now', 'schedule': 'badge-schedule', 'delegate': 'badge-delegate', 'ignore': 'badge-ignore' };
+  badge.textContent = labels[choice];
+  badge.className = `sorted-badge ${badgeClasses[choice]}`;
+
+  // Progress
+  const pct = (sortedCount / NOTIFICATIONS.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${sortedCount} / ${NOTIFICATIONS.length} sorted`;
+
+  // Feedback
+  addFeedback(notif, choice);
+
+  if (sortedCount === NOTIFICATIONS.length) {
+    document.getElementById('waiting-msg').style.display = 'none';
+    document.getElementById('all-done-msg').style.display = 'block';
+  }
+}
+
+function addFeedback(notif, choice) {
+  const fb = notif.feedback[choice];
+  const isCorrect = choice === notif.best;
+  const resultClass = { 'perfect': 'result-perfect', 'good': 'result-good', 'miss': 'result-miss' }[fb.result];
+  const resultLabel = { 'perfect': '✓ Great choice', 'good': '~ Close', 'miss': '✗ Rethink this' }[fb.result];
+
+  const coachContent = document.getElementById('coach-content');
+
+  if (feedbackCards === 0) {
+    coachContent.innerHTML = '';
+  }
+
+  const fc = document.createElement('div');
+  fc.className = 'feedback-card';
+  fc.innerHTML = `
+    <div class="feedback-title">${notif.icon} ${notif.title}</div>
+    <div class="feedback-result ${resultClass}">${resultLabel}</div>
+    <div class="feedback-text">${fb.text}</div>
+  `;
+
+  coachContent.insertBefore(fc, coachContent.firstChild);
+  feedbackCards++;
+
+  requestAnimationFrame(() => {
+    setTimeout(() => fc.classList.add('show'), 50);
+  });
+
+  // Score
+  const correctCount = Object.entries(sorted).filter(([k, v]) => {
+    const n = NOTIFICATIONS.find(x => x.id === k);
+    return n && (v === n.best || n.feedback[v]?.result === 'perfect');
+  }).length;
+
+  document.getElementById('score-area').style.display = 'block';
+  document.getElementById('score-live').textContent = correctCount;
+}
+
+function calcScore() {
+  return NOTIFICATIONS.filter(n => {
+    const choice = sorted[n.id];
+    return choice && (choice === n.best || n.feedback[choice]?.result === 'perfect');
+  }).length;
+}
+
+function showResults() {
+  document.getElementById('activity').classList.remove('active');
+  document.getElementById('results').classList.add('active');
+
+  const score = calcScore();
+  document.getElementById('results-score-big').textContent = `${score}/8`;
+
+  let title, msg;
+  if (score >= 7) { title = '🏆 Excellent Instincts!'; msg = 'You think like an AI-powered planner. You protected focus time, handled urgent tasks first, and filtered the noise.'; }
+  else if (score >= 5) { title = '👍 Solid Work!'; msg = 'You got the important ones right. A few edge cases tripped you up — review the feedback to sharpen your thinking.'; }
+  else if (score >= 3) { title = '📚 Good Start'; msg = 'You\'re learning the logic. Urgency + importance + who\'s affected are the three keys. Review each item\'s feedback below.'; }
+  else { title = '💡 Keep Practicing'; msg = 'This stuff takes practice! Look carefully at the AI feedback — focus on what makes something "Do Now" vs. "Schedule" vs. "Ignore".'; }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = msg;
+
+  const grid = document.getElementById('results-grid');
+  grid.innerHTML = '';
+
+  const chipClasses = { 'do-now': 'chip-do-now', 'schedule': 'chip-schedule', 'delegate': 'chip-delegate', 'ignore': 'chip-ignore' };
+  const chipLabels = { 'do-now': '⚡ Do Now', 'schedule': '🗓 Schedule', 'delegate': '👋 Delegate', 'ignore': '✕ Ignore' };
+
+  NOTIFICATIONS.forEach(n => {
+    const userChoice = sorted[n.id] || 'ignore';
+    const fb = n.feedback[userChoice];
+    const isGood = fb.result === 'perfect' || fb.result === 'good';
+
+    const el = document.createElement('div');
+    el.className = 'result-item';
+    el.innerHTML = `
+      <div class="result-item-header">
+        <div class="result-item-title">${n.icon} ${n.title}</div>
+      </div>
+      <div class="result-your-pick">
+        <span class="result-label">You:</span>
+        <span class="chip ${chipClasses[userChoice]}">${chipLabels[userChoice]}</span>
+      </div>
+      <div class="result-best-pick">
+        <span class="result-label">Best:</span>
+        <span class="chip ${chipClasses[n.best]}">${chipLabels[n.best]}</span>
+      </div>
+      <div class="result-feedback">${fb.text}</div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function resetActivity() {
+  sorted = {};
+  sortedCount = 0;
+  feedbackCards = 0;
+  currentNotifIndex = 0;
+  clearTimeout(notifTimer);
+
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('activity').classList.add('active');
+  document.getElementById('notifs-container').innerHTML = '';
+  document.getElementById('coach-content').innerHTML = '<div class="coach-empty">Sort your first item and I\'ll start giving you feedback here in real time.</div>';
+  document.getElementById('score-area').style.display = 'none';
+  document.getElementById('score-live').textContent = '0';
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('progress-text').textContent = '0 / 8 sorted';
+  document.getElementById('all-done-msg').style.display = 'none';
+  document.getElementById('waiting-msg').style.display = 'flex';
+  document.getElementById('results-grid').innerHTML = '';
+
+  showNextNotif();
+}
+</script>
+</body>
+</html>
