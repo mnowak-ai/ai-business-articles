@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Chaos — AI Planning Simulation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.2);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+  --accent-light: #9d4edd;
+  --green: #15803d;
+  --green-bg: rgba(21,128,61,0.08);
+  --amber: #b45309;
+  --amber-bg: rgba(180,83,9,0.08);
+  --red: #dc2626;
+  --red-bg: rgba(220,38,38,0.08);
+  --timeline-h: 56px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* ─── SHARED ELEMENTS ─── */
+.top-bar {
+  background: var(--accent);
+  padding: 13px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.top-bar-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.phase-indicator {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.phase-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  transition: all 0.4s;
+}
+
+.phase-dot.done { background: rgba(255,255,255,0.9); color: var(--accent); }
+.phase-dot.active { background: #fff; color: var(--accent); box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
+
+/* ─── TIMELINE BAR ─── */
+.timeline-wrap {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  flex-shrink: 0;
+}
+
+.timeline-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.timeline-track {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.week-block {
+  flex: 1;
+  height: 36px;
+  border-radius: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  color: var(--muted);
+  position: relative;
+  transition: all 0.4s;
+  cursor: default;
+  overflow: hidden;
+}
+
+.week-block .wk-num { font-size: 9px; opacity: 0.6; }
+.week-block .wk-task { font-size: 10px; font-weight: 600; color: var(--text); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; }
+
+.week-block.current { background: var(--accent); border-color: var(--accent); }
+.week-block.current .wk-num, .week-block.current .wk-task { color: #fff; }
+
+.week-block.done-block { background: rgba(21,128,61,0.1); border-color: rgba(21,128,61,0.25); }
+.week-block.done-block .wk-task { color: var(--green); }
+
+.week-block.warning { background: rgba(220,38,38,0.08); border-color: rgba(220,38,38,0.3); animation: pulse-warn 1.5s infinite; }
+.week-block.warning .wk-task { color: var(--red); }
+
+.week-block.shifted { background: rgba(180,83,9,0.08); border-color: rgba(180,83,9,0.25); }
+.week-block.shifted .wk-task { color: var(--amber); }
+
+@keyframes pulse-warn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.2); }
+  50% { box-shadow: 0 0 0 4px rgba(220,38,38,0.1); }
+}
+
+/* ─── TIME PASSING OVERLAY ─── */
+.time-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(248,245,255,0.97);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.time-overlay.show { opacity: 1; pointer-events: all; }
+
+.time-overlay-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.time-overlay-weeks {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.tow-block {
+  width: 76px;
+  height: 54px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: background 0.4s ease, border-color 0.4s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tow-block.filling {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(123,47,190,0.3);
+}
+
+.tow-block.filled {
+  background: rgba(21,128,61,0.1);
+  border-color: rgba(21,128,61,0.3);
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.tow-block.upcoming { opacity: 0.4; }
+
+.tow-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tow-task {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  padding: 0 5px;
+  line-height: 1.2;
+}
+
+.tow-checkmark { font-size: 18px; display: none; }
+
+.tow-block.filling .tow-num,
+.tow-block.filling .tow-task { color: #fff; }
+
+.tow-block.filled .tow-num,
+.tow-block.filled .tow-task { display: none; }
+.tow-block.filled .tow-checkmark { display: block; color: var(--green); }
+
+.time-overlay-msg {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  text-align: center;
+  padding: 0 24px;
+}
+.time-overlay-msg.show { opacity: 1; }
+
+/* health bar */
+.health-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.health-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.health-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(123,47,190,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.health-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s ease, background 0.8s ease;
+}
+
+.health-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ─── MAIN CONTENT ─── */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ─── INTRO ─── */
+#intro {
+  align-items: center;
+  justify-content: center;
+}
+
+#intro .main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.intro-badge {
+  background: rgba(123,47,190,0.1);
+  border: 1px solid var(--border2);
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.intro-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.intro-title em { font-style: normal; color: var(--accent); }
+
+.intro-desc {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 32px;
+}
+
+.project-brief {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 28px;
+  max-width: 560px;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+.brief-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brief-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.brief-key {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 72px;
+  padding-top: 1px;
+}
+
+.brief-val { color: var(--text); font-weight: 500; }
+
+.plan-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.plan-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.plan-week {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  min-width: 44px;
+}
+
+.plan-task-bar {
+  flex: 1;
+  height: 26px;
+  border-radius: 5px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.plan-owner {
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 70px;
+  text-align: right;
+}
+
+/* ─── DISRUPTION SCREEN ─── */
+.disruption-header {
+  margin-bottom: 24px;
+}
+
+.disruption-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--red-bg);
+  border: 1px solid rgba(220,38,38,0.2);
+  color: var(--red);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+.disruption-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.disruption-desc {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 580px;
+  margin-bottom: 20px;
+}
+
+.context-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  max-width: 580px;
+}
+
+.context-box strong { color: var(--accent); }
+
+/* AI suggestion header */
+.ai-suggests {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.ai-pulse {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(123,47,190,0.2);
+  animation: ai-blink 2s infinite;
+}
+
+@keyframes ai-blink {
+  0%,100% { box-shadow: 0 0 0 3px rgba(123,47,190,0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(123,47,190,0.08); }
+}
+
+/* Option cards */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  max-width: 680px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 580px) {
+  .options-grid { grid-template-columns: 1fr; }
+}
+
+.option-card {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.option-card:hover {
+  border-color: var(--accent);
+  background: var(--surface);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(123,47,190,0.12);
+}
+
+.option-card.selected {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(123,47,190,0.12);
+}
+
+.option-card.rejected {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.option-letter {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--accent);
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.option-card.selected .option-letter {
+  background: var(--accent);
+  color: #fff;
+}
+
+.option-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.option-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.option-impact {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.impact-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.tag-risk   { background: var(--red-bg); color: var(--red); }
+.tag-time   { background: var(--amber-bg); color: var(--amber); }
+.tag-cost   { background: rgba(107,114,128,0.1); color: #6b7280; }
+.tag-good   { background: var(--green-bg); color: var(--green); }
+.tag-purple { background: rgba(123,47,190,0.1); color: var(--accent); }
+
+/* Consequence panel */
+.consequence-panel {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  max-width: 680px;
+  margin-bottom: 20px;
+  animation: slide-in 0.4s ease;
+}
+
+.consequence-panel.show { display: block; }
+
+@keyframes slide-in {
+  from { opacity:0; transform: translateY(12px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+.consequence-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.consequence-text {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.consequence-metrics {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.metric-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 12px;
+}
+
+.metric-icon { font-size: 14px; }
+.metric-label { color: var(--muted); font-size: 11px; }
+.metric-val { font-weight: 700; font-family: 'DM Mono', monospace; font-size: 12px; }
+.metric-val.good  { color: var(--green); }
+.metric-val.warn  { color: var(--amber); }
+.metric-val.bad   { color: var(--red); }
+
+/* Btn */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 13px 32px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 4px 16px rgba(123,47,190,0.25);
+}
+
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(123,47,190,0.35); }
+.btn-primary:disabled { opacity:0.4; cursor:default; transform:none; box-shadow:none; }
+
+/* ─── RESULTS ─── */
+#results-screen {
+  align-items: flex-start;
+}
+
+#results-screen .main-content {
+  max-width: 700px;
+}
+
+.results-hero {
+  text-align: center;
+  padding: 32px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+
+.results-hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.big-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 72px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin: 8px 0;
+}
+
+.score-sub { color: var(--muted); font-size: 15px; }
+
+.decision-log {
+  margin-bottom: 28px;
+}
+
+.log-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.log-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+
+.log-item-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.log-phase {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.log-choice {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 2px 0 6px;
+}
+
+.log-result-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.tag-optimal { background: var(--green-bg); color: var(--green); }
+.tag-tradeoff { background: var(--amber-bg); color: var(--amber); }
+
+.log-feedback {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.ai-insight-box {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 22px 26px;
+  margin-bottom: 28px;
+}
+
+.ai-insight-box h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ai-insight-box p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.results-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: 2px solid var(--border2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-secondary:hover { background: var(--surface); }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════ INTRO ══════════════ -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">📊 Project Chaos</div>
+    <div style="font-size:12px; color:rgba(255,255,255,0.7); font-family:'DM Mono',monospace;">AI in Business · Activity</div>
+  </div>
+  <div class="main-content">
+    <div class="intro-badge">🎯 Simulation · 3 Disruptions</div>
+    <h1 class="intro-title">Things are about<br>to go <em>sideways.</em></h1>
+    <p class="intro-desc">You're the project manager on a big app launch for a client. The plan looks solid — until real life gets in the way. Three problems will hit at different points. Each time, your AI planning tool will offer two options. You pick one, and the project changes based on what you chose.</p>
+
+    <div class="project-brief">
+      <div class="brief-title">📋 Your Project: Nova App Launch</div>
+      <div class="brief-row"><span class="brief-key">Client</span><span class="brief-val">Meridian Financial Services</span></div>
+      <div class="brief-row"><span class="brief-key">Goal</span><span class="brief-val">Build and launch a budgeting app for the client's customers in 6 weeks</span></div>
+      <div class="brief-row"><span class="brief-key">Team</span><span class="brief-val">You (Project Manager) + Priya (Designer) + Carlos (Builder) + Sam (Tester)</span></div>
+      <div class="brief-row"><span class="brief-key">Budget</span><span class="brief-val">$40,000 · No extra money approved yet</span></div>
+      <div class="plan-grid">
+        <div class="plan-row"><span class="plan-week">Week 1</span><div class="plan-task-bar">Meet with client, understand what they need</div><span class="plan-owner">Full team</span></div>
+        <div class="plan-row"><span class="plan-week">Week 2</span><div class="plan-task-bar">Design how the app looks and feels</div><span class="plan-owner">Priya</span></div>
+        <div class="plan-row"><span class="plan-week">Week 3</span><div class="plan-task-bar">Build the app</div><span class="plan-owner">Carlos</span></div>
+        <div class="plan-row"><span class="plan-week">Week 4</span><div class="plan-task-bar">Show the client and get their feedback</div><span class="plan-owner">You + Client</span></div>
+        <div class="plan-row"><span class="plan-week">Week 5</span><div class="plan-task-bar">Test everything and fix any problems</div><span class="plan-owner">Sam + Carlos</span></div>
+        <div class="plan-row"><span class="plan-week">Week 6</span><div class="plan-task-bar">Launch the app and hand it over</div><span class="plan-owner">Full team</span></div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="goToPhase(1)">Start the Simulation →</button>
+  </div>
+</div>
+
+<!-- ══════════════ PHASE SCREENS ══════════════ -->
+<div id="phase-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title" id="phase-bar-title">📊 Project Chaos</div>
+    <div class="phase-indicator">
+      <div class="phase-dot" id="pd1">1</div>
+      <div class="phase-dot" id="pd2">2</div>
+      <div class="phase-dot" id="pd3">3</div>
+    </div>
+  </div>
+  <div class="timeline-wrap">
+    <div class="timeline-label">Project Timeline — Nova App Launch</div>
+    <div class="timeline-track" id="timeline-track"></div>
+    <div class="health-row">
+      <span class="health-label">Project Health</span>
+      <div class="health-bar"><div class="health-fill" id="health-fill" style="width:100%; background: #7B2FBE;"></div></div>
+      <span class="health-val" id="health-val">100%</span>
+    </div>
+  </div>
+  <div class="main-content" id="phase-content"></div>
+</div>
+
+<!-- ══════════════ RESULTS ══════════════ -->
+<div id="results-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">📊 Project Chaos — Results</div>
+    <div style="font-size:12px; color:rgba(255,255,255,0.7); font-family:'DM Mono',monospace;">Simulation Complete</div>
+  </div>
+  <div class="main-content">
+    <div class="results-hero">
+      <div class="intro-badge" style="display:inline-block; margin-bottom:14px;">✅ Simulation Complete</div>
+      <h1 id="results-title">Project Complete!</h1>
+      <div class="big-score" id="big-score">100%</div>
+      <p class="score-sub" id="score-sub">Final project health</p>
+    </div>
+
+    <div class="decision-log">
+      <div class="log-title">Your Decision Log</div>
+      <div id="log-items"></div>
+    </div>
+
+    <div class="ai-insight-box">
+      <h3>🧠 What AI Can — and Can't — Do for Project Planning</h3>
+      <p>Real AI tools used in business — like <strong>Asana</strong> or <strong>Monday.com</strong> — work a lot like this simulation. They look at your project schedule, spot risks before they become problems, and suggest options for you to consider. But they don't make the final call — <strong>you do.</strong> That's because AI doesn't know your team's energy level, your client's personality, or the relationships your company has built over time. The best project managers use AI to <em>think faster and spot problems earlier</em> — but they still bring their own judgment to every decision.</p>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-secondary" onclick="resetSim()">↺ Try Again</button>
+      <button class="btn-primary" onclick="alert('Great work! Continue to the next lesson.')">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TIME PASSING OVERLAY ══════════════ -->
+<div class="time-overlay" id="time-overlay">
+  <div class="time-overlay-label">⏩ Time passing…</div>
+  <div class="time-overlay-weeks" id="tow-weeks"></div>
+  <div class="time-overlay-msg" id="tow-msg"></div>
+</div>
+
+<script>
+// ─────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────
+let health = 100;
+let currentPhase = 0;
+let decisions = [];
+
+const WEEKS = [
+  { label: 'Meet with client', week: 'WK 1' },
+  { label: 'Design the app', week: 'WK 2' },
+  { label: 'Build the app', week: 'WK 3' },
+  { label: 'Client review', week: 'WK 4' },
+  { label: 'Test & fix', week: 'WK 5' },
+  { label: 'Launch!', week: 'WK 6' }
+];
+
+// ─────────────────────────────────────────
+// PHASES
+// ─────────────────────────────────────────
+const PHASES = [
+  {
+    phase: 1,
+    currentWeek: 2,
+    tag: '🤒 Problem · Week 2',
+    title: 'Priya is out sick — for the whole week.',
+    desc: 'It\'s Monday of Week 2. Priya, your designer, calls in with the flu. The doctor says she needs the whole week to recover. Her job this week was to design how the app looks — what buttons, colors, and screens the user will see. Without that design finished, Carlos can\'t start building the app on time.',
+    context: 'Your AI planning tool looked at the schedule and sent an alert: <strong>the project is at risk of falling behind.</strong> Priya\'s design work needs to be done before Carlos can start building. Here are two options the AI is suggesting:',
+    options: [
+      {
+        letter: 'A',
+        title: 'Keep going with a simple version of the design — Priya fixes it when she\'s back',
+        desc: 'You create a basic sketch of the app\'s screens using simple tools — just enough for Carlos to start building the parts that don\'t depend on the visuals. When Priya returns next week, she cleans it up and makes it look polished.',
+        tags: [
+          { label: 'Risk: design less polished at first', cls: 'tag-risk' },
+          { label: 'Timeline: stays on track', cls: 'tag-good' },
+          { label: 'Cost: no extra spending', cls: 'tag-good' }
+        ],
+        healthDelta: -10,
+        consequence: '⚡ Smart move! Carlos got started on the parts of the app that didn\'t need the visuals yet. When Priya came back, she finished the design and made everything look great. The project stayed on schedule, and the client didn\'t notice any hiccup.',
+        metrics: [
+          { icon: '📅', label: 'Timeline', val: 'On track', cls: 'good' },
+          { icon: '💰', label: 'Budget', val: 'No change', cls: 'good' },
+          { icon: '⚠️', label: 'Design quality', val: 'Slightly delayed', cls: 'warn' }
+        ],
+        resultTag: 'tag-optimal',
+        resultLabel: 'Best Choice',
+        feedback: 'Keeping work moving while someone recovers is a key skill. AI planning tools look for tasks that can run at the same time — you used that idea well and protected the schedule.'
+      },
+      {
+        letter: 'B',
+        title: 'Stop all work and wait for Priya to come back next week',
+        desc: 'Pause everything. Don\'t start anything new until Priya is back and the design is done properly. The whole project shifts back by one week — the launch moves from the end of Week 6 to the end of Week 7.',
+        tags: [
+          { label: 'Risk: project runs late', cls: 'tag-risk' },
+          { label: 'Timeline: 1 week behind', cls: 'tag-time' },
+          { label: 'Cost: team may need extra pay', cls: 'tag-cost' }
+        ],
+        healthDelta: -20,
+        consequence: '⏳ You waited for Priya. The design looked great when she came back — but the project was now a full week behind. You had to email the client to explain the delay. They were frustrated. The rest of the team felt rushed trying to make up for lost time.',
+        metrics: [
+          { icon: '📅', label: 'Timeline', val: '1 week behind', cls: 'bad' },
+          { icon: '💰', label: 'Budget', val: 'Risk of extra costs', cls: 'warn' },
+          { icon: '🎨', label: 'Design quality', val: 'As originally planned', cls: 'good' }
+        ],
+        resultTag: 'tag-tradeoff',
+        resultLabel: 'Costly Choice',
+        feedback: 'Waiting felt safe, but falling behind early creates problems that grow over time. AI tools flag early delays as high risk because they tend to snowball — each missed day pushes everything else back too.'
+      }
+    ]
+  },
+  {
+    phase: 2,
+    currentWeek: 4,
+    tag: '🔄 Problem · Week 4',
+    title: 'The client just asked for something new.',
+    desc: 'It\'s Week 4 — time to show the client what you\'ve built so far. But during the meeting, the client\'s boss jumps in and says they want to add a brand new feature: a "savings goals" screen where users can set money-saving targets. This wasn\'t part of the original plan. Carlos says it would take about 5 extra days of work to build.',
+    context: 'Your AI tool sent a warning: <strong>adding new work without removing something else will put the project over budget and behind schedule.</strong> This is one of the most common problems in business projects — it\'s called "scope creep," which means the project keeps growing bigger than planned. Here are two options:',
+    options: [
+      {
+        letter: 'A',
+        title: 'Make a deal: add a simpler version of the new feature, but remove something less important',
+        desc: 'You agree to build a basic version of the savings goals screen — which only takes 2 days — and in return, you remove a less important feature that was originally planned (a screen that lets users download their transaction history). You write down the change so everyone agrees.',
+        tags: [
+          { label: 'Client: happy with the deal', cls: 'tag-good' },
+          { label: 'Timeline: only slightly affected', cls: 'tag-good' },
+          { label: 'Action: update the written plan', cls: 'tag-purple' }
+        ],
+        healthDelta: -5,
+        consequence: '🤝 Great negotiating! The client got the new feature they cared about most. You swapped out a less important feature to make room for it. Carlos built the simpler version in just 2 days. The team was impressed by how you handled it calmly and fairly.',
+        metrics: [
+          { icon: '📅', label: 'Timeline', val: 'Barely affected', cls: 'good' },
+          { icon: '😊', label: 'Client', val: 'Happy with the deal', cls: 'good' },
+          { icon: '📄', label: 'Written plan', val: 'Updated', cls: 'good' }
+        ],
+        resultTag: 'tag-optimal',
+        resultLabel: 'Best Choice',
+        feedback: 'When a client asks for something new, the best answer is rarely just "yes" or "no." Trading one thing for another keeps the project on track and shows strong leadership. AI tools can instantly show you what has to change if you add something new — that\'s exactly what happened here.'
+      },
+      {
+        letter: 'B',
+        title: 'Say yes to everything and tell the team to just work faster',
+        desc: 'You agree to add the full savings goals feature without cutting anything else. You tell Carlos and Sam to put in extra hours and push through. The client will be happy — for now.',
+        tags: [
+          { label: 'Risk: team gets burned out', cls: 'tag-risk' },
+          { label: 'Timeline: in serious danger', cls: 'tag-time' },
+          { label: 'Cost: likely extra pay for overtime', cls: 'tag-cost' }
+        ],
+        healthDelta: -25,
+        consequence: '😰 The team worked nights and weekends to get it done. Carlos finished the new feature, but he was so tired that he made two mistakes that broke other parts of the app. Sam had less time to test everything properly. The client was happy at first — but the team was worn out and behind.',
+        metrics: [
+          { icon: '📅', label: 'Timeline', val: 'Seriously behind', cls: 'bad' },
+          { icon: '💰', label: 'Budget', val: '+$2,800 in extra pay', cls: 'bad' },
+          { icon: '😓', label: 'Team morale', val: 'Very low', cls: 'bad' }
+        ],
+        resultTag: 'tag-tradeoff',
+        resultLabel: 'Costly Choice',
+        feedback: 'Saying yes to everything without adjusting the plan is one of the most common project mistakes. When people are overloaded, they make more mistakes — and fixing those mistakes takes even more time. AI tools always flag this kind of decision as high risk.'
+      }
+    ]
+  },
+  {
+    phase: 3,
+    currentWeek: 5,
+    tag: '🚚 Problem · Week 5',
+    title: 'An outside company you\'re counting on is running late.',
+    desc: 'It\'s Week 5 and Sam, your tester, discovers a big problem: the outside company that handles the payment system for the app told you they won\'t be ready for another 4 days. Without their payment system connected, the app can\'t actually process real money — which is the most important thing the client wants to see at the launch.',
+    context: 'Your AI tool flagged this as a <strong>serious risk to the launch date.</strong> This outside company — called a "vendor" — is not part of your team, so you can\'t control when they finish. But you can control how you respond. Here are two options:',
+    options: [
+      {
+        letter: 'A',
+        title: 'Launch on time using a pretend payment system, then connect the real one right after',
+        desc: 'Carlos sets up a fake version of the payment system just for the launch — it looks and acts like real payments, but no actual money moves. You tell the client about this ahead of time and explain that the real payment system will be connected within a few days after launch.',
+        tags: [
+          { label: 'Launch: on time', cls: 'tag-good' },
+          { label: 'Client: informed ahead of time', cls: 'tag-good' },
+          { label: 'Small follow-up needed after launch', cls: 'tag-purple' }
+        ],
+        healthDelta: -8,
+        consequence: '🚀 Excellent thinking! The client presentation went smoothly. Because you told them about the fake payment system beforehand, they respected your honesty. Three days after launch, the real payment system was connected without any issues. The project finished on time.',
+        metrics: [
+          { icon: '📅', label: 'Launch', val: 'On time', cls: 'good' },
+          { icon: '😊', label: 'Client', val: 'Informed and satisfied', cls: 'good' },
+          { icon: '🔧', label: 'Follow-up work', val: '3 days after launch', cls: 'warn' }
+        ],
+        resultTag: 'tag-optimal',
+        resultLabel: 'Best Choice',
+        feedback: 'Launching with a temporary solution and being upfront about it is a smart, professional move. Many real tech companies do exactly this. Being honest with the client and delivering on time is almost always better than asking for more time.'
+      },
+      {
+        letter: 'B',
+        title: 'Delay the launch and wait until the payment system is fully ready',
+        desc: 'You tell the client the launch is being pushed back one more week. You\'ll wait for the outside company to finish, test everything completely, and then launch when it\'s all perfect.',
+        tags: [
+          { label: 'Risk: another delay for the client', cls: 'tag-risk' },
+          { label: 'Timeline: 1 more week added', cls: 'tag-time' },
+          { label: 'Everything fully tested', cls: 'tag-good' }
+        ],
+        healthDelta: -18,
+        consequence: '⏰ You waited. The payment system worked perfectly when it arrived — but this was the second time (or more) the project ran late. The client was visibly frustrated and started questioning whether your team could deliver. The extra week cost $3,200 more in team time.',
+        metrics: [
+          { icon: '📅', label: 'Launch', val: 'Delayed again', cls: 'bad' },
+          { icon: '💰', label: 'Budget', val: '+$3,200', cls: 'bad' },
+          { icon: '✅', label: 'Payment system', val: 'Fully tested', cls: 'good' }
+        ],
+        resultTag: 'tag-tradeoff',
+        resultLabel: 'Costly Choice',
+        feedback: 'A second delay hurts client trust much more than the first one. AI planning tools weigh the cost of waiting against the cost of a temporary workaround — in this case, launching on time with a short-term fix was the smarter path.'
+      }
+    ]
+  }
+];
+
+// ─────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────
+function renderTimeline(currentWeek) {
+  const track = document.getElementById('timeline-track');
+  track.innerHTML = '';
+  WEEKS.forEach((w, i) => {
+    const wkNum = i + 1;
+    const div = document.createElement('div');
+    div.className = 'week-block';
+    if (wkNum < currentWeek) div.classList.add('done-block');
+    else if (wkNum === currentWeek) div.classList.add('current');
+    div.innerHTML = `<span class="wk-num">${w.week}</span><span class="wk-task">${w.label}</span>`;
+    track.appendChild(div);
+  });
+}
+
+function updateHealth(newHealth) {
+  health = Math.max(0, newHealth);
+  const fill = document.getElementById('health-fill');
+  const val = document.getElementById('health-val');
+  fill.style.width = health + '%';
+  fill.style.background = health >= 70 ? '#7B2FBE' : health >= 45 ? '#b45309' : '#dc2626';
+  val.textContent = health + '%';
+  val.style.color = health >= 70 ? 'var(--accent)' : health >= 45 ? 'var(--amber)' : 'var(--red)';
+}
+
+function updatePhaseDots(phase) {
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('pd' + i);
+    dot.className = 'phase-dot';
+    if (i < phase) dot.classList.add('done');
+    else if (i === phase) dot.classList.add('active');
+  }
+}
+
+function goToPhase(phaseNum) {
+  document.getElementById('intro').classList.remove('active');
+  document.getElementById('results-screen').classList.remove('active');
+  document.getElementById('phase-screen').classList.add('active');
+
+  currentPhase = phaseNum;
+  const p = PHASES[phaseNum - 1];
+
+  document.getElementById('phase-bar-title').textContent = `📊 Project Chaos · Phase ${phaseNum}`;
+  updatePhaseDots(phaseNum);
+  renderTimeline(p.currentWeek);
+
+  const content = document.getElementById('phase-content');
+  content.innerHTML = `
+    <div class="disruption-header">
+      <div class="disruption-tag">${p.tag}</div>
+      <div class="disruption-title">${p.title}</div>
+      <p class="disruption-desc">${p.desc}</p>
+      <div class="context-box">${p.context}</div>
+    </div>
+
+    <div class="ai-suggests"><div class="ai-pulse"></div> AI is suggesting two options — you decide:</div>
+
+    <div class="options-grid" id="opts-grid">
+      ${p.options.map((opt, idx) => `
+        <div class="option-card" id="opt-${idx}" onclick="selectOption(${phaseNum}, ${idx})">
+          <div class="option-letter">${opt.letter}</div>
+          <div class="option-title">${opt.title}</div>
+          <p class="option-desc">${opt.desc}</p>
+          <div class="option-impact">
+            ${opt.tags.map(t => `<span class="impact-tag ${t.cls}">${t.label}</span>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="consequence-panel" id="consequence-panel"></div>
+
+    <button class="btn-primary" id="next-btn" disabled onclick="nextPhase(${phaseNum})" style="margin-top:8px;">
+      ${phaseNum < 3 ? 'Next Disruption →' : 'See Final Results →'}
+    </button>
+  `;
+}
+
+function selectOption(phaseNum, optIdx) {
+  const p = PHASES[phaseNum - 1];
+  const opt = p.options[optIdx];
+
+  // Mark cards
+  document.querySelectorAll('.option-card').forEach((el, i) => {
+    el.classList.remove('selected', 'rejected');
+    el.classList.add(i === optIdx ? 'selected' : 'rejected');
+  });
+
+  // Update health
+  updateHealth(health + opt.healthDelta);
+
+  // Show consequence
+  const panel = document.getElementById('consequence-panel');
+  panel.innerHTML = `
+    <div class="consequence-header">📋 Here's what happened next…</div>
+    <p class="consequence-text">${opt.consequence}</p>
+    <div class="consequence-metrics">
+      ${opt.metrics.map(m => `
+        <div class="metric-pill">
+          <span class="metric-icon">${m.icon}</span>
+          <span class="metric-label">${m.label}</span>
+          <span class="metric-val ${m.cls}">${m.val}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  panel.classList.add('show');
+
+  // Store decision
+  decisions[phaseNum - 1] = { phase: phaseNum, optIdx, opt, phaseName: p.title };
+
+  // Enable next
+  document.getElementById('next-btn').disabled = false;
+
+  // Scroll to consequence
+  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+function nextPhase(current) {
+  if (current < 3) {
+    const fromWeek = PHASES[current - 1].currentWeek;
+    const toWeek   = PHASES[current].currentWeek;
+    animateWeeks(fromWeek, toWeek, () => goToPhase(current + 1));
+  } else {
+    const fromWeek = PHASES[2].currentWeek;
+    animateWeeks(fromWeek, 7, () => showResults());
+  }
+}
+
+function animateWeeks(fromWeek, toWeek, callback) {
+  const overlay = document.getElementById('time-overlay');
+  const towWeeks = document.getElementById('tow-weeks');
+  const towMsg   = document.getElementById('tow-msg');
+
+  // Build week blocks in overlay
+  towWeeks.innerHTML = '';
+  towMsg.classList.remove('show');
+  towMsg.textContent = '';
+
+  WEEKS.forEach((w, i) => {
+    const wk = i + 1;
+    const div = document.createElement('div');
+    div.className = 'tow-block' + (wk >= toWeek ? ' upcoming' : (wk < fromWeek ? ' filled' : ''));
+    div.id = 'tow-' + wk;
+    div.innerHTML = `
+      <span class="tow-checkmark">✓</span>
+      <span class="tow-num">${w.week}</span>
+      <span class="tow-task">${w.label}</span>
+    `;
+    towWeeks.appendChild(div);
+  });
+
+  // Show overlay
+  overlay.classList.add('show');
+
+  // Animate each week from fromWeek up to (but not including) toWeek
+  const weeksToFill = [];
+  for (let w = fromWeek; w < Math.min(toWeek, 7); w++) weeksToFill.push(w);
+
+  let idx = 0;
+
+  function fillNext() {
+    if (idx >= weeksToFill.length) {
+      // All done — show message then continue
+      const msgs = {
+        2: '⚠️ Now it\'s Week 2 — something just came up.',
+        4: '⚠️ Now it\'s Week 4 — here\'s your next challenge.',
+        5: '⚠️ Now it\'s Week 5 — one more problem to solve.',
+        7: '✅ The project is wrapping up — let\'s see how you did.'
+      };
+      towMsg.textContent = msgs[toWeek] || '⚠️ Something just came up.';
+      setTimeout(() => {
+        towMsg.classList.add('show');
+        setTimeout(() => {
+          overlay.classList.remove('show');
+          towMsg.classList.remove('show');
+          callback();
+        }, 1200);
+      }, 300);
+      return;
+    }
+
+    const wk = weeksToFill[idx];
+    const block = document.getElementById('tow-' + wk);
+
+    // Light up as "filling"
+    block.classList.remove('upcoming');
+    block.classList.add('filling');
+
+    setTimeout(() => {
+      // Mark as done
+      block.classList.remove('filling');
+      block.classList.add('filled');
+      idx++;
+      setTimeout(fillNext, 280);
+    }, 480);
+  }
+
+  // Small delay before starting
+  setTimeout(fillNext, 400);
+}
+
+function showResults() {
+  document.getElementById('phase-screen').classList.remove('active');
+  document.getElementById('results-screen').classList.add('active');
+
+  // Title & score
+  let title, sub;
+  if (health >= 80) { title = '🏆 Outstanding Leadership!'; sub = 'You made smart decisions under pressure and kept the project on track. You used AI suggestions the right way — as a guide, not a replacement for good judgment.'; }
+  else if (health >= 60) { title = '👍 Solid Work!'; sub = 'You made some really good calls and a few costly ones. The project made it to the finish line — review your choices below to see what you can learn.'; }
+  else if (health >= 40) { title = '📚 A Tough Ride'; sub = 'The project finished, but took some serious hits along the way. Look at your decision log — the AI feedback explains what a stronger choice would have looked like.'; }
+  else { title = '💡 Keep Practicing'; sub = 'Every project manager faces rough projects. What matters is learning from them. Read through your decision log carefully — you\'ll see the patterns that tripped you up.' }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('big-score').textContent = health + '%';
+  document.getElementById('score-sub').textContent = sub;
+
+  const logItems = document.getElementById('log-items');
+  logItems.innerHTML = '';
+  decisions.forEach((d, i) => {
+    if (!d) return;
+    const el = document.createElement('div');
+    el.className = 'log-item';
+    el.innerHTML = `
+      <div class="log-item-header">
+        <div>
+          <div class="log-phase">Phase ${d.phase} · ${PHASES[d.phase-1].tag}</div>
+      <div class="log-choice">You chose Option ${d.opt.letter}: ${d.opt.title}</div>
+        </div>
+        <span class="log-result-tag ${d.opt.resultTag}">${d.opt.resultLabel}</span>
+      </div>
+      <div class="log-feedback">${d.opt.feedback}</div>
+    `;
+    logItems.appendChild(el);
+  });
+}
+
+function resetSim() {
+  health = 100;
+  decisions = [];
+  currentPhase = 0;
+  updateHealth(100);
+  document.getElementById('results-screen').classList.remove('active');
+  document.getElementById('phase-screen').classList.remove('active');
+  document.getElementById('intro').classList.add('active');
+}
+</script>
+</body>
+</html>
