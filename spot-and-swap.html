@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spot & Swap — Email Review Activity</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f2f7;
+  --surface: #ffffff;
+  --surface2: #f8f5ff;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(123,47,190,0.2);
+  --text: #1a1a2e;
+  --muted: #6b6b8a;
+  --accent: #7B2FBE;
+  --green: #15803d;
+  --green-bg: rgba(21,128,61,0.08);
+  --green-bdr: rgba(21,128,61,0.25);
+  --red: #dc2626;
+  --red-bg: rgba(220,38,38,0.07);
+  --amber: #b45309;
+  --amber-bg: rgba(180,83,9,0.08);
+
+  --flag-yellow: #f59e0b;
+  --flag-bg: rgba(245,158,11,0.14);
+  --flag-bdr: rgba(245,158,11,0.5);
+  --flag-fixed: rgba(21,128,61,0.12);
+  --flag-fixed-bdr: rgba(21,128,61,0.4);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar {
+  background:var(--accent); padding:13px 28px;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+.top-bar-right  { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.75); }
+
+/* Fix counter */
+.fix-counter { display:flex; align-items:center; gap:8px; }
+.fix-pip {
+  width:16px; height:16px; border-radius:4px;
+  background:rgba(255,255,255,0.2); border:1.5px solid rgba(255,255,255,0.3);
+  transition:all 0.3s; display:flex; align-items:center; justify-content:center;
+  font-size:9px; color:transparent;
+}
+.fix-pip.done { background:#fff; color:var(--accent); border-color:#fff; }
+
+/* SHARED */
+.page-body { flex:1; overflow-y:auto; padding:36px 24px 52px; }
+.page-inner { max-width:640px; margin:0 auto; width:100%; }
+
+.intro-badge {
+  display:inline-block; background:rgba(123,47,190,0.1); border:1px solid var(--border2);
+  color:var(--accent); font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px;
+  border-radius:20px; margin-bottom:18px;
+}
+.page-title { font-family:'Syne',sans-serif; font-size:clamp(30px,5vw,50px); font-weight:800; line-height:1.06; margin-bottom:12px; }
+.page-title em { font-style:normal; color:var(--accent); }
+.page-desc { font-size:15px; color:var(--muted); line-height:1.7; max-width:520px; margin-bottom:28px; }
+
+.btn-primary {
+  background:var(--accent); color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:13px 32px; border-radius:10px; border:none; cursor:pointer;
+  box-shadow:0 4px 16px rgba(123,47,190,0.28); transition:all 0.15s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 7px 22px rgba(123,47,190,0.38); }
+
+.btn-secondary {
+  background:#fff; color:var(--accent);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:11px 26px; border-radius:10px; border:2px solid var(--border2);
+  cursor:pointer; transition:all 0.15s;
+}
+.btn-secondary:hover { background:var(--surface2); }
+
+/* INTRO */
+#intro { align-items:center; justify-content:center; }
+
+.problem-types { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:28px; }
+@media(max-width:460px){ .problem-types{grid-template-columns:1fr;} }
+
+.ptype-card {
+  border-radius:12px; padding:14px 12px; text-align:center;
+  border:1px solid;
+}
+.ptype-prof     { background:rgba(123,47,190,0.07); border-color:rgba(123,47,190,0.2); }
+.ptype-clarity  { background:rgba(3,105,161,0.07);  border-color:rgba(3,105,161,0.2); }
+.ptype-tone     { background:rgba(180,83,9,0.07);   border-color:rgba(180,83,9,0.2); }
+
+.ptype-icon  { font-size:22px; margin-bottom:6px; }
+.ptype-label { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; margin-bottom:3px; }
+.ptype-desc  { font-size:11px; color:var(--muted); line-height:1.4; }
+.ptype-prof    .ptype-label { color:var(--accent); }
+.ptype-clarity .ptype-label { color:#0369a1; }
+.ptype-tone    .ptype-label { color:var(--amber); }
+
+.scenario-note {
+  background:var(--surface); border:1px solid var(--border);
+  border-left:3px solid var(--accent); border-radius:0 10px 10px 0;
+  padding:14px 18px; margin-bottom:28px;
+  font-size:14px; line-height:1.6; color:var(--text);
+}
+.scenario-note strong { color:var(--accent); }
+
+/* EDITOR SCREEN */
+#editor { flex-direction:column; background:var(--bg); }
+
+.editor-body { flex:1; overflow-y:auto; padding:24px; }
+.editor-inner { max-width:640px; margin:0 auto; }
+
+/* Email client shell */
+.email-shell {
+  background:var(--surface);
+  border-radius:16px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.1);
+  overflow:hidden;
+  margin-bottom:16px;
+}
+
+.email-chrome {
+  background:#f0f2f5;
+  border-bottom:1px solid var(--border);
+  padding:12px 18px;
+  display:flex; align-items:center; gap:10px;
+}
+.chrome-dots { display:flex; gap:6px; }
+.cdot { width:12px; height:12px; border-radius:50%; }
+.cdot:nth-child(1){ background:#fc5c65; }
+.cdot:nth-child(2){ background:#f5a623; }
+.cdot:nth-child(3){ background:#2bcbba; }
+.chrome-label {
+  flex:1; text-align:center;
+  font-family:'DM Mono',monospace; font-size:11px; color:var(--muted);
+  letter-spacing:0.06em;
+}
+
+.email-meta {
+  padding:16px 24px 14px;
+  border-bottom:1px solid var(--border);
+}
+.email-row {
+  display:flex; align-items:baseline; gap:10px;
+  margin-bottom:5px; font-size:13px;
+}
+.email-row:last-child { margin-bottom:0; }
+.email-field { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:600; min-width:36px; }
+.email-val   { color:var(--text); font-weight:500; }
+.email-subject-row { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+.email-subject { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text); }
+
+/* Email body */
+.email-body {
+  padding:22px 24px 28px;
+  font-size:15px; line-height:1.85;
+  color:var(--text);
+}
+.email-body p { margin-bottom:14px; }
+.email-body p:last-child { margin-bottom:0; }
+
+/* Flagged phrase */
+.flag {
+  display:inline;
+  background:var(--flag-bg);
+  border-bottom:2px solid var(--flag-yellow);
+  border-radius:3px 3px 0 0;
+  padding:1px 3px;
+  cursor:pointer;
+  transition:all 0.2s;
+  position:relative;
+}
+.flag:hover { background:rgba(245,158,11,0.22); }
+.flag::after {
+  content:'✏️';
+  font-size:11px;
+  margin-left:3px;
+  vertical-align:middle;
+  opacity:0.7;
+}
+
+.flag.fixed {
+  background:var(--flag-fixed);
+  border-bottom:2px solid var(--green);
+  cursor:default;
+  animation:fix-flash 0.5s ease;
+}
+.flag.fixed::after { content:'✓'; color:var(--green); font-size:11px; font-weight:700; }
+.flag.fixed:hover  { background:var(--flag-fixed); }
+
+@keyframes fix-flash {
+  0%  { background:rgba(21,128,61,0.25); transform:scale(1.04); }
+  100%{ background:var(--flag-fixed); transform:scale(1); }
+}
+
+.flag.wrong-flash {
+  animation:wrong-shake 0.4s ease;
+}
+@keyframes wrong-shake {
+  0%,100%{ transform:translateX(0); background:var(--flag-bg); }
+  20%    { transform:translateX(-4px); background:rgba(220,38,38,0.15); }
+  40%    { transform:translateX(4px); }
+  60%    { transform:translateX(-3px); }
+  80%    { transform:translateX(3px); }
+}
+
+/* Popup menu */
+.swap-popup {
+  position:fixed; z-index:200;
+  background:#fff; border-radius:14px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.18);
+  border:1px solid var(--border);
+  width:320px; padding:14px;
+  animation:popup-in 0.2s cubic-bezier(0.34,1.3,0.64,1);
+  display:none;
+}
+.swap-popup.show { display:block; }
+
+@keyframes popup-in {
+  from { opacity:0; transform:scale(0.9) translateY(-6px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+
+.popup-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:10px;
+}
+.popup-type {
+  font-family:'DM Mono',monospace; font-size:9px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.1em;
+  padding:3px 9px; border-radius:5px;
+}
+.pt-prof    { background:rgba(123,47,190,0.1); color:var(--accent); }
+.pt-clarity { background:rgba(3,105,161,0.1);  color:#0369a1; }
+.pt-tone    { background:rgba(180,83,9,0.1);   color:var(--amber); }
+
+.popup-close {
+  width:22px; height:22px; border-radius:50%;
+  background:var(--bg); border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; color:var(--muted); transition:all 0.15s;
+}
+.popup-close:hover { background:#e0e0e0; color:var(--text); }
+
+.popup-question { font-size:13px; font-weight:600; color:var(--text); margin-bottom:12px; line-height:1.4; }
+
+.swap-option {
+  border:1.5px solid var(--border); border-radius:9px;
+  padding:10px 12px; margin-bottom:7px; cursor:pointer;
+  transition:all 0.15s; font-size:13px; color:var(--text); line-height:1.45;
+  display:flex; align-items:flex-start; gap:9px;
+}
+.swap-option:last-child { margin-bottom:0; }
+.swap-option:hover { border-color:var(--border2); background:var(--surface2); }
+.swap-letter {
+  width:20px; height:20px; border-radius:5px; flex-shrink:0;
+  background:rgba(123,47,190,0.08); color:var(--accent);
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  margin-top:1px;
+}
+.swap-option.correct { border-color:var(--green-bdr); background:var(--green-bg); pointer-events:none; }
+.swap-option.wrong   { border-color:rgba(220,38,38,0.25); background:var(--red-bg); pointer-events:none; opacity:0.5; }
+.swap-option.correct .swap-letter { background:var(--green); color:#fff; }
+.swap-option.wrong   .swap-letter { background:var(--red); color:#fff; }
+
+.popup-why {
+  display:none; margin-top:10px; padding:10px 12px;
+  background:var(--surface2); border-radius:8px;
+  font-size:12px; color:var(--muted); line-height:1.55;
+  border:1px solid var(--border2);
+}
+.popup-why.show { display:block; animation:fadein 0.3s ease; }
+@keyframes fadein { from{opacity:0} to{opacity:1} }
+.popup-why strong { color:var(--text); }
+
+.popup-next {
+  display:none; width:100%; margin-top:10px;
+  background:var(--accent); color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+  padding:9px; border-radius:8px; border:none; cursor:pointer;
+  transition:all 0.15s;
+}
+.popup-next.show { display:block; }
+.popup-next:hover { background:#6822a8; }
+
+/* Hint bar */
+.hint-bar {
+  background:#fff; border-top:1px solid var(--border);
+  padding:12px 24px; display:flex; align-items:center; justify-content:space-between;
+  gap:12px; flex-shrink:0; flex-wrap:wrap;
+}
+.hint-text { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:7px; }
+.hint-pulse {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--flag-yellow); animation:hint-glow 1.5s infinite;
+}
+@keyframes hint-glow { 0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0.4)} 50%{box-shadow:0 0 0 5px rgba(245,158,11,0)} }
+
+/* RESULTS */
+#results { overflow-y:auto; background:var(--bg); }
+
+.results-body { max-width:640px; margin:0 auto; padding:36px 24px 56px; }
+
+.results-hero { text-align:center; margin-bottom:32px; }
+.results-hero h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,4vw,42px); font-weight:800; margin-bottom:8px; }
+.score-display {
+  font-family:'Syne',sans-serif; font-size:60px; font-weight:800;
+  color:var(--accent); line-height:1; margin:8px 0 6px;
+}
+.score-msg { font-size:14px; color:var(--muted); line-height:1.6; }
+
+/* Before / After email */
+.ba-tabs { display:flex; gap:0; margin-bottom:0; }
+.ba-tab {
+  flex:1; padding:10px 16px; border:1px solid var(--border);
+  font-family:'DM Mono',monospace; font-size:11px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;
+  background:#f5f5f8; color:var(--muted); transition:all 0.15s; text-align:center;
+}
+.ba-tab:first-child { border-radius:10px 0 0 0; border-right:none; }
+.ba-tab:last-child  { border-radius:0 10px 0 0; }
+.ba-tab.active { background:#fff; color:var(--accent); border-bottom-color:#fff; z-index:1; }
+
+.ba-email {
+  background:#fff; border:1px solid var(--border); border-top:none;
+  border-radius:0 0 14px 14px; padding:20px 22px;
+  font-size:14px; line-height:1.85; color:var(--text);
+  display:none;
+}
+.ba-email.active { display:block; animation:fadein 0.25s ease; }
+.ba-email p { margin-bottom:12px; }
+.ba-email p:last-child { margin-bottom:0; }
+.ba-fixed   { background:var(--green-bg); border-bottom:2px solid var(--green); border-radius:3px 3px 0 0; padding:1px 3px; }
+.ba-original{ background:var(--flag-bg); border-bottom:2px solid var(--flag-yellow); border-radius:3px 3px 0 0; padding:1px 3px; }
+
+/* Fix breakdown */
+.fixes-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.fix-card {
+  background:#fff; border:1px solid var(--border); border-radius:12px;
+  padding:14px 18px; display:flex; align-items:flex-start; gap:12px;
+}
+.fix-icon { font-size:18px; flex-shrink:0; margin-top:2px; }
+.fix-meta {}
+.fix-type {
+  font-family:'DM Mono',monospace; font-size:9px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.1em; padding:2px 7px; border-radius:4px;
+  display:inline-block; margin-bottom:5px;
+}
+.ft-prof    { background:rgba(123,47,190,0.1); color:var(--accent); }
+.ft-clarity { background:rgba(3,105,161,0.1);  color:#0369a1; }
+.ft-tone    { background:rgba(180,83,9,0.1);   color:var(--amber); }
+.fix-before { font-size:12px; color:var(--red); text-decoration:line-through; margin-bottom:4px; }
+.fix-after  { font-size:13px; color:var(--green); font-weight:600; margin-bottom:4px; }
+.fix-why    { font-size:12px; color:var(--muted); line-height:1.55; }
+
+.fix-result {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  text-transform:uppercase; padding:2px 8px; border-radius:4px; margin-left:auto; flex-shrink:0;
+}
+.fr-correct { background:var(--green-bg); color:var(--green); border:1px solid var(--green-bdr); }
+.fr-wrong   { background:var(--red-bg); color:var(--red); border:1px solid rgba(220,38,38,0.2); }
+
+.lesson-box {
+  background:rgba(123,47,190,0.06); border:1px solid var(--border2);
+  border-radius:14px; padding:20px 24px; margin-bottom:24px;
+}
+.lesson-box h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:8px; }
+.lesson-box p  { font-size:13px; color:var(--muted); line-height:1.7; }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">✉️ Spot & Swap</div>
+    <div class="top-bar-right">AI in Business · Activity</div>
+  </div>
+  <div class="page-body" style="display:flex;align-items:center;justify-content:center;">
+  <div class="page-inner">
+    <div class="intro-badge">✏️ Activity · Email Review</div>
+    <h1 class="page-title">Fix the<br><em>email.</em></h1>
+    <p class="page-desc">A new intern just drafted a professional email to a senior client. It has 6 problems — 2 related to professionalism, 2 to clarity, and 2 to tone. Click each highlighted phrase and pick the best replacement.</p>
+
+    <div class="problem-types">
+      <div class="ptype-card ptype-prof">
+        <div class="ptype-icon">👔</div>
+        <div class="ptype-label">Professionalism</div>
+        <div class="ptype-desc">Language that is too casual or informal for a business setting</div>
+      </div>
+      <div class="ptype-card ptype-clarity">
+        <div class="ptype-icon">🔍</div>
+        <div class="ptype-label">Clarity</div>
+        <div class="ptype-desc">Vague, confusing, or overly long sentences that bury the point</div>
+      </div>
+      <div class="ptype-card ptype-tone">
+        <div class="ptype-icon">🎚️</div>
+        <div class="ptype-label">Tone</div>
+        <div class="ptype-desc">Wording that does not match the professional audience or context</div>
+      </div>
+    </div>
+
+    <div class="scenario-note">
+      <strong>The scenario:</strong> Jordan is a first-year intern at a marketing consultancy. They are emailing Ms. Patricia Webb, a senior client, to reschedule a meeting due to a scheduling conflict. Jordan drafted this email before sending it to their manager for review — and their manager found problems.
+    </div>
+
+    <button class="btn-primary" onclick="startEditor()">Open the Email →</button>
+  </div>
+  </div>
+</div>
+
+<!-- EDITOR -->
+<div id="editor" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">✉️ Spot & Swap — Find & Fix the Problems</div>
+    <div class="fix-counter" id="fix-counter"></div>
+  </div>
+
+  <div class="editor-body">
+    <div class="editor-inner">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px;font-weight:600;">
+        Click any <span style="background:rgba(245,158,11,0.2);border-bottom:2px solid #f59e0b;padding:1px 4px;border-radius:2px 2px 0 0;">highlighted phrase</span> to fix it
+      </div>
+
+      <div class="email-shell">
+        <div class="email-chrome">
+          <div class="chrome-dots"><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div></div>
+          <div class="chrome-label">Draft Email — Jordan M.</div>
+        </div>
+        <div class="email-meta">
+          <div class="email-row"><span class="email-field">To</span><span class="email-val">patricia.webb@meridiangroup.com</span></div>
+          <div class="email-row"><span class="email-field">From</span><span class="email-val">jordan.m@brightlinecreative.com</span></div>
+          <div class="email-subject-row"><div class="email-subject" id="subject-line"></div></div>
+        </div>
+        <div class="email-body" id="email-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint-bar">
+    <div class="hint-text"><div class="hint-pulse"></div><span id="hint-msg">Click a yellow-highlighted phrase to see replacement options</span></div>
+    <button class="btn-primary" id="submit-btn" disabled onclick="showResults()" style="padding:9px 22px;font-size:13px;">See Results →</button>
+  </div>
+</div>
+
+<!-- Swap popup -->
+<div class="swap-popup" id="swap-popup">
+  <div class="popup-header">
+    <div class="popup-type" id="popup-type"></div>
+    <button class="popup-close" onclick="closePopup()">✕</button>
+  </div>
+  <div class="popup-question" id="popup-question"></div>
+  <div id="popup-options"></div>
+  <div class="popup-why" id="popup-why"></div>
+  <button class="popup-next" id="popup-next" onclick="closePopup()">Done ✓</button>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">✉️ Spot & Swap — Results</div>
+    <div class="top-bar-right">Email Review Complete</div>
+  </div>
+  <div class="results-body">
+
+    <div class="results-hero">
+      <div class="intro-badge" style="display:inline-block;margin-bottom:14px;">✅ Review Complete</div>
+      <h1 id="results-title">Good editing!</h1>
+      <div class="score-display" id="score-display">0/6</div>
+      <p class="score-msg" id="score-msg"></p>
+    </div>
+
+    <div style="margin-bottom:6px;">
+      <div class="ba-tabs">
+        <div class="ba-tab active" id="tab-before" onclick="switchTab('before')">Before (Jordan's Draft)</div>
+        <div class="ba-tab" id="tab-after" onclick="switchTab('after')">After (Corrected)</div>
+      </div>
+      <div class="ba-email active" id="ba-before"></div>
+      <div class="ba-email" id="ba-after"></div>
+    </div>
+
+    <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin:20px 0 12px;">All 6 Fixes</div>
+    <div class="fixes-grid" id="fixes-grid"></div>
+
+    <div class="lesson-box">
+      <h3>🧠 Why Business Email Tone Matters</h3>
+      <p>In a professional setting, your email is often the first — or only — impression a client has of you. Casual greetings, vague timelines, and over-the-top expressions can make you appear unprepared or unprofessional, even when your intentions are good. <strong>Professionalism, clarity, and tone</strong> work together: a clear email that sounds unprofessional still fails, and a formal email that confuses the reader still fails. All three need to work at once.</p>
+    </div>
+
+    <button class="btn-secondary" style="display:block;margin:0 auto;" onclick="resetActivity()">↺ Try Again</button>
+  </div>
+</div>
+
+<script>
+// ─────────── PROBLEMS ───────────
+const PROBLEMS = {
+  p1: {
+    type:'prof', typeLabel:'Professionalism',
+    typeClass:'pt-prof', fixClass:'ft-prof',
+    question:'Which greeting is most appropriate for a professional email to a senior client?',
+    icon:'👔',
+    original:'Hey!!!',
+    options:[
+      { letter:'A', text:'Dear Ms. Webb,', correct:true  },
+      { letter:'B', text:'Hello there,',  correct:false, whyWrong:'Still too casual for a senior client. "Hello there" feels informal.' },
+      { letter:'C', text:'Hi Patricia,',  correct:false, whyWrong:'Using a first name without invitation is too familiar with a senior client you do not know well.' }
+    ],
+    why:'<strong>"Dear Ms. Webb,"</strong> is the standard professional greeting for a client email. It shows respect and matches the formal tone the situation requires.',
+    fixBefore:'Hey!!!',
+    fixAfter:'Dear Ms. Webb,',
+    fixWhy:'Using "Hey!!!" is too casual and informal. Exclamation marks in a greeting can make the writer seem excitable rather than professional.'
+  },
+  p2: {
+    type:'prof', typeLabel:'Professionalism',
+    typeClass:'pt-prof', fixClass:'ft-prof',
+    question:'What is the most professional way to apologize for the inconvenience?',
+    icon:'👔',
+    original:'my bad',
+    options:[
+      { letter:'A', text:'I apologize for any inconvenience this may cause.', correct:true  },
+      { letter:'B', text:'Sorry about that!',                                 correct:false, whyWrong:'Still informal — "Sorry about that" is something you would say to a friend, not a senior client.' },
+      { letter:'C', text:'I am so incredibly sorry for this terrible problem.', correct:false, whyWrong:'This overcorrects and sounds overdramatic. A simple, direct apology is more professional than an exaggerated one.' }
+    ],
+    why:'<strong>"I apologize for any inconvenience this may cause"</strong> is calm, professional, and takes appropriate responsibility without being dramatic or overly casual.',
+    fixBefore:'my bad',
+    fixAfter:'I apologize for any inconvenience this may cause.',
+    fixWhy:'"My bad" is slang — completely inappropriate in a professional business email to a client.'
+  },
+  p3: {
+    type:'clarity', typeLabel:'Clarity',
+    typeClass:'pt-clarity', fixClass:'ft-clarity',
+    question:'Which replacement makes the timing request clearer and more professional?',
+    icon:'🔍',
+    original:'ASAP',
+    options:[
+      { letter:'A', text:'by end of business Friday, October 18',                    correct:true  },
+      { letter:'B', text:'soon',                                                    correct:false, whyWrong:'"Soon" is even vaguer than ASAP — the client has no idea when to respond by.' },
+      { letter:'C', text:'in the next couple of days if that works for you maybe',  correct:false, whyWrong:'This is too uncertain and informal. A professional request needs a clear, confident deadline.' }
+    ],
+    why:'<strong>A specific date</strong> removes all ambiguity. The client knows exactly what is being asked. Vague urgency words like "ASAP" create pressure without clarity.',
+    fixBefore:'ASAP',
+    fixAfter:'by end of business Friday, October 18',
+    fixWhy:'"ASAP" is vague and can feel pressuring. A professional request gives the recipient a specific, reasonable deadline.'
+  },
+  p4: {
+    type:'clarity', typeLabel:'Clarity',
+    typeClass:'pt-clarity', fixClass:'ft-clarity',
+    question:'Which version communicates the same information more clearly and concisely?',
+    icon:'🔍',
+    original:'I was just wondering if maybe we could possibly find a new time that works for both of us to get together and chat about the project stuff we were going to discuss',
+    options:[
+      { letter:'A', text:'I would like to reschedule our meeting to discuss the project.', correct:true  },
+      { letter:'B', text:'Could we maybe reschedule?',                                    correct:false, whyWrong:'Too vague — what meeting? About what? The client needs enough context to respond.' },
+      { letter:'C', text:'I was hoping we could potentially reschedule our important project meeting at your convenience if possible.', correct:false, whyWrong:'Still full of hedging words like "potentially" and "if possible" that weaken the message. A professional ask is direct.' }
+    ],
+    why:'<strong>Short, direct sentences are more professional.</strong> Hedging phrases like "I was just wondering if maybe" signal uncertainty and waste the reader\'s time.',
+    fixBefore:'I was just wondering if maybe we could possibly find a new time…',
+    fixAfter:'I would like to reschedule our meeting to discuss the project.',
+    fixWhy:'The original sentence is full of hedging words ("just wondering," "maybe," "possibly") that make a simple request unclear and lacking in confidence.'
+  },
+  p5: {
+    type:'tone', typeLabel:'Tone',
+    typeClass:'pt-tone', fixClass:'ft-tone',
+    question:'Which version communicates urgency without sounding panicked or pushy?',
+    icon:'🎚️',
+    original:'This is actually really important and I need you to get back to me',
+    options:[
+      { letter:'A', text:'Your response by Friday would be greatly appreciated.',  correct:true  },
+      { letter:'B', text:'Please make sure to respond as this is urgent.',         correct:false, whyWrong:'Telling a client to "make sure" to respond is demanding and presumes they might not. The tone is too forceful.' },
+      { letter:'C', text:'I hope you can find the time to get back to me.',        correct:false, whyWrong:'This sounds passive and uncertain — almost like the sender does not expect a response. Too meek for a professional request.' }
+    ],
+    why:'<strong>"Your response by Friday would be greatly appreciated"</strong> is polite, confident, and gives a clear deadline — without making the client feel pressured or scolded.',
+    fixBefore:'This is actually really important and I need you to get back to me',
+    fixAfter:'Your response by Friday would be greatly appreciated.',
+    fixWhy:'This phrase sounds demanding and slightly panicked. Professional emails express urgency through clarity and polite confidence — not pressure.'
+  },
+  p6: {
+    type:'tone', typeLabel:'Tone',
+    typeClass:'pt-tone', fixClass:'ft-tone',
+    question:'Which sign-off is appropriate for a professional email to a senior client?',
+    icon:'🎚️',
+    original:'Thanks a million!! Jordan',
+    options:[
+      { letter:'A', text:'Thank you for your time.\n\nBest regards,\nJordan Mitchell\nMarketing Intern, Brightline Creative', correct:true  },
+      { letter:'B', text:'Thanks so much! Jordan 😊', correct:false, whyWrong:'Still too casual — emojis and "so much" are not appropriate for client correspondence.' },
+      { letter:'C', text:'I appreciate your assistance in this matter. Sincerely, Jordan Mitchell.', correct:false, whyWrong:'Technically professional but stilted and cold. "Assistance in this matter" sounds overly formal — the warm but brief version is better.' }
+    ],
+    why:'<strong>A professional sign-off</strong> includes a simple thank-you, a formal closing like "Best regards," and your full name and title — so the client knows exactly who they are dealing with.',
+    fixBefore:'Thanks a million!! Jordan',
+    fixAfter:'Thank you for your time.\n\nBest regards,\nJordan Mitchell\nMarketing Intern, Brightline Creative',
+    fixWhy:'"Thanks a million!!" is far too enthusiastic and informal for a client email. Two exclamation marks and slang expressions undermine professionalism.'
+  }
+};
+
+// ─────────── EMAIL TEMPLATE ───────────
+// Segments: { text, id? } — id references a PROBLEMS key
+const EMAIL_SUBJECT = 'Re: Project Kickoff Meeting — Reschedule Request';
+
+const EMAIL_CONTENT = [
+  {
+    segs:[ { id:'p1', text:'Hey!!!' } ]
+  },
+  {
+    segs:[
+      { text:'I hope you are doing well! I am reaching out because something has come up and ' },
+      { id:'p4', text:'I was just wondering if maybe we could possibly find a new time that works for both of us to get together and chat about the project stuff we were going to discuss' },
+      { text:'.' }
+    ]
+  },
+  {
+    segs:[
+      { text:'Our meeting was originally scheduled for Tuesday, October 15 at 2:00 PM. I have a conflicting commitment that I did not anticipate, and ' },
+      { id:'p2', text:'my bad' },
+      { text:' for the short notice.' }
+    ]
+  },
+  {
+    segs:[
+      { text:'Would you be available on Wednesday, October 16 at 3:00 PM, or Thursday, October 17 at 10:00 AM? Please let me know ' },
+      { id:'p3', text:'ASAP' },
+      { text:' so I can update the calendar invite.' }
+    ]
+  },
+  {
+    segs:[
+      { id:'p5', text:'This is actually really important and I need you to get back to me' },
+      { text:', as we need to confirm the new time before the end of the week.' }
+    ]
+  },
+  {
+    segs:[ { id:'p6', text:'Thanks a million!! Jordan' } ]
+  }
+];
+
+// ─────────── STATE ───────────
+let fixes    = {}; // { p1: { correct, chosenText } }
+let activeId = null;
+
+// ─────────── RENDER ───────────
+function renderEmail() {
+  document.getElementById('subject-line').textContent = EMAIL_SUBJECT;
+  const body = document.getElementById('email-body');
+  body.innerHTML = '';
+
+  EMAIL_CONTENT.forEach(block => {
+    const p = document.createElement('p');
+    block.segs.forEach(seg => {
+      if (seg.id) {
+        const span = document.createElement('span');
+        span.className = 'flag';
+        span.id = 'flag-' + seg.id;
+        span.dataset.id = seg.id;
+        span.textContent = seg.text;
+        span.onclick = (e) => onFlagClick(e, seg.id);
+        p.appendChild(span);
+      } else {
+        p.appendChild(document.createTextNode(seg.text));
+      }
+    });
+    body.appendChild(p);
+  });
+
+  renderFixCounter();
+}
+
+function renderFixCounter() {
+  const counter = document.getElementById('fix-counter');
+  counter.innerHTML = '';
+  Object.keys(PROBLEMS).forEach(id => {
+    const pip = document.createElement('div');
+    pip.className = 'fix-pip' + (fixes[id] !== undefined ? ' done' : '');
+    pip.textContent = '✓';
+    counter.appendChild(pip);
+  });
+}
+
+// ─────────── FLAG CLICK ───────────
+function onFlagClick(e, id) {
+  if (fixes[id] !== undefined) return; // already fixed
+  e.stopPropagation();
+  activeId = id;
+  const prob = PROBLEMS[id];
+  const rect = document.getElementById('flag-' + id).getBoundingClientRect();
+
+  // Build popup
+  document.getElementById('popup-type').textContent    = prob.typeLabel;
+  document.getElementById('popup-type').className      = 'popup-type ' + prob.typeClass;
+  document.getElementById('popup-question').textContent = prob.question;
+  document.getElementById('popup-why').className        = 'popup-why';
+  document.getElementById('popup-why').innerHTML        = '';
+  document.getElementById('popup-next').className       = 'popup-next';
+
+  const opts = document.getElementById('popup-options');
+  opts.innerHTML = '';
+  prob.options.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'swap-option';
+    div.innerHTML = `<div class="swap-letter">${opt.letter}</div><span>${opt.text.replace(/\n/g,'<br>')}</span>`;
+    div.onclick = () => chooseOption(id, opt, div);
+    opts.appendChild(div);
+  });
+
+  // Position popup
+  const popup = document.getElementById('swap-popup');
+  popup.classList.add('show');
+
+  const popupW = 320;
+  const margin = 12;
+  const winW   = window.innerWidth;
+  const winH   = window.innerHeight;
+
+  let left = rect.left;
+  let top  = rect.bottom + margin + window.scrollY;
+
+  if (left + popupW > winW - margin) left = winW - popupW - margin;
+  if (left < margin) left = margin;
+
+  // Estimate popup height ~240px; if would go off bottom, show above
+  if (rect.bottom + 240 > winH) {
+    top = rect.top - 240 + window.scrollY;
+    if (top < window.scrollY + margin) top = window.scrollY + margin;
+  }
+
+  popup.style.left = left + 'px';
+  popup.style.top  = top  + 'px';
+}
+
+function chooseOption(id, opt, el) {
+  const prob = PROBLEMS[id];
+
+  // Disable all options
+  document.querySelectorAll('.swap-option').forEach(o => {
+    o.style.pointerEvents = 'none';
+    o.style.opacity = '0.4';
+  });
+  el.style.opacity = '1';
+
+  if (opt.correct) {
+    el.classList.add('correct');
+    fixes[id] = { correct:true, chosenText:opt.text };
+
+    // Update the flag in the email
+    const flag = document.getElementById('flag-' + id);
+    flag.textContent = opt.text.replace(/\n/g, ' ');
+    flag.classList.add('fixed');
+    flag.onclick = null;
+
+    document.getElementById('popup-why').innerHTML = prob.why;
+    document.getElementById('popup-why').classList.add('show');
+    document.getElementById('popup-next').classList.add('show');
+
+    showHintUpdate();
+  } else {
+    el.classList.add('wrong');
+    fixes[id] = { correct:false, chosenText:opt.text };
+
+    // Flash the flag
+    const flag = document.getElementById('flag-' + id);
+    flag.classList.add('wrong-flash');
+    setTimeout(() => {
+      flag.classList.remove('wrong-flash');
+      flag.textContent = flag.dataset.orig || flag.textContent;
+    }, 400);
+
+    // Show why wrong + correct answer
+    const why = opt.whyWrong || '';
+    const correctOpt = prob.options.find(o => o.correct);
+    document.getElementById('popup-why').innerHTML = `<strong>Not quite.</strong> ${why}<br><br><strong>Best answer:</strong> "${correctOpt.text}"<br><br>${prob.why}`;
+    document.getElementById('popup-why').classList.add('show');
+
+    // Mark correct answer
+    document.querySelectorAll('.swap-option').forEach((o, i) => {
+      if (prob.options[i]?.correct) { o.style.opacity='1'; o.classList.add('correct'); }
+    });
+
+    // Fix the flag anyway (show correct)
+    setTimeout(() => {
+      flag.textContent = correctOpt.text.replace(/\n/g, ' ');
+      flag.classList.add('fixed');
+      flag.onclick = null;
+    }, 300);
+
+    document.getElementById('popup-next').classList.add('show');
+    showHintUpdate();
+  }
+
+  renderFixCounter();
+  checkAllFixed();
+}
+
+function showHintUpdate() {
+  const done = Object.keys(fixes).length;
+  const total = Object.keys(PROBLEMS).length;
+  const remaining = total - done;
+  const msg = document.getElementById('hint-msg');
+  if (remaining === 0) {
+    msg.textContent = 'All 6 problems fixed! Click "See Results" →';
+    msg.style.color = 'var(--green)';
+    msg.style.fontWeight = '600';
+  } else {
+    msg.textContent = `${done} of ${total} fixed — ${remaining} more to find`;
+  }
+}
+
+function checkAllFixed() {
+  const total = Object.keys(PROBLEMS).length;
+  const done  = Object.keys(fixes).length;
+  document.getElementById('submit-btn').disabled = done < total;
+}
+
+function closePopup() {
+  document.getElementById('swap-popup').classList.remove('show');
+  activeId = null;
+}
+
+// Close popup on outside click
+document.addEventListener('click', (e) => {
+  const popup = document.getElementById('swap-popup');
+  if (popup.classList.contains('show') && !popup.contains(e.target) && !e.target.classList.contains('flag')) {
+    closePopup();
+  }
+});
+
+// ─────────── RESULTS ───────────
+function showResults() {
+  show('results');
+
+  const correctCount = Object.values(fixes).filter(f => f.correct).length;
+  const total = 6;
+
+  document.getElementById('score-display').textContent = correctCount + '/' + total;
+
+  let title, msg;
+  if (correctCount === 6) { title='🏆 Perfect Edit!'; msg='You identified all 6 problems correctly. That is exactly the kind of careful reading that makes professional communication strong.'; }
+  else if (correctCount >= 4) { title='👍 Strong Work!'; msg=`You got ${correctCount} of 6 right. Review the ones you missed — the explanations show exactly why each fix matters.`; }
+  else if (correctCount >= 2) { title='📚 Good Start'; msg=`You caught ${correctCount} of 6 issues. Business writing takes practice — read through all the fixes below carefully.`; }
+  else { title='💡 Keep Practicing'; msg='Business email tone is tricky! Read through every fix below — each one explains a real professional writing principle you can apply.'; }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('score-msg').textContent = msg;
+
+  // Before / After emails
+  const beforeHTML = buildEmailHTML(false);
+  const afterHTML  = buildEmailHTML(true);
+  document.getElementById('ba-before').innerHTML = beforeHTML;
+  document.getElementById('ba-after').innerHTML  = afterHTML;
+
+  // Fix cards
+  const grid = document.getElementById('fixes-grid');
+  grid.innerHTML = '';
+  Object.entries(PROBLEMS).forEach(([id, prob]) => {
+    const fix = fixes[id];
+    const wasCorrect = fix?.correct ?? false;
+    const div = document.createElement('div');
+    div.className = 'fix-card';
+    div.innerHTML = `
+      <div class="fix-icon">${prob.icon}</div>
+      <div class="fix-meta" style="flex:1;">
+        <div class="fix-type ${prob.fixClass}">${prob.typeLabel}</div>
+        <div class="fix-before">"${prob.fixBefore}"</div>
+        <div class="fix-after">→ "${prob.fixAfter.replace(/\n/g, ' ')}"</div>
+        <div class="fix-why">${prob.fixWhy}</div>
+      </div>
+      <div class="fix-result ${wasCorrect ? 'fr-correct' : 'fr-wrong'}">${wasCorrect ? '✓ Correct' : '✗ Missed'}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function buildEmailHTML(corrected) {
+  let html = '';
+  EMAIL_CONTENT.forEach(block => {
+    let paraHtml = '';
+    block.segs.forEach(seg => {
+      if (seg.id) {
+        const prob = PROBLEMS[seg.id];
+        if (corrected) {
+          const fixedText = prob.options.find(o=>o.correct).text.replace(/\n/g,'<br>');
+          paraHtml += `<span class="ba-fixed">${fixedText}</span>`;
+        } else {
+          paraHtml += `<span class="ba-original">${seg.text}</span>`;
+        }
+      } else {
+        paraHtml += seg.text;
+      }
+    });
+    html += `<p>${paraHtml}</p>`;
+  });
+  return html;
+}
+
+function switchTab(which) {
+  document.getElementById('tab-before').classList.toggle('active', which==='before');
+  document.getElementById('tab-after').classList.toggle('active',  which==='after');
+  document.getElementById('ba-before').classList.toggle('active',  which==='before');
+  document.getElementById('ba-after').classList.toggle('active',   which==='after');
+}
+
+// ─────────── INIT ───────────
+function startEditor() {
+  fixes = {}; activeId = null;
+  show('editor');
+  renderEmail();
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('hint-msg').textContent = 'Click a yellow-highlighted phrase to see replacement options';
+  document.getElementById('hint-msg').style.color = 'var(--muted)';
+  document.getElementById('hint-msg').style.fontWeight = '400';
+}
+
+function resetActivity() {
+  show('intro');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
