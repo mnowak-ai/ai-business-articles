@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editorial Desk — Critique the AI Summary</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.22);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+
+  --inaccuracy-c:   #dc2626;
+  --inaccuracy-bg:  rgba(220,38,38,0.09);
+  --inaccuracy-bdr: rgba(220,38,38,0.3);
+
+  --bias-c:   #b45309;
+  --bias-bg:  rgba(180,83,9,0.09);
+  --bias-bdr: rgba(180,83,9,0.3);
+
+  --clarity-c:   #0369a1;
+  --clarity-bg:  rgba(3,105,161,0.08);
+  --clarity-bdr: rgba(3,105,161,0.3);
+
+  --green: #15803d;
+  --green-bg: rgba(21,128,61,0.08);
+  --green-bdr: rgba(21,128,61,0.25);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; }
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar {
+  background:var(--accent); padding:13px 28px;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+.top-bar-right  { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.7); }
+
+/* INTRO */
+#intro { align-items:center; justify-content:center; padding:40px 24px; }
+
+.intro-inner { max-width:600px; width:100%; }
+
+.intro-badge {
+  display:inline-block; background:rgba(123,47,190,0.1); border:1px solid var(--border2);
+  color:var(--accent); font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px;
+  border-radius:20px; margin-bottom:20px;
+}
+
+.intro-title {
+  font-family:'Syne',sans-serif; font-size:clamp(32px,5vw,52px);
+  font-weight:800; line-height:1.06; margin-bottom:14px;
+}
+.intro-title em { font-style:normal; color:var(--accent); }
+
+.intro-desc { font-size:15px; color:var(--muted); line-height:1.7; max-width:520px; margin-bottom:28px; }
+
+.scenario-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-left:3px solid var(--accent); border-radius:0 12px 12px 0;
+  padding:18px 22px; margin-bottom:28px;
+}
+.scenario-label {
+  font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--accent); font-weight:600; margin-bottom:8px;
+}
+.scenario-card p { font-size:14px; line-height:1.7; color:var(--text); }
+
+/* Task checklist */
+.task-list { display:flex; flex-direction:column; gap:8px; margin-bottom:32px; }
+.task-item {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-radius:10px; border:1.5px solid;
+  font-size:13px; font-weight:600;
+}
+.task-inaccuracy { background:var(--inaccuracy-bg); border-color:var(--inaccuracy-bdr); color:var(--inaccuracy-c); }
+.task-bias       { background:var(--bias-bg);       border-color:var(--bias-bdr);       color:var(--bias-c); }
+.task-clarity    { background:var(--clarity-bg);    border-color:var(--clarity-bdr);    color:var(--clarity-c); }
+.task-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.task-inaccuracy .task-dot { background:var(--inaccuracy-c); }
+.task-bias       .task-dot { background:var(--bias-c); }
+.task-clarity    .task-dot { background:var(--clarity-c); }
+
+.btn-primary {
+  background:var(--accent); color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:13px 32px; border-radius:10px; border:none; cursor:pointer;
+  box-shadow:0 4px 16px rgba(123,47,190,0.28); transition:all 0.15s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 7px 22px rgba(123,47,190,0.38); }
+.btn-primary:disabled { opacity:0.35; cursor:default; transform:none; box-shadow:none; }
+
+/* EDITOR SCREEN */
+#editor { flex-direction:column; }
+
+/* Sticky toolbar */
+.editor-toolbar {
+  background:#fff; border-bottom:1px solid var(--border);
+  padding:10px 24px; display:flex; align-items:center; gap:12px;
+  flex-wrap:wrap; position:sticky; top:0; z-index:40; flex-shrink:0;
+}
+
+.tool-btn {
+  display:flex; align-items:center; gap:7px;
+  padding:8px 16px; border-radius:8px; border:1.5px solid;
+  font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700;
+  cursor:pointer; transition:all 0.15s; user-select:none;
+}
+.tool-btn.active { transform:translateY(-1px); box-shadow:0 3px 10px; }
+.tool-btn.used   { opacity:0.45; cursor:not-allowed; }
+
+.tool-inaccuracy { background:var(--inaccuracy-bg); border-color:var(--inaccuracy-bdr); color:var(--inaccuracy-c); }
+.tool-inaccuracy.active { background:rgba(220,38,38,0.15); box-shadow:0 3px 10px rgba(220,38,38,0.2); }
+.tool-bias       { background:var(--bias-bg);       border-color:var(--bias-bdr);       color:var(--bias-c); }
+.tool-bias.active { background:rgba(180,83,9,0.15); box-shadow:0 3px 10px rgba(180,83,9,0.2); }
+.tool-clarity    { background:var(--clarity-bg);    border-color:var(--clarity-bdr);    color:var(--clarity-c); }
+.tool-clarity.active { background:rgba(3,105,161,0.12); box-shadow:0 3px 10px rgba(3,105,161,0.2); }
+
+.tool-dot { width:8px; height:8px; border-radius:50%; }
+.tool-inaccuracy .tool-dot { background:var(--inaccuracy-c); }
+.tool-bias       .tool-dot { background:var(--bias-c); }
+.tool-clarity    .tool-dot { background:var(--clarity-c); }
+
+.toolbar-hint {
+  font-size:12px; color:var(--muted); margin-left:auto;
+  font-style:italic; display:flex; align-items:center; gap:6px;
+}
+
+.tags-complete { display:none; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--green); margin-left:auto; }
+.tags-complete.show { display:flex; }
+
+/* Progress pills */
+.toolbar-progress { display:flex; gap:6px; margin-left:auto; align-items:center; }
+.tpill {
+  width:26px; height:8px; border-radius:4px; border:1.5px solid;
+  transition:all 0.3s;
+}
+.tpill-inaccuracy { background:transparent; border-color:rgba(220,38,38,0.25); }
+.tpill-inaccuracy.filled { background:var(--inaccuracy-c); border-color:var(--inaccuracy-c); }
+.tpill-bias       { background:transparent; border-color:rgba(180,83,9,0.25); }
+.tpill-bias.filled { background:var(--bias-c); border-color:var(--bias-c); }
+.tpill-clarity    { background:transparent; border-color:rgba(3,105,161,0.25); }
+.tpill-clarity.filled { background:var(--clarity-c); border-color:var(--clarity-c); }
+
+/* Editor layout */
+.editor-body { flex:1; overflow-y:auto; padding:28px 24px; }
+.editor-inner { max-width:760px; margin:0 auto; }
+
+/* Doc header */
+.doc-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--border);
+  gap:16px; flex-wrap:wrap;
+}
+.doc-meta {}
+.doc-meta-label {
+  font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--muted); font-weight:600; margin-bottom:4px;
+}
+.doc-meta-title { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--text); }
+
+.ai-badge {
+  display:flex; align-items:center; gap:6px;
+  background:rgba(180,83,9,0.08); border:1px solid rgba(180,83,9,0.2);
+  color:var(--bias-c); font-family:'DM Mono',monospace; font-size:10px;
+  font-weight:600; text-transform:uppercase; letter-spacing:0.08em;
+  padding:5px 12px; border-radius:6px; flex-shrink:0;
+}
+.ai-badge-dot { width:6px; height:6px; border-radius:50%; background:var(--bias-c); animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* The document text */
+.doc-body { font-size:15px; line-height:1.85; color:var(--text); }
+.doc-body p { margin-bottom:16px; }
+.doc-body h3 {
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:700;
+  color:var(--text); margin:20px 0 8px; text-transform:uppercase;
+  letter-spacing:0.06em; opacity:0.6;
+}
+
+/* Highlightable spans */
+.hl {
+  border-radius:3px; padding:2px 1px;
+  cursor:pointer; transition:background 0.15s, box-shadow 0.15s;
+}
+.hl:hover { background:rgba(123,47,190,0.07); }
+
+.hl.tagged-inaccuracy { background:var(--inaccuracy-bg); box-shadow:0 0 0 2px var(--inaccuracy-bdr); border-radius:4px; cursor:default; }
+.hl.tagged-bias       { background:var(--bias-bg);       box-shadow:0 0 0 2px var(--bias-bdr);       border-radius:4px; cursor:default; }
+.hl.tagged-clarity    { background:var(--clarity-bg);    box-shadow:0 0 0 2px var(--clarity-bdr);    border-radius:4px; cursor:default; }
+
+/* Inline tag label */
+.inline-tag {
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:'DM Mono',monospace; font-size:9px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.05em;
+  padding:1px 6px; border-radius:4px; margin-left:4px;
+  vertical-align:middle; pointer-events:none;
+}
+.itag-inaccuracy { background:var(--inaccuracy-c); color:#fff; }
+.itag-bias       { background:var(--bias-c); color:#fff; }
+.itag-clarity    { background:var(--clarity-c); color:#fff; }
+
+/* Toast feedback */
+.toast {
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  padding:10px 20px; border-radius:10px; font-size:13px; font-weight:600;
+  z-index:100; pointer-events:none; animation:toast-in 0.3s ease;
+  max-width:340px; text-align:center;
+}
+@keyframes toast-in { from{opacity:0;transform:translateX(-50%) translateY(8px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+.toast-good  { background:var(--green); color:#fff; }
+.toast-warn  { background:var(--inaccuracy-c); color:#fff; }
+.toast-info  { background:var(--accent); color:#fff; }
+
+/* Submit section */
+.submit-row {
+  max-width:760px; margin:0 auto;
+  padding:16px 24px 32px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+
+/* RESULTS */
+#results { overflow-y:auto; }
+.results-body { max-width:820px; margin:0 auto; padding:36px 24px 56px; }
+
+.results-hero { text-align:center; margin-bottom:32px; }
+.results-hero h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,4vw,42px); font-weight:800; margin-bottom:8px; }
+.results-hero p   { font-size:14px; color:var(--muted); line-height:1.6; max-width:460px; margin:0 auto; }
+
+/* Before / After */
+.before-after { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; }
+@media(max-width:640px){ .before-after{grid-template-columns:1fr;} }
+
+.ba-panel { border-radius:14px; overflow:hidden; border:1px solid; }
+.ba-panel.before-panel { border-color:rgba(220,38,38,0.2); }
+.ba-panel.after-panel  { border-color:var(--green-bdr); }
+
+.ba-header {
+  padding:12px 18px;
+  font-family:'DM Mono',monospace; font-size:11px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.1em;
+  display:flex; align-items:center; gap:7px;
+}
+.before-panel .ba-header { background:rgba(220,38,38,0.07); color:var(--inaccuracy-c); }
+.after-panel  .ba-header { background:var(--green-bg); color:var(--green); }
+
+.ba-dot { width:7px; height:7px; border-radius:50%; }
+.before-panel .ba-dot { background:var(--inaccuracy-c); }
+.after-panel  .ba-dot { background:var(--green); }
+
+.ba-body { padding:18px; font-size:13px; line-height:1.7; color:var(--text); background:#fff; }
+.ba-body p { margin-bottom:12px; }
+.ba-body p:last-child { margin-bottom:0; }
+
+/* Highlighted text in before panel */
+.ba-wrong   { background:var(--inaccuracy-bg); box-shadow:0 0 0 1px var(--inaccuracy-bdr); border-radius:3px; padding:1px 2px; }
+.ba-bias    { background:var(--bias-bg);       box-shadow:0 0 0 1px var(--bias-bdr);       border-radius:3px; padding:1px 2px; }
+.ba-unclear { background:var(--clarity-bg);    box-shadow:0 0 0 1px var(--clarity-bdr);    border-radius:3px; padding:1px 2px; }
+.ba-fix     { background:var(--green-bg);      box-shadow:0 0 0 1px var(--green-bdr);      border-radius:3px; padding:1px 2px; font-weight:600; color:var(--green); }
+
+/* Issue breakdown */
+.issue-cards { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+.issue-card { border-radius:12px; padding:18px 20px; border:1px solid; }
+.issue-card.ic-inaccuracy { background:var(--inaccuracy-bg); border-color:var(--inaccuracy-bdr); }
+.issue-card.ic-bias       { background:var(--bias-bg);       border-color:var(--bias-bdr); }
+.issue-card.ic-clarity    { background:var(--clarity-bg);    border-color:var(--clarity-bdr); }
+.issue-card.ic-missed     { background:rgba(107,114,128,0.05); border-color:rgba(107,114,128,0.15); }
+
+.ic-header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+.ic-type {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.08em; padding:3px 9px; border-radius:5px;
+}
+.ic-inaccuracy .ic-type { background:var(--inaccuracy-c); color:#fff; }
+.ic-bias       .ic-type { background:var(--bias-c); color:#fff; }
+.ic-clarity    .ic-type { background:var(--clarity-c); color:#fff; }
+.ic-missed     .ic-type { background:#6b7280; color:#fff; }
+
+.ic-result {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.06em; padding:3px 8px; border-radius:4px;
+}
+.ic-found  { background:var(--green-bg); color:var(--green); }
+.ic-missed-tag { background:rgba(107,114,128,0.12); color:#6b7280; }
+
+.ic-issue { font-size:14px; font-weight:700; color:var(--text); margin-bottom:5px; }
+.ic-explain { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:8px; }
+.ic-fix { font-size:12px; color:var(--green); padding:8px 12px; background:var(--green-bg); border-radius:7px; line-height:1.5; border:1px solid var(--green-bdr); }
+.ic-fix strong { color:var(--green); }
+
+.lesson-box { background:var(--surface); border:1px solid var(--border2); border-radius:14px; padding:20px 24px; margin-bottom:24px; }
+.lesson-box h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:8px; }
+.lesson-box p { font-size:13px; color:var(--muted); line-height:1.7; }
+
+.btn-secondary {
+  background:transparent; color:var(--accent);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:11px 26px; border-radius:10px; border:2px solid var(--border2);
+  cursor:pointer; transition:all 0.15s; display:block; margin:0 auto;
+}
+.btn-secondary:hover { background:var(--surface); }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">📝 Editorial Desk</div>
+    <div class="top-bar-right">AI in Business · Activity</div>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:40px 24px;display:flex;align-items:center;justify-content:center;">
+  <div class="intro-inner">
+    <div class="intro-badge">✏️ Activity · Critique the AI Summary</div>
+    <h1 class="intro-title">You are the<br><em>editor.</em></h1>
+    <p class="intro-desc">AI can write summaries fast — but they are not always accurate, fair, or clear. Your job is to catch the problems before they reach a real client.</p>
+
+    <div class="scenario-card">
+      <div class="scenario-label">📍 Your Role</div>
+      <p>You work at a marketing consultancy. An AI tool just generated a summary of the electric vehicle (EV) market for a client presentation. Before it goes out, your manager asks you to review it. She says: <em>"Find the inaccuracy, the bias, and the thing that needs clarification — then we can fix it."</em></p>
+    </div>
+
+    <div class="task-list">
+      <div class="task-item task-inaccuracy"><div class="task-dot"></div>Find 1 inaccuracy — something the AI got factually wrong</div>
+      <div class="task-item task-bias"><div class="task-dot"></div>Find 1 bias or missing detail — a one-sided or incomplete claim</div>
+      <div class="task-item task-clarity"><div class="task-dot"></div>Find 1 thing that needs clarification — vague or confusing language</div>
+    </div>
+
+    <button class="btn-primary" onclick="startEditor()">Open the Document →</button>
+  </div>
+  </div>
+</div>
+
+<!-- EDITOR -->
+<div id="editor" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">📝 Editorial Desk</div>
+    <div class="top-bar-right">EV Market Summary — Draft for Review</div>
+  </div>
+
+  <!-- Sticky toolbar -->
+  <div class="editor-toolbar">
+    <button class="tool-btn tool-inaccuracy" id="tool-inaccuracy" onclick="selectTool('inaccuracy')">
+      <div class="tool-dot"></div> Inaccuracy
+    </button>
+    <button class="tool-btn tool-bias" id="tool-bias" onclick="selectTool('bias')">
+      <div class="tool-dot"></div> Bias / Missing Detail
+    </button>
+    <button class="tool-btn tool-clarity" id="tool-clarity" onclick="selectTool('clarity')">
+      <div class="tool-dot"></div> Needs Clarification
+    </button>
+
+    <div class="toolbar-hint" id="toolbar-hint">← Select a tool, then click on the problem text</div>
+    <div class="toolbar-progress">
+      <div class="tpill tpill-inaccuracy" id="pill-inaccuracy"></div>
+      <div class="tpill tpill-bias"       id="pill-bias"></div>
+      <div class="tpill tpill-clarity"    id="pill-clarity"></div>
+    </div>
+  </div>
+
+  <!-- Document -->
+  <div class="editor-body">
+    <div class="editor-inner">
+      <div class="doc-header">
+        <div class="doc-meta">
+          <div class="doc-meta-label">Client Brief · Market Analysis</div>
+          <div class="doc-meta-title">Electric Vehicle Market — Q4 Summary</div>
+        </div>
+        <div class="ai-badge"><div class="ai-badge-dot"></div> AI-Generated Draft</div>
+      </div>
+
+      <div class="doc-body" id="doc-body"></div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-row">
+    <button class="btn-primary" id="submit-btn" disabled onclick="submitReview()">Submit My Review →</button>
+    <span id="submit-hint" style="font-size:13px;color:var(--muted);">Tag all three issue types to unlock</span>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">📝 Editorial Desk — Review Complete</div>
+    <div class="top-bar-right">Your Edits</div>
+  </div>
+  <div class="results-body">
+
+    <div class="results-hero">
+      <div class="intro-badge" style="display:inline-block;margin-bottom:14px;">✅ Review Submitted</div>
+      <h1 id="results-title">Good editorial work!</h1>
+      <p id="results-desc"></p>
+    </div>
+
+    <div class="before-after" id="before-after"></div>
+
+    <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:14px;">Issue Breakdown</div>
+    <div class="issue-cards" id="issue-cards"></div>
+
+    <div class="lesson-box">
+      <h3>🧠 Why Editing AI Output Is a Professional Skill</h3>
+      <p>AI summaries like this one are written in seconds — but they regularly contain all three types of problems you just looked for. Real marketing professionals, journalists, and analysts check AI output for <strong>accuracy</strong> (is this fact correct?), <strong>fairness</strong> (is one side being left out?), and <strong>clarity</strong> (will the reader actually understand this?). The goal is not to distrust AI — it is to use it as a <strong>first draft, not a final answer.</strong></p>
+    </div>
+
+    <button class="btn-secondary" onclick="resetActivity()">↺ Try Again</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" style="display:none;" class="toast"></div>
+
+<script>
+// ─────────── DOCUMENT DATA ───────────
+// Segments: id = problem id ('inaccuracy','bias','clarity'), or null for clean text
+const DOC_SEGMENTS = [
+  { type:'h3', text:'Overview' },
+  {
+    type:'p',
+    segs:[
+      { text:'The global electric vehicle (EV) market has experienced remarkable growth over the past several years, driven by falling battery costs, government incentives, and growing consumer interest in sustainability. ' },
+      { id:'clarity', text:'EV sales have grown significantly in recent years,' },
+      { text:' cementing electric vehicles as a major force in the automotive industry.' }
+    ]
+  },
+  { type:'h3', text:'Market Leaders' },
+  {
+    type:'p',
+    segs:[
+      { text:'Tesla continues to dominate the global EV market. As of 2023, ' },
+      { id:'inaccuracy', text:'Tesla held approximately 62% of the United States EV market share,' },
+      { text:' making it by far the most influential player in the space. Traditional automakers such as Ford, General Motors, and Volkswagen have also made significant investments in electrification, launching competitive EV lineups in response to changing consumer demand.' }
+    ]
+  },
+  { type:'h3', text:'Industry Outlook' },
+  {
+    type:'p',
+    segs:[
+      { id:'bias', text:'Established automakers and major technology companies are expected to drive the next phase of EV adoption, leveraging their scale, existing supply chains, and brand recognition to accelerate the transition away from combustion engines.' },
+    ]
+  },
+  {
+    type:'p',
+    segs:[
+      { text:'Analysts project that EVs will account for more than 50% of new car sales globally by 2035, though this forecast varies significantly by region. Policy support — particularly in Europe and China — remains a critical factor in sustaining growth momentum.' }
+    ]
+  },
+  { type:'h3', text:'Key Challenges' },
+  {
+    type:'p',
+    segs:[
+      { text:'Despite strong growth, the EV sector faces ongoing challenges including charging infrastructure gaps, battery supply chain constraints, and consumer range anxiety. Addressing these issues will be critical to maintaining adoption rates in markets where EV penetration is still relatively low.' }
+    ]
+  }
+];
+
+const PROBLEMS = {
+  inaccuracy: {
+    type:'inaccuracy',
+    label:'Inaccuracy',
+    issue:'Tesla\'s US market share is stated as 62% — this is significantly overstated',
+    explain:'In 2023, Tesla\'s US EV market share was approximately 50% — still dominant, but the AI inflated this figure by 12 percentage points. In a client document, a wrong statistic like this could damage credibility if a client double-checks it.',
+    fix:'Correct figure: Tesla held approximately 50% of the US EV market in 2023, not 62%.',
+    beforeHighlight:'ba-wrong',
+    afterText:'Tesla held approximately 50% of the United States EV market share,'
+  },
+  bias: {
+    type:'bias',
+    label:'Bias / Missing Detail',
+    issue:'The outlook section only mentions large established companies — it completely ignores EV startups',
+    explain:'The summary says growth will be driven by "established automakers and major technology companies" — but companies like Rivian, Lucid, BYD, and dozens of startups are reshaping the market. Presenting only the big players\' perspective gives the client an incomplete and one-sided picture.',
+    fix:'Add: "EV startups and new entrants — including Rivian, Lucid, and BYD — are also reshaping the competitive landscape with innovative approaches to design, software, and direct-to-consumer sales."',
+    beforeHighlight:'ba-bias',
+    afterText:'Established automakers, major technology companies, and a growing wave of EV startups are expected to drive the next phase of EV adoption.'
+  },
+  clarity: {
+    type:'clarity',
+    label:'Needs Clarification',
+    issue:'"EV sales have grown significantly" — no numbers, no timeframe given',
+    explain:'"Grown significantly" tells the reader almost nothing. How much did sales grow? Over what time period? From what baseline? Vague language like this sounds authoritative but gives the client no actual data to present or act on.',
+    fix:'Replace with specific data: "Global EV sales grew from 6.6 million units in 2021 to over 14 million in 2023 — more than doubling in just two years."',
+    beforeHighlight:'ba-unclear',
+    afterText:'Global EV sales grew from 6.6 million units in 2021 to over 14 million in 2023 — more than doubling in just two years,'
+  }
+};
+
+// ─────────── STATE ───────────
+let activeTool = null;
+let tagged = {};  // { inaccuracy: bool, bias: bool, clarity: bool }
+
+// ─────────── RENDER DOC ───────────
+function renderDoc() {
+  const body = document.getElementById('doc-body');
+  body.innerHTML = '';
+
+  DOC_SEGMENTS.forEach(seg => {
+    if (seg.type === 'h3') {
+      const h = document.createElement('h3');
+      h.textContent = seg.text;
+      body.appendChild(h);
+      return;
+    }
+    const p = document.createElement('p');
+    seg.segs.forEach(s => {
+      if (s.id) {
+        const span = document.createElement('span');
+        span.className = 'hl';
+        span.dataset.problemId = s.id;
+        span.textContent = s.text;
+        span.onclick = () => onSpanClick(s.id, span);
+        p.appendChild(span);
+      } else {
+        p.appendChild(document.createTextNode(s.text));
+      }
+    });
+    body.appendChild(p);
+  });
+}
+
+// ─────────── TOOL SELECTION ───────────
+function selectTool(type) {
+  if (tagged[type]) return; // already used
+  activeTool = activeTool === type ? null : type;
+
+  ['inaccuracy','bias','clarity'].forEach(t => {
+    const btn = document.getElementById('tool-' + t);
+    btn.classList.toggle('active', activeTool === t && !tagged[t]);
+  });
+
+  const hint = document.getElementById('toolbar-hint');
+  if (activeTool) {
+    hint.textContent = `Now click the text in the document that has the ${activeTool} problem`;
+    hint.style.color = 'var(--text)';
+  } else {
+    hint.textContent = '← Select a tool, then click on the problem text';
+    hint.style.color = 'var(--muted)';
+  }
+}
+
+// ─────────── SPAN CLICK ───────────
+function onSpanClick(problemId, span) {
+  if (!activeTool) {
+    showToast('Select a highlight tool first ↑', 'info');
+    return;
+  }
+
+  // Already tagged this span
+  if (span.classList.contains('tagged-' + activeTool) ||
+      span.classList.contains('tagged-inaccuracy') ||
+      span.classList.contains('tagged-bias') ||
+      span.classList.contains('tagged-clarity')) {
+    showToast('This section is already tagged', 'warn');
+    return;
+  }
+
+  // Check if correct
+  if (activeTool === problemId) {
+    // Correct match!
+    span.classList.add('tagged-' + activeTool);
+
+    const tag = document.createElement('span');
+    tag.className = `inline-tag itag-${activeTool}`;
+    tag.textContent = activeTool === 'inaccuracy' ? '✗ Inaccuracy' : activeTool === 'bias' ? '⚑ Bias' : '? Clarify';
+    span.appendChild(tag);
+
+    tagged[activeTool] = true;
+    document.getElementById('tool-' + activeTool).classList.remove('active');
+    document.getElementById('tool-' + activeTool).classList.add('used');
+    document.getElementById('pill-' + activeTool).classList.add('filled');
+
+    activeTool = null;
+    updateHint();
+    checkAllTagged();
+
+    const messages = {
+      inaccuracy: '✓ Inaccuracy flagged!',
+      bias: '✓ Bias / Missing Detail flagged!',
+      clarity: '✓ Needs Clarification flagged!'
+    };
+    showToast(messages[problemId], 'good');
+
+  } else {
+    // Wrong match
+    span.classList.add('shake');
+    setTimeout(() => span.classList.remove('shake'), 400);
+    const hints = {
+      inaccuracy: 'That is not the inaccuracy. Look for a specific fact or statistic that seems off.',
+      bias: 'That is not the bias. Look for something that presents only one perspective or leaves a group out.',
+      clarity: 'That is not the clarification issue. Look for vague language with no supporting data.'
+    };
+    showToast(hints[activeTool], 'warn');
+  }
+}
+
+function updateHint() {
+  const remaining = ['inaccuracy','bias','clarity'].filter(t => !tagged[t]);
+  const hint = document.getElementById('toolbar-hint');
+  if (remaining.length === 0) {
+    hint.textContent = 'All three issues tagged! ✓';
+    hint.style.color = 'var(--green)';
+  } else {
+    hint.textContent = `${remaining.length} more to find: ${remaining.join(', ')}`;
+    hint.style.color = 'var(--muted)';
+    hint.style.fontStyle = 'normal';
+  }
+}
+
+function checkAllTagged() {
+  const allDone = tagged.inaccuracy && tagged.bias && tagged.clarity;
+  document.getElementById('submit-btn').disabled = !allDone;
+  if (allDone) {
+    document.getElementById('submit-hint').textContent = 'All three issues found — ready to submit!';
+    document.getElementById('submit-hint').style.color = 'var(--green)';
+    document.getElementById('submit-hint').style.fontWeight = '600';
+  }
+}
+
+// ─────────── TOAST ───────────
+let toastTimer;
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `toast toast-${type}`;
+  toast.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.style.display = 'none', 2800);
+}
+
+// ─────────── SUBMIT ───────────
+function submitReview() {
+  show('results');
+
+  document.getElementById('results-title').textContent = 'Strong editorial work!';
+  document.getElementById('results-desc').textContent = 'You found all three issues the AI introduced. Read the breakdown below to see exactly what was wrong and how to fix each one.';
+
+  // Before / After
+  const baContainer = document.getElementById('before-after');
+  baContainer.innerHTML = `
+    <div class="ba-panel before-panel">
+      <div class="ba-header"><div class="ba-dot"></div> Before — AI Draft (with problems)</div>
+      <div class="ba-body">
+        <p><span class="ba-unclear">EV sales have grown significantly in recent years,</span> cementing electric vehicles as a major force in the automotive industry.</p>
+        <p>Tesla continues to dominate the global EV market. As of 2023, <span class="ba-wrong">Tesla held approximately 62% of the United States EV market share,</span> making it by far the most influential player in the space.</p>
+        <p><span class="ba-bias">Established automakers and major technology companies are expected to drive the next phase of EV adoption,</span> leveraging their scale and brand recognition to accelerate the transition.</p>
+      </div>
+    </div>
+    <div class="ba-panel after-panel">
+      <div class="ba-header"><div class="ba-dot"></div> After — Corrected Version</div>
+      <div class="ba-body">
+        <p><span class="ba-fix">Global EV sales grew from 6.6 million units in 2021 to over 14 million in 2023 — more than doubling in two years,</span> cementing electric vehicles as a major force in the automotive industry.</p>
+        <p>Tesla continues to dominate the global EV market. As of 2023, <span class="ba-fix">Tesla held approximately 50% of the United States EV market share,</span> making it by far the most influential player in the space.</p>
+        <p><span class="ba-fix">Established automakers, major technology companies, and a growing wave of EV startups — including Rivian, Lucid, and BYD — are expected to drive the next phase of EV adoption,</span> leveraging diverse approaches to accelerate the transition.</p>
+      </div>
+    </div>
+  `;
+
+  // Issue cards
+  const cards = document.getElementById('issue-cards');
+  cards.innerHTML = '';
+  ['inaccuracy','bias','clarity'].forEach(type => {
+    const prob = PROBLEMS[type];
+    const found = tagged[type] === true;
+    const div = document.createElement('div');
+    div.className = `issue-card ic-${type}`;
+    div.innerHTML = `
+      <div class="ic-header">
+        <div class="ic-type">${prob.label}</div>
+        <span class="ic-result ${found ? 'ic-found' : 'ic-missed-tag'}">${found ? '✓ You found it' : '✗ Missed'}</span>
+      </div>
+      <div class="ic-issue">${prob.issue}</div>
+      <div class="ic-explain">${prob.explain}</div>
+      <div class="ic-fix"><strong>Better version:</strong> ${prob.fix}</div>
+    `;
+    cards.appendChild(div);
+  });
+}
+
+// ─────────── NAV ───────────
+function startEditor() {
+  show('editor');
+  activeTool = null;
+  tagged = {};
+  renderDoc();
+  ['inaccuracy','bias','clarity'].forEach(t => {
+    document.getElementById('tool-' + t).className = `tool-btn tool-${t}`;
+    document.getElementById('pill-' + t).classList.remove('filled');
+  });
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('submit-hint').textContent = 'Tag all three issue types to unlock';
+  document.getElementById('submit-hint').style.color = 'var(--muted)';
+  document.getElementById('submit-hint').style.fontWeight = '400';
+  document.getElementById('toolbar-hint').textContent = '← Select a tool, then click on the problem text';
+  document.getElementById('toolbar-hint').style.color = 'var(--muted)';
+}
+
+function resetActivity() {
+  show('intro');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+
+<style>
+@keyframes shake {
+  0%,100%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)}
+}
+.hl.shake { animation:shake 0.35s ease; }
+</style>
+</body>
+</html>
