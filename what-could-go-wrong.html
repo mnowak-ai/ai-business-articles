@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Could Go Wrong? — Consequence Mapper</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.22);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+
+  --minor-c:   #15803d;   --minor-bg:   rgba(21,128,61,0.08);   --minor-bdr:   rgba(21,128,61,0.28);
+  --sig-c:     #b45309;   --sig-bg:     rgba(180,83,9,0.08);    --sig-bdr:     rgba(180,83,9,0.25);
+  --serious-c: #dc2626;   --serious-bg: rgba(220,38,38,0.07);   --serious-bdr: rgba(220,38,38,0.25);
+
+  --green: #15803d; --green-bg: rgba(21,128,61,0.08); --green-bdr: rgba(21,128,61,0.28);
+  --amber: #b45309; --amber-bg: rgba(180,83,9,0.08);  --amber-bdr: rgba(180,83,9,0.25);
+  --red: #dc2626;   --red-bg: rgba(220,38,38,0.07);   --red-bdr: rgba(220,38,38,0.22);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; }
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar {
+  background:var(--accent); padding:13px 28px;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+.top-bar-right  { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.75); }
+
+/* Progress bar */
+.top-progress { display:flex; align-items:center; gap:8px; }
+.tp-dots { display:flex; gap:4px; }
+.tp-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:rgba(255,255,255,0.25); transition:all 0.3s;
+}
+.tp-dot.done    { background:rgba(255,255,255,0.85); }
+.tp-dot.current { background:#fff; transform:scale(1.3); }
+.tp-label { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.7); }
+
+/* SHARED */
+.page-body { flex:1; overflow-y:auto; padding:36px 24px 52px; }
+.page-inner { max-width:620px; margin:0 auto; width:100%; }
+
+.intro-badge {
+  display:inline-block; background:rgba(123,47,190,0.1); border:1px solid var(--border2);
+  color:var(--accent); font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px;
+  border-radius:20px; margin-bottom:18px;
+}
+.page-title { font-family:'Syne',sans-serif; font-size:clamp(30px,5vw,52px); font-weight:800; line-height:1.06; margin-bottom:12px; }
+.page-title em { font-style:normal; color:var(--accent); }
+.page-desc { font-size:15px; color:var(--muted); line-height:1.7; max-width:520px; margin-bottom:28px; }
+
+.btn-primary {
+  background:var(--accent); color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:13px 32px; border-radius:10px; border:none; cursor:pointer;
+  box-shadow:0 4px 16px rgba(123,47,190,0.28); transition:all 0.15s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 7px 22px rgba(123,47,190,0.38); }
+.btn-primary:disabled { opacity:0.35; cursor:default; transform:none; box-shadow:none; }
+.btn-secondary {
+  background:transparent; color:var(--accent);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:11px 26px; border-radius:10px; border:2px solid var(--border2);
+  cursor:pointer; transition:all 0.15s; display:block; margin:0 auto;
+}
+.btn-secondary:hover { background:var(--surface); }
+
+/* ── INTRO ── */
+#intro { align-items:center; justify-content:center; }
+
+.severity-preview { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:24px; }
+@media(max-width:440px){ .severity-preview{grid-template-columns:1fr;} }
+
+.sev-card { border-radius:12px; padding:14px 12px; text-align:center; border:1px solid; }
+.sev-minor   { background:var(--minor-bg);   border-color:var(--minor-bdr); }
+.sev-sig     { background:var(--sig-bg);     border-color:var(--sig-bdr); }
+.sev-serious { background:var(--serious-bg); border-color:var(--serious-bdr); }
+
+.sev-icon  { font-size:22px; margin-bottom:6px; }
+.sev-label { font-family:'Syne',sans-serif; font-size:13px; font-weight:800; margin-bottom:3px; }
+.sev-desc  { font-size:11px; color:var(--muted); line-height:1.4; }
+.sev-minor   .sev-label { color:var(--minor-c); }
+.sev-sig     .sev-label { color:var(--sig-c); }
+.sev-serious .sev-label { color:var(--serious-c); }
+
+.scenario-list { display:flex; flex-direction:column; gap:7px; margin-bottom:28px; }
+.sl-item {
+  display:flex; align-items:center; gap:10px; padding:10px 14px;
+  border-radius:9px; background:var(--surface); border:1px solid var(--border);
+  font-size:13px;
+}
+.sl-num {
+  width:22px; height:22px; border-radius:6px; flex-shrink:0;
+  background:rgba(123,47,190,0.1); color:var(--accent);
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+.sl-emoji { font-size:16px; }
+.sl-name  { font-weight:600; flex:1; }
+.sl-sector{ font-size:11px; color:var(--muted); }
+
+/* ── SCENARIO SCREEN ── */
+#scenario-screen { flex-direction:column; }
+.scenario-body { flex:1; overflow-y:auto; padding:24px; }
+.scenario-inner { max-width:640px; margin:0 auto; }
+
+/* AI Output card */
+.ai-output-card {
+  background:#fff; border:1.5px solid var(--border2); border-radius:16px;
+  overflow:hidden; margin-bottom:22px;
+  box-shadow:0 3px 18px rgba(123,47,190,0.08);
+  animation:card-in 0.4s cubic-bezier(0.34,1.1,0.64,1);
+}
+@keyframes card-in { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+.ai-output-header {
+  background:var(--accent); padding:13px 20px;
+  display:flex; align-items:center; gap:10px;
+}
+.aoh-icon {
+  width:34px; height:34px; border-radius:9px;
+  background:rgba(255,255,255,0.2); display:flex; align-items:center;
+  justify-content:center; font-size:18px; flex-shrink:0;
+}
+.aoh-meta {}
+.aoh-type { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.7); font-weight:600; }
+.aoh-title { font-size:14px; font-weight:700; color:#fff; }
+
+.ai-output-body { padding:18px 20px; }
+.ai-output-label {
+  font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--muted); font-weight:600; margin-bottom:8px;
+  display:flex; align-items:center; gap:6px;
+}
+.ai-dot { width:5px; height:5px; border-radius:50%; background:var(--amber); animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.ai-output-text {
+  font-size:14px; line-height:1.7; color:var(--text);
+  background:var(--surface); border-radius:10px; padding:14px 16px;
+  border:1px solid var(--border); font-style:italic;
+}
+
+/* Question sections */
+.question-section { margin-bottom:20px; }
+
+.q-label {
+  font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--accent); font-weight:600; margin-bottom:10px;
+  display:flex; align-items:center; gap:7px;
+}
+.q-label::before { content:attr(data-num); width:20px; height:20px; border-radius:6px; background:rgba(123,47,190,0.1); color:var(--accent); display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; flex-shrink:0; }
+
+.q-title { font-size:15px; font-weight:600; color:var(--text); margin-bottom:12px; line-height:1.4; }
+
+/* Who gets hurt — checkbox options */
+.who-options { display:flex; flex-direction:column; gap:7px; }
+.who-opt {
+  display:flex; align-items:center; gap:10px; padding:10px 13px;
+  border-radius:9px; border:1.5px solid var(--border); background:#fff;
+  cursor:pointer; transition:all 0.15s; font-size:13px; color:var(--text);
+}
+.who-opt:hover { border-color:var(--border2); background:var(--surface); }
+.who-opt.selected { border-color:var(--accent); background:rgba(123,47,190,0.05); }
+.who-opt.correct  { border-color:var(--green-bdr); background:var(--green-bg); pointer-events:none; }
+.who-opt.wrong    { border-color:var(--red-bdr);   background:var(--red-bg);   pointer-events:none; opacity:0.5; }
+.who-opt.dim      { opacity:0.35; pointer-events:none; }
+.wo-check {
+  width:18px; height:18px; border-radius:5px; flex-shrink:0;
+  border:2px solid var(--border); background:#fff; transition:all 0.15s;
+  display:flex; align-items:center; justify-content:center; font-size:9px; color:transparent;
+}
+.who-opt.selected .wo-check { background:var(--accent); border-color:var(--accent); color:#fff; }
+.who-opt.correct  .wo-check { background:var(--green); border-color:var(--green); color:#fff; }
+.who-opt.wrong    .wo-check { background:var(--red);   border-color:var(--red);   color:#fff; }
+
+/* Severity selector */
+.severity-row { display:flex; gap:8px; flex-wrap:wrap; }
+.sev-btn {
+  flex:1; min-width:100px; padding:12px 10px; border-radius:10px; border:1.5px solid;
+  cursor:pointer; transition:all 0.15s; text-align:center; font-family:'DM Sans',sans-serif;
+}
+.sev-btn:hover { transform:translateY(-1px); }
+.sev-btn.locked { pointer-events:none; }
+
+.sev-btn.minor   { background:var(--minor-bg);   border-color:var(--minor-bdr);   color:var(--minor-c); }
+.sev-btn.sig     { background:var(--sig-bg);     border-color:var(--sig-bdr);     color:var(--sig-c); }
+.sev-btn.serious { background:var(--serious-bg); border-color:var(--serious-bdr); color:var(--serious-c); }
+
+.sev-btn.chosen-correct { box-shadow:0 0 0 3px rgba(21,128,61,0.2); transform:scale(1.03); }
+.sev-btn.chosen-wrong   { opacity:0.4; }
+.sev-btn.reveal-correct { box-shadow:0 0 0 3px rgba(21,128,61,0.25); }
+
+.sev-btn-icon  { font-size:20px; margin-bottom:5px; }
+.sev-btn-label { font-size:13px; font-weight:700; }
+.sev-btn-sub   { font-size:11px; opacity:0.8; margin-top:2px; }
+
+/* Check options */
+.check-options { display:flex; flex-direction:column; gap:7px; }
+.check-opt {
+  display:flex; align-items:flex-start; gap:10px; padding:10px 13px;
+  border-radius:9px; border:1.5px solid var(--border); background:#fff;
+  cursor:pointer; transition:all 0.15s; font-size:13px; color:var(--text); line-height:1.5;
+}
+.check-opt:hover { border-color:var(--border2); background:var(--surface); }
+.check-opt.selected { border-color:var(--accent); background:rgba(123,47,190,0.05); }
+.check-opt.correct  { border-color:var(--green-bdr); background:var(--green-bg); pointer-events:none; }
+.check-opt.wrong    { border-color:var(--red-bdr);   background:var(--red-bg);   pointer-events:none; opacity:0.5; }
+.check-opt.dim      { opacity:0.35; pointer-events:none; }
+.co-check {
+  width:18px; height:18px; border-radius:50%; flex-shrink:0; margin-top:2px;
+  border:2px solid var(--border); background:#fff; transition:all 0.15s;
+  display:flex; align-items:center; justify-content:center; font-size:9px; color:transparent;
+}
+.check-opt.selected .co-check { background:var(--accent); border-color:var(--accent); color:#fff; }
+.check-opt.correct  .co-check { background:var(--green); border-color:var(--green); color:#fff; }
+.check-opt.wrong    .co-check { background:var(--red);   border-color:var(--red);   color:#fff; }
+
+/* Consequence reveal */
+.consequence-reveal {
+  display:none; border-radius:14px; padding:18px 20px; margin-top:16px;
+  border:1px solid; animation:slide-up 0.35s ease;
+}
+.consequence-reveal.show { display:block; }
+@keyframes slide-up { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.cr-severe   { background:var(--red-bg);   border-color:var(--red-bdr); }
+.cr-moderate { background:var(--sig-bg);   border-color:var(--sig-bdr); }
+.cr-mild     { background:var(--green-bg); border-color:var(--green-bdr); }
+
+.cr-headline {
+  font-family:'Syne',sans-serif; font-size:16px; font-weight:800; margin-bottom:8px;
+  display:flex; align-items:center; gap:8px;
+}
+.cr-severe   .cr-headline { color:var(--red); }
+.cr-moderate .cr-headline { color:var(--amber); }
+.cr-mild     .cr-headline { color:var(--green); }
+
+.cr-story { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:12px; }
+.cr-story strong { color:var(--text); }
+
+.cr-oversight {
+  background:#fff; border-radius:9px; padding:12px 14px;
+  font-size:12px; color:var(--muted); line-height:1.6;
+  border:1px solid rgba(123,47,190,0.12);
+}
+.cr-oversight-label {
+  font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--accent); font-weight:600; margin-bottom:5px;
+}
+
+.next-scenario-btn {
+  display:none; background:var(--accent); color:#fff;
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:800;
+  padding:12px 26px; border-radius:10px; border:none; cursor:pointer;
+  transition:all 0.15s; margin-top:16px; box-shadow:0 4px 14px rgba(123,47,190,0.25);
+}
+.next-scenario-btn.show { display:inline-flex; align-items:center; gap:7px; }
+.next-scenario-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(123,47,190,0.35); }
+
+/* ── RESULTS ── */
+#results { overflow-y:auto; }
+.results-body { max-width:640px; margin:0 auto; padding:36px 24px 56px; }
+
+.results-hero { text-align:center; margin-bottom:32px; }
+.results-hero h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,4vw,42px); font-weight:800; margin-bottom:8px; }
+.score-big { font-family:'Syne',sans-serif; font-size:68px; font-weight:800; color:var(--accent); line-height:1; margin:6px 0 8px; }
+.score-msg { font-size:14px; color:var(--muted); line-height:1.6; max-width:440px; margin:0 auto; }
+
+/* Risk radar */
+.risk-summary { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.rs-item {
+  display:flex; align-items:center; gap:12px; padding:12px 16px;
+  border-radius:12px; border:1px solid; background:#fff;
+}
+.rs-emoji { font-size:22px; flex-shrink:0; }
+.rs-meta { flex:1; }
+.rs-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.rs-who   { font-size:12px; color:var(--muted); }
+.rs-severity {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.06em; padding:3px 9px; border-radius:5px; flex-shrink:0;
+}
+.rs-minor   { border-color:var(--green-bdr); }
+.rs-sig     { border-color:var(--amber-bdr); }
+.rs-serious { border-color:var(--red-bdr); }
+.rs-minor   .rs-severity { background:var(--green-bg); color:var(--green); }
+.rs-sig     .rs-severity { background:var(--amber-bg); color:var(--amber); }
+.rs-serious .rs-severity { background:var(--red-bg);   color:var(--red); }
+
+.oversight-lesson { margin-bottom:28px; }
+.ol-title { font-family:'Syne',sans-serif; font-size:17px; font-weight:800; margin-bottom:14px; }
+.oversight-cards { display:flex; flex-direction:column; gap:10px; }
+.oc-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:14px 18px; display:flex; gap:12px; align-items:flex-start;
+  animation:fadein 0.4s ease both;
+}
+@keyframes fadein { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.oc-icon { font-size:20px; flex-shrink:0; margin-top:2px; }
+.oc-text { font-size:13px; color:var(--muted); line-height:1.6; }
+.oc-text strong { color:var(--text); }
+
+.lesson-box { background:rgba(123,47,190,0.06); border:1px solid var(--border2); border-radius:14px; padding:20px 24px; margin-bottom:24px; }
+.lesson-box h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:8px; }
+.lesson-box p  { font-size:13px; color:var(--muted); line-height:1.7; }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">⚠️ What Could Go Wrong?</div>
+    <div class="top-bar-right">Quick Reflection · Activity</div>
+  </div>
+  <div class="page-body" style="display:flex;align-items:center;justify-content:center;">
+  <div class="page-inner">
+    <div class="intro-badge">🔍 Consequence Mapper · 5 Scenarios</div>
+    <h1 class="page-title">What happens<br>when AI gets<br><em>it wrong?</em></h1>
+    <p class="page-desc">Five AI outputs are on the table. For each one — think about who gets hurt if the AI made a mistake, how serious it would be, and what a human should check before it goes live.</p>
+
+    <div class="severity-preview">
+      <div class="sev-card sev-minor">
+        <div class="sev-icon">🟡</div>
+        <div class="sev-label">Minor</div>
+        <div class="sev-desc">Inconvenient — easily fixed, no lasting harm</div>
+      </div>
+      <div class="sev-card sev-sig">
+        <div class="sev-icon">🟠</div>
+        <div class="sev-label">Significant</div>
+        <div class="sev-desc">Causes real harm — takes time and effort to fix</div>
+      </div>
+      <div class="sev-card sev-serious">
+        <div class="sev-icon">🔴</div>
+        <div class="sev-label">Serious</div>
+        <div class="sev-desc">Lasting damage to a person, group, or organization</div>
+      </div>
+    </div>
+
+    <div class="scenario-list">
+      <div class="sl-item"><div class="sl-num">1</div><div class="sl-emoji">👔</div><div class="sl-name">Hiring Recommendation</div><div class="sl-sector">HR / Recruiting</div></div>
+      <div class="sl-item"><div class="sl-num">2</div><div class="sl-emoji">🏦</div><div class="sl-name">Loan Decision</div><div class="sl-sector">Finance</div></div>
+      <div class="sl-item"><div class="sl-num">3</div><div class="sl-emoji">📣</div><div class="sl-name">Marketing Prediction</div><div class="sl-sector">Marketing</div></div>
+      <div class="sl-item"><div class="sl-num">4</div><div class="sl-emoji">🏥</div><div class="sl-name">Medical Triage</div><div class="sl-sector">Healthcare</div></div>
+      <div class="sl-item"><div class="sl-num">5</div><div class="sl-emoji">📰</div><div class="sl-name">News Summary</div><div class="sl-sector">Media</div></div>
+    </div>
+
+    <button class="btn-primary" onclick="startScenarios()">Start the Analysis →</button>
+  </div>
+  </div>
+</div>
+
+<!-- SCENARIO -->
+<div id="scenario-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">⚠️ What Could Go Wrong?</div>
+    <div class="top-progress">
+      <div class="tp-dots" id="tp-dots"></div>
+      <div class="tp-label" id="tp-label">1 / 5</div>
+    </div>
+  </div>
+  <div class="scenario-body">
+    <div class="scenario-inner" id="scenario-inner"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">⚠️ What Could Go Wrong? — Done</div>
+    <div class="top-bar-right">Analysis Complete</div>
+  </div>
+  <div class="results-body">
+    <div class="results-hero">
+      <div class="intro-badge" style="display:inline-block;margin-bottom:14px;">✅ Analysis Complete</div>
+      <h1 id="results-title">You thought it through.</h1>
+      <div class="score-big" id="results-score">0/15</div>
+      <p class="score-msg" id="results-msg"></p>
+    </div>
+
+    <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:12px;">Risk Summary</div>
+    <div class="risk-summary" id="risk-summary"></div>
+
+    <div class="oversight-lesson">
+      <div class="ol-title">What Human Oversight Actually Catches</div>
+      <div class="oversight-cards" id="oversight-cards"></div>
+    </div>
+
+    <div class="lesson-box">
+      <h3>🧠 The Responsibility Behind the Tool</h3>
+      <p>Every AI output in a real business has a human on the other end — someone whose job, loan, health, or understanding of the world is affected by whether the AI got it right. <strong>That is why oversight is not optional.</strong> The people who use AI professionally are not just users — they are the last line of quality control between the algorithm and the real world. Developing that instinct — to always ask "what happens if this is wrong?" — is one of the most valuable habits you can build.</p>
+    </div>
+
+    <button class="btn-secondary" onclick="resetAll()">↺ Try Again</button>
+  </div>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    id: 0,
+    emoji: '👔',
+    type: 'Hiring Recommendation',
+    sector: 'HR / Recruiting',
+    aiOutput: 'After reviewing 500 applications, the AI recommends the top 10 candidates for final interviews. It filtered out candidates based on patterns in successful past hires — including names, zip codes, and university affiliations that correlated with previous performance.',
+    whoOptions: [
+      { text:'Qualified job applicants who are filtered out unfairly', correct:true },
+      { text:'The company\'s HR team who has to process paperwork', correct:false },
+      { text:'People from underrepresented groups that the AI learned to deprioritize', correct:true },
+      { text:'The company\'s legal team if bias claims arise', correct:true }
+    ],
+    correctSeverity: 'serious',
+    checkOptions: [
+      { text:'Check whether the filtering criteria include factors that correlate with race, gender, or age', correct:true },
+      { text:'Make sure the AI ran fast enough to meet the deadline', correct:false },
+      { text:'Review the rejected candidates to look for patterns that suggest bias', correct:true },
+      { text:'Confirm the top 10 meet the actual stated job requirements, not just historical patterns', correct:true }
+    ],
+    consequence: {
+      cls: 'cr-severe',
+      headline: '⚠️ Biased AI hires cost companies millions — and people their careers.',
+      story: 'Amazon built and then scrapped an AI hiring tool in 2018 after discovering it had learned to downgrade applications from women — because it was trained on a decade of résumés from a male-dominated tech industry. The AI was not taught to discriminate. It learned the pattern from historical data. <strong>Qualified candidates were passed over for reasons that had nothing to do with their ability.</strong>',
+      oversight: 'A human reviewer should audit the filtering logic, check for demographic patterns in the rejections, and manually review a sample of filtered-out applications before any shortlist is finalized.'
+    }
+  },
+  {
+    id: 1,
+    emoji: '🏦',
+    type: 'Loan Decision',
+    sector: 'Finance',
+    aiOutput: 'The AI reviews small business loan applications and approves or denies them in under 2 seconds. It uses credit score, income, business age, and zip code to calculate a risk score. Applications below a certain score are automatically denied — no human reviews them.',
+    whoOptions: [
+      { text:'Small business owners who are denied without explanation', correct:true },
+      { text:'Business owners in lower-income zip codes who are disproportionately denied', correct:true },
+      { text:'The bank\'s marketing team', correct:false },
+      { text:'Communities where capital access is already limited', correct:true }
+    ],
+    correctSeverity: 'serious',
+    checkOptions: [
+      { text:'Verify that zip code is not acting as a proxy for race or income in the model', correct:true },
+      { text:'Check that the AI processed applications in alphabetical order', correct:false },
+      { text:'Ensure denied applicants receive an explanation they can understand and challenge', correct:true },
+      { text:'Review denial rates across different demographic groups for patterns', correct:true }
+    ],
+    consequence: {
+      cls: 'cr-severe',
+      headline: '⚠️ Automated loan denials can trap entire communities in cycles of limited access.',
+      story: 'In 2021, regulators found that some AI lending tools were denying loans in predominantly Black and Latino neighborhoods at significantly higher rates — even when controlling for credit factors. <strong>Using zip code as a variable can effectively recreate redlining</strong> — a historical practice of denying services to certain neighborhoods — without anyone intending to discriminate.',
+      oversight: 'A human compliance officer should regularly audit denial rates by geography and demographic group. All automatic denials should generate a plain-language explanation. Edge cases — borderline scores — should always be reviewed by a human.'
+    }
+  },
+  {
+    id: 2,
+    emoji: '📣',
+    type: 'Marketing Prediction',
+    sector: 'Marketing',
+    aiOutput: 'The AI recommends targeting the "high-value customer segment" for a new premium product launch. It predicts this segment will have the highest conversion rate based on purchase history and browsing data. The campaign budget is $200,000.',
+    whoOptions: [
+      { text:'The company — if the prediction is wrong, $200K is wasted', correct:true },
+      { text:'Customers not in the "high-value" segment who might have wanted the product', correct:true },
+      { text:'The company\'s website development team', correct:false },
+      { text:'The marketing team whose bonuses depend on campaign performance', correct:true }
+    ],
+    correctSeverity: 'sig',
+    checkOptions: [
+      { text:'Ask whether the "high-value" segment definition makes sense for this specific product — not just past products', correct:true },
+      { text:'Confirm the AI ran the prediction on the most recent data', correct:true },
+      { text:'Verify the logo looks good in the campaign materials', correct:false },
+      { text:'Consider whether a small test campaign would be smarter before spending the full budget', correct:true }
+    ],
+    consequence: {
+      cls: 'cr-moderate',
+      headline: '🟠 Marketing mistargets waste money — and can miss an entirely new customer base.',
+      story: 'AI marketing tools optimize for patterns in past data — which means they can miss emerging customer segments entirely. <strong>Targeting only existing high-value customers might miss a completely new audience that would love the product</strong> — but never showed up in historical data because the product did not exist yet. A $200K campaign built on a flawed prediction can underperform significantly.',
+      oversight: 'A human marketer should sanity-check whether the predicted segment actually makes sense for THIS product, not just past ones. Running a small split-test before committing the full budget is standard professional practice.'
+    }
+  },
+  {
+    id: 3,
+    emoji: '🏥',
+    type: 'Medical Triage Suggestion',
+    sector: 'Healthcare',
+    aiOutput: 'A patient uses an urgent care app and describes chest pain and shortness of breath. The AI analyzes their symptoms and medical history and recommends: "Your symptoms appear consistent with anxiety. We suggest trying breathing exercises and scheduling a routine appointment within the next week."',
+    whoOptions: [
+      { text:'The patient — if this is actually a heart problem, delayed care could be life-threatening', correct:true },
+      { text:'The urgent care company — if the patient is harmed, they face serious legal liability', correct:true },
+      { text:'The app\'s software development team', correct:false },
+      { text:'The patient\'s family if an emergency is missed', correct:true }
+    ],
+    correctSeverity: 'serious',
+    checkOptions: [
+      { text:'Flag chest pain + shortness of breath as a combination that always requires human clinical review', correct:true },
+      { text:'Make sure the recommendation sounds reassuring so users trust the app', correct:false },
+      { text:'Ensure the AI always recommends calling emergency services as a backup option for high-risk symptom combinations', correct:true },
+      { text:'Have a licensed clinician review any triage recommendation before it reaches the patient', correct:true }
+    ],
+    consequence: {
+      cls: 'cr-severe',
+      headline: '🔴 A wrong medical triage recommendation can cost someone their life.',
+      story: 'Chest pain and shortness of breath are classic symptoms of cardiac events — one of the leading causes of preventable death. <strong>An AI that misclassifies these as anxiety and tells a patient to wait a week could be giving them exactly the wrong advice at the most critical moment.</strong> AI medical tools are powerful — but in high-stakes symptom combinations, a human clinician must always be in the loop.',
+      oversight: 'Any symptom combination flagged as potentially serious must be escalated to a human clinician before a recommendation is delivered. The AI should be a screening tool, not a final decision-maker — especially when the cost of being wrong is irreversible.'
+    }
+  },
+  {
+    id: 4,
+    emoji: '📰',
+    type: 'News Summary',
+    sector: 'Media',
+    aiOutput: 'Breaking news: a protest broke out downtown this afternoon. The AI summarizes 12 online sources and publishes: "Hundreds of violent protesters clashed with police in the city center, resulting in multiple arrests and significant property damage." The summary goes live on the homepage immediately.',
+    whoOptions: [
+      { text:'People who attended the protest peacefully — they may be misrepresented', correct:true },
+      { text:'The media company — if the summary is wrong, their credibility is damaged', correct:true },
+      { text:'The weather team at the same news station', correct:false },
+      { text:'The public — who may form opinions based on inaccurate framing', correct:true }
+    ],
+    correctSeverity: 'serious',
+    checkOptions: [
+      { text:'Have a human journalist verify the sources before publishing', correct:true },
+      { text:'Make sure the headline is the right font size for mobile devices', correct:false },
+      { text:'Check whether the word "violent" is supported by the sources or added by the AI', correct:true },
+      { text:'Delay publication until the summary can be reviewed for accuracy and fairness', correct:true }
+    ],
+    consequence: {
+      cls: 'cr-severe',
+      headline: '🔴 AI-generated news misinformation spreads faster than corrections.',
+      story: 'AI news summarizers aggregate sources quickly — but they can also aggregate and amplify inaccurate early reports, add framing not present in any source, or mischaracterize events based on biased source selection. <strong>The word "violent" was not in any of the 12 sources — the AI inferred it from emotional language in headlines.</strong> By the time the correction runs, thousands of people have already read — and shared — the original. Public trust in the coverage drops, and the people who were there peacefully are misrepresented.',
+      oversight: 'No AI-generated news summary should go live without human editorial review — especially for breaking news where information is rapidly evolving and the stakes of inaccuracy are high.'
+    }
+  }
+];
+
+// ─── STATE ───
+let currentIdx = 0;
+let answers    = []; // { scenarioIdx, whoScore, severity, severityCorrect, checkScore, totalPoints }
+
+// ─── HELPERS ───
+function updateDots(idx) {
+  const container = document.getElementById('tp-dots');
+  container.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const d = document.createElement('div');
+    d.className = 'tp-dot' + (i < idx ? ' done' : '') + (i === idx ? ' current' : '');
+    container.appendChild(d);
+  }
+  document.getElementById('tp-label').textContent = (idx + 1) + ' / 5';
+}
+
+function startScenarios() {
+  currentIdx = 0; answers = [];
+  show('scenario-screen');
+  renderScenario(0);
+}
+
+// ─── RENDER ───
+function renderScenario(idx) {
+  updateDots(idx);
+  const s = SCENARIOS[idx];
+
+  // Track which Q1 who-options selected, Q2 severity, Q3 check selected
+  let whoSelected = new Set();
+  let severityChosen = null;
+  let checkSelected  = null;
+  let whoSubmitted   = false;
+  let sevSubmitted   = false;
+  let checkSubmitted = false;
+
+  const inner = document.getElementById('scenario-inner');
+  inner.innerHTML = `
+    <div style="margin-bottom:18px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);font-weight:600;margin-bottom:3px;">Scenario ${idx+1} of 5 · ${s.sector}</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">${s.type}</div>
+    </div>
+
+    <div class="ai-output-card">
+      <div class="ai-output-header">
+        <div class="aoh-icon">${s.emoji}</div>
+        <div class="aoh-meta">
+          <div class="aoh-type">AI Output · ${s.sector}</div>
+          <div class="aoh-title">${s.type}</div>
+        </div>
+      </div>
+      <div class="ai-output-body">
+        <div class="ai-output-label"><div class="ai-dot"></div> What the AI produced</div>
+        <div class="ai-output-text">${s.aiOutput}</div>
+      </div>
+    </div>
+
+    <!-- Q1: Who gets hurt -->
+    <div class="question-section" id="q1-section">
+      <div class="q-label" data-num="1">Who could be harmed if this AI output is wrong? <span style="font-weight:400;text-transform:none;letter-spacing:0;">(select all that apply)</span></div>
+      <div class="who-options" id="who-options">
+        ${s.whoOptions.map((o,i) => `
+          <div class="who-opt" id="who-${i}" onclick="toggleWho(${i})">
+            <div class="wo-check">✓</div>
+            <span>${o.text}</span>
+          </div>
+        `).join('')}
+      </div>
+      <button class="btn-primary" id="q1-submit" disabled onclick="submitQ1()" style="margin-top:12px;padding:10px 22px;font-size:13px;">Confirm →</button>
+    </div>
+
+    <!-- Q2: Severity -->
+    <div class="question-section" id="q2-section" style="opacity:0.3;pointer-events:none;transition:all 0.3s;">
+      <div class="q-label" data-num="2">How serious would the harm be?</div>
+      <div class="severity-row" id="severity-row">
+        <div class="sev-btn minor" onclick="chooseSeverity('minor')">
+          <div class="sev-btn-icon">🟡</div>
+          <div class="sev-btn-label">Minor</div>
+          <div class="sev-btn-sub">Easily fixed</div>
+        </div>
+        <div class="sev-btn sig" onclick="chooseSeverity('sig')">
+          <div class="sev-btn-icon">🟠</div>
+          <div class="sev-btn-label">Significant</div>
+          <div class="sev-btn-sub">Real harm, takes effort</div>
+        </div>
+        <div class="sev-btn serious" onclick="chooseSeverity('serious')">
+          <div class="sev-btn-icon">🔴</div>
+          <div class="sev-btn-label">Serious</div>
+          <div class="sev-btn-sub">Lasting damage</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3: What to check -->
+    <div class="question-section" id="q3-section" style="opacity:0.3;pointer-events:none;transition:all 0.3s;">
+      <div class="q-label" data-num="3">What should a human check before this goes live? <span style="font-weight:400;text-transform:none;letter-spacing:0;">(pick the best one)</span></div>
+      <div class="check-options" id="check-options">
+        ${s.checkOptions.map((o,i) => `
+          <div class="check-opt" id="chk-${i}" onclick="chooseCheck(${i})">
+            <div class="co-check">✓</div>
+            <span>${o.text}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Consequence reveal -->
+    <div class="consequence-reveal ${s.consequence.cls}" id="consequence-reveal">
+      <div class="cr-headline">${s.consequence.headline}</div>
+      <div class="cr-story">${s.consequence.story}</div>
+      <div class="cr-oversight">
+        <div class="cr-oversight-label">✓ What human oversight would catch</div>
+        ${s.consequence.oversight}
+      </div>
+    </div>
+
+    <button class="next-scenario-btn" id="next-btn" onclick="nextScenario(${idx})">
+      ${idx < 4 ? 'Next Scenario →' : 'See Full Analysis →'}
+    </button>
+  `;
+
+  // Store state via closures on the current render
+  window._currentWhoSelected  = whoSelected;
+  window._currentWhoSubmitted = () => whoSubmitted;
+  window._setSevChosen        = (v) => { severityChosen = v; };
+  window._getSevChosen        = () => severityChosen;
+  window._setSevSubmitted     = () => { sevSubmitted = true; };
+  window._getSevSubmitted     = () => sevSubmitted;
+  window._setCheckSub         = () => { checkSubmitted = true; };
+  window._getCheckSub         = () => checkSubmitted;
+
+  window.toggleWho = function(i) {
+    if (whoSubmitted) return;
+    const el = document.getElementById('who-' + i);
+    if (whoSelected.has(i)) { whoSelected.delete(i); el.classList.remove('selected'); }
+    else { whoSelected.add(i); el.classList.add('selected'); }
+    document.getElementById('q1-submit').disabled = whoSelected.size === 0;
+  };
+
+  window.submitQ1 = function() {
+    whoSubmitted = true;
+    const s = SCENARIOS[idx];
+    let whoScore = 0;
+    document.getElementById('q1-submit').style.display = 'none';
+    s.whoOptions.forEach((o, i) => {
+      const el = document.getElementById('who-' + i);
+      el.onclick = null;
+      if (o.correct && whoSelected.has(i)) { el.classList.remove('selected'); el.classList.add('correct'); whoScore++; }
+      else if (!o.correct && whoSelected.has(i)) { el.classList.remove('selected'); el.classList.add('wrong'); }
+      else if (o.correct && !whoSelected.has(i)) { el.classList.add('correct'); }
+      else { el.classList.add('dim'); }
+    });
+    window._whoScore = whoScore;
+    // Unlock Q2
+    document.getElementById('q2-section').style.opacity = '1';
+    document.getElementById('q2-section').style.pointerEvents = '';
+    setTimeout(() => document.getElementById('q2-section').scrollIntoView({behavior:'smooth',block:'nearest'}), 150);
+  };
+
+  window.chooseSeverity = function(sev) {
+    if (sevSubmitted) return;
+    sevSubmitted = true;
+    const s = SCENARIOS[idx];
+    const isCorrect = sev === s.correctSeverity;
+    document.querySelectorAll('.sev-btn').forEach(b => { b.classList.add('locked','dim'); });
+    const chosen = document.querySelector(`.sev-btn.${sev}`);
+    if (chosen) { chosen.classList.remove('dim'); chosen.classList.add(isCorrect ? 'chosen-correct' : 'chosen-wrong'); }
+    if (!isCorrect) {
+      const correct = document.querySelector(`.sev-btn.${s.correctSeverity}`);
+      if (correct) { correct.classList.remove('dim'); correct.classList.add('reveal-correct'); }
+    }
+    window._sevCorrect = isCorrect;
+    // Unlock Q3
+    document.getElementById('q3-section').style.opacity = '1';
+    document.getElementById('q3-section').style.pointerEvents = '';
+    setTimeout(() => document.getElementById('q3-section').scrollIntoView({behavior:'smooth',block:'nearest'}), 150);
+  };
+
+  window.chooseCheck = function(i) {
+    if (checkSubmitted) return;
+    checkSubmitted = true;
+    const s = SCENARIOS[idx];
+    const chosen = s.checkOptions[i];
+    document.querySelectorAll('.check-opt').forEach((el, j) => {
+      el.onclick = null;
+      el.classList.add('dim');
+      if (s.checkOptions[j].correct) el.classList.add('correct');
+    });
+    const el = document.getElementById('chk-' + i);
+    el.classList.remove('dim');
+    el.classList.add(chosen.correct ? 'correct' : 'wrong');
+    window._checkCorrect = chosen.correct;
+
+    // Save answers
+    const whoScore = window._whoScore || 0;
+    const maxWho = s.whoOptions.filter(o => o.correct).length;
+    const sevCorrect = window._sevCorrect ? 1 : 0;
+    const checkCorrect = window._checkCorrect ? 1 : 0;
+    answers.push({ scenarioIdx: idx, whoScore, maxWho, sevCorrect, checkCorrect });
+
+    // Show consequence
+    document.getElementById('consequence-reveal').classList.add('show');
+    document.getElementById('next-btn').classList.add('show');
+    setTimeout(() => document.getElementById('consequence-reveal').scrollIntoView({behavior:'smooth',block:'nearest'}), 150);
+  };
+}
+
+function nextScenario(idx) {
+  if (idx < 4) {
+    currentIdx = idx + 1;
+    renderScenario(currentIdx);
+    document.getElementById('scenario-inner').scrollIntoView({behavior:'smooth',block:'start'});
+  } else {
+    showResults();
+  }
+}
+
+// ─── RESULTS ───
+function showResults() {
+  show('results');
+
+  // Calculate total
+  let total = 0, maxTotal = 0;
+  answers.forEach(a => {
+    total += a.whoScore + a.sevCorrect + a.checkCorrect;
+    maxTotal += a.maxWho + 1 + 1;
+  });
+
+  document.getElementById('results-score').textContent = total + '/' + maxTotal;
+
+  let title, msg;
+  const pct = maxTotal > 0 ? total / maxTotal : 0;
+  if (pct >= 0.85) { title='🔍 Sharp Risk Thinker!'; msg='You identified the stakeholders, the severity, and the oversight needs with real precision. That is the mindset of a responsible AI practitioner.'; }
+  else if (pct >= 0.65) { title='📋 Solid Analysis'; msg='You caught most of the key risks. Review the consequences below to see where the stakes were higher than expected.'; }
+  else if (pct >= 0.4)  { title='📚 Good Start'; msg='You got the big ones but missed some stakeholders and oversight steps. The consequence stories below show exactly what was at stake.'; }
+  else                  { title='💡 Keep Thinking'; msg='These risks are tricky — that is why human oversight exists. Read every consequence story carefully. The patterns will start to click.'; }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent   = msg;
+
+  // Risk summary
+  const rs = document.getElementById('risk-summary');
+  rs.innerHTML = '';
+  SCENARIOS.forEach((s, i) => {
+    const a = answers[i];
+    const sevMap = { minor:'rs-minor', sig:'rs-sig', serious:'rs-serious' };
+    const sevLabel = { minor:'Minor', sig:'Significant', serious:'Serious' };
+    const div = document.createElement('div');
+    div.className = `rs-item ${sevMap[s.correctSeverity]}`;
+    div.style.animationDelay = (i * 0.07) + 's';
+    div.innerHTML = `
+      <div class="rs-emoji">${s.emoji}</div>
+      <div class="rs-meta">
+        <div class="rs-title">${s.type}</div>
+        <div class="rs-who">${s.whoOptions.filter(o=>o.correct).map(o=>o.text.split(' ').slice(0,5).join(' ')+'…').join(' · ')}</div>
+      </div>
+      <div class="rs-severity">${sevLabel[s.correctSeverity]}</div>
+    `;
+    rs.appendChild(div);
+  });
+
+  // Oversight cards
+  const oc = document.getElementById('oversight-cards');
+  oc.innerHTML = '';
+  const oversightLessons = [
+    { icon:'👥', text:'<strong>Who gets hurt matters most.</strong> Before any AI system goes live in a business, the first question should always be: who is affected if this is wrong? Not "does this work?" — "who does it affect?"' },
+    { icon:'📏', text:'<strong>Severity determines urgency.</strong> A wrong movie recommendation is annoying. A wrong medical recommendation can be life-threatening. The higher the stakes, the more human oversight is non-negotiable.' },
+    { icon:'✓',  text:'<strong>Oversight is not distrust — it is responsibility.</strong> Checking AI output is not a sign that the technology does not work. It is a sign that the human using it takes their job seriously.' },
+    { icon:'🔄', text:'<strong>Human review should be built in, not bolted on.</strong> The best AI systems have human checkpoints designed into the process — not added after a mistake has already happened.' }
+  ];
+  oversightLessons.forEach((l, i) => {
+    const div = document.createElement('div');
+    div.className = 'oc-card';
+    div.style.animationDelay = (i * 0.09) + 's';
+    div.innerHTML = `<div class="oc-icon">${l.icon}</div><div class="oc-text">${l.text}</div>`;
+    oc.appendChild(div);
+  });
+}
+
+function resetAll() {
+  currentIdx = 0; answers = [];
+  show('intro');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
