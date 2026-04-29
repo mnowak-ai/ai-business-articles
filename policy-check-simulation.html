@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policy Check — Ethics Review Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.22);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+
+  --approve-c:   #15803d; --approve-bg: rgba(21,128,61,0.08);  --approve-bdr: rgba(21,128,61,0.28);
+  --changes-c:   #b45309; --changes-bg: rgba(180,83,9,0.08);   --changes-bdr: rgba(180,83,9,0.28);
+  --reject-c:    #dc2626; --reject-bg:  rgba(220,38,38,0.07);  --reject-bdr:  rgba(220,38,38,0.25);
+
+  --consequence-bad:   rgba(220,38,38,0.07);
+  --consequence-good:  rgba(21,128,61,0.08);
+  --consequence-mixed: rgba(180,83,9,0.07);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar {
+  background:var(--accent); padding:13px 28px;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+.top-bar-right  { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.75); }
+
+/* Docket counter */
+.docket-counter {
+  display:flex; gap:5px;
+}
+.dc-pip {
+  width:26px; height:8px; border-radius:4px;
+  background:rgba(255,255,255,0.25); transition:all 0.4s;
+}
+.dc-pip.active { background:#fff; }
+.dc-pip.done   { background:rgba(255,255,255,0.7); }
+
+/* SHARED */
+.page-body { flex:1; overflow-y:auto; padding:36px 24px 52px; }
+.page-inner { max-width:640px; margin:0 auto; width:100%; }
+
+.intro-badge {
+  display:inline-block; background:rgba(123,47,190,0.1); border:1px solid var(--border2);
+  color:var(--accent); font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px;
+  border-radius:20px; margin-bottom:18px;
+}
+.page-title { font-family:'Syne',sans-serif; font-size:clamp(30px,5vw,52px); font-weight:800; line-height:1.06; margin-bottom:12px; }
+.page-title em { font-style:normal; color:var(--accent); }
+.page-desc { font-size:15px; color:var(--muted); line-height:1.7; max-width:520px; margin-bottom:28px; }
+
+.btn-primary {
+  background:var(--accent); color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:13px 32px; border-radius:10px; border:none; cursor:pointer;
+  box-shadow:0 4px 16px rgba(123,47,190,0.28); transition:all 0.15s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 7px 22px rgba(123,47,190,0.38); }
+.btn-secondary {
+  background:transparent; color:var(--accent);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:11px 26px; border-radius:10px; border:2px solid var(--border2);
+  cursor:pointer; transition:all 0.15s; display:block; margin:0 auto;
+}
+.btn-secondary:hover { background:var(--surface); }
+
+/* ── INTRO ── */
+#intro { align-items:center; justify-content:center; }
+
+.roles-preview { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:24px; }
+@media(max-width:440px){ .roles-preview{grid-template-columns:1fr;} }
+.role-card { border-radius:12px; padding:14px 12px; text-align:center; border:1px solid; }
+.rc-approve { background:var(--approve-bg); border-color:var(--approve-bdr); }
+.rc-changes { background:var(--changes-bg); border-color:var(--changes-bdr); }
+.rc-reject  { background:var(--reject-bg);  border-color:var(--reject-bdr); }
+.role-icon  { font-size:22px; margin-bottom:6px; }
+.role-label { font-family:'Syne',sans-serif; font-size:13px; font-weight:800; margin-bottom:3px; }
+.role-desc  { font-size:11px; color:var(--muted); line-height:1.4; }
+.rc-approve .role-label { color:var(--approve-c); }
+.rc-changes .role-label { color:var(--changes-c); }
+.rc-reject  .role-label { color:var(--reject-c); }
+
+.warning-note {
+  background:rgba(220,38,38,0.05); border:1px solid rgba(220,38,38,0.18);
+  border-radius:12px; padding:14px 18px; margin-bottom:28px;
+  font-size:13px; line-height:1.6; display:flex; gap:10px;
+}
+.wn-icon { font-size:18px; flex-shrink:0; }
+.wn-text strong { color:var(--text); }
+.wn-text { color:var(--muted); }
+
+/* ── REVIEW SCREEN ── */
+#review-screen { flex-direction:column; }
+.review-body { flex:1; overflow-y:auto; padding:24px; }
+.review-inner { max-width:660px; margin:0 auto; }
+
+/* Docket card */
+.docket-card {
+  background:#fff; border:1.5px solid var(--border2); border-radius:18px;
+  overflow:hidden; margin-bottom:22px;
+  box-shadow:0 4px 24px rgba(123,47,190,0.08);
+  animation:card-arrive 0.45s cubic-bezier(0.34,1.1,0.64,1);
+}
+@keyframes card-arrive {
+  from { opacity:0; transform:translateY(18px) scale(0.98); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.docket-header {
+  background:var(--accent); padding:14px 22px;
+  display:flex; align-items:center; gap:12px;
+}
+.dh-badge {
+  background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);
+  color:rgba(255,255,255,0.9); font-family:'DM Mono',monospace; font-size:9px;
+  font-weight:600; text-transform:uppercase; letter-spacing:0.1em;
+  padding:3px 9px; border-radius:5px;
+}
+.dh-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:#fff; flex:1; }
+.dh-icon  { font-size:22px; }
+
+.docket-context { padding:16px 22px 0; border-bottom:1px solid var(--border); }
+.dc-label {
+  font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--muted); font-weight:600; margin-bottom:7px;
+}
+.dc-text { font-size:13px; line-height:1.7; color:var(--muted); margin-bottom:16px; }
+.dc-text strong { color:var(--text); }
+
+.docket-output { padding:16px 22px; border-bottom:1px solid var(--border); }
+.do-label {
+  font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--accent); font-weight:600; margin-bottom:8px;
+  display:flex; align-items:center; gap:6px;
+}
+.do-dot { width:5px; height:5px; border-radius:50%; background:var(--accent); animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.do-text {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:14px 16px; font-size:14px; line-height:1.75; color:var(--text); font-style:italic;
+}
+.do-text p { margin-bottom:8px; }
+.do-text p:last-child { margin-bottom:0; }
+.do-text ul { padding-left:18px; }
+.do-text li { margin-bottom:4px; }
+
+.do-flag {
+  margin-top:10px; padding:10px 13px; border-radius:8px;
+  font-size:12px; line-height:1.5; display:flex; gap:8px;
+  background:rgba(180,83,9,0.07); border:1px solid rgba(180,83,9,0.2);
+}
+.do-flag-icon { flex-shrink:0; }
+.do-flag-text { color:var(--muted); }
+.do-flag-text strong { color:var(--changes-c); }
+
+/* Three decision buttons */
+.decision-section { padding:18px 22px; }
+.ds-label {
+  font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--muted); font-weight:600; margin-bottom:12px;
+}
+.decision-buttons { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+@media(max-width:480px){ .decision-buttons{grid-template-columns:1fr;} }
+
+.dec-btn {
+  padding:14px 10px; border-radius:12px; border:1.5px solid;
+  cursor:pointer; transition:all 0.18s; text-align:center;
+  font-family:'DM Sans',sans-serif;
+}
+.dec-approve { background:var(--approve-bg); border-color:var(--approve-bdr); color:var(--approve-c); }
+.dec-changes { background:var(--changes-bg); border-color:var(--changes-bdr); color:var(--changes-c); }
+.dec-reject  { background:var(--reject-bg);  border-color:var(--reject-bdr);  color:var(--reject-c); }
+
+.dec-btn:hover { transform:translateY(-2px); }
+.dec-approve:hover { box-shadow:0 4px 14px rgba(21,128,61,0.18); }
+.dec-changes:hover { box-shadow:0 4px 14px rgba(180,83,9,0.18); }
+.dec-reject:hover  { box-shadow:0 4px 14px rgba(220,38,38,0.15); }
+
+.dec-btn.chosen { transform:scale(1.04); }
+.dec-btn.dim    { opacity:0.3; pointer-events:none; }
+.dec-btn.locked { pointer-events:none; }
+
+.dec-icon  { font-size:22px; margin-bottom:6px; }
+.dec-label { font-size:13px; font-weight:800; margin-bottom:3px; }
+.dec-sub   { font-size:11px; opacity:0.85; }
+
+/* Reason picker */
+.reason-picker { display:none; animation:slide-up 0.3s ease; }
+.reason-picker.show { display:block; }
+@keyframes slide-up { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.rp-label {
+  font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--muted); font-weight:600; margin-bottom:8px;
+}
+.reason-opts { display:flex; flex-direction:column; gap:6px; }
+.reason-opt {
+  display:flex; align-items:center; gap:8px; padding:10px 13px;
+  border-radius:8px; border:1.5px solid var(--border); background:#fff;
+  cursor:pointer; font-size:13px; color:var(--text); transition:all 0.15s;
+}
+.reason-opt:hover { border-color:var(--border2); background:var(--surface); }
+.reason-opt.selected { border-color:var(--accent); background:rgba(123,47,190,0.05); }
+.ro-dot {
+  width:16px; height:16px; border-radius:50%; flex-shrink:0;
+  border:2px solid var(--border); background:#fff; transition:all 0.15s;
+  display:flex; align-items:center; justify-content:center; font-size:8px; color:transparent;
+}
+.reason-opt.selected .ro-dot { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+.confirm-btn {
+  display:none; background:var(--accent); color:#fff;
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:800;
+  padding:12px 26px; border-radius:10px; border:none; cursor:pointer;
+  margin-top:12px; transition:all 0.15s; box-shadow:0 4px 14px rgba(123,47,190,0.25);
+}
+.confirm-btn.show { display:inline-flex; align-items:center; gap:7px; }
+.confirm-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(123,47,190,0.35); }
+
+/* Consequence card */
+.consequence-card {
+  display:none; margin:0 22px 22px; border-radius:14px; padding:18px 20px;
+  border:1px solid; animation:consequence-in 0.5s cubic-bezier(0.34,1.1,0.64,1);
+}
+.consequence-card.show { display:block; }
+@keyframes consequence-in {
+  from { opacity:0; transform:scale(0.96) translateY(8px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+
+.cc-bad   { background:var(--consequence-bad);   border-color:rgba(220,38,38,0.25); }
+.cc-good  { background:var(--consequence-good);  border-color:rgba(21,128,61,0.25); }
+.cc-mixed { background:var(--consequence-mixed); border-color:rgba(180,83,9,0.25); }
+
+.cc-status {
+  font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:0.1em; font-weight:600; margin-bottom:9px;
+  display:flex; align-items:center; gap:7px;
+}
+.cc-bad   .cc-status { color:var(--reject-c); }
+.cc-good  .cc-status { color:var(--approve-c); }
+.cc-mixed .cc-status { color:var(--changes-c); }
+
+.cc-dot { width:7px; height:7px; border-radius:50%; animation:pulse 1.5s infinite; }
+.cc-bad   .cc-dot { background:var(--reject-c); box-shadow:0 0 0 0 rgba(220,38,38,0.4); }
+.cc-good  .cc-dot { background:var(--approve-c); box-shadow:0 0 0 0 rgba(21,128,61,0.4); }
+.cc-mixed .cc-dot { background:var(--changes-c); box-shadow:0 0 0 0 rgba(180,83,9,0.4); }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 currentColor} 70%{box-shadow:0 0 0 5px transparent} 100%{box-shadow:0 0 0 0 transparent} }
+
+.cc-headline {
+  font-family:'Syne',sans-serif; font-size:17px; font-weight:800; line-height:1.2; margin-bottom:8px;
+}
+.cc-bad   .cc-headline { color:var(--reject-c); }
+.cc-good  .cc-headline { color:var(--approve-c); }
+.cc-mixed .cc-headline { color:var(--changes-c); }
+
+.cc-story { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:12px; }
+.cc-story strong { color:var(--text); }
+
+.cc-principle {
+  background:#fff; border-radius:9px; padding:11px 14px;
+  font-size:12px; color:var(--muted); line-height:1.55;
+  border:1px solid rgba(123,47,190,0.1);
+}
+.cc-principle-label {
+  font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--accent); font-weight:600; margin-bottom:5px;
+}
+
+.next-docket-btn {
+  display:none; background:var(--accent); color:#fff;
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:800;
+  padding:12px 26px; border-radius:10px; border:none; cursor:pointer;
+  transition:all 0.15s; margin:0 22px 22px; box-shadow:0 4px 14px rgba(123,47,190,0.25);
+}
+.next-docket-btn.show { display:inline-flex; align-items:center; gap:7px; }
+.next-docket-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(123,47,190,0.35); }
+
+/* ── RESULTS ── */
+#results { overflow-y:auto; }
+.results-body { max-width:640px; margin:0 auto; padding:36px 24px 56px; }
+.results-hero { text-align:center; margin-bottom:32px; }
+.results-hero h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,4vw,42px); font-weight:800; margin-bottom:8px; }
+.score-display { font-family:'Syne',sans-serif; font-size:68px; font-weight:800; color:var(--accent); line-height:1; margin:6px 0 8px; }
+.score-msg { font-size:14px; color:var(--muted); line-height:1.6; max-width:440px; margin:0 auto; }
+
+/* Decision log */
+.decision-log { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.dl-item {
+  background:#fff; border:1px solid var(--border); border-radius:12px;
+  padding:14px 18px; display:flex; gap:12px; align-items:flex-start;
+  animation:fadein 0.4s ease both;
+}
+@keyframes fadein { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.dl-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
+.dl-meta { flex:1; }
+.dl-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.dl-your-choice {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.06em;
+  padding:2px 8px; border-radius:4px; display:inline-block; margin-bottom:4px;
+}
+.dlc-approve { background:var(--approve-bg); color:var(--approve-c); }
+.dlc-changes { background:var(--changes-bg); color:var(--changes-c); }
+.dlc-reject  { background:var(--reject-bg);  color:var(--reject-c); }
+.dl-outcome { font-size:12px; color:var(--muted); line-height:1.5; }
+.dl-result {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  text-transform:uppercase; padding:3px 8px; border-radius:4px; flex-shrink:0;
+}
+.dlr-good  { background:var(--approve-bg); color:var(--approve-c); }
+.dlr-mixed { background:var(--changes-bg); color:var(--changes-c); }
+.dlr-bad   { background:var(--reject-bg);  color:var(--reject-c); }
+
+/* Ethics principles */
+.ethics-title { font-family:'Syne',sans-serif; font-size:17px; font-weight:800; margin-bottom:14px; }
+.ethics-cards { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.ec-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:14px 18px; display:flex; gap:12px; align-items:flex-start;
+}
+.ec-icon { font-size:20px; flex-shrink:0; }
+.ec-text { font-size:13px; color:var(--muted); line-height:1.6; }
+.ec-text strong { color:var(--text); }
+
+.lesson-box {
+  background:rgba(123,47,190,0.06); border:1px solid var(--border2);
+  border-radius:14px; padding:20px 24px; margin-bottom:24px;
+}
+.lesson-box h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:8px; }
+.lesson-box p  { font-size:13px; color:var(--muted); line-height:1.7; }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">⚖️ Policy Check</div>
+    <div class="top-bar-right">Reflection · Ethics Activity</div>
+  </div>
+  <div class="page-body" style="display:flex;align-items:center;justify-content:center;">
+  <div class="page-inner">
+    <div class="intro-badge">🔍 Activity · Ethics Review Simulator</div>
+    <h1 class="page-title">You are the<br><em>reviewer.</em></h1>
+    <p class="page-desc">Three AI recommendations cross your desk. For each one you must decide: Approve it, Request Changes, or Reject it. Choose carefully — some decisions have consequences you will not see coming.</p>
+
+    <div class="roles-preview">
+      <div class="role-card rc-approve">
+        <div class="role-icon">✅</div>
+        <div class="role-label">Approve</div>
+        <div class="role-desc">The AI output is fair and ready to use as-is</div>
+      </div>
+      <div class="role-card rc-changes">
+        <div class="role-icon">✏️</div>
+        <div class="role-label">Request Changes</div>
+        <div class="role-desc">Usable but needs a human to fix a problem first</div>
+      </div>
+      <div class="role-card rc-reject">
+        <div class="role-icon">🚫</div>
+        <div class="role-label">Reject</div>
+        <div class="role-desc">The output should not be used — the risk is too high</div>
+      </div>
+    </div>
+
+    <div class="warning-note">
+      <div class="wn-icon">⚠️</div>
+      <div class="wn-text"><strong>Fair warning:</strong> ethical review is not always obvious. Some decisions that seem harmless will have real consequences. Some that seem risky will turn out fine. Think carefully before you confirm.</div>
+    </div>
+
+    <button class="btn-primary" onclick="startReview()">Start Review →</button>
+  </div>
+  </div>
+</div>
+
+<!-- REVIEW -->
+<div id="review-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">⚖️ Policy Check — Ethics Review Desk</div>
+    <div class="docket-counter" id="docket-counter">
+      <div class="dc-pip active" id="dcp-0"></div>
+      <div class="dc-pip"        id="dcp-1"></div>
+      <div class="dc-pip"        id="dcp-2"></div>
+    </div>
+  </div>
+  <div class="review-body">
+    <div class="review-inner" id="review-inner"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">⚖️ Policy Check — Review Complete</div>
+    <div class="top-bar-right">All 3 Decisions Made</div>
+  </div>
+  <div class="results-body">
+    <div class="results-hero">
+      <div class="intro-badge" style="display:inline-block;margin-bottom:14px;">✅ Review Complete</div>
+      <h1 id="results-title">Solid ethical instincts.</h1>
+      <div class="score-display" id="results-score">0/3</div>
+      <p class="score-msg" id="results-msg"></p>
+    </div>
+
+    <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:14px;">Your Decision Log</div>
+    <div class="decision-log" id="decision-log"></div>
+
+    <div class="ethics-title">The Principles Behind Each Decision</div>
+    <div class="ethics-cards" id="ethics-cards"></div>
+
+    <div class="lesson-box">
+      <h3>🧠 Ethics in Action</h3>
+      <p>Ethical AI review is not about being suspicious of technology — it is about being responsible with it. <strong>Every AI output that affects a real person deserves a human who asks: "Is this fair? Is this complete? Could this hurt someone?"</strong> Developing that reflex — especially when the output looks fine at first glance — is what separates a thoughtful professional from someone who just clicks approve.</p>
+    </div>
+
+    <button class="btn-secondary" onclick="resetAll()">↺ Try Again</button>
+  </div>
+</div>
+
+<script>
+const DOCKETS = [
+  {
+    id: 0,
+    icon: '👔',
+    badge: 'Docket 1 of 3 · Hiring',
+    title: 'Candidate Rejection Recommendation',
+    context: 'Your company received 200 applications for a marketing analyst role. The AI reviewed all applications and produced a ranked list with recommendations. You are reviewing one specific rejection before the list is finalized.',
+    outputLabel: 'AI Recommendation',
+    output: `<p><strong>Candidate:</strong> Sarah Chen<br><strong>Decision:</strong> Do Not Advance</p><p><strong>Reason:</strong> Candidate shows a 2-year gap in employment history (2019–2021), which correlates with reduced performance indicators in our historical hiring data. Strong academic background and relevant skills noted, but employment continuity is flagged as a concern.</p>`,
+    flag: { icon:'⚠️', text:'The AI is using "employment continuity" as a rejection criterion. <strong>What might cause a 2-year gap that is not a performance issue?</strong>' },
+    reasons: {
+      approve: ['The AI flagged a real pattern — employment gaps often indicate reliability issues', 'We need employees who have been consistently working', 'The AI\'s historical data is probably accurate'],
+      changes: ['The reason for the gap matters — we should ask before rejecting', 'Employment gaps can have many legitimate causes that shouldn\'t disqualify a candidate', 'We need more information before making a final call'],
+      reject:  ['AI should never be allowed to recommend rejecting a candidate', 'This decision is too important for any automated system', 'We should throw out the AI recommendations entirely']
+    },
+    correctDecision: 'changes',
+    consequences: {
+      approve: {
+        cls: 'cc-bad',
+        status: '⚡ Consequence Revealed',
+        headline: 'The gap was maternity leave. You just rejected a qualified candidate for taking time off to have a child.',
+        story: 'Three months later, a rejected candidate\'s attorney contacts your HR department. Sarah Chen\'s 2019–2021 gap was maternity leave. Using employment gaps as an automatic disqualifier can constitute gender discrimination under federal employment law — especially when gaps correlate with protected events like pregnancy. <strong>The company now faces a discrimination complaint, legal fees, and a hiring process under regulatory review.</strong>',
+        principle: 'Before approving any AI rejection, always ask: what could explain this data point that is not a performance issue? Employment gaps are one of the most common sources of AI bias in hiring.'
+      },
+      changes: {
+        cls: 'cc-good',
+        status: '✓ Good Call',
+        headline: 'You asked why — and caught a serious bias before it caused harm.',
+        story: 'Your team sends a follow-up question to Sarah Chen. She explains the gap was maternity leave. She advances to the interview stage and is ultimately hired. <strong>By pausing the AI\'s recommendation and asking for more context, you avoided a discrimination claim and found a strong candidate the AI was about to eliminate.</strong> This is exactly what human oversight is designed to do.',
+        principle: 'Requesting changes — asking for more context before a consequential decision — is often the most ethically responsible choice. It costs little and can prevent serious harm.'
+      },
+      reject: {
+        cls: 'cc-mixed',
+        status: '↕ Partial Credit',
+        headline: 'You stopped the bad output — but threw out a useful tool in the process.',
+        story: 'You rejected the AI\'s entire recommendation list. Your HR team spends three weeks manually reviewing 200 applications. <strong>While you avoided the specific bias issue, discarding AI assistance entirely for all 200 candidates is not a practical long-term solution.</strong> The better approach is to fix the specific problem — the employment gap criterion — rather than reject the tool outright.',
+        principle: 'Outright rejection of AI tools is sometimes necessary, but "Request Changes" is often more useful: it fixes the specific ethical problem while preserving the efficiency benefits.'
+      }
+    }
+  },
+  {
+    id: 1,
+    icon: '📣',
+    badge: 'Docket 2 of 3 · Marketing',
+    title: 'Promotional Email Campaign',
+    context: 'Your company is launching a new line of outdoor gear. The AI drafted the promotional email that will go to your full customer list of 45,000 subscribers.',
+    outputLabel: 'AI-Generated Email Draft',
+    output: `<p><strong>Subject:</strong> Get Out There — Built for the Bold</p><p>Hey adventurer! 🏔️ Are you ready to push your limits? Our new TrailBlazer collection is here — engineered for peak performers who refuse to slow down.</p><p>Lightweight. Fast. Uncompromising. Built for the athletes who demand the best from their gear and from themselves.</p><p>Don't let anything hold you back. <strong>Shop now — early access ends Friday.</strong></p>`,
+    flag: { icon:'⚠️', text:'Read this email carefully. <strong>Who does the language assume the reader is?</strong> Who might feel excluded by "push your limits," "peak performers," and "refuse to slow down"?' },
+    reasons: {
+      approve: ['The email is energetic and compelling — that\'s good marketing', 'Outdoor gear is for active people, so this audience makes sense', 'The language is inspiring and will motivate customers to buy'],
+      changes: ['The language assumes all customers are high-performance athletes — which excludes many buyers', 'People with disabilities, older customers, or casual hikers are implicitly excluded', 'We should use more inclusive language that speaks to all outdoor enthusiasts'],
+      reject:  ['This email is completely inappropriate and should be discarded entirely', 'Marketing emails should never be written by AI', 'The whole campaign needs to be rethought from scratch']
+    },
+    correctDecision: 'changes',
+    consequences: {
+      approve: {
+        cls: 'cc-mixed',
+        status: '⚡ Consequence Revealed',
+        headline: 'Your "peak performer" email alienated 30% of your customer base.',
+        story: 'After the email goes out, your marketing team analyzes click rates by customer segment. Customers over 55, customers who self-identify as casual hikers, and customers with accessibility needs all show significantly lower engagement. <strong>Three customers with disabilities email to say the "refuse to slow down" language felt exclusionary.</strong> Your brand perception among these segments drops measurably. The gear sells well — but to a narrower audience than it could have reached.',
+        principle: 'Marketing language that assumes one type of customer implicitly excludes everyone else. Inclusive language does not mean less compelling — it means speaking to what outdoor gear actually offers: access, exploration, and experience at any pace.'
+      },
+      changes: {
+        cls: 'cc-good',
+        status: '✓ Good Call',
+        headline: 'You revised the language — and reached a broader audience without losing energy.',
+        story: 'Your team rewrites the email with more inclusive framing: "Built for every trail, every pace, every adventure." The email still uses energetic language but does not require the reader to be a high-performance athlete. <strong>The revised campaign outperforms the original projection by 14%, reaching customers who felt seen by the broader message.</strong>',
+        principle: 'Inclusive marketing is not just ethically right — it is better business. Reviewing AI-generated content for assumptions about who the audience is one of the most valuable edits a human reviewer can make.'
+      },
+      reject: {
+        cls: 'cc-mixed',
+        status: '↕ Partial Credit',
+        headline: 'You flagged the problem correctly — but the solution was broader than needed.',
+        story: 'You reject the email and send the team back to the drawing board. Three weeks later, a new email is written from scratch. It is inclusive and effective — but the delay cost the company the early launch window. <strong>The specific problem was the language, not the entire AI-assisted process.</strong> Requesting targeted changes would have been faster and more efficient.',
+        principle: 'When an AI output has a specific, fixable problem — like exclusionary language — "Request Changes" is almost always more efficient than outright rejection. Save rejection for outputs where the core logic or data is fundamentally flawed.'
+      }
+    }
+  },
+  {
+    id: 2,
+    icon: '💬',
+    badge: 'Docket 3 of 3 · Customer Service',
+    title: 'Batch Customer Response Review',
+    context: 'Your AI customer service tool drafted responses to 8 complaints received this morning. You are reviewing the batch before responses are sent. Two responses have been flagged for comparison.',
+    outputLabel: 'Comparison — Same Complaint, Different Customers',
+    output: `<p><strong>Complaint Type:</strong> Both customers reported receiving a damaged product and requested a refund.</p><p style="margin-top:10px;padding:10px;background:rgba(21,128,61,0.06);border-radius:8px;border-left:3px solid rgba(21,128,61,0.4);"><strong>Response to James Miller:</strong><br>"Dear James, I'm so sorry to hear your order arrived damaged — that's completely unacceptable. We're processing a full refund immediately and shipping a replacement at no charge. You'll receive a confirmation within the hour. We value your business and want to make this right."</p><p style="margin-top:8px;padding:10px;background:rgba(220,38,38,0.05);border-radius:8px;border-left:3px solid rgba(220,38,38,0.3);"><strong>Response to Mei-Xing Liu:</strong><br>"Hello, we received your complaint about a damaged order. We will process your refund within 5–7 business days. Please retain the damaged item for our records."</p>`,
+    flag: { icon:'⚠️', text:'Both customers reported the same problem. <strong>Are these responses equal in quality, urgency, and empathy?</strong> What is different — and why might the AI have produced two such different outputs?' },
+    reasons: {
+      approve: ['Both customers will get their refund, which is what matters', 'Response length and tone can vary — not every response needs to be the same', 'The AI is probably just adapting its style to different communication patterns'],
+      changes: ['The quality difference between the two responses is significant and needs to be equalized before sending', 'Mei-Xing Liu deserves the same empathy and urgency as James Miller', 'The AI may have produced a biased output based on names — a human must review and equalize'],
+      reject:  ['AI should never be used for customer service responses', 'Any automated customer response system is inherently biased and should be shut down', 'The entire AI customer service system needs to be scrapped']
+    },
+    correctDecision: 'changes',
+    consequences: {
+      approve: {
+        cls: 'cc-bad',
+        status: '⚡ Consequence Revealed',
+        headline: 'You approved systematically different treatment — and a customer noticed.',
+        story: 'Mei-Xing Liu receives a cold, bureaucratic response while her friend James receives a warm, immediate one after reporting the same problem. She posts a side-by-side comparison on social media, noting that the two customers have noticeably different names. <strong>The post goes viral in your brand\'s community. A journalist writes about it. Your customer service team spends two weeks in crisis mode.</strong> The AI was not intentionally biased — but it produced outputs that reflected patterns in its training data. A human reviewer would have caught this in 30 seconds.',
+        principle: 'When reviewing AI-generated batch outputs, always compare responses across customers to check for quality or tone differences. Inconsistency across names that correlate with demographics is a major red flag.'
+      },
+      changes: {
+        cls: 'cc-good',
+        status: '✓ Good Call',
+        headline: 'You caught the inconsistency before it caused harm — and fixed it.',
+        story: 'You flag the disparity, rewrite Mei-Xing Liu\'s response to match the empathy and urgency of James Miller\'s, and send the equalized batch. <strong>Both customers are satisfied. The review takes five minutes and prevents a potential discrimination incident.</strong> You also flag the AI system for retraining — the pattern should not recur.',
+        principle: 'Comparing AI outputs across similar cases is one of the most powerful ethical review techniques available. It surfaces bias that would be invisible in any single response.'
+      },
+      reject: {
+        cls: 'cc-mixed',
+        status: '↕ Partial Credit',
+        headline: 'You caught the bias — but shut down a functional tool in response.',
+        story: 'You reject the entire batch and route all 8 complaints to human agents. The problem is addressed, but your team is overwhelmed. <strong>Average response time rises from 2 hours to 14 hours. Three more customers complain about slow service.</strong> The bias was in two responses — a targeted fix was more appropriate than suspending the entire system.',
+        principle: 'Bias in one output does not mean the entire AI system is broken. Targeted intervention — reviewing and fixing the specific problematic outputs — is more proportionate than system-wide shutdown in most cases.'
+      }
+    }
+  }
+];
+
+// ─── STATE ───
+let currentDocket = 0;
+let decisions     = [];
+
+// ─── INIT ───
+function startReview() {
+  currentDocket = 0; decisions = [];
+  show('review-screen');
+  renderDocket(0);
+}
+
+function updateDocketPips(idx) {
+  for (let i = 0; i < 3; i++) {
+    const pip = document.getElementById('dcp-' + i);
+    pip.className = 'dc-pip' + (i === idx ? ' active' : '') + (i < idx ? ' done' : '');
+  }
+}
+
+// ─── RENDER DOCKET ───
+function renderDocket(idx) {
+  updateDocketPips(idx);
+  const d = DOCKETS[idx];
+  let chosenDecision = null;
+  let chosenReason   = null;
+  let submitted      = false;
+
+  const inner = document.getElementById('review-inner');
+  inner.innerHTML = `
+    <div class="docket-card">
+      <div class="docket-header">
+        <div class="dh-icon">${d.icon}</div>
+        <div class="dh-title">${d.title}</div>
+        <div class="dh-badge">${d.badge}</div>
+      </div>
+
+      <div class="docket-context">
+        <div class="dc-label">Context</div>
+        <div class="dc-text">${d.context}</div>
+      </div>
+
+      <div class="docket-output">
+        <div class="do-label"><div class="do-dot"></div>${d.outputLabel}</div>
+        <div class="do-text">${d.output}</div>
+        <div class="do-flag">
+          <span class="do-flag-icon">${d.flag.icon}</span>
+          <div class="do-flag-text">${d.flag.text}</div>
+        </div>
+      </div>
+
+      <div class="decision-section">
+        <div class="ds-label">Your Decision</div>
+        <div class="decision-buttons">
+          <div class="dec-btn dec-approve" id="dec-approve" onclick="chooseDecision('approve')">
+            <div class="dec-icon">✅</div>
+            <div class="dec-label">Approve</div>
+            <div class="dec-sub">Use as-is</div>
+          </div>
+          <div class="dec-btn dec-changes" id="dec-changes" onclick="chooseDecision('changes')">
+            <div class="dec-icon">✏️</div>
+            <div class="dec-label">Request Changes</div>
+            <div class="dec-sub">Fix it first</div>
+          </div>
+          <div class="dec-btn dec-reject" id="dec-reject" onclick="chooseDecision('reject')">
+            <div class="dec-icon">🚫</div>
+            <div class="dec-label">Reject</div>
+            <div class="dec-sub">Do not use</div>
+          </div>
+        </div>
+
+        <div class="reason-picker" id="reason-picker">
+          <div class="rp-label">What is your main reason?</div>
+          <div class="reason-opts" id="reason-opts"></div>
+          <button class="confirm-btn" id="confirm-btn" onclick="confirmDecision()">Confirm Decision →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="consequence-card" id="consequence-card"></div>
+    <button class="next-docket-btn" id="next-btn" onclick="nextDocket()">
+      ${idx < 2 ? 'Next Docket →' : 'See My Review Record →'}
+    </button>
+  `;
+
+  window.chooseDecision = function(dec) {
+    if (submitted) return;
+    chosenDecision = dec;
+    ['approve','changes','reject'].forEach(d => {
+      const el = document.getElementById('dec-' + d);
+      el.classList.toggle('chosen', d === dec);
+      el.classList.toggle('dim',    d !== dec);
+    });
+
+    // Show reason picker
+    const reasons = DOCKETS[idx].reasons[dec];
+    const picker  = document.getElementById('reason-picker');
+    picker.classList.add('show');
+    const opts = document.getElementById('reason-opts');
+    opts.innerHTML = reasons.map((r, i) => `
+      <div class="reason-opt" id="ropt-${i}" onclick="pickReason(${i}, '${r.replace(/'/g, "\\'")}')">
+        <div class="ro-dot">✓</div>
+        <span>${r}</span>
+      </div>
+    `).join('');
+    chosenReason = null;
+    document.getElementById('confirm-btn').style.display = 'none';
+  };
+
+  window.pickReason = function(i, text) {
+    document.querySelectorAll('.reason-opt').forEach((el, j) => {
+      el.classList.toggle('selected', j === i);
+    });
+    chosenReason = text;
+    const btn = document.getElementById('confirm-btn');
+    btn.classList.add('show');
+    btn.style.display = '';
+  };
+
+  window.confirmDecision = function() {
+    if (!chosenDecision || !chosenReason || submitted) return;
+    submitted = true;
+
+    // Lock decision buttons
+    ['approve','changes','reject'].forEach(d => {
+      document.getElementById('dec-' + d).classList.add('locked');
+    });
+    document.querySelectorAll('.reason-opt').forEach(el => { el.style.pointerEvents = 'none'; });
+    document.getElementById('confirm-btn').style.display = 'none';
+
+    // Save
+    const cons = DOCKETS[idx].consequences[chosenDecision];
+    const isCorrect = chosenDecision === DOCKETS[idx].correctDecision;
+    decisions.push({ docketIdx: idx, decision: chosenDecision, reason: chosenReason, isCorrect, consequenceCls: cons.cls });
+
+    // Show consequence
+    const card = document.getElementById('consequence-card');
+    card.className = `consequence-card ${cons.cls} show`;
+    card.innerHTML = `
+      <div class="cc-status"><div class="cc-dot"></div>${cons.status}</div>
+      <div class="cc-headline">${cons.headline}</div>
+      <div class="cc-story">${cons.story}</div>
+      <div class="cc-principle">
+        <div class="cc-principle-label">⚖️ Ethical Principle</div>
+        ${cons.principle}
+      </div>
+    `;
+
+    document.getElementById('next-btn').classList.add('show');
+    setTimeout(() => card.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+  };
+}
+
+function nextDocket() {
+  if (currentDocket < 2) {
+    currentDocket++;
+    renderDocket(currentDocket);
+    document.getElementById('review-inner').scrollIntoView({ behavior:'smooth', block:'start' });
+  } else {
+    showResults();
+  }
+}
+
+// ─── RESULTS ───
+function showResults() {
+  show('results');
+
+  const correct = decisions.filter(d => d.isCorrect).length;
+  document.getElementById('results-score').textContent = correct + '/3';
+
+  let title, msg;
+  if (correct === 3) {
+    title = '⚖️ Excellent Reviewer!';
+    msg   = 'You made the right ethical call in every scenario. You are thinking like a responsible professional who understands that inaction and approval both have consequences.';
+  } else if (correct === 2) {
+    title = '🧠 Strong Instincts';
+    msg   = `You got ${correct} of 3 right. Read the decision log below to see where the tricky one caught you — and why the right call was what it was.`;
+  } else if (correct === 1) {
+    title = '📋 Keep Practicing';
+    msg   = `You got ${correct} of 3. These scenarios are designed to be tricky. Read every consequence carefully — the patterns will start to build your ethical instincts.`;
+  } else {
+    title = '💡 Learning Moment';
+    msg   = 'Every one of these scenarios has nuance — that is the point. Read the full decision log and the principles below to understand the reasoning behind each correct call.';
+  }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent   = msg;
+
+  const log = document.getElementById('decision-log');
+  log.innerHTML = '';
+  const decLabels = { approve:'✅ Approved', changes:'✏️ Request Changes', reject:'🚫 Rejected' };
+  const decCls    = { approve:'dlc-approve', changes:'dlc-changes', reject:'dlc-reject' };
+  const resCls    = { 'cc-good':'dlr-good', 'cc-mixed':'dlr-mixed', 'cc-bad':'dlr-bad' };
+  const resLabel  = { 'cc-good':'✓ Good call', 'cc-mixed':'↕ Partial', 'cc-bad':'✗ Backfired' };
+
+  decisions.forEach((dec, i) => {
+    const d    = DOCKETS[dec.docketIdx];
+    const cons = d.consequences[dec.decision];
+    const div  = document.createElement('div');
+    div.className = 'dl-item';
+    div.style.animationDelay = (i * 0.07) + 's';
+    div.innerHTML = `
+      <div class="dl-icon">${d.icon}</div>
+      <div class="dl-meta">
+        <div class="dl-title">${d.title}</div>
+        <div class="dl-your-choice ${decCls[dec.decision]}">${decLabels[dec.decision]}</div>
+        <div class="dl-outcome">${cons.headline}</div>
+      </div>
+      <div class="dl-result ${resCls[cons.cls]}">${resLabel[cons.cls]}</div>
+    `;
+    log.appendChild(div);
+  });
+
+  // Ethics principles
+  const ethicsPrinciples = [
+    { icon:'🔍', text:'<strong>Always ask what the data point could mean.</strong> Employment gaps, unusual names, and non-standard backgrounds can all have completely legitimate explanations. Never let AI eliminate someone without asking why.' },
+    { icon:'🧑‍🤝‍🧑', text:'<strong>Check whether AI outputs treat similar people consistently.</strong> Reviewing one response in isolation misses bias. Comparing responses across similar situations reveals patterns no single review would catch.' },
+    { icon:'✏️', text:'<strong>"Request Changes" is usually more responsible than "Reject."</strong> Most AI ethics problems are fixable with targeted human edits — scrapping the output entirely is often disproportionate and less efficient.' },
+    { icon:'⚡', text:'<strong>Inaction is a decision.</strong> Approving an AI output without ethical review is a choice — and it carries the same moral weight as any other choice. Doing nothing is not neutral.' }
+  ];
+
+  const ecards = document.getElementById('ethics-cards');
+  ecards.innerHTML = '';
+  ethicsPrinciples.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'ec-card';
+    div.style.animationDelay = (i * 0.09) + 's';
+    div.innerHTML = `<div class="ec-icon">${p.icon}</div><div class="ec-text">${p.text}</div>`;
+    ecards.appendChild(div);
+  });
+}
+
+// ─── RESET ───
+function resetAll() {
+  currentDocket = 0; decisions = [];
+  show('intro');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
