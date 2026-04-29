@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI or Not AI? — Quick Reflection Activity</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f5ff;
+  --surface2: #ede9fe;
+  --border: rgba(123,47,190,0.12);
+  --border2: rgba(123,47,190,0.22);
+  --text: #1a0a2e;
+  --muted: #6b5a85;
+  --accent: #7B2FBE;
+
+  --ai-c:     #15803d;
+  --ai-bg:    rgba(21,128,61,0.08);
+  --ai-bdr:   rgba(21,128,61,0.28);
+
+  --hybrid-c:   #0369a1;
+  --hybrid-bg:  rgba(3,105,161,0.08);
+  --hybrid-bdr: rgba(3,105,161,0.25);
+
+  --human-c:   #b45309;
+  --human-bg:  rgba(180,83,9,0.08);
+  --human-bdr: rgba(180,83,9,0.25);
+
+  --correct-flash: rgba(21,128,61,0.12);
+  --wrong-flash:   rgba(220,38,38,0.09);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* TOP BAR */
+.top-bar {
+  background:var(--accent); padding:13px 28px;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.top-bar-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#fff; }
+.top-bar-right  { font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.75); }
+
+/* Card progress dots */
+.card-dots { display:flex; gap:5px; }
+.cdot {
+  width:10px; height:10px; border-radius:50%;
+  background:rgba(255,255,255,0.25); transition:all 0.3s;
+}
+.cdot.current { background:#fff; box-shadow:0 0 0 3px rgba(255,255,255,0.25); transform:scale(1.2); }
+.cdot.correct { background:rgba(255,255,255,0.85); }
+.cdot.wrong   { background:rgba(255,150,150,0.7); }
+
+/* SHARED */
+.page-body { flex:1; overflow-y:auto; padding:36px 24px 52px; display:flex; align-items:center; justify-content:center; }
+.page-inner { max-width:580px; width:100%; }
+
+.intro-badge {
+  display:inline-block; background:rgba(123,47,190,0.1); border:1px solid var(--border2);
+  color:var(--accent); font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px;
+  border-radius:20px; margin-bottom:18px;
+}
+.page-title { font-family:'Syne',sans-serif; font-size:clamp(32px,6vw,54px); font-weight:800; line-height:1.05; margin-bottom:12px; }
+.page-title em { font-style:normal; color:var(--accent); }
+.page-desc { font-size:15px; color:var(--muted); line-height:1.7; max-width:490px; margin-bottom:28px; }
+
+.btn-primary {
+  background:var(--accent); color:#fff;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:13px 32px; border-radius:10px; border:none; cursor:pointer;
+  box-shadow:0 4px 16px rgba(123,47,190,0.28); transition:all 0.15s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 7px 22px rgba(123,47,190,0.38); }
+.btn-secondary {
+  background:transparent; color:var(--accent);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:11px 26px; border-radius:10px; border:2px solid var(--border2);
+  cursor:pointer; transition:all 0.15s; display:block; margin:0 auto;
+}
+.btn-secondary:hover { background:var(--surface); }
+
+/* ── INTRO ── */
+#intro {}
+
+.three-areas { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:28px; }
+@media(max-width:460px){ .three-areas{grid-template-columns:1fr;} }
+
+.area-card {
+  border-radius:12px; padding:14px 12px; text-align:center; border:1px solid;
+}
+.area-ai     { background:var(--ai-bg);    border-color:var(--ai-bdr); }
+.area-hybrid { background:var(--hybrid-bg);border-color:var(--hybrid-bdr); }
+.area-human  { background:var(--human-bg); border-color:var(--human-bdr); }
+
+.area-icon  { font-size:24px; margin-bottom:6px; }
+.area-label { font-family:'Syne',sans-serif; font-size:12px; font-weight:800; margin-bottom:3px; line-height:1.2; }
+.area-desc  { font-size:11px; color:var(--muted); line-height:1.3; }
+.area-ai     .area-label { color:var(--ai-c); }
+.area-hybrid .area-label { color:var(--hybrid-c); }
+.area-human  .area-label { color:var(--human-c); }
+
+/* ── SCENARIO SCREEN ── */
+#scenario-screen { flex-direction:column; }
+
+.scenario-body {
+  flex:1; display:flex; align-items:center; justify-content:center;
+  padding:24px; overflow-y:auto;
+}
+
+.scenario-inner { max-width:560px; width:100%; }
+
+/* Scenario counter */
+.scenario-counter {
+  font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--muted); font-weight:600;
+  margin-bottom:14px; display:flex; align-items:center; gap:8px;
+}
+.sc-bar { flex:1; height:4px; background:rgba(123,47,190,0.12); border-radius:2px; overflow:hidden; }
+.sc-fill { height:100%; background:var(--accent); border-radius:2px; transition:width 0.5s ease; }
+
+/* Business context */
+.biz-context {
+  display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  padding:9px 14px; background:var(--surface); border:1px solid var(--border);
+  border-radius:9px; font-size:12px; color:var(--muted);
+}
+.biz-icon { font-size:18px; }
+.biz-name { font-weight:600; color:var(--text); }
+
+/* The scenario card */
+.scenario-card {
+  background:#fff; border:1.5px solid var(--border2);
+  border-radius:18px; padding:28px 26px;
+  margin-bottom:22px;
+  box-shadow:0 4px 24px rgba(123,47,190,0.08);
+  animation:card-appear 0.4s cubic-bezier(0.34,1.2,0.64,1);
+  position:relative; overflow:hidden;
+}
+@keyframes card-appear {
+  from { opacity:0; transform:translateY(20px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.scenario-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--accent), rgba(123,47,190,0.3));
+}
+
+.scenario-emoji { font-size:42px; margin-bottom:14px; display:block; animation:emoji-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both; }
+@keyframes emoji-pop { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
+
+.scenario-area-tag {
+  display:inline-flex; align-items:center; gap:5px;
+  font-family:'DM Mono',monospace; font-size:9px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.08em; padding:3px 9px;
+  border-radius:5px; margin-bottom:10px;
+}
+.tag-comm    { background:rgba(123,47,190,0.1); color:var(--accent); }
+.tag-mktg    { background:rgba(3,105,161,0.1);  color:#0369a1; }
+.tag-research{ background:rgba(180,83,9,0.1);   color:var(--human-c); }
+
+.scenario-text {
+  font-family:'Syne',sans-serif; font-size:clamp(16px,3vw,20px); font-weight:700;
+  line-height:1.35; color:var(--text); margin-bottom:8px;
+}
+.scenario-detail { font-size:13px; color:var(--muted); line-height:1.6; }
+
+/* Answer buttons */
+.answer-btns { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+
+.ans-btn {
+  padding:14px 18px; border-radius:12px; border:1.5px solid;
+  cursor:pointer; transition:all 0.18s; text-align:left;
+  display:flex; align-items:center; gap:12px; font-family:'DM Sans',sans-serif;
+}
+.ans-btn:hover { transform:translateY(-2px); }
+
+.ans-ai {
+  background:var(--ai-bg); border-color:var(--ai-bdr); color:var(--ai-c);
+}
+.ans-ai:hover { background:rgba(21,128,61,0.14); box-shadow:0 4px 14px rgba(21,128,61,0.15); }
+
+.ans-hybrid {
+  background:var(--hybrid-bg); border-color:var(--hybrid-bdr); color:var(--hybrid-c);
+}
+.ans-hybrid:hover { background:rgba(3,105,161,0.14); box-shadow:0 4px 14px rgba(3,105,161,0.15); }
+
+.ans-human {
+  background:var(--human-bg); border-color:var(--human-bdr); color:var(--human-c);
+}
+.ans-human:hover { background:rgba(180,83,9,0.14); box-shadow:0 4px 14px rgba(180,83,9,0.15); }
+
+.ans-btn.chosen-correct { transform:scale(1.02); box-shadow:0 0 0 3px rgba(21,128,61,0.2); }
+.ans-btn.chosen-wrong   { opacity:0.5; }
+.ans-btn.reveal-correct { animation:correct-glow 0.5s ease; }
+.ans-btn.locked         { pointer-events:none; }
+.ans-btn.dim            { opacity:0.35; pointer-events:none; }
+
+@keyframes correct-glow {
+  0%  { box-shadow:0 0 0 0 rgba(21,128,61,0.4); }
+  50% { box-shadow:0 0 0 8px rgba(21,128,61,0.15); }
+  100%{ box-shadow:0 0 0 3px rgba(21,128,61,0.2); }
+}
+
+.ans-icon  { font-size:20px; flex-shrink:0; }
+.ans-text  { flex:1; }
+.ans-label { font-size:14px; font-weight:700; margin-bottom:2px; }
+.ans-sub   { font-size:12px; opacity:0.8; }
+
+/* Feedback panel */
+.feedback-panel {
+  display:none; border-radius:12px; padding:16px 18px;
+  animation:slide-up 0.3s ease;
+}
+.feedback-panel.show { display:block; }
+@keyframes slide-up { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.fp-correct { background:var(--ai-bg); border:1px solid var(--ai-bdr); }
+.fp-wrong   { background:rgba(220,38,38,0.06); border:1px solid rgba(220,38,38,0.2); }
+
+.fp-result {
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:700;
+  margin-bottom:6px; display:flex; align-items:center; gap:6px;
+}
+.fp-correct .fp-result { color:var(--ai-c); }
+.fp-wrong   .fp-result { color:#dc2626; }
+.fp-text { font-size:13px; color:var(--muted); line-height:1.6; }
+.fp-text strong { color:var(--text); }
+
+.next-btn {
+  display:none; background:var(--accent); color:#fff;
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:800;
+  padding:12px 26px; border-radius:10px; border:none; cursor:pointer;
+  transition:all 0.15s; margin-top:14px; letter-spacing:0.01em;
+  box-shadow:0 4px 14px rgba(123,47,190,0.25);
+}
+.next-btn.show { display:inline-flex; align-items:center; gap:7px; }
+.next-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(123,47,190,0.35); }
+
+/* ── RESULTS ── */
+#results-screen { overflow-y:auto; }
+.results-body { max-width:580px; margin:0 auto; padding:40px 24px 56px; }
+
+.results-hero { text-align:center; margin-bottom:32px; }
+.results-hero h1 { font-family:'Syne',sans-serif; font-size:clamp(28px,5vw,46px); font-weight:800; margin-bottom:10px; }
+.score-display {
+  font-family:'Syne',sans-serif; font-size:72px; font-weight:800;
+  color:var(--accent); line-height:1; margin:6px 0 8px;
+}
+.score-msg { font-size:14px; color:var(--muted); line-height:1.6; max-width:400px; margin:0 auto; }
+
+/* Score breakdown by area */
+.area-scores { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:28px; }
+@media(max-width:400px){ .area-scores{grid-template-columns:1fr;} }
+
+.as-card {
+  border-radius:12px; padding:14px 12px; text-align:center; border:1px solid;
+}
+.as-icon  { font-size:20px; margin-bottom:6px; }
+.as-label { font-family:'Syne',sans-serif; font-size:12px; font-weight:800; margin-bottom:4px; }
+.as-stat  { font-family:'DM Mono',monospace; font-size:20px; font-weight:700; }
+
+.as-ai     { background:var(--ai-bg);    border-color:var(--ai-bdr); }
+.as-hybrid { background:var(--hybrid-bg);border-color:var(--hybrid-bdr); }
+.as-human  { background:var(--human-bg); border-color:var(--human-bdr); }
+.as-ai     .as-label,.as-ai     .as-stat  { color:var(--ai-c); }
+.as-hybrid .as-label,.as-hybrid .as-stat  { color:var(--hybrid-c); }
+.as-human  .as-label,.as-human  .as-stat  { color:var(--human-c); }
+
+/* All answers breakdown */
+.breakdown-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; margin-bottom:14px; }
+.breakdown-list  { display:flex; flex-direction:column; gap:8px; margin-bottom:24px; }
+
+.bd-item {
+  border-radius:10px; padding:12px 16px; border:1px solid;
+  display:flex; align-items:flex-start; gap:10px;
+  animation:fadein 0.4s ease both;
+}
+@keyframes fadein { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+.bd-correct { background:var(--ai-bg);  border-color:var(--ai-bdr); }
+.bd-wrong   { background:rgba(220,38,38,0.06); border-color:rgba(220,38,38,0.18); }
+
+.bd-icon { font-size:16px; flex-shrink:0; margin-top:2px; }
+.bd-emoji{ font-size:18px; flex-shrink:0; }
+.bd-meta { flex:1; }
+.bd-scenario { font-size:13px; font-weight:600; color:var(--text); margin-bottom:3px; line-height:1.3; }
+.bd-answer   { font-size:12px; color:var(--muted); line-height:1.5; }
+.bd-answer strong { color:var(--text); }
+
+/* Big lesson */
+.lesson-box {
+  background:var(--surface); border:1px solid var(--border2);
+  border-radius:14px; padding:20px 24px; margin-bottom:24px;
+}
+.lesson-box h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:8px; }
+.lesson-box p  { font-size:13px; color:var(--muted); line-height:1.7; }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-title">🤖 AI or Not AI?</div>
+    <div class="top-bar-right">Quick Reflection · Activity</div>
+  </div>
+  <div class="page-body">
+  <div class="page-inner">
+    <div class="intro-badge">⚡ Quick Activity · 8 Scenarios</div>
+    <h1 class="page-title">AI or<br><em>Not AI?</em></h1>
+    <p class="page-desc">You run a small business. Eight situations come up. For each one — decide: can AI handle it, should a human handle it, or is it somewhere in between?</p>
+
+    <div class="three-areas">
+      <div class="area-card area-ai">
+        <div class="area-icon">🤖</div>
+        <div class="area-label">AI Can Handle This</div>
+        <div class="area-desc">Routine, fast, no emotion needed</div>
+      </div>
+      <div class="area-card area-hybrid">
+        <div class="area-icon">🤝</div>
+        <div class="area-label">AI Helps, Human Reviews</div>
+        <div class="area-desc">AI drafts it, you make the call</div>
+      </div>
+      <div class="area-card area-human">
+        <div class="area-icon">👤</div>
+        <div class="area-label">Needs a Human</div>
+        <div class="area-desc">Judgment, empathy, or relationships</div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="startScenarios()">Start the Scenarios →</button>
+  </div>
+  </div>
+</div>
+
+<!-- SCENARIO -->
+<div id="scenario-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🤖 AI or Not AI?</div>
+    <div class="card-dots" id="card-dots"></div>
+  </div>
+  <div class="scenario-body">
+    <div class="scenario-inner" id="scenario-inner"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results-screen" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">🤖 AI or Not AI? — Results</div>
+    <div class="top-bar-right">All 8 Done</div>
+  </div>
+  <div class="results-body">
+    <div class="results-hero">
+      <div class="intro-badge" style="display:inline-block;margin-bottom:14px;">✅ Activity Complete</div>
+      <h1 id="results-title">Nice thinking!</h1>
+      <div class="score-display" id="results-score">0/8</div>
+      <p class="score-msg" id="results-msg"></p>
+    </div>
+
+    <div class="area-scores" id="area-scores"></div>
+
+    <div class="breakdown-title">All 8 Scenarios</div>
+    <div class="breakdown-list" id="breakdown-list"></div>
+
+    <div class="lesson-box">
+      <h3>🧠 The Big Idea</h3>
+      <p>Not every business task belongs to AI — and not every task needs a human. The smartest business owners learn to tell the difference. <strong>Routine and repeatable tasks?</strong> AI handles those faster and cheaper. <strong>Tasks that need creativity, judgment, or emotional intelligence?</strong> That is where humans are irreplaceable. And the middle ground — AI drafting, human reviewing — is often the most powerful combination of all.</p>
+    </div>
+
+    <button class="btn-secondary" onclick="resetAll()">↺ Try Again</button>
+  </div>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    emoji: '📧',
+    areaTag: 'tag-comm',
+    areaLabel: '💬 Customer Communication',
+    scenario: 'A customer emails at midnight asking what time your store opens tomorrow.',
+    detail: 'It is 2 AM. You are asleep. Your store opens at 9 AM every day.',
+    correct: 'ai',
+    feedback: {
+      ai:     { result:'✓ Correct!', text:'This is exactly what AI handles best — a routine, factual question with a simple answer. An AI chatbot can respond instantly, any time of day, with zero effort from you. The customer gets an answer in seconds instead of waiting until morning.' },
+      hybrid: { result:'✗ Not quite', text:'AI can handle this one entirely on its own. The answer never changes ("We open at 9 AM") and no human judgment is needed. Routing every simple FAQ through a human reviewer wastes time.' },
+      human:  { result:'✗ Not quite', text:'Waking up at 2 AM to answer "what time do you open?" is one of the most inefficient ways to run a business. This is precisely the kind of task AI was built to handle — so you can sleep.' }
+    }
+  },
+  {
+    emoji: '📱',
+    areaTag: 'tag-mktg',
+    areaLabel: '📣 Marketing',
+    scenario: 'You need 10 Instagram caption ideas for next week\'s posts.',
+    detail: 'You want captions that feel fresh and on-brand. You have been posting the same style for months.',
+    correct: 'hybrid',
+    feedback: {
+      ai:     { result:'◑ Close — but not quite', text:'AI can definitely generate 10 caption ideas quickly — but you should not post them without reviewing. AI does not know your specific brand voice, your audience\'s inside jokes, or what has actually landed well for you before. The best move is AI generates, you review and adjust.' },
+      hybrid: { result:'✓ Correct!', text:'This is the sweet spot for AI in marketing. AI can brainstorm 10 ideas in seconds — giving you a strong starting point. But you review and refine them to match your brand voice and what actually resonates with your specific audience. Faster AND better.' },
+      human:  { result:'✗ Not quite', text:'Writing 10 caption ideas from scratch every week is exactly the kind of repetitive creative task AI can accelerate. You do not have to skip the human touch — just use AI for the first draft and edit it yourself. That is much faster than starting from nothing.' }
+    }
+  },
+  {
+    emoji: '😤',
+    areaTag: 'tag-comm',
+    areaLabel: '💬 Customer Communication',
+    scenario: 'An angry customer just left a 1-star review saying your product ruined their event and they want a refund.',
+    detail: 'They are clearly upset. This is a public review on Google that other customers will see.',
+    correct: 'human',
+    feedback: {
+      ai:     { result:'✗ Not quite', text:'A generic AI response to a genuine complaint can make things much worse — especially on a public platform. Upset customers need to feel heard by a real person. An AI response might come across as dismissive or robotic, which could escalate the situation and damage your reputation further.' },
+      hybrid: { result:'◑ Close', text:'AI could help you draft a starting point for a response — but this situation involves real emotion, a public reputation risk, and a judgment call about whether to offer a refund. You should write and send this yourself, even if AI helps you structure your thoughts first.' },
+      human:  { result:'✓ Correct!', text:'Angry customers need empathy, not automation. This situation involves real feelings, a public reputation, and a business decision about how to handle a refund. Only you know the full context — and only a genuine human response will rebuild trust with this customer and show others you care.' }
+    }
+  },
+  {
+    emoji: '📊',
+    areaTag: 'tag-research',
+    areaLabel: '🔍 Research',
+    scenario: 'A competitor just launched a new product. You want to know what customers are saying about it online.',
+    detail: 'You want to understand the reaction — positive, negative, what people wish it did differently.',
+    correct: 'hybrid',
+    feedback: {
+      ai:     { result:'◑ Close', text:'AI tools can scan reviews, social media, and news faster than any human — but the strategic decision about what to do with those insights is yours. AI surfaces the patterns; you decide whether to respond with a new product, a price change, or a marketing message.' },
+      hybrid: { result:'✓ Correct!', text:'Perfect use of AI for research. AI can rapidly scan reviews, Reddit threads, and social media to summarize what people are saying. Then you apply your business judgment: Is this an opportunity to position your product differently? Should you emphasize a feature theirs lacks? AI finds the data — you make the strategy call.' },
+      human:  { result:'✗ Not quite', text:'Manually searching through hundreds of reviews and social media posts is a time-consuming task AI is very good at. Let AI scan and summarize the patterns. You still make the strategic decisions — but AI gets you there much faster.' }
+    }
+  },
+  {
+    emoji: '🤝',
+    areaTag: 'tag-comm',
+    areaLabel: '💬 Customer Communication',
+    scenario: 'A potential business partner wants to meet and discuss a possible collaboration deal.',
+    detail: 'This could be a big opportunity. They want to talk about a long-term partnership.',
+    correct: 'human',
+    feedback: {
+      ai:     { result:'✗ Not quite', text:'A business partnership is built on trust, relationship, and negotiation — none of which AI can establish on your behalf. The meeting itself, the conversation, the reading of the room — all of that requires you.' },
+      hybrid: { result:'◑ Getting warmer', text:'AI could help you prepare for the meeting — researching the partner, drafting an agenda, or summarizing their business — but the actual conversation and relationship-building must happen between humans. The meeting itself is not an AI job.' },
+      human:  { result:'✓ Correct!', text:'Business relationships are built on trust, personality, and real conversation. A potential partner is not evaluating your product spec — they are evaluating YOU: whether you are reliable, aligned, and someone they want to work with. This is irreplaceable human territory.' }
+    }
+  },
+  {
+    emoji: '✍️',
+    areaTag: 'tag-mktg',
+    areaLabel: '📣 Marketing',
+    scenario: 'You need a first draft of your monthly email newsletter to send to 500 subscribers.',
+    detail: 'It should include a product update, a tip, and a call to action. You do this every month.',
+    correct: 'hybrid',
+    feedback: {
+      ai:     { result:'◑ Close', text:'AI can write a solid first draft very quickly — but newsletters that go directly from AI to subscribers without any human review often feel generic and lose the personal voice that makes people stay subscribed. Always read it over and add your own voice before hitting send.' },
+      hybrid: { result:'✓ Correct!', text:'Monthly newsletters are a perfect hybrid job. AI drafts the structure, fills in the sections, and saves you hours — then you read it over, add your personality, tweak the tone, and make sure it actually sounds like you. Subscribers stay because of your voice, not a template.' },
+      human:  { result:'✗ Not quite', text:'Writing a full newsletter from scratch every month is exactly the kind of recurring writing task AI speeds up dramatically. You still review and personalize it — but AI handles the first draft, giving you a much better starting point than a blank page.' }
+    }
+  },
+  {
+    emoji: '💰',
+    areaTag: 'tag-comm',
+    areaLabel: '💬 Customer Communication',
+    scenario: 'A loyal customer who has been shopping with you for 2 years asks for a special discount.',
+    detail: 'They mention they are going through a tough time financially but still want to support your business.',
+    correct: 'human',
+    feedback: {
+      ai:     { result:'✗ Not quite', text:'An AI cannot weigh the relationship history, the emotional context, or the business judgment needed here. Should you give the discount? At what percentage? What do you know about this customer that matters? Only you can answer those questions.' },
+      hybrid: { result:'◑ Getting warmer', text:'You could use AI to draft a warm response — but the actual decision about whether to offer a discount, and how much, is entirely a human judgment call. It involves knowing the customer, your margins, and your values as a business owner.' },
+      human:  { result:'✓ Correct!', text:'This is a relationship decision, not a transaction. A loyal 2-year customer sharing something personal with you deserves a genuine, thoughtful human response. The decision involves empathy, business judgment, and your values — none of which an AI can authentically provide.' }
+    }
+  },
+  {
+    emoji: '📈',
+    areaTag: 'tag-research',
+    areaLabel: '🔍 Research',
+    scenario: 'You want to know what products are trending in your industry this month to plan your next order.',
+    detail: 'You buy inventory 60 days in advance, so getting trends right saves you from being stuck with unsold stock.',
+    correct: 'hybrid',
+    feedback: {
+      ai:     { result:'◑ Close', text:'AI tools can surface trending products, search data, and social media signals fast — but the purchasing decision belongs to you. You know your specific customer base, your storage situation, and your cash flow. AI gives you the intelligence; you make the buy.' },
+      hybrid: { result:'✓ Correct!', text:'Research is where AI really shines. It can scan search trends, bestseller lists, and social media faster than any human. You take that intelligence and apply your own knowledge — your customer base, your storage capacity, your budget — to make the actual purchasing decision. Best of both worlds.' },
+      human:  { result:'✗ Not quite', text:'Manually scanning search trends, bestseller lists, and competitor sites every month is exactly what AI can do faster and more comprehensively. Use AI to gather the intelligence, then apply your own business judgment to decide what to order.' }
+    }
+  }
+];
+
+const AREA_LABELS = {
+  ai:     '🤖 AI Can Handle This',
+  hybrid: '🤝 AI Helps, Human Reviews',
+  human:  '👤 Needs a Human'
+};
+
+let currentIdx = 0;
+let answers    = [];
+let dotStates  = Array(8).fill('pending');
+
+function startScenarios() {
+  currentIdx = 0; answers = []; dotStates = Array(8).fill('pending');
+  show('scenario-screen');
+  renderDots();
+  renderScenario(0);
+}
+
+function renderDots() {
+  const container = document.getElementById('card-dots');
+  container.innerHTML = '';
+  dotStates.forEach((state, i) => {
+    const d = document.createElement('div');
+    d.className = 'cdot' + (i === currentIdx ? ' current' : '') + (state === 'correct' ? ' correct' : '') + (state === 'wrong' ? ' wrong' : '');
+    container.appendChild(d);
+  });
+}
+
+function renderScenario(idx) {
+  const s = SCENARIOS[idx];
+  const pct = (idx / 8) * 100;
+
+  const inner = document.getElementById('scenario-inner');
+  inner.innerHTML = `
+    <div class="scenario-counter">
+      <span>Scenario ${idx + 1} of 8</span>
+      <div class="sc-bar"><div class="sc-fill" style="width:${pct}%"></div></div>
+    </div>
+
+    <div class="scenario-card">
+      <span class="scenario-emoji">${s.emoji}</span>
+      <div class="scenario-area-tag ${s.areaTag}">${s.areaLabel}</div>
+      <div class="scenario-text">${s.scenario}</div>
+      <div class="scenario-detail">${s.detail}</div>
+    </div>
+
+    <div class="answer-btns" id="answer-btns">
+      <div class="ans-btn ans-ai" onclick="chooseAnswer('ai', ${idx})">
+        <span class="ans-icon">🤖</span>
+        <div class="ans-text">
+          <div class="ans-label">AI Can Handle This</div>
+          <div class="ans-sub">Routine — AI can do this automatically</div>
+        </div>
+      </div>
+      <div class="ans-btn ans-hybrid" onclick="chooseAnswer('hybrid', ${idx})">
+        <span class="ans-icon">🤝</span>
+        <div class="ans-text">
+          <div class="ans-label">AI Helps, Human Reviews</div>
+          <div class="ans-sub">AI starts it — you check and approve</div>
+        </div>
+      </div>
+      <div class="ans-btn ans-human" onclick="chooseAnswer('human', ${idx})">
+        <span class="ans-icon">👤</span>
+        <div class="ans-text">
+          <div class="ans-label">Needs a Human</div>
+          <div class="ans-sub">Judgment, empathy, or relationship</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feedback-panel" id="feedback-panel"></div>
+    <button class="next-btn" id="next-btn" onclick="nextScenario(${idx})">
+      ${idx < 7 ? 'Next Scenario →' : 'See My Results →'}
+    </button>
+  `;
+}
+
+function chooseAnswer(choice, idx) {
+  const s = SCENARIOS[idx];
+  const isCorrect = choice === s.correct;
+  const fb = s.feedback[choice];
+
+  answers.push({ idx, choice, correct: isCorrect });
+  dotStates[idx] = isCorrect ? 'correct' : 'wrong';
+  renderDots();
+
+  // Lock all buttons
+  document.querySelectorAll('.ans-btn').forEach(btn => {
+    btn.classList.add('locked');
+    btn.classList.add('dim');
+  });
+
+  // Highlight chosen
+  const btnMap = { ai: 'ans-ai', hybrid: 'ans-hybrid', human: 'ans-human' };
+  const chosenBtn = document.querySelectorAll('.ans-btn')[['ai','hybrid','human'].indexOf(choice)];
+  if (chosenBtn) {
+    chosenBtn.classList.remove('dim');
+    chosenBtn.classList.add(isCorrect ? 'chosen-correct' : 'chosen-wrong');
+  }
+
+  // Show correct if wrong
+  if (!isCorrect) {
+    const correctBtn = document.querySelectorAll('.ans-btn')[['ai','hybrid','human'].indexOf(s.correct)];
+    if (correctBtn) {
+      correctBtn.classList.remove('dim');
+      correctBtn.classList.add('reveal-correct');
+    }
+  }
+
+  // Show feedback
+  const panel = document.getElementById('feedback-panel');
+  panel.className = `feedback-panel show ${isCorrect ? 'fp-correct' : 'fp-wrong'}`;
+  panel.innerHTML = `
+    <div class="fp-result">${fb.result}</div>
+    <div class="fp-text">${fb.text}</div>
+  `;
+
+  document.getElementById('next-btn').classList.add('show');
+  setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+}
+
+function nextScenario(idx) {
+  if (idx < 7) {
+    currentIdx = idx + 1;
+    renderScenario(currentIdx);
+    renderDots();
+    document.getElementById('scenario-inner').scrollIntoView({ behavior:'smooth', block:'start' });
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  show('results-screen');
+
+  const correct = answers.filter(a => a.correct).length;
+  document.getElementById('results-score').textContent = correct + '/8';
+
+  let title, msg;
+  if (correct === 8) { title = '🏆 Perfect Score!'; msg = 'You understand exactly when to use AI and when to bring in a human. That is a genuinely valuable skill for running any business.'; }
+  else if (correct >= 6) { title = '👍 Strong Instincts!'; msg = `You got ${correct} of 8 right. Read the breakdowns below to see the ones that tripped you up.`; }
+  else if (correct >= 4) { title = '📚 Good Start'; msg = `You got ${correct} of 8. The tricky ones are usually the hybrid cases — read each explanation to understand why.`; }
+  else { title = '💡 Keep Practicing'; msg = 'These distinctions get clearer with practice. Read every explanation — the patterns will start to click.'; }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent   = msg;
+
+  // Area breakdown
+  const areaScores = { ai: { correct:0, total:0 }, hybrid: { correct:0, total:0 }, human: { correct:0, total:0 } };
+  SCENARIOS.forEach((s, i) => {
+    areaScores[s.correct].total++;
+    if (answers[i]?.correct) areaScores[s.correct].correct++;
+  });
+
+  document.getElementById('area-scores').innerHTML = `
+    <div class="as-card as-ai">
+      <div class="as-icon">🤖</div>
+      <div class="as-label">AI Handles</div>
+      <div class="as-stat">${areaScores.ai.correct}/${areaScores.ai.total}</div>
+    </div>
+    <div class="as-card as-hybrid">
+      <div class="as-icon">🤝</div>
+      <div class="as-label">AI + Human</div>
+      <div class="as-stat">${areaScores.hybrid.correct}/${areaScores.hybrid.total}</div>
+    </div>
+    <div class="as-card as-human">
+      <div class="as-icon">👤</div>
+      <div class="as-label">Human Only</div>
+      <div class="as-stat">${areaScores.human.correct}/${areaScores.human.total}</div>
+    </div>
+  `;
+
+  // Breakdown
+  const list = document.getElementById('breakdown-list');
+  list.innerHTML = '';
+  SCENARIOS.forEach((s, i) => {
+    const ans = answers[i];
+    const isCorrect = ans?.correct;
+    const div = document.createElement('div');
+    div.className = `bd-item ${isCorrect ? 'bd-correct' : 'bd-wrong'}`;
+    div.style.animationDelay = (i * 0.06) + 's';
+    div.innerHTML = `
+      <div class="bd-emoji">${s.emoji}</div>
+      <div class="bd-meta">
+        <div class="bd-scenario">${s.scenario}</div>
+        <div class="bd-answer">
+          ${isCorrect ? '✓' : '✗'} You chose: <strong>${AREA_LABELS[ans?.choice || 'ai']}</strong>
+          ${!isCorrect ? ` · Correct: <strong>${AREA_LABELS[s.correct]}</strong>` : ''}
+        </div>
+      </div>
+      <div class="bd-icon">${isCorrect ? '✓' : '✗'}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function resetAll() {
+  currentIdx = 0; answers = []; dotStates = Array(8).fill('pending');
+  show('intro');
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
